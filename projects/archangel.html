@@ -98,21 +98,24 @@
   <div class="wrap">
     <p class="section-label">AQL Engine v2.0</p>
     <h2>Un lenguaje de consulta para la arquitectura</h2>
-    <p class="lede">15 extensiones sobre un motor de consultas propio para arquitectura de software. No son módulos decorativos: cada una resuelve un problema concreto con un modelo matemático explícito detrás.</p>
+    <p class="lede">15 extensiones sobre un motor de consultas propio para arquitectura de software — un SQL para grafos de código, con física embebida como funciones nativas del lenguaje. Ninguna es un módulo decorativo: cada una resuelve un problema concreto con un modelo matemático explícito detrás.</p>
+
     <div class="pillars">
-      <div class="pillar"><div class="name">X04 · PredictiveEngine</div><p>Inferencia bayesiana real: P(fallo | evidencias) ∝ P(evidencias | fallo) × P(fallo). Combina masa sobre el "límite Chandrasekhar" del nodo, estado térmico (FROZEN → CRITICAL), bus factor y densidad de hotspots, con pesos calibrados empíricamente y un prior base de 4% de fallo a 30 días.</p></div>
-      <div class="pillar"><div class="name">X05 · CascadeAnalyzer</div><p>Simula el efecto dominó con BFS por olas: si la estabilidad de un nodo cae bajo el umbral de propagación, el fallo pasa a sus dependientes con la intensidad amortiguada en cada ola, hasta extinguirse.</p></div>
-      <div class="pillar"><div class="name">X06 · DarkMatterDetector</div><p>Encuentra acoplamiento que no aparece en ningún import: mismas variables de entorno, mismo estado global/singleton, mismos archivos o endpoints leídos por dos módulos distintos — dependencias reales que el grafo de imports no ve.</p></div>
+      <div class="pillar"><div class="name">X04 · PredictiveEngine</div><p>Inferencia bayesiana real, no una heurística con nombre bonito: combina 6 evidencias independientes (masa sobre el límite Chandrasekhar, estado térmico, bus factor, decay, exposición de seguridad, entropía) con <strong style="color:var(--text)">log-odds</strong> — cada evidencia suma o resta a favor de "va a fallar" de forma matemáticamente aditiva, no un promedio ponderado ingenuo — sobre un prior base de 4% de fallo a 30 días.</p></div>
+      <div class="pillar"><div class="name">X05 · CascadeAnalyzer</div><p>Simula el efecto dominó con BFS por olas, amortiguando la intensidad en cada una (factor 0.65). Lo interesante: identifica <strong style="color:var(--text)">firewall nodes</strong> — módulos con estabilidad suficiente para absorber el fallo y frenar la cascada ahí, en vez de propagarla — y calcula un riesgo de extinción total del sistema.</p></div>
+      <div class="pillar"><div class="name">X06 · DarkMatterDetector</div><p>5 tipos de acoplamiento invisible que ningún grafo de imports ve: variables de entorno compartidas, estado global/singleton compartido, mismos archivos o endpoints de I/O, co-cambio temporal sin import, y similitud semántica por coseno de embeddings &gt;0.85 entre módulos sin ninguna arista explícita entre ellos.</p></div>
     </div>
+
     <div class="proj-split" style="margin-top: var(--space-lg);">
       <div class="proj-split-text">
-        <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (tiempo, componente, capa, severidad) y un optimizador que estima costes y elige plan antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
+        <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (label, masa, estado térmico, dominio/capa — cada uno O(1) o O(log n) según el tipo) y un optimizador que hace <em>predicate pushdown</em>, reordena joins por selectividad y estima coste antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-aql-engine.png" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
         <figcaption>15 extensiones integradas bajo un solo lenguaje de consulta.</figcaption>
       </figure>
     </div>
+
     <div class="terminal" id="fake-terminal">
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
@@ -125,6 +128,83 @@
         <div class="terminal-line"><span class="ok">✓</span> listo. 1 hallazgo crítico, 1 riesgo estructural.<span class="terminal-cursor"></span></div>
       </div>
     </div>
+
+    <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">La física no es una metáfora en el marketing — es una función que se llama dentro de una query real:</p>
+    <div class="terminal" style="margin-top: var(--space-sm);">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-body">
+        <div class="terminal-line"><span class="prompt">AQL&gt;</span> MATCH (m:Module)</div>
+        <div class="terminal-line">      WHERE m.mass &gt; ChandrasekharLimit(1.44)</div>
+        <div class="terminal-line">        AND m.instability &gt; 0.7</div>
+        <div class="terminal-line">      YIELD m.name, m.mass, m.instability, m.blast_radius</div>
+        <div class="terminal-line">→ macro estándar: <span class="ok">black_holes</span> — módulos colapsando bajo su propio peso.<span class="terminal-cursor"></span></div>
+      </div>
+    </div>
+
+    <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">Las 15 extensiones completas</p>
+    <table class="compare-table" style="margin-top: var(--space-sm);">
+      <thead><tr><th>Ext.</th><th class="archangel-col">Motor</th><th>Qué resuelve</th></tr></thead>
+      <tbody>
+        <tr><td>X01</td><td class="archangel-col">QueryOptimizer</td><td>Predicate pushdown, selección de índice, reordenamiento de joins por selectividad</td></tr>
+        <tr><td>X02</td><td class="archangel-col">MultiDimIndex</td><td>Índice 4D (label, masa, térmico, dominio) — búsqueda O(1)/O(log n) en vez de scan completo</td></tr>
+        <tr><td>X03</td><td class="archangel-col">AggregationEngine</td><td>GROUP BY, PERCENTILE, STDDEV, WINDOW functions sobre resultados AQL</td></tr>
+        <tr><td>X04</td><td class="archangel-col">PredictiveEngine</td><td>Predicción bayesiana de fallo a 30/90 días con log-odds</td></tr>
+        <tr><td>X05</td><td class="archangel-col">CascadeAnalyzer</td><td>Simulación de fallo en dominó por olas, con nodos firewall</td></tr>
+        <tr><td>X06</td><td class="archangel-col">DarkMatterDetector</td><td>Acoplamiento oculto: env-vars, estado global, I/O, semántico</td></tr>
+        <tr><td>X07</td><td class="archangel-col">EntropyFieldCalculator</td><td>Gradientes de información entre nodos — detecta "sumideros de entropía" (God Objects)</td></tr>
+        <tr><td>X08</td><td class="archangel-col">TemporalDiffEngine</td><td>Diff arquitectónico entre snapshots: drift score, violaciones nuevas/resueltas</td></tr>
+        <tr><td>X09</td><td class="archangel-col">ReactiveEngine</td><td>SUBSCRIBE TO queries que se re-ejecutan y disparan solo cuando el resultado cambia</td></tr>
+        <tr><td>X10</td><td class="archangel-col">GraphFederator</td><td>Una misma query AQL contra N microservicios, con UNION/INTERSECT/DIFF</td></tr>
+        <tr><td>X11</td><td class="archangel-col">AQLMacroSystem</td><td>Biblioteca de queries parametrizables reutilizables (como <code style="color:var(--accent)">black_holes</code> arriba)</td></tr>
+        <tr><td>X12</td><td class="archangel-col">ExplainEngine</td><td>EXPLAIN ANALYZE real: coste estimado vs. real, precisión de la estimación</td></tr>
+        <tr><td>X13</td><td class="archangel-col">SmellDetector</td><td>8 anti-patrones detectados automáticamente con prescripción — ver abajo</td></tr>
+        <tr><td>X14</td><td class="archangel-col">HealthScoreEngine</td><td>Score compuesto A+ a F de toda la arquitectura — ver abajo</td></tr>
+        <tr><td>X15</td><td class="archangel-col">AQLExecutorV2</td><td>Orquestador que integra los 14 subsistemas anteriores en una sola API</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">Health Score &amp; Anti-Patrones</p>
+    <h2>Tu arquitectura, resumida en una letra</h2>
+    <p class="lede">170.000 líneas de análisis no sirven de nada si nadie las lee. El Health Score Engine las comprime en un solo número con letra — como un reporte de crédito, pero para tu código — y el Smell Detector le pone nombre a cada síntoma.</p>
+
+    <div class="proj-split">
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">5 dimensiones, ponderadas por impacto real.</strong> Estructural 30% (masa, complejidad, ciclos), Temporal 25% (velocidad de cambio, bus factor, estado térmico), Seguridad 20% (hotspots, decay, exposición), Conocimiento 15% (bus factor, documentación inferida), Topológica 10% (capas, cohesión, acoplamiento).</p>
+        <p><strong style="color:var(--text)">Penalización directa por smells críticos</strong> — cada anti-patrón de severidad CRITICAL le resta puntos al score final, así que "está limpio en promedio" no puede esconder un God Object real.</p>
+        <p><strong style="color:var(--text)">Detecta tendencia, no solo estado.</strong> Comparado contra el score anterior: MEJORANDO ↑, ESTABLE, o EMPEORANDO ↓ — la pregunta que de verdad le importa a un equipo no es "¿qué tan mal estamos hoy?" sino "¿vamos para mejor o para peor?".</p>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="terminal-line">╔═══ ARCHITECTURAL HEALTH REPORT ══════</div>
+          <div class="terminal-line">║ <span class="warn">🟡</span> Overall Score : 71.4/100 [B] STABLE</div>
+          <div class="terminal-line">║ Structural  : [███████░░░] 74.2</div>
+          <div class="terminal-line">║ Temporal    : [██████░░░░] 61.0</div>
+          <div class="terminal-line">║ Security    : [████████░░] 82.5</div>
+          <div class="terminal-line">║ Knowledge   : [██████░░░░] 68.0</div>
+          <div class="terminal-line">║ Topological : [████████░░] 79.0</div>
+          <div class="terminal-line">║ <span class="crit">🚨</span> [CYCLIC_DEPENDENCY] 3 ciclos en /core</div>
+          <div class="terminal-line">║ <span class="ok">⚡</span> 12 módulos frozen: candidatos a librería<span class="terminal-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">8 anti-patrones, con nombre y prescripción — no solo "este archivo es complejo"</p>
+    <div class="pillars" style="margin-top: var(--space-sm);">
+      <div class="pillar"><div class="name">GOD_OBJECT</div><p>Masa &gt; 1.5× el límite Chandrasekhar + más de 5 dependientes. Prescripción: Single Responsibility + Extract Class + Facade Pattern.</p></div>
+      <div class="pillar"><div class="name">CYCLIC_DEPENDENCY</div><p>Ciclos reales en el grafo de imports (DFS con pila de recursión). Prescripción: Dependency Inversion, romper con interfaces.</p></div>
+      <div class="pillar"><div class="name">DEAD_ZONE</div><p>Módulos de &gt;50 líneas sin ningún dependiente y que no son puntos de entrada. Candidatos a código muerto.</p></div>
+      <div class="pillar"><div class="name">SHOTGUN_SURGERY</div><p>Un solo cambio conceptual obliga a tocar archivos dispersos por todo el repo.</p></div>
+      <div class="pillar"><div class="name">SPAGHETTI_ARCH</div><p>Sin capas claras — todo importa de todo, sin dirección predominante.</p></div>
+      <div class="pillar"><div class="name">KNOWLEDGE_CLIFF</div><p>Caída abrupta de bus factor justo en la zona de mayor riesgo del sistema.</p></div>
+      <div class="pillar"><div class="name">ZOMBIE_MODULE</div><p>Congelado (sin cambios) pero con deuda técnica alta — legado muerto que nadie se atreve a tocar.</p></div>
+      <div class="pillar"><div class="name">FEATURE_ENVY</div><p>Un módulo usa más los datos/métodos de otro que los suyos propios — señal de que está en el lugar equivocado.</p></div>
+    </div>
+    <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Cada smell trae la query AQL exacta que lo detectó — no es una opinión, es un resultado reproducible.</p>
   </div>
 </section>
 
