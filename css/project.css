@@ -1,5 +1,5 @@
 /* ---------- Project page shared ---------- */
-.proj-nav .wrap { justify-content: flex-start; gap: var(--space-lg); }
+.proj-nav .wrap { justify-content: space-between; align-items: center; }
 .proj-back { color: var(--text-dim); font-size: var(--fs-small); font-family: var(--font-mono); }
 .proj-back:hover { color: var(--accent); }
 
@@ -12,6 +12,12 @@
   font-size: var(--fs-small);
   color: var(--accent);
   margin-bottom: var(--space-sm);
+}
+.proj-logo {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--space-md);
 }
 .proj-hero h1 {
   font-size: var(--fs-hero);
@@ -112,7 +118,48 @@
 .pillar .name { font-family: var(--font-mono); color: var(--accent); font-size: var(--fs-small); margin-bottom: var(--space-xs); }
 .pillar p { color: var(--text-dim); font-size: 0.9rem; }
 
-/* Finding example */
+/* Fake terminal */
+.terminal {
+  background: #0D1117;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  margin-top: var(--space-lg);
+}
+.terminal-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0.6rem 0.8rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.terminal-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.terminal-body { padding: var(--space-md); min-height: 9rem; }
+.terminal-line { opacity: 0; white-space: pre-wrap; line-height: 1.7; }
+.terminal-line.is-shown { opacity: 1; }
+.terminal-line .prompt { color: var(--accent); }
+.terminal-line .ok { color: #4ADE80; }
+.terminal-line .warn { color: #FBBF24; }
+.terminal-line .crit { color: #F87171; }
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1rem;
+  background: var(--accent);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Comparativa honesta */
+.compare-table { width: 100%; border-collapse: collapse; margin-top: var(--space-lg); font-size: 0.9rem; }
+.compare-table th, .compare-table td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); }
+.compare-table th { color: var(--text-dim); font-family: var(--font-mono); font-size: var(--fs-small); font-weight: 500; }
+.compare-table td:first-child { color: var(--text-dim); width: 30%; }
+.compare-table .archangel-col { color: var(--accent); }
+
 .finding {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -121,6 +168,12 @@
 }
 .finding div { display: flex; gap: var(--space-sm); padding: 0.35rem 0; border-bottom: 1px solid var(--line); }
 .finding div:last-child { border-bottom: none; }
+.finding div {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.finding.is-typed div { opacity: 1; transform: translateX(0); }
 .finding span:first-child { color: var(--text-dim); width: 9rem; flex-shrink: 0; }
 .finding .critica { color: #F87171; }
 .finding .alta { color: #FBBF24; }

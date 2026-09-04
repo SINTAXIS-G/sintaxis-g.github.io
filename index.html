@@ -66,6 +66,8 @@
 </head>
 <body>
 
+<div class="scroll-progress"></div>
+
 <nav class="nav">
   <div class="wrap">
     <span class="nav-mark"><img src="assets/img/logo-sintaxis-g.jpg" alt="SINTAXIS G" style="height:1.75rem;width:1.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;">SINTAXIS G</span>
@@ -79,6 +81,7 @@
 </nav>
 
 <header class="hero">
+  <canvas id="hero-canvas" class="hero-canvas"></canvas>
   <div class="wrap">
     <h1>Software tratado como un sistema físico.</h1>
     <p class="lema-maestro">"No instalo sistemas. Forjo arquitecturas."</p>
@@ -113,36 +116,41 @@
 <section id="ecosistema">
   <div class="wrap">
     <p class="section-label">El resto del ecosistema</p>
-    <h2 class="section-title">Cada herramienta resuelve un problema distinto</h2>
+    <h2 class="section-title">Cada sistema resuelve un problema que se negó a delegar</h2>
     <div class="eco-list">
       <div class="eco-item">
         <span class="name">EXARKON</span>
-        <span class="desc">Ecosistema de IA soberano, ejecutado íntegramente de forma local.</span>
+        <span class="desc">El cerebro del ecosistema: un entorno de IA soberano ejecutado íntegramente en local. Su lema resume la apuesta — "Razón sobre Proceso. Conciencia sobre Código." — no basta con que ejecute líneas, tiene que entender la intención detrás de ellas.</span>
         <span class="status">En desarrollo</span>
       </div>
       <div class="eco-item">
         <span class="name">EIDOLON</span>
-        <span class="desc">Sistema de compañía IA con personaje propio (Ameri Azazel).</span>
-        <span class="status">En desarrollo</span>
+        <span class="desc">Motor de simulación cognitiva para entidades sintéticas persistentes (Azazel Ameri), 100% local — construido en ~120 horas. No es un chatbot con memoria: la memoria decae con la curva de Ebbinghaus, las emociones tienen inercia real (no saltan de furia a euforia en un turno), y un "cortafuegos psicológico" descarta respuestas del LLM que rompan el canon del personaje antes de que lleguen al usuario. Por debajo, un orquestador de VRAM hace bin-packing y preemption cooperativo para correr LLM, difusión de imagen y voz a la vez en una GPU de consumo sin reventar por OOM.</span>
+        <span class="status">Beta avanzada</span>
       </div>
       <div class="eco-item">
         <span class="name">A.R.K.</span>
-        <span class="desc">Navegador soberano construido en PyQt6, con subsistemas de seguridad propios.</span>
+        <span class="desc">Navegador táctico de confianza cero — Capa 0 entre el operador y la red. Inyecta ruido en Canvas/AudioContext para envenenar el fingerprinting, congela pestañas inactivas con SIGSTOP a nivel de kernel, y ancla su ejecución a una firma física del hardware (latencia de caché L3, entropía de VRAM). Si detecta indicios forenses, dispara un protocolo de amnesia: sobrescribe /dev/shm con ceros y aplica borrado de 3 pasadas. "Navega como un fantasma. Gobierna como un rey."</span>
         <span class="status">En desarrollo</span>
       </div>
       <div class="eco-item">
-        <span class="name">HERMES</span>
-        <span class="desc">App móvil en Flutter con terminal remota y explorador de archivos.</span>
-        <span class="status">En desarrollo</span>
+        <span class="name">ATLAS</span>
+        <span class="desc">Motor de descubrimiento de proyectos, en stdlib puro sin una sola dependencia externa. Antes de auditar un repo con ARCHANGEL, ATLAS lo perfila: ADN por tamaño, Índices de densidad/modularidad/fragmentación, huellas de 23 frameworks y 10 herramientas de infraestructura, arquitectura por patrones de carpetas, y un Explorability Index de 8 dimensiones. Termina en un veredicto de una sola tarjeta: tipo de proyecto, stack completo, salud y riesgos — validado con 57 aserciones automatizadas en 4 niveles, todas en verde.</span>
+        <span class="status">v0.4.0</span>
+      </div>
+      <div class="eco-item">
+        <span class="name">KAIROS</span>
+        <span class="desc">App de asistencia en emergencias en Flutter — 76 archivos, ~15.800 líneas, sin backend ni cuentas. Su corazón es un Dead Man's Switch: si la persona deja de responder, dispara el aviso a su red de confianza y una alarma física, sin que nadie tenga que tocar nada. Cada decisión de diseño está documentada donde parece "de más": la alarma nunca se enciende sola al pedir ayuda (podría delatar a alguien escondiéndose), y el SMS de alerta siempre es un borrador — la decisión final de avisar es humana, nunca de la app.</span>
+        <span class="status">Producción</span>
       </div>
       <div class="eco-item">
         <span class="name">Cazador de Enlaces</span>
-        <span class="desc">Herramienta de análisis estático para inconsistencias de comunicación entre archivos.</span>
+        <span class="desc">El agente táctico del ecosistema: análisis estático enfocado en encontrar inconsistencias de comunicación entre archivos — el cable roto que nadie más ve. "Cazando incoherencias en el ruido digital."</span>
         <span class="status">En desarrollo</span>
       </div>
       <div class="eco-item">
         <span class="name">AETERNA</span>
-        <span class="desc">Configuración de kernel de Gentoo Linux, ajustada quirúrgicamente a la medida.</span>
+        <span class="desc">Configuración de kernel de Gentoo Linux, ajustada quirúrgicamente a la medida — hace que hardware que cualquier otro consideraría obsoleto rinda como una workstation moderna. "El fin de la obsolescencia. El inicio de la permanencia."</span>
         <span class="status">Infraestructura</span>
       </div>
     </div>
@@ -152,10 +160,32 @@
 <section id="sobre-mi">
   <div class="wrap">
     <p class="section-label">Sobre mí</p>
-    <h2 class="section-title">Un solo arquitecto, varios sistemas</h2>
+    <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
     <div class="about-body">
-      <p><strong>Gabo</strong> — arquitecto de software independiente basado en la Ciudad de México. Diseño y construyo cada proyecto de SINTAXIS G en solitario, coordinando múltiples sesiones de trabajo en paralelo sobre bases de código grandes.</p>
-      <p>El stack cruza Python, React/Vite, Flutter y un entorno propio de Gentoo Linux. El principio que conecta todo: sistemas locales y soberanos, con la mínima dependencia posible de la nube.</p>
+      <p>Soy <strong>Gabo</strong>, arquitecto de software independiente y creador de SINTAXIS G.</p>
+      <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación: diseño la arquitectura, desarrollo los sistemas que la componen, construyo sus interfaces y, cuando es necesario, también desarrollo las herramientas e infraestructura que los mantienen funcionando.</p>
+      <p>SINTAXIS G nació de una idea sencilla: si voy a construir un sistema, quiero entenderlo lo suficiente como para poder controlar sus piezas fundamentales.</p>
+      <p>Por eso mis proyectos no siguen necesariamente un único stack ni una única categoría. Trabajo con Python, React/Vite, Flutter, Linux y distintas tecnologías según lo que el problema requiera. La tecnología es una herramienta; la arquitectura y el propósito del sistema son lo que realmente importan.</p>
+
+      <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">Construir, no solamente implementar</p>
+      <p>Con el tiempo dejé de pensar en el software como aplicaciones aisladas. Un proyecto puede comenzar como una herramienta pequeña y terminar convirtiéndose en un sistema compuesto por servicios, interfaces, análisis, almacenamiento, automatización e infraestructura propia. Esa evolución es parte natural de mi forma de trabajar.</p>
+      <p>He construido sistemas para problemas muy distintos: desde herramientas de asistencia y aplicaciones móviles hasta plataformas de análisis y sistemas capaces de trabajar sobre bases de código de gran tamaño.</p>
+      <p>Uno de mis proyectos actuales, <strong>ARCHANGEL</strong>, representa especialmente esa evolución: un sistema construido alrededor del análisis y comprensión de software, acompañado por sus propias herramientas de control, monitoreo e interfaz.</p>
+      <p>Otros proyectos, como <strong>KAIROS</strong>, parten de una preocupación diferente: cómo diseñar software que siga siendo útil cuando las condiciones reales no son perfectas, priorizando disponibilidad, degradación controlada y dependencia mínima de servicios externos.</p>
+
+      <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">Una forma particular de trabajar</p>
+      <p>Prefiero tener una visión completa del sistema antes que limitarme a resolver una sola parte. Eso también significa que muchas veces termino construyendo herramientas que originalmente ni siquiera estaban contempladas en el proyecto. Si una pieza falta y esa pieza es importante para que el sistema funcione correctamente, prefiero construirla antes que simplemente asumir que alguien más la proporcionará.</p>
+      <p>Trabajo directamente sobre el código y las decisiones técnicas de mis proyectos, manteniendo una relación estrecha entre arquitectura, implementación y evolución del sistema.</p>
+      <p>No busco utilizar más tecnología de la necesaria. Busco que cada pieza tenga una razón para existir.</p>
+
+      <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">SINTAXIS G</p>
+      <p>SINTAXIS G es el espacio donde concentro esta forma de construir software. No es solamente un nombre para proyectos independientes. Es el punto común entre sistemas que, aunque tengan propósitos completamente diferentes, comparten una misma intención: crear herramientas capaces, controlables y diseñadas alrededor del problema que necesitan resolver.</p>
+      <p>La nube, las APIs externas y los servicios de terceros pueden ser herramientas útiles. Pero no considero que deban convertirse automáticamente en dependencias fundamentales. Cuando existe una alternativa razonable, prefiero que una parte crítica del sistema pueda permanecer bajo control directo.</p>
+      <p style="color:var(--accent); font-family:var(--font-mono); margin-top:var(--space-sm);">"La mejor arquitectura no es la que utiliza más tecnología. Es la que conserva el control sobre lo que realmente importa."</p>
+
+      <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">Y detrás del código</p>
+      <p>No concibo esto únicamente como una actividad profesional. Construir software se convirtió en mi manera de explorar ideas, resolver problemas y convertir conceptos que existen solamente en mi cabeza en sistemas que realmente funcionan.</p>
+      <p>SINTAXIS G es el resultado de esa evolución: una persona, múltiples sistemas y una arquitectura que continúa creciendo.</p>
     </div>
   </div>
 </section>

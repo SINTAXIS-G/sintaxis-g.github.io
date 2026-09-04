@@ -28,3 +28,14 @@
   --content-width: 72rem;
   --measure: 38rem;
 }
+
+/* Modo búnker: alto contraste */
+body.bunker-mode {
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --line: #2A2A2A;
+  --text: #FFFFFF;
+  --text-dim: #B0B0B0;
+  --accent: #00FFF0;
+  --accent-dim: #00C4B8;
+}

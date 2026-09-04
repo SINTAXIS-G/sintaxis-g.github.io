@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARCHANGEL Ω — SINTAXIS G</title>
 <meta name="description" content="ARCHANGEL Ω: motor de análisis estático multi-lenguaje que trata el software como un sistema físico.">
-<link rel="icon" href="../assets/img/logo-sintaxis-g.jpg">
+<link rel="icon" href="../assets/img/archangel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,14 +16,21 @@
 </head>
 <body>
 
+<div class="scroll-progress"></div>
+
 <nav class="nav proj-nav">
   <div class="wrap">
     <a class="proj-back" href="../index.html">← SINTAXIS G</a>
+    <div class="mode-toggles">
+      <button class="mode-btn" id="dev-toggle">modo dev</button>
+      <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+    </div>
   </div>
 </nav>
 
 <header class="proj-hero">
   <div class="wrap">
+    <img src="../assets/img/archangel-logo.png" alt="ARCHANGEL Ω logo" class="proj-logo">
     <p class="eyebrow">Proyecto insignia</p>
     <h1>ARCHANGEL Ω</h1>
     <p class="tagline">Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
@@ -56,7 +63,7 @@
         <p>El repositorio se modela como un grafo: nodos, dependencias, hotspots y riesgo de propagación. Un motor de análisis multidimensional combina topología, métricas estructurales, señales de riesgo, tendencias históricas y salud numérica.</p>
         <p>Sobre esa lectura, un módulo de control y decisión (homeostático + modelo de decisión) elige qué corregir, respetando un presupuesto de cambio y evitando repetir estrategias que ya fallaron antes.</p>
       </div>
-      <figure class="proj-split-figure">
+      <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-problema-respuesta.png" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy">
         <figcaption>Del problema detectado a la acción correctiva, en un solo ciclo cerrado.</figcaption>
       </figure>
@@ -70,7 +77,7 @@
     <h2>Física aplicada al código</h2>
     <p class="lede">v8.0 del predictor: no es una fórmula suelta, es un modelo calibrado contra el historial real de Git — con la misma honestidad de ingeniería que el resto del motor.</p>
     <div class="proj-split reverse">
-      <figure class="proj-split-figure">
+      <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-fracturas.png" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy">
         <figcaption>K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.</figcaption>
       </figure>
@@ -101,10 +108,22 @@
       <div class="proj-split-text">
         <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (tiempo, componente, capa, severidad) y un optimizador que estima costes y elige plan antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
       </div>
-      <figure class="proj-split-figure">
+      <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-aql-engine.png" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
         <figcaption>15 extensiones integradas bajo un solo lenguaje de consulta.</figcaption>
       </figure>
+    </div>
+    <div class="terminal" id="fake-terminal">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-body">
+        <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
+        <div class="terminal-line">→ 64 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
+        <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
+        <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
+        <div class="terminal-line">→ generando propuesta en rama aislada...</div>
+        <div class="terminal-line"><span class="ok">✓</span> listo. 1 hallazgo crítico, 1 riesgo estructural.<span class="terminal-cursor"></span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -129,7 +148,7 @@
         <p><strong style="color:var(--text)">Alias y mutación de contenedores.</strong> <code style="color:var(--accent)">b = a</code> hace que ambos apunten a la misma ubicación; una mutación in-place como <code style="color:var(--accent)">a.append(x)</code> contamina esa ubicación y se refleja en todos sus alias.</p>
         <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
       </div>
-      <figure class="proj-split-figure">
+      <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-taint-analysis.png" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy">
         <figcaption>Fuentes, propagación, análisis de factibilidad y sinks — el camino completo del dato.</figcaption>
       </figure>
@@ -147,13 +166,13 @@
     <h2>Auditoría continua, decisiones seguras</h2>
     <p class="lede">No es una metáfora suelta: cada mecanismo del daemon está fundamentado en un modelo publicado, con cita y año — no una analogía decorativa.</p>
     <div class="pillars">
-      <div class="pillar"><div class="name">Homeostasis vía control PID</div><p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt — el sistema mantiene estable la "temperatura" de deuda técnica con un bucle de retroalimentación negativa real, no un cronómetro de inactividad fijo (Åström &amp; Hägglund, 1995).</p></div>
-      <div class="pillar"><div class="name">Percolación en redes</div><p>El grafo de llamadas AST se analiza con números de Betti y el criterio de Molloy-Reed: detecta cuándo el grado medio del grafo cruza el umbral crítico donde emerge una componente gigante conectada — riesgo real de percolación, no un conteo ingenuo de imports (Molloy &amp; Reed, 1995).</p></div>
-      <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado (Bellman, 1957).</p></div>
-      <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo (Kellerer, Pferschy &amp; Pisinger, 2004).</p></div>
+      <div class="pillar"><div class="name">Homeostasis vía control PID</div><p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt — el sistema mantiene estable la "temperatura" de deuda técnica con un bucle de retroalimentación negativa real, no un cronómetro de inactividad fijo <span class="dev-only"> (Åström &amp; Hägglund, 1995)</span>.</p></div>
+      <div class="pillar"><div class="name">Percolación en redes</div><p>El grafo de llamadas AST se analiza con números de Betti y el criterio de Molloy-Reed: detecta cuándo el grado medio del grafo cruza el umbral crítico donde emerge una componente gigante conectada — riesgo real de percolación, no un conteo ingenuo de imports <span class="dev-only"> (Molloy &amp; Reed, 1995)</span>.</p></div>
+      <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado <span class="dev-only"> (Bellman, 1957)</span>.</p></div>
+      <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo <span class="dev-only"> (Kellerer, Pferschy &amp; Pisinger, 2004)</span>.</p></div>
       <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Las ramas Git generadas son "anticuerpos": si el desarrollador las mergea, refuerzo; si las borra sin mergear, castigo. El daemon aprende el estilo arquitectónico real con el tiempo, no repite lo mismo siempre (de Castro &amp; Von Zuben, 2002).</p></div>
     </div>
-    <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador (Shannon, 1948).</p>
+    <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador <span class="dev-only"> (Shannon, 1948)</span>.</p>
   </div>
 </section>
 
@@ -167,9 +186,27 @@
   </div>
 </section>
 
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">Comparativa honesta</p>
+    <h2>En qué se diferencia, sin marketing</h2>
+    <table class="compare-table">
+      <thead><tr><th></th><th class="archangel-col">ARCHANGEL</th><th>SonarQube / Semgrep</th></tr></thead>
+      <tbody>
+        <tr><td>Output principal</td><td class="archangel-col">Campo tensorial de riesgo (D1–D5)</td><td>Score de calidad / lista de reglas</td></tr>
+        <tr><td>Taint analysis</td><td class="archangel-col">10 categorías simultáneas, sanitización contextual</td><td>Regla binaria por patrón</td></tr>
+        <tr><td>Predicción</td><td class="archangel-col">Probabilidad de fractura calibrada contra Git real</td><td>No predice, solo detecta lo ya presente</td></tr>
+        <tr><td>Intervención</td><td class="archangel-col">Rama aislada + aprendizaje de tus decisiones</td><td>Reporta; no propone ni aprende</td></tr>
+        <tr><td>Diseñado para</td><td class="archangel-col">Ser contexto de alta densidad para un LLM</td><td>Ser leído por un humano en un dashboard</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <footer>
-  <div class="wrap">SINTAXIS G — construido a mano, sin plantillas.</div>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
 </footer>
 
+<script src="../js/main.js"></script>
 </body>
 </html>
