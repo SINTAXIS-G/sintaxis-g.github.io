@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHANGEL Ω — SINTAXIS G</title>
+<meta name="description" content="ARCHANGEL Ω: motor de análisis estático multi-lenguaje que trata el software como un sistema físico.">
+<link rel="icon" href="../assets/img/logo-sintaxis-g.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../index.html">← SINTAXIS G</a>
+  </div>
+</nav>
+
+<header class="proj-hero">
+  <div class="wrap">
+    <p class="eyebrow">Proyecto insignia</p>
+    <h1>ARCHANGEL Ω</h1>
+    <p class="tagline">Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
+  </div>
+</header>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">En acción</p>
+    <h2>El frontend, en vivo</h2>
+    <div class="proj-video">
+      <iframe
+        src="https://www.youtube.com/embed/z4tkNDv_9oM"
+        title="ARCHANGEL Ω — Frontend en vivo"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">El problema → la respuesta</p>
+    <h2>De síntomas aislados a un sistema que se explica a sí mismo</h2>
+    <p class="lede">La mayoría de las herramientas de análisis reportan síntomas sueltos: deuda técnica, acoplamiento, dependencias circulares. ARCHANGEL los conecta en un solo ciclo — detectar, interpretar, decidir, proponer, validar, aprender.</p>
+    <div class="proj-split">
+      <div class="proj-split-text">
+        <p>El repositorio se modela como un grafo: nodos, dependencias, hotspots y riesgo de propagación. Un motor de análisis multidimensional combina topología, métricas estructurales, señales de riesgo, tendencias históricas y salud numérica.</p>
+        <p>Sobre esa lectura, un módulo de control y decisión (homeostático + modelo de decisión) elige qué corregir, respetando un presupuesto de cambio y evitando repetir estrategias que ya fallaron antes.</p>
+      </div>
+      <figure class="proj-split-figure">
+        <img src="../assets/img/archangel-problema-respuesta.png" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy">
+        <figcaption>Del problema detectado a la acción correctiva, en un solo ciclo cerrado.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">Predicción de fracturas</p>
+    <h2>Física aplicada al código</h2>
+    <p class="lede">v8.0 del predictor: no es una fórmula suelta, es un modelo calibrado contra el historial real de Git — con la misma honestidad de ingeniería que el resto del motor.</p>
+    <div class="proj-split reverse">
+      <figure class="proj-split-figure">
+        <img src="../assets/img/archangel-fracturas.png" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy">
+        <figcaption>K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.</figcaption>
+      </figure>
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">Calibración contra Git real, no pesos inventados.</strong> <code style="color:var(--accent)">GriffithCalibrator</code> ajusta la escala y los pesos del criterio con regresión logística y un modelo de supervivencia Cox Proportional Hazards sobre el historial real de commits — con Kaplan-Meier como validación cruzada y bootstrap para saber cuánta incertidumbre hay en esa calibración.</p>
+        <p><strong style="color:var(--text)">Radio de explosión con solver exacto.</strong> La "mancha de mutación" que se propaga por el call graph ya no se acumula con un BFS de primer-toque (sesgado) — un solver de punto fijo calcula la probabilidad de contaminación exacta, validado en paralelo contra una simulación Monte Carlo y una cadena de Markov absorbente.</p>
+        <p><strong style="color:var(--text)">Puntos de fractura con topología real.</strong> Más allá del mapa heurístico de fragilidad, localiza puntos de articulación reales del grafo (algoritmo de Tarjan) y conectividad algebraica (valor de Fiedler) — no una intuición sobre qué función es crítica, sino la estructura del grafo diciéndolo.</p>
+      </div>
+    </div>
+    <div class="pillar" style="border: 1px solid var(--line); margin-top: var(--space-lg); border-left: 2px solid var(--accent);">
+      <div class="name">Nota de ingeniería honesta</div>
+      <p>La extensión que conecta este módulo con el resto del sistema (IRKnowledgeGraph, IRDelta) consume primitivas que, al momento de esta versión, todavía no existían en el checkout activo. En vez de fingir la integración, cada primitiva se define como un contrato (Protocol) con un fallback local — mismo patrón defensivo que el resto del motor. Cuando el módulo real aterriza, esta pieza lo usa sin cambios.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">AQL Engine v2.0</p>
+    <h2>Un lenguaje de consulta para la arquitectura</h2>
+    <p class="lede">15 extensiones sobre un motor de consultas propio para arquitectura de software. No son módulos decorativos: cada una resuelve un problema concreto con un modelo matemático explícito detrás.</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">X04 · PredictiveEngine</div><p>Inferencia bayesiana real: P(fallo | evidencias) ∝ P(evidencias | fallo) × P(fallo). Combina masa sobre el "límite Chandrasekhar" del nodo, estado térmico (FROZEN → CRITICAL), bus factor y densidad de hotspots, con pesos calibrados empíricamente y un prior base de 4% de fallo a 30 días.</p></div>
+      <div class="pillar"><div class="name">X05 · CascadeAnalyzer</div><p>Simula el efecto dominó con BFS por olas: si la estabilidad de un nodo cae bajo el umbral de propagación, el fallo pasa a sus dependientes con la intensidad amortiguada en cada ola, hasta extinguirse.</p></div>
+      <div class="pillar"><div class="name">X06 · DarkMatterDetector</div><p>Encuentra acoplamiento que no aparece en ningún import: mismas variables de entorno, mismo estado global/singleton, mismos archivos o endpoints leídos por dos módulos distintos — dependencias reales que el grafo de imports no ve.</p></div>
+    </div>
+    <div class="proj-split" style="margin-top: var(--space-lg);">
+      <div class="proj-split-text">
+        <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (tiempo, componente, capa, severidad) y un optimizador que estima costes y elige plan antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
+      </div>
+      <figure class="proj-split-figure">
+        <img src="../assets/img/archangel-aql-engine.png" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
+        <figcaption>15 extensiones integradas bajo un solo lenguaje de consulta.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">Taint &amp; Secret-Leak Analysis</p>
+    <h2>Sigue el dato, no solo el patrón</h2>
+    <p class="lede">A diferencia de un linter que hace grep de patrones sospechosos, este motor sigue el dato: de dónde viene, por qué alias y mutaciones pasa, y si de verdad llega a un punto peligroso — con la misma honestidad con la que fue construido.</p>
+    <div class="finding">
+      <div><span>Vulnerabilidad</span><span>SQL Injection (W-1)</span></div>
+      <div><span>Severidad</span><span class="critica">CRÍTICA</span></div>
+      <div><span>Sink</span><span>db.execute(query)</span></div>
+      <div><span>Origen</span><span>request.GET["user"] (línea 1)</span></div>
+      <div><span>Camino</span><span>1 → 5 → 9</span></div>
+      <div><span>Confianza</span><span class="alta">ALTA</span></div>
+    </div>
+    <div class="proj-split" style="margin-top: var(--space-lg);">
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">10 categorías de taint, no un booleano.</strong> Cada valor puede pertenecer a SQLI, CMDI, CODEI, PATH, XSS, SSRF, DESER, SSTI, LDAP o SECRET al mismo tiempo — un sanitizador solo retira la categoría que de verdad neutraliza: <code style="color:var(--accent)">html.escape()</code> quita XSS, no SQLI.</p>
+        <p><strong style="color:var(--text)">Resúmenes de función memoizados.</strong> Cada función se analiza una sola vez para derivar qué categorías llegan a su return y qué parámetros muta por referencia — no recorre el cuerpo completo en cada punto donde se llama.</p>
+        <p><strong style="color:var(--text)">Alias y mutación de contenedores.</strong> <code style="color:var(--accent)">b = a</code> hace que ambos apunten a la misma ubicación; una mutación in-place como <code style="color:var(--accent)">a.append(x)</code> contamina esa ubicación y se refleja en todos sus alias.</p>
+        <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
+      </div>
+      <figure class="proj-split-figure">
+        <img src="../assets/img/archangel-taint-analysis.png" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy">
+        <figcaption>Fuentes, propagación, análisis de factibilidad y sinks — el camino completo del dato.</figcaption>
+      </figure>
+    </div>
+    <div class="pillar" style="border: 1px solid var(--line); margin-top: var(--space-lg); border-left: 2px solid var(--accent);">
+      <div class="name">Lectura honesta de alcance</div>
+      <p>No es un grafo de propiedades de código (CPG) materializado ni un aliasing tipo Andersen/Steensgaard completo — sería sobre-ingeniería para este dominio. Es análisis de flujo de datos iterativo con join en cada punto de fusión, matemáticamente equivalente a un CPG para un lattice de taint monótono. Cada simplificación está documentada junto a qué caso concreto no cubre.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block">
+  <div class="wrap">
+    <p class="section-label">Un sistema nervioso para tu código</p>
+    <h2>Auditoría continua, decisiones seguras</h2>
+    <p class="lede">No es una metáfora suelta: cada mecanismo del daemon está fundamentado en un modelo publicado, con cita y año — no una analogía decorativa.</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">Homeostasis vía control PID</div><p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt — el sistema mantiene estable la "temperatura" de deuda técnica con un bucle de retroalimentación negativa real, no un cronómetro de inactividad fijo (Åström &amp; Hägglund, 1995).</p></div>
+      <div class="pillar"><div class="name">Percolación en redes</div><p>El grafo de llamadas AST se analiza con números de Betti y el criterio de Molloy-Reed: detecta cuándo el grado medio del grafo cruza el umbral crítico donde emerge una componente gigante conectada — riesgo real de percolación, no un conteo ingenuo de imports (Molloy &amp; Reed, 1995).</p></div>
+      <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado (Bellman, 1957).</p></div>
+      <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo (Kellerer, Pferschy &amp; Pisinger, 2004).</p></div>
+      <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Las ramas Git generadas son "anticuerpos": si el desarrollador las mergea, refuerzo; si las borra sin mergear, castigo. El daemon aprende el estilo arquitectónico real con el tiempo, no repite lo mismo siempre (de Castro &amp; Von Zuben, 2002).</p></div>
+    </div>
+    <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador (Shannon, 1948).</p>
+  </div>
+</section>
+
+<section class="proj-block" style="border-bottom: none;">
+  <div class="wrap">
+    <p class="section-label">Arquitectura técnica</p>
+    <h2>Cómo está construido</h2>
+    <div class="proj-split-text">
+      <p>Backend en FastAPI con orquestación DAG de ~64 sub-analizadores, caché reactiva y circuit breakers. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">SINTAXIS G — construido a mano, sin plantillas.</div>
+</footer>
+
+</body>
+</html>

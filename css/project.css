@@ -1,0 +1,132 @@
+/* ---------- Project page shared ---------- */
+.proj-nav .wrap { justify-content: flex-start; gap: var(--space-lg); }
+.proj-back { color: var(--text-dim); font-size: var(--fs-small); font-family: var(--font-mono); }
+.proj-back:hover { color: var(--accent); }
+
+.proj-hero {
+  padding: var(--space-xl) 0 var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.proj-hero .eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+.proj-hero h1 {
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.proj-hero .tagline {
+  margin-top: var(--space-md);
+  max-width: var(--measure);
+  color: var(--text-dim);
+  font-size: 1.15rem;
+}
+
+/* ---------- Video ---------- */
+.proj-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.proj-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---------- Block sections ---------- */
+.proj-block { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
+.proj-block .section-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+.proj-block h2 {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+  margin-bottom: var(--space-md);
+}
+.proj-block .lede {
+  max-width: var(--measure);
+  color: var(--text-dim);
+  margin-bottom: var(--space-lg);
+}
+
+/* Two-column: text + figure */
+.proj-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+.proj-split.reverse .proj-split-text { order: 2; }
+.proj-split.reverse .proj-split-figure { order: 1; }
+.proj-split-text p { color: var(--text-dim); }
+.proj-split-text p + p { margin-top: var(--space-sm); }
+.proj-split-figure img {
+  border: 1px solid var(--line);
+  width: 100%;
+}
+.proj-split-figure figcaption {
+  margin-top: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+}
+
+/* Code block */
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: var(--text);
+  white-space: pre;
+}
+
+/* Pillars grid (physics concepts) */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.pillar { background: var(--bg); padding: var(--space-md); }
+.pillar .name { font-family: var(--font-mono); color: var(--accent); font-size: var(--fs-small); margin-bottom: var(--space-xs); }
+.pillar p { color: var(--text-dim); font-size: 0.9rem; }
+
+/* Finding example */
+.finding {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border: 1px solid var(--line);
+  padding: var(--space-md);
+}
+.finding div { display: flex; gap: var(--space-sm); padding: 0.35rem 0; border-bottom: 1px solid var(--line); }
+.finding div:last-child { border-bottom: none; }
+.finding span:first-child { color: var(--text-dim); width: 9rem; flex-shrink: 0; }
+.finding .critica { color: #F87171; }
+.finding .alta { color: #FBBF24; }
+
+@media (max-width: 800px) {
+  .proj-split { grid-template-columns: 1fr; }
+  .proj-split.reverse .proj-split-text,
+  .proj-split.reverse .proj-split-figure { order: initial; }
+}
