@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sintaxis-g.github.io/sitemap.xml
