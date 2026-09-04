@@ -114,7 +114,12 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line);
 }
-.eco-item .name { font-weight: 700; font-size: var(--fs-h3); }
+/* margin:0 defensivo: .name pasó de <span> a <h3> (jerarquía de
+   encabezados correcta para accesibilidad/SEO) — un <h3> trae margin
+   vertical por defecto del navegador que un <span> inline nunca tuvo.
+   Esto lo neutraliza explícitamente para que el grid con
+   align-items:baseline se vea idéntico a como se veía antes. */
+.eco-item .name { font-weight: 700; font-size: var(--fs-h3); margin: 0; }
 .eco-item .desc { color: var(--text-dim); font-size: 0.95rem; }
 .eco-item .status {
   font-family: var(--font-mono);

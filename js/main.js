@@ -143,6 +143,15 @@ if (heroCanvas) {
   const NODE_COUNT = 36;
   const LINK_DIST = 140;
 
+  // isAnimating + rafId: antes el bucle corría para siempre vía
+  // requestAnimationFrame recursivo, incluso con el hero fuera de
+  // pantalla (scrolleado) o la pestaña en segundo plano — CPU/GPU
+  // gastados en dibujar algo que nadie puede ver. Ahora se pausa en
+  // ambos casos y se reanuda solo si de verdad está visible en el
+  // viewport Y la pestaña está activa.
+  let isAnimating = false;
+  let rafId = null;
+
   function resize() {
     heroCanvas.width = heroCanvas.parentElement.offsetWidth;
     heroCanvas.height = heroCanvas.parentElement.offsetHeight;
@@ -158,6 +167,8 @@ if (heroCanvas) {
   }
 
   function draw() {
+    if (!isAnimating) return; // cortado por stopAnimation(): no re-encola el siguiente frame
+
     ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
 
     nodes.forEach((n) => {
@@ -190,7 +201,19 @@ if (heroCanvas) {
       ctx.fill();
     });
 
-    requestAnimationFrame(draw);
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function startAnimation() {
+    if (isAnimating) return; // ya corriendo — evita encolar un segundo loop en paralelo
+    isAnimating = true;
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function stopAnimation() {
+    isAnimating = false;
+    if (rafId !== null) cancelAnimationFrame(rafId);
+    rafId = null;
   }
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -198,7 +221,34 @@ if (heroCanvas) {
     resize();
     initNodes();
     window.addEventListener('resize', () => { resize(); initNodes(); });
-    requestAnimationFrame(draw);
+
+    // Pausa/reanuda según si el canvas está dentro del viewport —
+    // scrollear a #ecosistema, #sobre-mi, etc. detiene el gasto de
+    // CPU/GPU de dibujar un fondo que ya no se ve.
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && document.visibilityState === 'visible') {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      });
+    }, { threshold: 0 });
+    heroObserver.observe(heroCanvas);
+
+    // Pausa/reanuda según si la PESTAÑA está activa — cambiar de tab
+    // también debe detener el loop, independientemente de si el hero
+    // sigue "visible" en el DOM (el navegador no renderiza pestañas
+    // en segundo plano, pero el JS seguiría corriendo sin esto).
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        stopAnimation();
+        return;
+      }
+      const rect = heroCanvas.getBoundingClientRect();
+      const inViewport = rect.bottom > 0 && rect.top < window.innerHeight;
+      if (inViewport) startAnimation();
+    });
   }
 }
 
