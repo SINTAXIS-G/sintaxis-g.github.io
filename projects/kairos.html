@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAIROS — SINTAXIS G</title>
+<meta name="description" content="KAIROS: app de asistencia en emergencias personales en Flutter. Sin backend, sin cuentas, sin depender de que todo salga bien.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxis-g.github.io/projects/kairos.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="KAIROS — SINTAXIS G">
+<meta property="og:description" content="App de asistencia en emergencias personales: Dead Man's Switch, red de confianza y recursos offline, sin backend ni cuentas.">
+<meta property="og:image" content="https://sintaxis-g.github.io/assets/img/kairos-logo.png">
+<meta property="og:url" content="https://sintaxis-g.github.io/projects/kairos.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="KAIROS — SINTAXIS G">
+<meta name="twitter:description" content="App de asistencia en emergencias personales, sin backend ni cuentas.">
+<meta name="twitter:image" content="https://sintaxis-g.github.io/assets/img/kairos-logo.png">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" href="../assets/img/kairos-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/kairos-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../index.html">← SINTAXIS G</a>
+    <div class="mode-toggles">
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu">
+          <a href="#capturas">En pantalla</a>
+          <a href="#filosofia">Filosofía de diseño</a>
+          <a href="#flujo">El flujo que importa</a>
+          <a href="#niveles">Qué hace, nivel por nivel</a>
+          <a href="#radio-impacto">Qué se sostiene solo</a>
+          <a href="#privacidad">Privacidad por diseño</a>
+          <a href="#stack">Stack técnico</a>
+          <a href="#auditorias">Lo que ya se rompió una vez</a>
+          <a href="#nunca">Lo que nunca encontrarás aquí</a>
+          <a href="#carta">Una carta del desarrollador</a>
+        </nav>
+      </div>
+      <button class="mode-btn" id="dev-toggle">modo dev</button>
+      <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+    </div>
+  </div>
+</nav>
+
+<header class="proj-hero">
+  <div class="wrap">
+    <img src="../assets/img/kairos-logo.png" alt="Logo de KAIROS" class="proj-logo">
+    <p class="eyebrow">Proyecto en producción · Flutter</p>
+    <h1>KAIROS</h1>
+    <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">ASISTENCIA EN EMERGENCIAS PERSONALES — SIN BACKEND, SIN CUENTAS</p>
+    <p class="tagline">Una app pensada para el peor momento de alguien: GPS, red de contactos de confianza, recursos de salud cercanos y un Dead Man's Switch que avisa solo si la persona deja de responder. No es un tracker permanente. No es una red social. Todo vive en el teléfono.</p>
+    <p class="lema-maestro" style="margin-top:var(--space-sm);">"Hay aplicaciones diseñadas para los días normales. Kairos fue diseñado para los días que nadie quiere vivir."</p>
+    <div class="hero-meta" style="margin-top:var(--space-lg);">
+      <div><strong>76</strong>archivos .dart</div>
+      <div><strong>~15800</strong>líneas de código</div>
+      <div><strong>29</strong>servicios</div>
+      <div><strong>26</strong>pantallas</div>
+    </div>
+  </div>
+</header>
+
+<section class="proj-block" id="capturas">
+  <div class="wrap">
+    <p class="section-label">En pantalla</p>
+    <h2>Así se ve, en el momento en que importa</h2>
+    <p class="lede">Cinco pantallas del núcleo de la app — desde pedir ayuda hasta lo que ve quien encuentra el teléfono de alguien más.</p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:var(--space-sm);">
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/kairos-screenshot-boton-sos.png" alt="Pantalla principal de KAIROS con el botón NECESITO AYUDA" loading="lazy">
+        <figcaption>El botón único de emergencia — dos estados: pedir ayuda o sesión activa.</figcaption>
+      </figure>
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/kairos-screenshot-dms.png" alt="Cuenta regresiva del Dead Man's Switch en KAIROS" loading="lazy">
+        <figcaption>El Dead Man's Switch, contando — cancelable con un toque en cualquier parte.</figcaption>
+      </figure>
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/kairos-screenshot-mapa.png" alt="Mapa de recursos cercanos en KAIROS, offline-first" loading="lazy">
+        <figcaption>Recursos cercanos — hospitales y farmacias, con respaldo 100% offline.</figcaption>
+      </figure>
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/kairos-screenshot-botiquin.png" alt="Botiquín Digital de KAIROS con fichas de primeros auxilios verificadas" loading="lazy">
+        <figcaption>Botiquín Digital — solo contenido revisado fuera de la app, nunca inventado.</figcaption>
+      </figure>
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/kairos-screenshot-rescatista.png" alt="Modo Rescatista de KAIROS para quien encuentra el teléfono" loading="lazy">
+        <figcaption>Modo Rescatista — lo que ve quien encuentra el teléfono, sin exponer todo el perfil.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="filosofia">
+  <div class="wrap">
+    <p class="section-label">Filosofía de diseño</p>
+    <h2>Lo que distingue a Kairos no es una función — es una postura</h2>
+    <p class="lede">Cinco reglas se repiten, casi palabra por palabra, en el propio código. No son buenas intenciones sueltas: cada una está documentada en el archivo donde aplica, como decisión explícita, no como omisión.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">Soberanía Offline</div>
+        <p>Las emergencias no esperan una conexión estable. Los recursos esenciales viven en el dispositivo: mapas, información crítica y primeros auxilios. Si el mundo se desconecta, Kairos sigue funcionando.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Privacidad por Diseño</div>
+        <p>La información médica, la red de confianza, la ubicación y los registros permanecen almacenados localmente. Kairos solo usa internet cuando el usuario decide descargar recursos o actualizar.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Honestidad Radical</div>
+        <p>En una emergencia, la falsa certeza puede ser peligrosa. Kairos nunca afirma conocer una ubicación que no pudo obtener, ni dice que un mensaje fue recibido cuando solo pudo enviarlo.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Accesibilidad Extrema</div>
+        <p>Las manos tiemblan. La visión se vuelve borrosa. El tiempo se vuelve crítico. Por eso hay texto ampliado, alto contraste, lectura por voz y controles simples, pensados para momentos de estrés.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">El Guardián Autónomo</div>
+        <p>Si el usuario activa el Dead Man's Switch y deja de responder, Kairos abre el SMS con ubicación e información médica hacia su red de confianza — pero nunca afirma que el mensaje fue recibido, solo que se abrió el envío.</p>
+      </div>
+    </div>
+    <p style="margin-top:var(--space-lg); color:var(--text-dim); font-size:0.9rem;">"Si algún día Kairos deja de respetar cualquiera de estos principios, dejará de ser Kairos." — es el contrato moral que la propia app se impone a sí misma.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="flujo">
+  <div class="wrap">
+    <p class="section-label">El flujo que importa</p>
+    <h2>De tocar un botón a que alguien se entere</h2>
+    <p class="lede">Este es el único camino de toda la app donde una cadena de eventos corre sin que el usuario vuelva a tocar nada. Todo lo demás — avisar a la red manualmente, resolver la sesión, pedir un viaje — es siempre una acción explícita.</p>
+    <div class="proj-split">
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">1. El usuario toca "NECESITO AYUDA".</strong> Arranca la sesión de asistencia, empieza a monitorear la batería y pide la ubicación GPS.</p>
+        <p><strong style="color:var(--text)">2. El Dead Man's Switch empieza a contar.</strong> Cada toque en la pantalla reinicia el conteo. Es el único mecanismo de toda la app que actúa sin que nadie decida nada en el momento.</p>
+        <p><strong style="color:var(--text)">3. Si el tiempo se agota sin actividad</strong>, Kairos avisa por voz, abre un SMS de borrador para la red de confianza y activa la alarma física — sirena, flash y vibración.</p>
+        <p style="margin-top:var(--space-sm);">El SMS nunca se envía solo — es una restricción del propio sistema operativo. Por eso la alarma física es el respaldo real si nadie puede tocar "Enviar".</p>
+      </div>
+      <div>
+        <div class="terminal">
+          <div class="terminal-bar"><span></span><span></span><span></span></div>
+          <div class="terminal-body">
+            <div class="terminal-line"><span class="prompt">&gt;</span> AssistanceSessionService.start() <span class="ok">OK</span></div>
+            <div class="terminal-line"><span class="prompt">&gt;</span> DeadManSwitchService — conteo iniciado</div>
+            <div class="terminal-line"><span class="prompt">&gt;</span> esperando actividad del usuario...</div>
+            <div class="terminal-line"><span class="warn">! sin actividad — 00:12 restantes</span></div>
+            <div class="terminal-line"><span class="crit">✕ tiempo agotado — onExpired()</span></div>
+            <div class="terminal-line"><span class="prompt">&gt;</span> VoiceService: aviso hablado <span class="ok">OK</span></div>
+            <div class="terminal-line"><span class="prompt">&gt;</span> alertNetwork(auto: true) — SMS de borrador abierto</div>
+            <div class="terminal-line"><span class="prompt">&gt;</span> SurvivalAlarmService.start() — sirena + flash <span class="ok">OK</span> <span class="terminal-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="niveles">
+  <div class="wrap">
+    <p class="section-label">Qué hace, nivel por nivel</p>
+    <h2>32 funciones, organizadas por lo que la persona necesita, no por capa técnica</h2>
+    <p class="lede">Kairos no se piensa por infraestructura — se piensa por lo que alguien puede efectivamente hacer con la app, antes, durante y después de una emergencia.</p>
+    <div class="eco-list">
+      <div class="eco-item">
+        <h3 class="name">Nivel 1<br><span style="font-size:0.75rem; color:var(--text-dim); font-weight:400;">Núcleo SOS</span></h3>
+        <span class="desc">El botón único de emergencia, con GPS que se degrada en tres niveles (en vivo → última ubicación conocida → aviso honesto de que no se pudo obtener), un gesto de pantalla ciega para pedir ayuda sin ver la pantalla, guion de llamada antes de marcar el 911, y un motor de sugerencias que siempre muestra su razón — nunca decide en silencio.</span>
+        <p class="status">Producción</p>
+      </div>
+      <div class="eco-item">
+        <h3 class="name">Nivel 2<br><span style="font-size:0.75rem; color:var(--text-dim); font-weight:400;">DMS y alarma</span></h3>
+        <span class="desc">El Dead Man's Switch, su servicio en primer plano para que Android no mate el proceso con la pantalla apagada, la alarma de supervivencia (sirena + flash + vibración), la palabra de seguridad para validar un SMS real, y el Modo Rescatista para quien encuentra el teléfono sin exponer el perfil médico completo.</span>
+        <p class="status">Producción</p>
+      </div>
+      <div class="eco-item">
+        <h3 class="name">Nivel 3<br><span style="font-size:0.75rem; color:var(--text-dim); font-weight:400;">Prepárate y offline</span></h3>
+        <span class="desc">Checklists de preparación por perfil, el Botiquín Digital con contenido verificado, mapas regionales descargables por zona, un gestor de PDFs offline, y una bitácora del cuidador que se autoborra a las 72 horas — nunca se convierte en expediente permanente.</span>
+        <p class="status">Producción</p>
+      </div>
+      <div class="eco-item">
+        <h3 class="name">Transversal</h3>
+        <span class="desc">Alto contraste y texto grande en toda la app, narración por voz de pantallas seleccionadas (nunca "toda la pantalla" a ciegas), y detección de conectividad real en dos capas — no solo "hay wifi".</span>
+        <p class="status">Producción</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="radio-impacto">
+  <div class="wrap">
+    <p class="section-label">Qué se sostiene solo</p>
+    <h2>No todo pesa igual — y eso se midió, no se supuso</h2>
+    <p class="lede">Analizando los imports reales entre los 29 servicios: 14 de ellos no dependen de ningún otro — son las piezas más seguras para tocar primero. Otros cuatro, en cambio, son el corazón: si uno de estos falla, se cae la posibilidad misma de que alguien se entere de la emergencia.</p>
+    <div class="terminal">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-body">
+        <div class="health-bars">
+          <div class="health-bar"><span class="hb-label">Sesión activa</span><span class="hb-track"><span class="hb-fill" style="--pct:100%"></span></span><span class="hb-val">CRÍTICO</span></div>
+          <div class="health-bar"><span class="hb-label">Dead Man's Switch</span><span class="hb-track"><span class="hb-fill" style="--pct:95%"></span></span><span class="hb-val">CRÍTICO</span></div>
+          <div class="health-bar"><span class="hb-label">Red de confianza</span><span class="hb-track"><span class="hb-fill" style="--pct:85%"></span></span><span class="hb-val">CRÍTICO</span></div>
+          <div class="health-bar"><span class="hb-label">Ubicación GPS</span><span class="hb-track"><span class="hb-fill" style="--pct:80%"></span></span><span class="hb-val">CRÍTICO</span></div>
+          <div class="health-bar"><span class="hb-label">SMS de alerta</span><span class="hb-track"><span class="hb-fill" style="--pct:60%"></span></span><span class="hb-val">Importante</span></div>
+          <div class="health-bar"><span class="hb-label">Aviso por voz</span><span class="hb-track"><span class="hb-fill" style="--pct:45%"></span></span><span class="hb-val">Importante</span></div>
+          <div class="health-bar"><span class="hb-label">Mapas / botiquín</span><span class="hb-track"><span class="hb-fill" style="--pct:20%"></span></span><span class="hb-val">Soporte</span></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:var(--space-md); color:var(--text-dim); font-size:0.85rem;">Nota de honestidad: la ubicación GPS no aparece como dependencia de ningún otro servicio en el conteo puro de imports — pero sin ella, la pantalla principal no tiene qué mostrar. La tabla combina el dato objetivo con criterio de dominio, no una métrica perfecta.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="privacidad">
+  <div class="wrap">
+    <p class="section-label">Privacidad por diseño</p>
+    <h2>Sin backend, sin cuentas, sin depender de nadie más</h2>
+    <div class="proj-split">
+      <div class="proj-split-text">
+        <p>Todo vive en el dispositivo. No hay servidor propio ni cuenta de usuario que crear.</p>
+        <p>El cifrado se usa solo donde de verdad se justifica: perfil médico y palabra de seguridad van en almacenamiento cifrado del sistema (Keystore/Keychain). El resto de la app, a propósito, no paga ese costo en cada lectura.</p>
+        <p>Kairos nunca pide permiso de acceso a los contactos del teléfono. La red de confianza se carga siempre a mano — es una decisión de diseño, no una limitación técnica.</p>
+      </div>
+      <div class="note-box" style="margin-top:0;">
+        <div class="name">Lo que nunca hace Kairos</div>
+        <p>No auto-envía el SMS de alerta — siempre queda como borrador para que una persona decida. No enciende la alarma física al pedir ayuda. No genera contenido médico en tiempo real: todo el material offline se revisa fuera de la app antes de entrar. No convierte la bitácora del cuidador en un expediente permanente — se borra sola a las 72 horas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="stack">
+  <div class="wrap">
+    <p class="section-label">Stack técnico</p>
+    <h2>Herramientas elegidas por lo que resuelven, no por moda</h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">geolocator + flutter_map</div>
+        <p>GPS y mapa offline-first con tiles .pmtiles propios — sin depender de Google Maps.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">flutter_secure_storage</div>
+        <p>Keystore/Keychain del sistema — reservado solo para perfil médico y palabra de seguridad.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">flutter_foreground_task</div>
+        <p>Mantiene vivo el proceso en Android durante el conteo del Dead Man's Switch, con la pantalla apagada.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">connectivity_plus + http</div>
+        <p>Conectividad real en dos capas: detección de radio y verificación efectiva, no solo "hay wifi".</p>
+      </div>
+      <div class="pillar">
+        <div class="name">vibration + torch_light + audioplayers</div>
+        <p>Los tres componentes físicos de la alarma de supervivencia: vibración, flash estroboscópico y sirena.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">flutter_tts</div>
+        <p>Narración por voz, siempre detrás de la preferencia explícita del usuario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="auditorias">
+  <div class="wrap">
+    <p class="section-label">Lo que ya se rompió una vez</p>
+    <h2>Cada bug de esta lista ya se entendió, se arregló y se documentó</h2>
+    <p class="lede">Una auditoría completa del proyecto encontró y corrigió fallas reales — algunas de ellas del tipo que solo aparece cuando una app tiene que funcionar en el peor momento posible, no en una demo.</p>
+    <div class="finding">
+      <div><span>Confiabilidad DMS</span><span>El conteo se congelaba si la pantalla se apagaba sola por inactividad — justo cuando más se necesitaba, se resolvió distinguiendo eso de una salida intencional a otra app.</span></div>
+      <div><span>Cifrado</span><span>Alergias, medicamentos y palabra de seguridad viajaban en texto plano — migrados a almacenamiento cifrado del sistema.</span></div>
+      <div><span>Rendimiento</span><span>Abrir Recursos Cercanos tardaba 3-5s por copiar un mapa de ~234MB completo a memoria — resuelto con zonas descargables bajo demanda.</span></div>
+      <div><span>Datos perdidos</span><span>El Botiquín Digital nunca cargaba sus datos por un load() faltante — la búsqueda devolvía vacío sin ningún error visible.</span></div>
+      <div><span>Cola de alertas</span><span>Un contacto con fallo permanente bloqueaba el reintento de todos los demás en la cola — resuelto con manejo explícito de ese caso.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="nunca">
+  <div class="wrap">
+    <p class="section-label">El compromiso</p>
+    <h2>Lo que nunca encontrarás en Kairos</h2>
+    <p class="lede">Una buena arquitectura no solo se define por lo que puede hacer — también por lo que decide no hacer. Privacidad antes que recolección de datos. Resiliencia antes que dependencia. Honestidad antes que apariencia. Utilidad antes que complejidad.</p>
+    <div class="note-box" style="margin-top:0;">
+      <div class="name">Cuatro promesas, sin letra chica</div>
+      <p>Sin publicidad invasiva. Sin venta de datos personales. Sin funciones esenciales bloqueadas detrás de un muro de pago. Sin mecanismos diseñados para mantenerte más tiempo dentro de la app del que necesitas estar.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="carta">
+  <div class="wrap">
+    <p class="section-label">Una carta del desarrollador</p>
+    <h2>Por qué existe Kairos, en mis propias palabras</h2>
+    <div class="note-box" style="margin-top:0; border-left-width:3px;">
+      <div class="name">Gabo — Fundador de Sintaxis G</div>
+      <p style="margin-bottom:var(--space-sm);">No comencé este proyecto buscando crear la aplicación más grande ni la más popular. Lo comencé porque creo que la tecnología puede hacer algo más que entretener: puede acompañar, puede orientar, puede reducir la incertidumbre y, en el momento adecuado, puede acercar ayuda cuando más se necesita.</p>
+      <p style="margin-bottom:var(--space-sm);">No puedo estar junto a cada persona cuando atraviese una emergencia. Pero sí puedo intentar construir una herramienta que permanezca a su lado cuando yo no pueda hacerlo.</p>
+      <p>Si algún día Kairos consigue ayudar a una sola persona a encontrar el camino correcto, pedir ayuda a tiempo o tomar una mejor decisión durante un momento difícil, todo este esfuerzo habrá valido la pena.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" style="border-bottom: none; text-align: center;">
+  <div class="wrap">
+    <p class="section-label" style="justify-content:center;">Por qué existe</p>
+    <p style="font-family:var(--font-mono); font-size:clamp(1.1rem, 3vw, 1.6rem); color:var(--accent); max-width:32ch; margin:0 auto;">Software que sigue siendo útil cuando las condiciones reales no son perfectas.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
