@@ -106,8 +106,10 @@ if (finding) {
 }
 
 // ---------- 6. Terminal falsa: revelado línea por línea ----------
-const terminal = document.getElementById('fake-terminal');
-if (terminal) {
+// Antes solo animaba el elemento con id="fake-terminal" — como ahora
+// hay varias terminales en la página, se anima cada .terminal por
+// separado con su propio observer.
+document.querySelectorAll('.terminal').forEach((terminal) => {
   const termObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -115,12 +117,16 @@ if (terminal) {
         lines.forEach((line, i) => {
           setTimeout(() => line.classList.add('is-shown'), i * 450);
         });
+        // Si esta terminal trae barras de Health Score, las anima
+        // en el mismo momento en que arranca el "typing" de las líneas.
+        const bars = terminal.querySelector('.health-bars');
+        if (bars) setTimeout(() => bars.classList.add('is-filled'), 300);
         termObserver.unobserve(terminal);
       }
     });
   }, { threshold: 0.4 });
   termObserver.observe(terminal);
-}
+});
 
 // ---------- 7. Easter egg de consola ----------
 console.log(
@@ -294,3 +300,193 @@ document.querySelectorAll('.img-skeleton img').forEach((img) => {
   if (img.complete) markLoaded();
   else img.addEventListener('load', markLoaded);
 });
+// ---------- 13. Lightbox para imágenes de diagramas ----------
+const galleryImgs = document.querySelectorAll('.proj-split-figure img');
+if (galleryImgs.length) {
+  const overlay = document.createElement('div');
+  overlay.className = 'lightbox-overlay';
+  overlay.innerHTML = '<button class="lightbox-close">cerrar ✕</button><img alt="">';
+  document.body.appendChild(overlay);
+  const overlayImg = overlay.querySelector('img');
+  const closeBtn = overlay.querySelector('.lightbox-close');
+
+  function openLightbox(src, alt) {
+    overlayImg.src = src;
+    overlayImg.alt = alt || '';
+    overlay.classList.add('is-open');
+  }
+  function closeLightbox() {
+    overlay.classList.remove('is-open');
+  }
+
+  galleryImgs.forEach((img) => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay || e.target === overlayImg || e.target === closeBtn) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+}
+
+// ---------- 14. Índice desplegable (TOC) ----------
+const tocToggle = document.getElementById('toc-toggle');
+const tocMenu = document.getElementById('toc-menu');
+if (tocToggle && tocMenu) {
+  tocToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tocMenu.classList.toggle('is-open');
+  });
+  tocMenu.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => tocMenu.classList.remove('is-open'));
+  });
+  document.addEventListener('click', (e) => {
+    if (!tocMenu.contains(e.target) && e.target !== tocToggle) {
+      tocMenu.classList.remove('is-open');
+    }
+  });
+}
+
+// ---------- 15. Demo: extractor de mapa arquitectónico (simplificado) ----------
+// Aproximación por patrones de línea, NO un parser AST real — la versión
+// real de ARCHANGEL usa el módulo `ast` de Python. Esto solo demuestra
+// el concepto (firmas sin cuerpo, docstrings, redacción de secretos,
+// listado de TODOs) corriendo 100% en el navegador de quien lo prueba.
+const demoRunBtn = document.getElementById('demo-run');
+if (demoRunBtn) {
+  const demoInput = document.getElementById('demo-input');
+  const demoOutput = document.getElementById('demo-output');
+
+  const SECRET_NAMES = /(password|passwd|pwd|secret|token|api_key|apikey|access_key|private_key|conn(?:ection)?_?str)/i;
+  const TODO_RE = /#\s*(TODO|FIXME|HACK|XXX)[:\s](.*)$/;
+  const SIG_RE = /^(\s*)(async\s+def|def|class)\s+([A-Za-z_]\w*)/;
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function redactSignature(line) {
+    // Redacta valores por default de parámetros con nombre sospechoso:
+    // password: str = "changeme123"  →  password: str = ***REDACTED***
+    return line.replace(
+      /([A-Za-z_]\w*)(\s*:\s*[\w\[\], ]+)?\s*=\s*(".*?"|'.*?'|[\w.]+)/g,
+      (full, name, typeHint, value) => {
+        if (SECRET_NAMES.test(name)) {
+          return `${name}${typeHint || ''}=***REDACTED***`;
+        }
+        return full;
+      }
+    );
+  }
+
+  function extractSkeleton(source) {
+    const lines = source.split('\n');
+    const skeletonLines = [];
+    const todos = [];
+    let i = 0;
+
+    while (i < lines.length) {
+      const rawLine = lines[i];
+      const todoMatch = rawLine.match(TODO_RE);
+      if (todoMatch) todos.push(`${todoMatch[1]}: ${todoMatch[2].trim()}`);
+
+      const sigMatch = rawLine.match(SIG_RE);
+      if (sigMatch) {
+        // Junta líneas si la firma no cierra sus paréntesis en la misma línea
+        let full = rawLine;
+        let depth = (full.match(/\(/g) || []).length - (full.match(/\)/g) || []).length;
+        let j = i;
+        while (depth > 0 && j + 1 < lines.length) {
+          j++;
+          full += ' ' + lines[j].trim();
+          depth += (lines[j].match(/\(/g) || []).length - (lines[j].match(/\)/g) || []).length;
+        }
+        skeletonLines.push(redactSignature(full.trimEnd()));
+
+        // Docstring inmediatamente después, si existe
+        let k = j + 1;
+        while (k < lines.length && lines[k].trim() === '') k++;
+        const docMatch = k < lines.length && lines[k].trim().match(/^("""|''')/);
+        if (docMatch) {
+          const quote = docMatch[1];
+          let docLine = lines[k];
+          skeletonLines.push('    '.repeat(0) + docLine);
+          if (!docLine.trim().slice(3).includes(quote)) {
+            k++;
+            while (k < lines.length && !lines[k].includes(quote)) {
+              skeletonLines.push(lines[k]);
+              k++;
+            }
+            if (k < lines.length) skeletonLines.push(lines[k]);
+          }
+        }
+        i = j + 1;
+        continue;
+      }
+      i++;
+    }
+
+    return { skeleton: skeletonLines.join('\n'), todos };
+  }
+
+  demoRunBtn.addEventListener('click', () => {
+    const source = demoInput.value;
+    if (!source.trim()) {
+      demoOutput.textContent = '// pega algo de código Python arriba primero';
+      return;
+    }
+    const { skeleton, todos } = extractSkeleton(source);
+    let html = escapeHtml(skeleton || '// no se detectaron clases ni funciones');
+    if (todos.length) {
+      html += '\n\n// ── deuda técnica detectada ──\n';
+      html += todos.map((t) => `// ${escapeHtml(t)}`).join('\n');
+    }
+    demoOutput.innerHTML = html;
+  });
+}
+
+// ---------- 16. Spotlight: brillo que sigue el cursor en tarjetas ----------
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('.pillar, .eco-item, .forensic-node, .stat').forEach((card) => {
+    card.classList.add('spotlight');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    });
+  });
+}
+
+// ---------- 17. Minimapa de scroll ----------
+// Se genera solo si la página tiene 4+ secciones con id — en páginas
+// cortas (como index.html) no aporta y estorba.
+const mmSections = document.querySelectorAll('section[id]');
+if (mmSections.length >= 6) {
+  const minimap = document.createElement('div');
+  minimap.className = 'minimap';
+  const dots = [];
+  mmSections.forEach((section) => {
+    const dot = document.createElement('div');
+    dot.className = 'minimap-dot';
+    dot.title = section.id;
+    dot.addEventListener('click', () => {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    minimap.appendChild(dot);
+    dots.push({ section, dot });
+  });
+  document.body.appendChild(minimap);
+
+  const mmObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const match = dots.find((d) => d.section === entry.target);
+      if (!match) return;
+      if (entry.isIntersecting) {
+        dots.forEach((d) => d.dot.classList.remove('is-active'));
+        match.dot.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  mmSections.forEach((s) => mmObserver.observe(s));
+}

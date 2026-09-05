@@ -5,7 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARCHANGEL Ω — SINTAXIS G</title>
 <meta name="description" content="ARCHANGEL Ω: motor de análisis estático multi-lenguaje que trata el software como un sistema físico.">
-<link rel="icon" href="../assets/img/archangel-logo.png">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxis-g.github.io/projects/archangel.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="ARCHANGEL Ω — A.R.C.H.A.N.G.E.L. | SINTAXIS G">
+<meta property="og:description" content="Motor de análisis estático que trata el software como un sistema físico: entropía, fractura de Griffith, taint analysis y predicción de fallos.">
+<meta property="og:image" content="https://sintaxis-g.github.io/assets/img/archangel-logo.png">
+<meta property="og:url" content="https://sintaxis-g.github.io/projects/archangel.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="ARCHANGEL Ω — SINTAXIS G">
+<meta name="twitter:description" content="Motor de análisis estático que trata el software como un sistema físico.">
+<meta name="twitter:image" content="https://sintaxis-g.github.io/assets/img/archangel-logo.png">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" href="../assets/img/favicon-archangel.ico" sizes="any">
+<link rel="icon" href="../assets/img/archangel-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/archangel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,6 +44,26 @@
   <div class="wrap">
     <a class="proj-back" href="../index.html">← SINTAXIS G</a>
     <div class="mode-toggles">
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu">
+          <a href="#video">En acción</a>
+          <a href="#problema">El problema → la respuesta</a>
+          <a href="#fracturas">Predicción de fracturas</a>
+          <a href="#aql">AQL Engine v2.0</a>
+          <a href="#health-score">Health Score &amp; Anti-Patrones</a>
+          <a href="#taint">Taint &amp; Secret-Leak Analysis</a>
+          <a href="#sistema-nervioso">Sistema nervioso</a>
+          <a href="#arquitectura">Arquitectura técnica</a>
+          <a href="#comparativa">Comparativa honesta</a>
+          <a href="#mckp">Empaquetado óptimo (MCKP)</a>
+          <a href="#symbolic-exec">Ejecución simbólica</a>
+          <a href="#chandrasekhar">Límite de Chandrasekhar</a>
+          <a href="#prompt-thermo">Prompt Thermodynamics</a>
+          <a href="#reporte-real">Anatomía de un reporte real</a>
+          <a href="#demo">Pruébalo tú mismo</a>
+        </nav>
+      </div>
       <button class="mode-btn" id="dev-toggle">modo dev</button>
       <button class="mode-btn" id="bunker-toggle">modo búnker</button>
     </div>
@@ -33,11 +75,12 @@
     <img src="../assets/img/archangel-logo.png" alt="ARCHANGEL Ω logo" class="proj-logo">
     <p class="eyebrow">Proyecto insignia</p>
     <h1>ARCHANGEL Ω</h1>
+    <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">AUTARKIC REPOSITORY CONTEXT HEURISTIC ANALYSIS NEURAL GENERATOR ENTITY LAYER</p>
     <p class="tagline">Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
   </div>
 </header>
 
-<section class="proj-block">
+<section class="proj-block" id="video">
   <div class="wrap">
     <p class="section-label">En acción</p>
     <h2>El frontend, en vivo</h2>
@@ -53,7 +96,7 @@
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="problema">
   <div class="wrap">
     <p class="section-label">El problema → la respuesta</p>
     <h2>De síntomas aislados a un sistema que se explica a sí mismo</h2>
@@ -71,7 +114,7 @@
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="fracturas">
   <div class="wrap">
     <p class="section-label">Predicción de fracturas</p>
     <h2>Física aplicada al código</h2>
@@ -82,19 +125,19 @@
         <figcaption>K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.</figcaption>
       </figure>
       <div class="proj-split-text">
-        <p><strong style="color:var(--text)">Calibración contra Git real, no pesos inventados.</strong> <code style="color:var(--accent)">GriffithCalibrator</code> ajusta la escala y los pesos del criterio con regresión logística y un modelo de supervivencia Cox Proportional Hazards sobre el historial real de commits — con Kaplan-Meier como validación cruzada y bootstrap para saber cuánta incertidumbre hay en esa calibración.</p>
+        <p><strong style="color:var(--text)">Calibración contra Git real, no pesos inventados.</strong> <code class="hl">GriffithCalibrator</code> ajusta la escala y los pesos del criterio con regresión logística y un modelo de supervivencia Cox Proportional Hazards sobre el historial real de commits — con Kaplan-Meier como validación cruzada y bootstrap para saber cuánta incertidumbre hay en esa calibración.</p>
         <p><strong style="color:var(--text)">Radio de explosión con solver exacto.</strong> La "mancha de mutación" que se propaga por el call graph ya no se acumula con un BFS de primer-toque (sesgado) — un solver de punto fijo calcula la probabilidad de contaminación exacta, validado en paralelo contra una simulación Monte Carlo y una cadena de Markov absorbente.</p>
         <p><strong style="color:var(--text)">Puntos de fractura con topología real.</strong> Más allá del mapa heurístico de fragilidad, localiza puntos de articulación reales del grafo (algoritmo de Tarjan) y conectividad algebraica (valor de Fiedler) — no una intuición sobre qué función es crítica, sino la estructura del grafo diciéndolo.</p>
       </div>
     </div>
-    <div class="pillar" style="border: 1px solid var(--line); margin-top: var(--space-lg); border-left: 2px solid var(--accent);">
+    <div class="note-box">
       <div class="name">Nota de ingeniería honesta</div>
       <p>La extensión que conecta este módulo con el resto del sistema (IRKnowledgeGraph, IRDelta) consume primitivas que, al momento de esta versión, todavía no existían en el checkout activo. En vez de fingir la integración, cada primitiva se define como un contrato (Protocol) con un fallback local — mismo patrón defensivo que el resto del motor. Cuando el módulo real aterriza, esta pieza lo usa sin cambios.</p>
     </div>
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="aql">
   <div class="wrap">
     <p class="section-label">AQL Engine v2.0</p>
     <h2>Un lenguaje de consulta para la arquitectura</h2>
@@ -128,6 +171,7 @@
         <div class="terminal-line"><span class="ok">✓</span> listo. 1 hallazgo crítico, 1 riesgo estructural.<span class="terminal-cursor"></span></div>
       </div>
     </div>
+    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Recreación ilustrativa de un escaneo — no un run real capturado.</p>
 
     <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">La física no es una metáfora en el marketing — es una función que se llama dentro de una query real:</p>
     <div class="terminal" style="margin-top: var(--space-sm);">
@@ -140,6 +184,7 @@
         <div class="terminal-line">→ macro estándar: <span class="ok">black_holes</span> — módulos colapsando bajo su propio peso.<span class="terminal-cursor"></span></div>
       </div>
     </div>
+    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Salida ilustrativa de la sintaxis real de AQL — no una consola interactiva ni una query ejecutándose en vivo.</p>
 
     <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">Las 15 extensiones completas</p>
     <table class="compare-table" style="margin-top: var(--space-sm);">
@@ -155,7 +200,7 @@
         <tr><td>X08</td><td class="archangel-col">TemporalDiffEngine</td><td>Diff arquitectónico entre snapshots: drift score, violaciones nuevas/resueltas</td></tr>
         <tr><td>X09</td><td class="archangel-col">ReactiveEngine</td><td>SUBSCRIBE TO queries que se re-ejecutan y disparan solo cuando el resultado cambia</td></tr>
         <tr><td>X10</td><td class="archangel-col">GraphFederator</td><td>Una misma query AQL contra N microservicios, con UNION/INTERSECT/DIFF</td></tr>
-        <tr><td>X11</td><td class="archangel-col">AQLMacroSystem</td><td>Biblioteca de queries parametrizables reutilizables (como <code style="color:var(--accent)">black_holes</code> arriba)</td></tr>
+        <tr><td>X11</td><td class="archangel-col">AQLMacroSystem</td><td>Biblioteca de queries parametrizables reutilizables (como <code class="hl">black_holes</code> arriba)</td></tr>
         <tr><td>X12</td><td class="archangel-col">ExplainEngine</td><td>EXPLAIN ANALYZE real: coste estimado vs. real, precisión de la estimación</td></tr>
         <tr><td>X13</td><td class="archangel-col">SmellDetector</td><td>8 anti-patrones detectados automáticamente con prescripción — ver abajo</td></tr>
         <tr><td>X14</td><td class="archangel-col">HealthScoreEngine</td><td>Score compuesto A+ a F de toda la arquitectura — ver abajo</td></tr>
@@ -165,7 +210,7 @@
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="health-score">
   <div class="wrap">
     <p class="section-label">Health Score &amp; Anti-Patrones</p>
     <h2>Tu arquitectura, resumida en una letra</h2>
@@ -182,16 +227,19 @@
         <div class="terminal-body">
           <div class="terminal-line">╔═══ ARCHITECTURAL HEALTH REPORT ══════</div>
           <div class="terminal-line">║ <span class="warn">🟡</span> Overall Score : 71.4/100 [B] STABLE</div>
-          <div class="terminal-line">║ Structural  : [███████░░░] 74.2</div>
-          <div class="terminal-line">║ Temporal    : [██████░░░░] 61.0</div>
-          <div class="terminal-line">║ Security    : [████████░░] 82.5</div>
-          <div class="terminal-line">║ Knowledge   : [██████░░░░] 68.0</div>
-          <div class="terminal-line">║ Topological : [████████░░] 79.0</div>
+          <div class="health-bars">
+            <div class="health-bar"><span class="hb-label">Structural</span><span class="hb-track"><span class="hb-fill" style="--pct:74.2%"></span></span><span class="hb-val">74.2</span></div>
+            <div class="health-bar"><span class="hb-label">Temporal</span><span class="hb-track"><span class="hb-fill" style="--pct:61.0%"></span></span><span class="hb-val">61.0</span></div>
+            <div class="health-bar"><span class="hb-label">Security</span><span class="hb-track"><span class="hb-fill" style="--pct:82.5%"></span></span><span class="hb-val">82.5</span></div>
+            <div class="health-bar"><span class="hb-label">Knowledge</span><span class="hb-track"><span class="hb-fill" style="--pct:68.0%"></span></span><span class="hb-val">68.0</span></div>
+            <div class="health-bar"><span class="hb-label">Topological</span><span class="hb-track"><span class="hb-fill" style="--pct:79.0%"></span></span><span class="hb-val">79.0</span></div>
+          </div>
           <div class="terminal-line">║ <span class="crit">🚨</span> [CYCLIC_DEPENDENCY] 3 ciclos en /core</div>
           <div class="terminal-line">║ <span class="ok">⚡</span> 12 módulos frozen: candidatos a librería<span class="terminal-cursor"></span></div>
         </div>
       </div>
     </div>
+    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Ejemplo de formato de reporte — cifras ilustrativas, no un análisis en vivo.</p>
 
     <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">8 anti-patrones, con nombre y prescripción — no solo "este archivo es complejo"</p>
     <div class="pillars" style="margin-top: var(--space-sm);">
@@ -208,7 +256,7 @@
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="taint">
   <div class="wrap">
     <p class="section-label">Taint &amp; Secret-Leak Analysis</p>
     <h2>Sigue el dato, no solo el patrón</h2>
@@ -223,9 +271,9 @@
     </div>
     <div class="proj-split" style="margin-top: var(--space-lg);">
       <div class="proj-split-text">
-        <p><strong style="color:var(--text)">10 categorías de taint, no un booleano.</strong> Cada valor puede pertenecer a SQLI, CMDI, CODEI, PATH, XSS, SSRF, DESER, SSTI, LDAP o SECRET al mismo tiempo — un sanitizador solo retira la categoría que de verdad neutraliza: <code style="color:var(--accent)">html.escape()</code> quita XSS, no SQLI.</p>
+        <p><strong style="color:var(--text)">10 categorías de taint, no un booleano.</strong> Cada valor puede pertenecer a SQLI, CMDI, CODEI, PATH, XSS, SSRF, DESER, SSTI, LDAP o SECRET al mismo tiempo — un sanitizador solo retira la categoría que de verdad neutraliza: <code class="hl">html.escape()</code> quita XSS, no SQLI.</p>
         <p><strong style="color:var(--text)">Resúmenes de función memoizados.</strong> Cada función se analiza una sola vez para derivar qué categorías llegan a su return y qué parámetros muta por referencia — no recorre el cuerpo completo en cada punto donde se llama.</p>
-        <p><strong style="color:var(--text)">Alias y mutación de contenedores.</strong> <code style="color:var(--accent)">b = a</code> hace que ambos apunten a la misma ubicación; una mutación in-place como <code style="color:var(--accent)">a.append(x)</code> contamina esa ubicación y se refleja en todos sus alias.</p>
+        <p><strong style="color:var(--text)">Alias y mutación de contenedores.</strong> <code class="hl">b = a</code> hace que ambos apunten a la misma ubicación; una mutación in-place como <code class="hl">a.append(x)</code> contamina esa ubicación y se refleja en todos sus alias.</p>
         <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
@@ -233,14 +281,14 @@
         <figcaption>Fuentes, propagación, análisis de factibilidad y sinks — el camino completo del dato.</figcaption>
       </figure>
     </div>
-    <div class="pillar" style="border: 1px solid var(--line); margin-top: var(--space-lg); border-left: 2px solid var(--accent);">
+    <div class="note-box">
       <div class="name">Lectura honesta de alcance</div>
       <p>No es un grafo de propiedades de código (CPG) materializado ni un aliasing tipo Andersen/Steensgaard completo — sería sobre-ingeniería para este dominio. Es análisis de flujo de datos iterativo con join en cada punto de fusión, matemáticamente equivalente a un CPG para un lattice de taint monótono. Cada simplificación está documentada junto a qué caso concreto no cubre.</p>
     </div>
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="sistema-nervioso">
   <div class="wrap">
     <p class="section-label">Un sistema nervioso para tu código</p>
     <h2>Auditoría continua, decisiones seguras</h2>
@@ -256,7 +304,7 @@
   </div>
 </section>
 
-<section class="proj-block" style="border-bottom: none;">
+<section class="proj-block" style="border-bottom: none;" id="arquitectura">
   <div class="wrap">
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
@@ -266,7 +314,7 @@
   </div>
 </section>
 
-<section class="proj-block">
+<section class="proj-block" id="comparativa">
   <div class="wrap">
     <p class="section-label">Comparativa honesta</p>
     <h2>En qué se diferencia, sin marketing</h2>
@@ -280,6 +328,159 @@
         <tr><td>Diseñado para</td><td class="archangel-col">Ser contexto de alta densidad para un LLM</td><td>Ser leído por un humano en un dashboard</td></tr>
       </tbody>
     </table>
+  </div>
+</section>
+
+<section class="proj-block" id="mckp">
+  <div class="wrap">
+    <p class="section-label">Empaquetado óptimo de contexto</p>
+    <h2>Qué archivos le enseñas a la IA, y en qué estado</h2>
+    <p class="lede">La ventana de contexto de un LLM es finita. Con un repo de 170.000 líneas, la pregunta no es "¿cabe todo?" — nunca cabe. La pregunta real es: dado un presupuesto de tokens, ¿qué combinación de archivos, y en qué nivel de detalle cada uno, maximiza lo que la IA entiende del sistema?</p>
+
+    <div class="proj-split">
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/archangel-mckp-solver.png" alt="Diagrama del MCKP Solver: empaquetado óptimo de archivos en la ventana de contexto del LLM" loading="lazy">
+      </figure>
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">No es "meter lo que quepa" — es una Mochila de Múltiple Elección real.</strong> Cada archivo puede vivir en 4 estados (omitido, esqueleto, minificado, código completo), cada uno con su propio costo en tokens y su propio valor semántico. El solver corre un DP exacto que maximiza el valor total sin pasarse del presupuesto — con numpy si está disponible, y beam search cuando el problema es demasiado grande para resolverlo exacto.</p>
+        <p><strong style="color:var(--text)">v4.5 — 4 auditorías externas, la última encontró un bug que ningún test anterior detectaba.</strong> El DP en sí nunca falló: es monótono por construcción (más presupuesto nunca da menos valor). El bug vivía una capa arriba, en cómo se combinaba con un mecanismo de recuperación de tokens desperdiciados por redondeo — esa combinación sí podía romper la monotonía entre presupuestos distintos. Se encontró con testing basado en propiedades (no un caso construido a mano), en el primer intento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="symbolic-exec">
+  <div class="wrap">
+    <p class="section-label">Ejecución simbólica</p>
+    <h2>Encontrar el caso exacto que rompe una línea, antes de que ocurra</h2>
+    <p class="lede">No es un linter buscando patrones — es interpretación abstracta control-flow-sensitive: sigue cada camino posible del programa, acumula qué puede ser None, vacío, o fuera de rango en cada punto, y cuando puede, le pregunta a un solver matemático si el caso de falla es real o imposible.</p>
+
+    <div class="proj-split reverse">
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/archangel-symbolic-exec.png" alt="Diagrama del motor de ejecución simbólica: interpretación abstracta y verificación SMT" loading="lazy">
+      </figure>
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">5 clases de hazard, dos con veredicto matemático real.</strong> NULL_DEREF, DICT_KEY_UNSAFE, EMPTY_ITER se detectan por interpretación abstracta pura. DIV_BY_ZERO e INDEX_OUT_OF_BOUNDS van un paso más allá: con Z3 instalado, el motor construye las restricciones de camino reales (incluyendo comparaciones encadenadas como <code class="hl">0 &lt;= i &lt; n</code>) y le pregunta al solver si el caso de falla es SAT (posible, con contraejemplo) o UNSAT (matemáticamente imposible) — cero reporte si es imposible.</p>
+        <p><strong style="color:var(--text)">Cláusulas de guarda reales, no un merge ciego.</strong> Si una rama <code class="hl">if</code>/<code class="hl">except</code> termina en <code class="hl">return</code> o <code class="hl">raise</code>, no contamina el punto de reunión con las demás — soporte completo para <code class="hl">try/except/else/finally</code> y <code class="hl">with</code>/<code class="hl">async with</code>, además de aliasing (<code class="hl">a = b</code>) y punto fijo acotado en bucles para no ser ciego a mutación acumulada.</p>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Lectura honesta de alcance: esto no es Angr ni KLEE</div>
+      <p>No hay variables simbólicas de programa completo ni path constraints para toda expresión — solo para comparaciones numéricas lineales. No hay modelo de memoria/heap ni lógica de separación; el aliasing rastreado es solo <code class="hl">a = b</code> directo entre nombres locales. El punto fijo de bucles es abstract interpretation acotada (5 rondas con widening), no bounded model checking real. Cada límite está documentado junto al caso concreto que no cubre — no se vende como más de lo que es.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="chandrasekhar">
+  <div class="wrap">
+    <p class="section-label">El Límite de Chandrasekhar</p>
+    <h2>El módulo que le da número real a "esto ya es demasiado grande"</h2>
+    <p class="lede">En astrofísica, una enana blanca colapsa al superar ~1.44 masas solares — por encima de eso, la materia ya no puede sostenerse a sí misma. Este módulo trata cada archivo igual: cuando su masa cognitiva supera el límite, deja de sostenerse y se convierte en un Objeto Dios que absorbe la legibilidad de todo el subdirectorio. Es el módulo de origen del concepto que aparece en el resto del motor — en AQL, en el predictor bayesiano, en el Health Score.</p>
+
+    <div class="proj-split">
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/archangel-chandrasekhar.png" alt="Diagrama del motor de masa cognitiva: límite de Chandrasekhar aplicado a archivos de código" loading="lazy">
+      </figure>
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">La masa no es líneas ni caracteres — son tokens de AST corregidos por entropía.</strong> Se mide en tokens semánticos del árbol sintáctico real, y esa masa cruda se corrige por la entropía de Shannon de la distribución de nodos: dos archivos con el mismo conteo de tokens no pesan igual si uno repite el mismo patrón sintáctico y el otro es diverso de verdad.</p>
+        <p><strong style="color:var(--text)">El límite es contextual, no un umbral fijo inventado.</strong> <code class="hl">M_crit = 1.44 × masa_cognitiva_promedio_del_subdirectorio</code> — un archivo se juzga contra sus vecinos reales, no contra un número mágico igual para todo el repo.</p>
+        <p><strong style="color:var(--text)">La partición, cuando hace falta, es estructural — no adivina por nombre de función.</strong> Construye un grafo de cohesión interno (símbolos como nodos, estado/llamadas compartidas como aristas), cuenta componentes conexas (LCOM4) y, si el archivo sigue siendo una sola pieza, lo bisecta matemáticamente con el vector de Fiedler — solo cae a un criterio léxico si no hay señal estructural suficiente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="prompt-thermo">
+  <div class="wrap">
+    <p class="section-label">Prompt Thermodynamics</p>
+    <h2>Cuando la corrección falla, el sistema se corrige a sí mismo</h2>
+    <p class="lede">"Un sistema que no puede corregirse mediante retroalimentación no es un sistema — es una catástrofe en cámara lenta." — Norbert Wiener, 1948. Este es el traductor de fricción: convierte violaciones físicas (las mismas de Griffith, Shannon, Prigogine) en instrucciones que un LLM local puede seguir para reparar código, y aprende de cada intento fallido en vez de repetirlo.</p>
+
+    <div class="proj-split">
+      <figure class="proj-split-figure img-skeleton">
+        <img src="../assets/img/archangel-prompt-thermodynamics.png" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy">
+      </figure>
+      <div class="proj-split-text">
+        <p><strong style="color:var(--text)">Recocido simulado real (Kirkpatrick, 1983), no una metáfora de nombre.</strong> Una "temperatura" controla exploración vs. explotación: alta al inicio (acepta prompts imperfectos, mutaciones agresivas, más libertad para el LLM), baja al converger (solo acepta mejoras, mutaciones mínimas, instrucciones precisas). 4 schedules de enfriamiento disponibles — exponencial, logarítmico, lineal, o adaptativo según la tasa de mejora reciente.</p>
+        <p><strong style="color:var(--text)">Control PID sobre el error del LLM.</strong> El mismo principio de control proporcional-integral-derivativo que estabiliza la deuda técnica del daemon se aplica aquí sobre qué tan lejos está la respuesta del modelo de resolver la violación — no solo "reintentar", sino ajustar la instrucción según el error medido.</p>
+        <p><strong style="color:var(--text)">Selección Boltzmann + memoria de fallos.</strong> Las estrategias de prompt compiten como una población: se seleccionan con probabilidad tipo Boltzmann (favorece las mejores sin descartar por completo las demás) y se cruzan entre sí, mientras una memoria episódica evita repetir exactamente el patrón que ya falló antes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="reporte-real">
+  <div class="wrap">
+    <p class="section-label">Anatomía de un reporte real</p>
+    <h2>Esto no es un mockup — es un extracto real, condensado</h2>
+    <p class="lede">Reporte forense real de ARCHANGEL sobre un snippet de prueba. De 28 señales individuales detectadas, el correlator las agrupa en <strong style="color:var(--text)">nodos de convergencia</strong> — puntos donde varias categorías distintas (seguridad, memoria, dataflow, invariantes) apuntan al mismo lugar exacto — para que veas 3 problemas reales en vez de 28 alertas sueltas sin priorizar.</p>
+
+    <div class="report-header">
+      <div class="report-verdict"><span class="badge badge-critical">EMERGENCY</span></div>
+      <div class="report-stat"><span class="rs-label">Risk Density</span><span class="rs-val">30.1%</span></div>
+      <div class="report-stat"><span class="rs-label">Debt Grade</span><span class="rs-val" style="color:#F87171">CCC</span></div>
+    </div>
+
+    <div class="forensic-nodes">
+      <div class="forensic-node crit">
+        <div class="fn-head"><span class="badge badge-critical">CRITICAL</span><span class="fn-line">L1</span><span class="fn-conv">Convergencia — 4 categorías, 100%</span></div>
+        <p class="fn-diag">Principio de Robustez: 7 violaciones (Maxwell score=0.19). El recurso abierto más abajo (L11) puede filtrar datos sensibles si esta precondición no se valida — el correlator conecta ambas líneas como una sola cadena causal, no dos hallazgos aislados.</p>
+        <div class="code-block" style="font-size:0.8rem;">Fix: fortalecer contrato de función — añadir assert/validate antes de operar. Precondición violada → vector de ataque.</div>
+      </div>
+      <div class="forensic-node crit">
+        <div class="fn-head"><span class="badge badge-critical">CRITICAL</span><span class="fn-line">L11</span><span class="fn-conv">Convergencia — 3 categorías, 100%</span></div>
+        <p class="fn-diag">Dato tainted fluye desde L1 hasta aquí (gap de 10 líneas) sin sanitizar — el mismo parámetro además usa un objeto mutable como default, compartiendo estado entre llamadas distintas que no deberían tocarse entre sí.</p>
+        <div class="code-block" style="font-size:0.8rem;">Fix: sanitizar input antes de usar en operación sensible. Validar tipo, longitud y charset. Usar parámetros preparados.</div>
+      </div>
+      <div class="forensic-node high">
+        <div class="fn-head"><span class="badge badge-high">HIGH</span><span class="fn-line">L67</span><span class="fn-conv">Convergencia — 4 categorías, 100%</span></div>
+        <p class="fn-diag">Path Traversal (CWE-22): apertura de archivo con ruta controlada por el usuario, sin sanitizar. El mismo bloque además filtra el file handle (nunca se cierra) y hace dos llamadas impuras — cuatro problemas distintos, una sola función responsable de todos.</p>
+        <div class="code-block" style="font-size:0.8rem;">Fix: validar y sanitizar la ruta antes del sink. Envolver en `with` o `contextlib.closing()` para liberar el recurso.</div>
+      </div>
+    </div>
+
+    <p style="margin-top:var(--space-lg); color:var(--text-dim); font-size:0.85rem;">Extracto real de un reporte generado sobre un archivo de prueba — condensado aquí a 3 de sus nodos de convergencia para que se lea en un minuto. El reporte completo incluyó las 28 señales, cada una con su categoría, severidad y fix hint.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="demo">
+  <div class="wrap">
+    <p class="section-label">Pruébalo tú mismo</p>
+    <h2>Extractor de mapa arquitectónico — demo en vivo</h2>
+    <p class="lede">Pega un fragmento de código Python y mira el "mapa" arquitectónico que se extrae: firmas sin cuerpo, docstrings preservados, secretos redactados, deuda técnica listada.</p>
+
+    <div class="pillar" style="border: 1px solid var(--line); border-left: 2px solid var(--accent); margin-bottom: var(--space-lg);">
+      <div class="name">⚠ Esto NO es ARCHANGEL — es una demo educativa</div>
+      <p>Lo que corre aquí abajo es JavaScript simple por patrones de texto (regex), escrito solo para esta página. <strong style="color:var(--text)">No tiene nada que ver con el motor real</strong>, que usa el módulo <code class="hl">ast</code> de Python para parsear el árbol sintáctico de verdad — sin eso, no hay forma honesta de manejar decoradores complejos, f-strings anidados, o sintaxis rara sin romperse. Esta demo puede equivocarse con código real; el motor real de ARCHANGEL no corre en un navegador ni existe en ningún repositorio público. Está aquí solo para ilustrar la idea del "mapa sin implementación" — nada más.</p>
+    </div>
+
+    <div class="demo-box">
+      <textarea id="demo-input" class="demo-textarea" spellcheck="false" placeholder="Pega aquí una clase o función de Python...">class UserService:
+    """Gestiona el ciclo de vida de usuarios."""
+
+    def create_user(self, email: str, password: str = "changeme123") -> User:
+        # TODO: validar formato de email antes de tocar la DB
+        hashed = bcrypt.hash(password)
+        user = User(email=email, password_hash=hashed)
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    def _internal_helper(self):
+        api_key = "sk-live-abc123xyz"
+        pass</textarea>
+      <button class="mode-btn" id="demo-run" style="margin-top:var(--space-sm);">extraer mapa →</button>
+      <div class="code-block" id="demo-output" style="margin-top:var(--space-md); min-height:4rem;">// el resultado aparece aquí</div>
+      <p style="margin-top:var(--space-sm); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Demo por patrones de texto, no un parser real — no la confundas con el motor de ARCHANGEL.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" style="border-bottom: none; text-align: center;">
+  <div class="wrap">
+    <p class="section-label" style="justify-content:center;">Veredicto</p>
+    <p style="font-family:var(--font-mono); font-size:clamp(1.1rem, 3vw, 1.6rem); color:var(--accent); max-width:30ch; margin:0 auto;">"La Bóveda de la Verdad. El Escudo de la Coherencia."</p>
   </div>
 </section>
 

@@ -39,3 +39,8 @@ body.bunker-mode {
   --accent: #00FFF0;
   --accent-dim: #00C4B8;
 }
+
+/* Easing consistente en todo el sitio */
+:root {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -110,22 +110,18 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   display: grid;
   grid-template-columns: 8rem 1fr auto;
   gap: var(--space-md);
-  align-items: baseline;
+  align-items: start;
   padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line);
 }
-/* margin:0 defensivo: .name pasó de <span> a <h3> (jerarquía de
-   encabezados correcta para accesibilidad/SEO) — un <h3> trae margin
-   vertical por defecto del navegador que un <span> inline nunca tuvo.
-   Esto lo neutraliza explícitamente para que el grid con
-   align-items:baseline se vea idéntico a como se veía antes. */
-.eco-item .name { font-weight: 700; font-size: var(--fs-h3); margin: 0; }
-.eco-item .desc { color: var(--text-dim); font-size: 0.95rem; }
+.eco-item .name { font-weight: 700; font-size: var(--fs-h3); padding-top: 0.15rem; }
+.eco-item .desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
 .eco-item .status {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
   color: var(--accent-dim);
   white-space: nowrap;
+  padding-top: 0.2rem;
 }
 
 /* ---------- About ---------- */
@@ -258,3 +254,71 @@ body.has-custom-cursor { cursor: none; }
 /* ---------- Modo desarrollador ---------- */
 .dev-only { display: none; }
 body.dev-mode .dev-only { display: inline; }
+
+/* ---------- Overlay de ruido sutil (textura física) ---------- */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Foco accesible reforzado ---------- */
+a:focus-visible, button:focus-visible, .pillar:focus-visible, .eco-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Easing consistente en interacciones existentes ---------- */
+.reveal { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.pillar { transition: border-color 0.25s var(--ease), background 0.25s var(--ease); }
+.hb-fill { transition: width 0.9s var(--ease); }
+
+/* ---------- Spotlight: brillo que sigue el cursor en tarjetas ---------- */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(61, 218, 215, 0.10), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* ---------- Minimapa de scroll ---------- */
+.minimap {
+  position: fixed;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+.minimap-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+  cursor: pointer;
+}
+.minimap-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.6);
+}
+@media (max-width: 900px) {
+  .minimap { display: none; }
+}
