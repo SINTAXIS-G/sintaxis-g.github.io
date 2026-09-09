@@ -1,1 +1,1 @@
-# sintaxis-g.github.io
+# sintaxisg.com
