@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora ARCHANGEL — Artículos técnicos | SINTAXIS G</title>
+<meta name="description" content="Bitácora técnica de ARCHANGEL: análisis estático, teoría de control, teoría de grafos y machine learning aplicados a ingeniería de software, escrito por Gabo.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxisg.com/projects/archangel-articulos.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bitácora ARCHANGEL — Artículos técnicos | SINTAXIS G">
+<meta property="og:description" content="Análisis estático, teoría de control, teoría de grafos y machine learning aplicados a ingeniería de software.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/archangel-logo.png">
+<meta property="og:url" content="https://sintaxisg.com/projects/archangel-articulos.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="Bitácora ARCHANGEL — SINTAXIS G">
+<meta name="twitter:description" content="Análisis estático, teoría de control, teoría de grafos y machine learning aplicados a ingeniería de software.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/archangel-logo.png">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" href="../assets/img/archangel-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/archangel-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+
+<style>
+  /* Estilos propios de la bitácora — usan las variables ya definidas en variables.css */
+  #top { scroll-margin-top: 6rem; }
+  .blog-index { display: grid; gap: var(--space-sm); margin: var(--space-lg) 0; }
+  .post-card {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    padding: 1rem 1.25rem; border: 1px solid var(--line);
+    border-radius: 8px; text-decoration: none; color: var(--text);
+    background: var(--surface); transition: border-color .15s ease, transform .15s ease;
+  }
+  .post-card:hover { border-color: var(--accent); transform: translateX(2px); }
+  .post-card-title { font-weight: 600; font-family: var(--font-sans); }
+  .post-card-date { font-family: var(--font-mono); font-size: 0.8rem; opacity: 0.65; white-space: nowrap; }
+  .post { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
+  .post:first-of-type { border-top: none; }
+  .post-title { margin-bottom: var(--space-md); }
+  .post-body p { margin: 0 0 1.1em; line-height: 1.7; }
+  .post-body h3 { margin: 1.8em 0 0.8em; font-family: var(--font-sans); color: var(--accent); font-size: 1.15rem; }
+  .post-body em { color: var(--text); opacity: 0.9; }
+  .post-body pre {
+    background: #0D1117; border: 1px solid var(--line);
+    border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1.2em 0;
+  }
+  .post-body code { font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.6; }
+  .post-body p code { background: rgba(255,255,255,0.06); padding: 0.1em 0.4em; border-radius: 4px; }
+  .post-tags { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag-pill {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid var(--line);
+    opacity: 0.7;
+  }
+  .back-to-top { display: inline-block; margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .back-to-top:hover { text-decoration: underline; }
+  .blog-intro { max-width: 68ch; }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog",
+      "name": "Bitácora ARCHANGEL",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html",
+      "description": "Notas técnicas sobre las decisiones matemáticas y de ingeniería detrás de ARCHANGEL.",
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#termodinamica-llms",
+      "headline": "Termodinámica aplicada a corregir código con LLMs: por qué \"generar y volver a intentar\" no es una estrategia",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#termodinamica-llms",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#god-object-biseccion-espectral",
+      "headline": "Dónde cortar un God Object: bisección espectral aplicada a refactoring",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#god-object-biseccion-espectral",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#pid-bellman-seleccion-clonal",
+      "headline": "PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#pid-bellman-seleccion-clonal",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#ley-de-conway-verificada",
+      "headline": "La Ley de Conway, verificada con datos en vez de citada de memoria",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#ley-de-conway-verificada",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#bus-factor-medido-en-serio",
+      "headline": "¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#bus-factor-medido-en-serio",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#rag-para-codigo-fuente",
+      "headline": "RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#rag-para-codigo-fuente",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#llm-local-documentacion-codebase",
+      "headline": "Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#llm-local-documentacion-codebase",
+      "datePublished": "2026-09-08",
+      "dateModified": "2026-09-08",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#no-existe-codigo-perfecto",
+      "headline": "No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#no-existe-codigo-perfecto",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/projects/archangel-articulos.html#nombrar-bugs",
+      "headline": "\"Síndrome del Turista\", \"DDoS al SO\" y \"Bomba 5\": ponerle nombre a un bug es la mitad de no repetirlo",
+      "url": "https://sintaxisg.com/projects/archangel-articulos.html#nombrar-bugs",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/archangel-logo.png"
+    }
+  ]
+}
+
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="archangel.html">← ARCHANGEL</a>
+    <div class="mode-toggles">
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="#termodinamica-llms">Termodinámica aplicada a corregir código con LLMs: por qué "generar y volver a intentar" no es una estrategia</a>
+          <a href="#god-object-biseccion-espectral">Dónde cortar un God Object: bisección espectral aplicada a refactoring</a>
+          <a href="#pid-bellman-seleccion-clonal">PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar</a>
+          <a href="#ley-de-conway-verificada">La Ley de Conway, verificada con datos en vez de citada de memoria</a>
+          <a href="#bus-factor-medido-en-serio">¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)</a>
+          <a href="#rag-para-codigo-fuente">RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial</a>
+          <a href="#llm-local-documentacion-codebase">Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing</a>
+          <a href="#no-existe-codigo-perfecto">No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una</a>
+          <a href="#nombrar-bugs">"Síndrome del Turista", "DDoS al SO" y "Bomba 5": ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-lg);">
+  <div class="wrap">
+    <p class="section-label">Bitácora técnica</p>
+    <h1 style="font-size: clamp(2rem, 4vw, 3rem);">Artículos sobre ARCHANGEL y el resto del ecosistema</h1>
+    <p class="blog-intro">Notas técnicas sobre las decisiones detrás de ARCHANGEL: por qué se usa tal modelo matemático y no otro, qué se rompió y cómo se corrigió, y dónde termina la analogía física y empieza la matemática verificable de verdad. Publicadas originalmente en LinkedIn.</p>
+  </div>
+</header>
+
+<section id="lista-articulos">
+  <div class="wrap">
+    <div class="blog-index">
+      <a class="post-card" href="#termodinamica-llms"><span class="post-card-title">Termodinámica aplicada a corregir código con LLMs: por qué "generar y volver a intentar" no es una estrategia</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#god-object-biseccion-espectral"><span class="post-card-title">Dónde cortar un God Object: bisección espectral aplicada a refactoring</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#pid-bellman-seleccion-clonal"><span class="post-card-title">PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#ley-de-conway-verificada"><span class="post-card-title">La Ley de Conway, verificada con datos en vez de citada de memoria</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#bus-factor-medido-en-serio"><span class="post-card-title">¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#rag-para-codigo-fuente"><span class="post-card-title">RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#llm-local-documentacion-codebase"><span class="post-card-title">Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing</span><span class="post-card-date">8 de septiembre de 2026</span></a>
+        <a class="post-card" href="#no-existe-codigo-perfecto"><span class="post-card-title">No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+        <a class="post-card" href="#nombrar-bugs"><span class="post-card-title">"Síndrome del Turista", "DDoS al SO" y "Bomba 5": ponerle nombre a un bug es la mitad de no repetirlo</span><span class="post-card-date">7 de septiembre de 2026</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="articulos-completos">
+  <div class="wrap">
+
+      <article class="post" id="termodinamica-llms">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">Termodinámica aplicada a corregir código con LLMs: por qué "generar y volver a intentar" no es una estrategia</h2>
+        <div class="post-body">
+<p>Hay una idea que atraviesa varias disciplinas aparentemente lejanas
+entre sí — metalurgia, control automático, biología evolutiva,
+cibernética — y es esta: un sistema que busca una solución en un espacio
+muy grande no debería moverse igual al principio que al final.</p>
+<p>En metalurgia, esto se llama recocido: un metal fundido, si se enfría
+de golpe, queda con defectos cristalinos permanentes — la estructura
+interna no tuvo tiempo de acomodarse. Si se enfría lento, los átomos
+alcanzan una configuración de menor energía, más estable. Kirkpatrick lo
+formalizó en 1983 como <em>simulated annealing</em>: un algoritmo de
+optimización que al principio acepta soluciones peores con cierta
+probabilidad (temperatura alta, exploración), y a medida que "enfría",
+se vuelve cada vez más exigente hasta converger (temperatura baja,
+explotación).</p>
+<p>En control automático, la misma tensión aparece de otra forma: un
+sistema no debe reaccionar solo al error actual (eso es miope, causa
+oscilación), ni solo a la tendencia (eso es lento para reaccionar a
+shocks). Necesita las tres perspectivas — proporcional, integral,
+derivativa — combinadas.</p>
+<p>Y en biología evolutiva, la exploración/explotación se resuelve con
+mutación y selección: generar variación, dejar sobrevivir lo que
+funciona, repetir.</p>
+<p>La pregunta que me hice fue: ¿qué pasa si un LLM generando código es,
+estructuralmente, el mismo problema? Un LLM que corrige código contra un
+conjunto de reglas de calidad está buscando en un espacio enorme de
+posibles soluciones, con feedback ruidoso, y sin garantía de que la
+siguiente generación sea mejor que la anterior. Tratar ese proceso como
+"generar → si falla, reintentar con el mismo prompt" es, literalmente,
+la versión de enfriar el metal de golpe.</p>
+<p>Así que construí un ciclo de regeneración de código que le pide
+prestado el marco teórico a los tres campos de arriba a la vez, no como
+metáfora decorativa, sino como mecanismo de control real.</p>
+<h3
+id="el-problema-de-fondo-el-llm-no-sabe-cuándo-está-mejorando-ni-cuándo-está-estancado">El
+problema de fondo: el LLM no sabe cuándo está mejorando ni cuándo está
+estancado</h3>
+<p>Cuando le pides a un LLM que corrija una violación de calidad en su
+propio código generado, tres cosas malas pueden pasar, y ninguna es
+rara:</p>
+<p>Puede oscilar — arreglar el problema A introduciendo el problema B, y
+en el siguiente intento arreglar B reintroduciendo A. Puede estancarse —
+generar variaciones cosméticas del mismo código roto, sin tocar la causa
+real. O puede simplemente repetir literalmente el mismo código que ya
+falló, porque el prompt no le dejó suficientemente claro que ese camino
+ya se descartó.</p>
+<p>Ninguno de estos tres modos de fallo se detecta mirando un solo
+intento. Se necesita memoria del proceso — no memoria del código,
+memoria de los <em>intentos</em>.</p>
+<h3 id="traducir-física-a-instrucciones-de-lenguaje-natural">Traducir
+física a instrucciones de lenguaje natural</h3>
+<p>El punto de entrada del sistema no es el código en sí, sino
+violaciones detectadas por analizadores estáticos previos — cosas como
+"esta función excede el límite de masa cognitiva" o "este módulo tiene
+acoplamiento aferente crítico". El primer subsistema traduce cada una de
+esas violaciones, expresadas en términos casi físicos (masa, límite,
+umbral), a una directiva de reparación en lenguaje natural: una
+estrategia concreta (extraer clase, añadir validación, reducir
+acoplamiento), un conjunto de restricciones explícitas, y — esto es lo
+que marca la diferencia frente a un prompt genérico — una lista de
+anti-patrones a evitar, extraídos del historial real de intentos
+fallidos, no inventados de antemano.</p>
+<p>Esa traducción es la bisagra entre "un analizador estático encontró
+algo" y "un LLM entiende qué hacer al respecto" — y es sorprendentemente
+fácil hacerla mal si se limita a pegarle al prompt el nombre técnico de
+la violación sin contexto accionable.</p>
+<h3 id="temperatura-como-control-de-libertad-creativa">Temperatura como
+control de libertad creativa</h3>
+<p>Aquí es donde entra el annealing, aplicado no a un espacio de
+soluciones numéricas sino a un espacio de <em>prompts</em>. Al principio
+del ciclo, la temperatura está alta: el sistema le da al LLM más
+libertad, acepta variantes de prompt más agresivas, explora estrategias
+distintas entre sí. A medida que el ciclo avanza — y sobre todo si
+detecta mejora consistente — la temperatura baja, y el prompt se vuelve
+cada vez más restrictivo y específico, empujando al LLM hacia una
+convergencia fina en vez de seguir explorando ampliamente.</p>
+<p>La parte interesante es que el enfriamiento no tiene por qué ser una
+función fija del tiempo. Un schedule adaptativo observa la tasa de
+mejora reciente: si el sistema está mejorando rápido, se permite seguir
+explorando un poco más antes de cerrar el espacio de búsqueda; si la
+mejora se estanca, enfría más agresivamente para forzar convergencia. Es
+la misma idea que un annealing de metalurgia real, donde el ritmo de
+enfriamiento no es arbitrario — depende de qué tan lejos está el
+material del equilibrio.</p>
+<h3
+id="un-termostato-sobre-el-error-de-violaciones-no-sobre-temperatura-de-metal">Un
+termostato sobre el error de violaciones, no sobre temperatura de
+metal</h3>
+<p>En paralelo al annealing corre un controlador PID clásico — pero el
+"error" que mide no es una variable física, es la puntuación de
+violaciones de calidad del código generado en el intento anterior,
+comparada contra el objetivo (idealmente cero). El componente
+proporcional reacciona al error actual: muchas violaciones, más presión
+en el prompt. El integral acumula el historial: si el error persiste
+ciclo tras ciclo aunque sea pequeño, la presión escala progresivamente —
+esto es lo que evita que el sistema se conforme con una mejora parcial
+estancada. El derivativo mira la velocidad de cambio: si el error está
+cayendo rápido, reduce la presión para no sobrecorregir y terminar
+generando un prompt tan restrictivo que asfixie al LLM.</p>
+<p>La salida de ese PID no mueve un actuador físico — mueve un parámetro
+de "presión del prompt", que determina cuántas restricciones explícitas,
+cuántos ejemplos negativos, y qué tan estricto es el lenguaje de la
+siguiente instrucción que recibe el modelo.</p>
+<h3 id="selección-de-estrategias-como-física-estadística">Selección de
+estrategias como física estadística</h3>
+<p>Cuando hay varias estrategias de prompt candidatas compitiendo
+(variantes con distinto énfasis, distinta agresividad, distinto
+framing), la elección de cuál probar a continuación no es determinista
+ni aleatoria uniforme — usa pesos de Boltzmann. Cada estrategia tiene
+una "energía" inversamente proporcional a qué tan bien le fue en
+intentos anteriores, y la probabilidad de selección de cada una es
+proporcional a exp(-energía/temperatura). A temperatura alta, todas las
+estrategias tienen probabilidad similar de ser elegidas (exploración); a
+temperatura baja, la mejor estrategia domina casi por completo
+(explotación) — la misma temperatura que gobierna el annealing gobierna
+también esta selección, así que ambos mecanismos se mueven sincronizados
+a lo largo del ciclo.</p>
+<p>Sobre ese pool de estrategias corre además una capa evolutiva: las
+mejores sobreviven de un ciclo al siguiente (elitismo), se cruzan entre
+sí (crossover, combinando fragmentos de la mejor estrategia conocida con
+el candidato más reciente), y el resultado del cruce se muta antes de
+reincorporarse al pool. Es selección natural aplicada al espacio de
+instrucciones de un prompt, no al espacio de parámetros de un
+modelo.</p>
+<h3 id="la-memoria-que-evita-que-el-sistema-se-repita-a-sí-mismo">La
+memoria que evita que el sistema se repita a sí mismo</h3>
+<p>Ninguno de los mecanismos anteriores sirve de mucho si el sistema no
+recuerda lo que ya intentó. Por eso el ciclo mantiene memoria episódica
+de cada intento: qué código se generó, si mejoró o empeoró, y qué
+fragmentos específicos aparecieron en los intentos que fallaron. Esos
+fragmentos fallidos no se descartan — se convierten en anti-ejemplos
+explícitos inyectados en el siguiente prompt, con el código exacto que
+ya se probó y ya se rechazó, para que el LLM no vuelva a proponerlo con
+otro nombre de variable.</p>
+<p>Esa misma memoria es la que permite detectar los dos modos de fallo
+que mencioné al principio sin necesidad de mirar un solo intento
+aislado: oscilación (una secuencia estricta de
+mejora-empeora-mejora-empeora en los últimos intentos) y estancamiento
+(ninguna mejora en una ventana reciente, aunque el error no haya
+empeorado tampoco). Ambos son señales de que insistir con la misma
+estrategia es inútil, y ambos disparan una intervención distinta —
+típicamente, forzar un salto de temperatura hacia arriba para romper el
+patrón, en vez de seguir enfriando hacia una convergencia que no va a
+llegar.</p>
+<h3
+id="por-qué-me-parece-que-esto-importa-más-allá-del-caso-puntual">Por
+qué me parece que esto importa más allá del caso puntual</h3>
+<p>Lo que más se me quedó pensando después de construir esto es que
+"usar un LLM en un loop de corrección" se trata casi siempre como un
+problema de prompting — mejor instrucción, mejor ejemplo, mejor formato.
+Y sí importa. Pero por debajo hay un problema de control de un proceso
+estocástico con feedback ruidoso, que es exactamente el tipo de problema
+que la teoría de control, la física estadística y los algoritmos
+evolutivos llevan décadas resolviendo para otros dominios. Tratar la
+corrección de código por LLM sin ese marco es dejar sobre la mesa
+herramientas ya probadas, y reinventar peor una versión ad-hoc de las
+mismas ideas — usualmente sin anti-windup, sin detección de oscilación,
+y sin memoria de qué ya falló.</p>
+<p>¿Alguien más está encontrando este tipo de paralelismo entre teoría
+de control clásica y el diseño de loops de agentes LLM? Me interesa
+mucho comparar enfoques.</p>
+<p>#SoftwareEngineering #ControlTheory #SimulatedAnnealing #LLM
+#PromptEngineering #EvolutionaryAlgorithms #Python #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#ControlTheory</span><span class="tag-pill">#SimulatedAnnealing</span><span class="tag-pill">#LLM</span><span class="tag-pill">#PromptEngineering</span><span class="tag-pill">#EvolutionaryAlgorithms</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="god-object-biseccion-espectral">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">Dónde cortar un God Object: bisección espectral aplicada a refactoring</h2>
+        <div class="post-body">
+<p>Hay una pregunta que todo el que ha heredado una clase de 2000 líneas
+se ha hecho alguna vez: <em>¿por dónde la parto?</em> La respuesta
+habitual es intuición — "esto de aquí parece que va junto, esto de allá
+parece otra cosa". Es una heurística válida, pero no es una respuesta
+que se pueda verificar matemáticamente, ni automatizar con
+garantías.</p>
+<p>Hay un campo entero dedicado a esta pregunta, solo que aplicado a
+otro tipo de grafos: clustering espectral. Y la razón por la que decidí
+traerlo a refactoring de código es que el problema es formalmente el
+mismo: dado un grafo con pesos en las aristas, encontrar la partición
+que minimiza las conexiones cortadas y maximiza la cohesión interna de
+cada grupo. Da igual si los nodos son píxeles de una imagen, personas en
+una red social, o métodos de una clase.</p>
+<h3
+id="primero-medir-la-deformación-un-módulo-de-young-para-código">Primero,
+medir la deformación: un módulo de Young para código</h3>
+<p>Antes de decidir dónde cortar, hace falta una función objetivo — algo
+que responda "qué tan mal está esto" con un número, no con una opinión.
+Tomé prestada la definición física del Módulo de Young (E = esfuerzo /
+deformación — resistencia de un material a deformarse bajo carga) y
+construí un análogo estructural:</p>
+<p>E_clase = (acoplamiento_externo)² / cohesión_interna</p>
+<p>E_total = Σ E_clase + penalización_por_complejidad</p>
+<p>Aquí está la parte que me parece más honesta de admitir en público:
+esta fórmula no es la ecuación de Young real con las mismas unidades ni
+el mismo significado físico. Es una analogía funcional — el acoplamiento
+hace de "esfuerzo externo" y la cohesión hace de "resistencia interna",
+y elevar el acoplamiento al cuadrado mientras la cohesión divide
+reproduce el comportamiento cualitativo que quiero: pequeños aumentos de
+acoplamiento externo con baja cohesión disparan la energía rápidamente
+(como una grieta que se propaga), mientras que alta cohesión amortigua
+ese mismo acoplamiento. Es física como <em>inspiración de forma
+funcional</em>, no física aplicada literalmente. Prefiero decirlo así de
+claro a dejar que suene a que hay un paper detrás.</p>
+<p>Lo que sí es matemáticamente riguroso y verificable es cómo se
+calcula la cohesión: uso LCOM4 (Lack of Cohesion of Methods, variante
+4), que no es una heurística arbitraria — es el número de componentes
+conexos en el grafo donde los nodos son métodos de una clase y hay una
+arista entre dos métodos si comparten estado de instancia o se llaman
+entre sí:</p>
+<pre><code>G = nx.Graph()
+for i, a in enumerate(methods):
+for b in methods[i+1:]:
+shared = a.shared_state &amp; b.shared_state
+calls = (a.name in b.calls) or (b.name in a.calls)
+if shared or calls:
+G.add_edge(a.name, b.name)
+return nx.number_connected_components(G)</code></pre>
+<p>Si esto da 1, la clase es un solo componente conexo — genuinamente
+cohesiva, todos sus métodos están relacionados directa o
+transitivamente. Si da 3, hay tres subgrafos que nunca se tocan entre sí
+— que es la definición formal, no intuitiva, de "esto son tres clases
+disfrazadas de una". No es una opinión de estilo, es teoría de grafos
+aplicada directamente: la cohesión de una clase es, literalmente, su
+conectividad como grafo.</p>
+<h3 id="el-límite-de-masa-crítica-con-la-salvedad-correspondiente">El
+límite de masa crítica, con la salvedad correspondiente</h3>
+<p>La detección de "God Objects" usa el nombre del límite de
+Chandrasekhar (masa máxima de una enana blanca antes de colapsar en
+supernova) para el punto donde una clase se vuelve, en la práctica,
+inmantenible: líneas de código, número de métodos, fan-out, y el propio
+LCOM4, cada uno con un umbral.</p>
+<p>De nuevo, transparencia sobre qué tan literal es la analogía: los
+umbrales (300 líneas, 12 métodos, fan-out 8, LCOM4 &gt; 3) están
+calibrados empíricamente contra proyectos reales, no derivados de
+ninguna constante física ni de una fórmula de masa crítica real. El
+nombre es una metáfora sobre el <em>tipo</em> de fenómeno (un sistema
+que acumula "masa" hasta un punto de colapso estructural), no una
+afirmación de que exista una ley universal con ese valor exacto — de la
+misma forma que "punto de ebullición" de un proyecto no implica que haya
+termodinámica literal midiendo grados Celsius. Vale la pena decirlo así
+de explícito, porque la línea entre "metáfora útil para razonar" y
+"pseudociencia disfrazada de rigor" se cruza fácil si no se es honesto
+sobre qué parte es matemática verificable y qué parte es nomenclatura
+evocadora.</p>
+<h3 id="ahora-sí-el-corte-el-vector-de-fiedler">Ahora sí, el corte: el
+vector de Fiedler</h3>
+<p>Con la función de energía definida, la pregunta real es dónde cortar
+una clase que superó su límite. Aquí es donde entra matemática que sí es
+rigurosa de punta a punta, sin metáfora de por medio: bisección
+espectral usando el Laplaciano del grafo.</p>
+<p>Se construye un grafo de cohesión donde los nodos son métodos y el
+peso de cada arista es la fuerza de acoplamiento interno entre ellos
+(estado compartido, llamadas directas, parámetros compartidos). El
+Laplaciano de ese grafo es:</p>
+<p>L = D - W</p>
+<p>donde D es la matriz diagonal de grados (suma de pesos por nodo) y W
+es la matriz de adyacencia ponderada. Este objeto tiene una propiedad
+extraordinaria: sus eigenvalores codifican la estructura de comunidades
+del grafo completo. El primer eigenvalor siempre es 0 (con eigenvector
+constante). El segundo eigenvalor más pequeño — λ₂, el valor de Fiedler
+— mide qué tan "conectado" está el grafo en su conjunto: cerca de 0
+significa que el grafo está casi partido en dos piezas naturalmente;
+lejos de 0 significa que está fuertemente entrelazado y cualquier corte
+va a doler.</p>
+<p>Lo notable es el eigenvector correspondiente a λ₂ (el vector de
+Fiedler): sus componentes, positivas o negativas, indican de qué lado de
+la partición óptima cae cada nodo. No es aproximación ni heurística de
+búsqueda — es la solución de un problema de optimización continua
+(minimizar el "normalized cut" de Shi &amp; Malik) relajado a álgebra
+lineal, resuelto de forma exacta vía descomposición espectral:</p>
+<pre><code>eigenvalues, eigenvectors = np.linalg.eigh(L)
+fiedler_val = eigenvalues[1]
+fiedler_vec = eigenvectors[:, 1]
+group_a = [node for i, node in enumerate(nodes) if fiedler_vec[i] &lt; 0]
+group_b = [node for i, node in enumerate(nodes) if fiedler_vec[i] &gt;= 0]</code></pre>
+<p>El signo del componente del vector de Fiedler asigna cada método a un
+lado del corte. Es elegante porque no hay parámetro que ajustar a mano
+ni umbral arbitrario en esta parte — el propio espectro de la matriz
+encuentra la fractura natural. La bisección se aplica recursivamente
+para obtener más de dos clusters cuando hace falta, y se detiene cuando
+λ₂ es tan pequeño que el grafo ya estaba casi desconectado de por sí —
+en cuyo caso el algoritmo lo detecta y usa componentes conexas
+directamente en vez de forzar un corte innecesario sobre algo que ya
+estaba roto.</p>
+<h3
+id="la-parte-que-casi-nadie-hace-verificar-que-el-corte-valga-la-pena">La
+parte que casi nadie hace: verificar que el corte valga la pena</h3>
+<p>Esta es, para mí, la decisión de diseño más importante de todo el
+sistema, y es puramente matemática, sin metáfora física de ningún tipo.
+Después de simular el corte, se recalcula E_total con la nueva
+estructura propuesta, y:</p>
+<p>ΔE = E_después − E_antes</p>
+<p>Si ΔE ≥ 0, el refactor se rechaza explícitamente, con la
+justificación numérica exacta de por qué. Si |ΔE| es menor que un
+épsilon de tolerancia, también se rechaza — la mejora existe pero es tan
+marginal que no justifica el costo/riesgo de tocar el código. Y hay un
+tercer caso, más sutil: si λ₂ era casi cero desde el principio, el corte
+es técnicamente válido pero trivial — el grafo ya estaba casi partido en
+dos antes de que el algoritmo hiciera nada, así que el mérito real de
+"encontrar la fractura" es bajo, y el sistema lo señala como advertencia
+en vez de presentarlo como un hallazgo fuerte.</p>
+<p>Este tipo de verificador con capacidad real de decir "no" es la pieza
+que le da legitimidad matemática al resto: no basta con que la teoría
+espectral sea elegante, hace falta que el propio sistema pueda
+demostrar, con la misma función objetivo, que el remedio no es peor que
+la enfermedad.</p>
+<h3
+id="por-qué-me-parece-que-vale-la-pena-separar-esto-en-dos-capas">Por
+qué me parece que vale la pena separar esto en dos capas</h3>
+<p>Escribiendo este sistema aprendí algo que me parece generalizable:
+cuando se usa una analogía física para razonar sobre software, hay dos
+capas completamente distintas que conviene no mezclar. Una es la
+metáfora organizativa — nombres como "energía", "masa crítica",
+"colapso" — que ayudan a pensar el problema y comunicarlo, pero no son
+matemática verificable por sí solas. La otra es la matemática que se
+toma prestada literalmente — teoría espectral de grafos, componentes
+conexos, eigendecomposición — que sí es rigurosa independientemente del
+nombre que se le ponga.</p>
+<p>La bisección espectral funciona exactamente igual sin necesidad de
+llamarla "línea de fractura" — es álgebra lineal estándar, con seis
+décadas de literatura detrás (Fiedler la introdujo en 1973). El nombre
+físico solo la hace más memorable. Pero LCOM4 como conteo de componentes
+conexos, o el vector de Fiedler como solución del corte mínimo
+normalizado, seguirían siendo exactamente igual de correctos si les
+quitara toda la ropa metafórica. Esa es la prueba de fuego que uso ahora
+para cualquier pieza nueva del sistema: si la metáfora desaparece, ¿la
+matemática de abajo se sostiene sola? Si la respuesta es sí, vale la
+pena construirla. Si la respuesta es no, es solo un nombre bonito sobre
+una heurística — y prefiero saberlo antes de publicarlo como si fuera lo
+primero.</p>
+<p>¿Alguien más ha aplicado clustering espectral o teoría de grafos a
+decisiones de refactoring? Tengo curiosidad por ver otros enfoques al
+mismo problema.</p>
+<p>#SoftwareArchitecture #GraphTheory #SpectralClustering #Refactoring
+#LinearAlgebra #Python #SoftwareEngineering #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareArchitecture</span><span class="tag-pill">#GraphTheory</span><span class="tag-pill">#SpectralClustering</span><span class="tag-pill">#Refactoring</span><span class="tag-pill">#LinearAlgebra</span><span class="tag-pill">#Python</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="pid-bellman-seleccion-clonal">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar</h2>
+        <div class="post-body">
+<h2
+id="le-construí-un-sistema-nervioso-autónomo-a-mi-código-no-es-una-metáfora-bonita">Le
+construí un Sistema Nervioso Autónomo a mi código (no es una metáfora
+bonita)</h2>
+<p>Los linters te dicen qué está mal. Este sistema intenta decidir
+cuándo intervenir, qué hacer y cuánto riesgo asumir.</p>
+<p>Esa es la diferencia que me llevó a construirlo. Cualquier daemon
+puede correr un análisis estático cada cierto tiempo. Pero ninguno de
+los que probé sabía responder tres preguntas que en realidad son las que
+importan: ¿el código está lo bastante degradado como para justificar
+tocarlo ahora? ¿Qué tipo de cambio conviene, dado el estado real del
+archivo? ¿Y cuánto puedo arriesgar en un solo ciclo sin generar un PR
+que nadie va a revisar?</p>
+<p>La respuesta fácil es un IDLE_THRESHOLD fijo: "si el archivo no
+cambia en 5 minutos, refactoriza". Es lo que tenía al principio, y es
+exactamente lo que decidí tirar.</p>
+<h3 id="la-idea-tratar-el-código-como-un-organismo-con-reflejos">La
+idea: tratar el código como un organismo con reflejos</h3>
+<p>En vez de un cronómetro, diseñé un sistema con dos modos, calcado de
+la dualidad simpático/parasimpático del sistema nervioso autónomo
+real:</p>
+<ul>
+<li><p>Modo simpático (activo): mientras escribes, el daemon corre
+auditorías rápidas y reacciona con alertas de bajo costo — el
+equivalente a un reflejo.</p></li>
+<li><p>Modo parasimpático (reposo): cuando detecta inactividad, entra en
+modo de curación profunda — analiza, decide y propone.</p></li>
+</ul>
+<p>La clave no es la metáfora en sí, sino que cada transición y cada
+decisión dentro de ella está gobernada por un modelo matemático real, no
+por una regla arbitraria. Tres piezas hacen el trabajo pesado.</p>
+<h3 id="los-tres-protagonistas">Los tres protagonistas</h3>
+<p>1. Un controlador PID decide <em>cuándo</em> intervenir. En vez de un
+umbral fijo, el daemon mide continuamente qué tan "degradado" está el
+código reciente y calcula un error contra un setpoint de calidad
+deseado. Ese error retroalimenta un controlador
+proporcional-integral-derivativo clásico: si el código se degrada
+rápido, el sistema baja su umbral de paciencia y se vuelve más agresivo;
+si está sano, se relaja. Es un termostato real para deuda técnica, con
+memoria (el término integral) y sensibilidad al cambio de tendencia (el
+derivativo).</p>
+<p>2. Bellman + Knapsack deciden <em>qué hacer</em> y <em>cuánto</em>.
+Cada archivo problemático tiene varias estrategias de refactor posibles.
+En vez de aplicar "la primera que calce", el daemon modela esto como un
+problema de control óptimo discreto (ecuación de Bellman) para elegir la
+estrategia que más reduce el riesgo con el menor patch posible. Y como
+no puede curar todo a la vez, decide qué archivos atacar en cada ciclo
+resolviendo un Knapsack de opción múltiple: un presupuesto de líneas de
+cambio tolerable, un grupo por archivo, una estrategia por ítem. El
+resultado es una cartera de cambios optimizada, no una lista de "top 5
+por riesgo".</p>
+<p>3. CLONALG aprende qué refactors acepta el desarrollador. Esta es la
+pieza que más me gusta, porque resuelve un problema muy concreto: si el
+daemon propone una rama de refactor y tú la borras sin mergear, mañana
+no debería insistir con lo mismo. Implementé un Sistema Inmunológico
+Artificial vía Selección Clonal — el mismo principio que usan los
+algoritmos inspirados en cómo el cuerpo aprende a reconocer antígenos.
+Cada tipo de refactor mantiene una población de "candidatos" con
+distinta afinidad; los que sobreviven (los que mergeas) se clonan y
+mutan ligeramente para explorar variaciones cercanas; los que no, se
+descartan y se reemplazan por opciones nuevas. Con el tiempo, el sistema
+converge hacia el estilo arquitectónico específico de cada desarrollador
+— y esa memoria sobrevive a reinicios del daemon.</p>
+<p>El resto del sistema combina análisis topológico de datos, métricas
+estructurales derivadas del grafo de llamadas real, calibración
+histórica contra Git y un canal de alertas de mínima interferencia —
+pero esos tres son los que toman las decisiones.</p>
+<h3 id="un-poco-de-la-matemática-para-quien-quiera-verla">Un poco de la
+matemática, para quien quiera verla</h3>
+<p>El PID, en su forma clásica:</p>
+<p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt</p>
+<p>La selección de estrategia, como ecuación de optimalidad de Bellman
+sobre un MDP finito:</p>
+<p>V(x) = max_u [ r(x,u) + γ·V(x') ]</p>
+<p>Y el presupuesto de cambios, como programación dinámica sobre
+Knapsack de opción múltiple:</p>
+<p>dp[w] = max( dp[w], dp[w - peso(item)] + valor(item) )</p>
+<p>Nada de esto es una metáfora suelta: cada decisión que el daemon toma
+—cuándo, qué y cuánto— está respaldada por un modelo verificable, no por
+una heurística inventada. Lo interesante no es que "parezca" un sistema
+nervioso; es que resuelve, con matemática real, tres problemas de
+decisión bajo incertidumbre que casi siempre se abordan con reglas
+fijas.</p>
+<p>¿Alguien más está aplicando teoría de control o algoritmos
+bioinspirados a herramientas internas de desarrollo? Me interesa
+comparar notas.</p>
+<p><em>#SoftwareEngineering #ControlSystems #TechnicalDebt
+#ArtificialImmuneSystems #Python #SintaxisG</em></p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#ControlSystems</span><span class="tag-pill">#TechnicalDebt</span><span class="tag-pill">#ArtificialImmuneSystems</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="ley-de-conway-verificada">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">La Ley de Conway, verificada con datos en vez de citada de memoria</h2>
+        <div class="post-body">
+<p>En 1967, Melvin Conway escribió una frase que se convirtió en una de
+las citas más repetidas de ingeniería de software: <em>"cualquier
+organización que diseñe un sistema producirá un diseño cuya estructura
+es una copia de la estructura de comunicación de esa organización"</em>.
+Se cita constantemente en charlas y artículos, casi siempre como una
+observación cualitativa — "miren, los microservicios reflejan los
+equipos" — y casi nunca con un número detrás que la sostenga para un
+proyecto específico.</p>
+<p>Eso es lo que me propuse resolver: si la Ley de Conway es cierta para
+un sistema en concreto, tiene que poder medirse cruzando dos grafos que
+normalmente viven en herramientas separadas — el grafo técnico de
+dependencias del código, y el grafo social de colaboración extraído del
+historial real de Git. Esto es cómo se ve esa medición hecha con rigor,
+y también cómo se ve corregir los errores que salieron en el
+intento.</p>
+<h3
+id="lo-primero-admitir-que-la-versión-anterior-no-hacía-lo-que-decía">Lo
+primero: admitir que la versión anterior no hacía lo que decía</h3>
+<p>Antes de entrar en las ideas nuevas, vale la pena ser transparente
+sobre algo poco común de admitir en público: la primera versión de este
+analizador tenía en su documentación una promesa de integración con Git
+que, revisando el código real, no existía en ningún parámetro ni import.
+Era, literalmente, publicidad engañosa involuntaria — un docstring
+aspiracional que describía lo que el módulo debería hacer, no lo que
+hacía.</p>
+<p>La corrección no fue solo implementar la integración real (que sí se
+hizo). Fue añadir un campo explícito, integration_status, que reporta en
+tiempo de ejecución qué análisis están activos con datos reales y cuáles
+están operando en modo heurístico degradado por falta de alguna
+dependencia externa. La diferencia entre "prometer algo en un
+comentario" y "declarar en runtime si esa promesa se está cumpliendo
+ahora mismo" es exactamente la diferencia entre documentación
+aspiracional y observabilidad real.</p>
+<h3
+id="el-error-de-clasificación-que-cualquier-analizador-basado-en-nombres-puede-cometer">El
+error de clasificación que cualquier analizador basado en nombres puede
+cometer</h3>
+<p>Antes de cruzar grafos, hace falta clasificar de qué dominio de
+responsabilidad es cada símbolo del código — ¿esto es lógica de
+autenticación, de persistencia, de testing? La forma ingenua es buscar
+palabras clave como substring del nombre. Esa forma ingenua tiene dos
+fallas estructurales que cualquiera puede reproducir sin darse
+cuenta:</p>
+<p>Falla de substring: buscar la palabra "auth" como substring hace que
+"author" también matchee — un campo llamado author_id en una tabla de
+comentarios queda mal clasificado como lógica de autenticación,
+simplemente porque comparte cuatro letras seguidas. La corrección
+tokeniza el identificador completo (soportando snake_case, camelCase,
+PascalCase y SCREAMING_SNAKE_CASE) y compara palabras completas, no
+substrings:</p>
+<pre><code>def _tokenize_identifier(name: str) -&gt; List[str]:
+parts = re.split(r\&quot;[_\\d]+\&quot;, name)
+tokens = []
+for p in parts:
+tokens.extend(_WORD_SPLIT_RE.findall(p))
+return [t.lower() for t in tokens if t]</code></pre>
+<p>Falla de shadowing por orden de lista: un símbolo llamado
+test_auth_db toca genuinamente tres dominios a la vez — testing,
+autenticación, y persistencia. Un clasificador que devuelve solo la
+primera coincidencia que encuentra, según el orden en que están
+definidas las reglas internamente, pierde silenciosamente las otras dos,
+y el resultado depende de un detalle de implementación (el orden de una
+lista) que no tiene ningún significado semántico. La corrección devuelve
+el conjunto completo de dominios que matchean, no el primero:</p>
+<pre><code>def _classify_concerns(name: str) -&gt; Set[str]:
+tokens = set(_tokenize_identifier(name))
+matches = set()
+for concern, signals in _CONCERN_SIGNALS:
+if tokens &amp; set(signals):
+matches.add(concern)
+return matches</code></pre>
+<p>El propio archivo incluye, como caso de prueba permanente, dos
+funciones con nombres diseñados específicamente para verificar ambas
+correcciones a la vez: test_auth_db() (debe matchear los tres dominios
+simultáneamente) y testify_in_court() (no debe matchear "testing" pese a
+compartir el substring "test"). Tener el caso de regresión viviendo en
+el propio módulo, no solo en un archivo de tests aparte, es una forma de
+dejar la lección donde nadie pueda evitar verla al tocar el código de
+clasificación en el futuro.</p>
+<h3
+id="la-medición-central-qué-tan-alineados-están-los-equipos-que-mantienen-dos-módulos-acoplados">La
+medición central: qué tan alineados están los equipos que mantienen dos
+módulos acoplados</h3>
+<p>Esta es la idea que le da sustancia real a la cita de Conway. Para
+cada arista del grafo técnico —el módulo A importa o llama al módulo B—
+se calcula qué tan alineados están, socialmente, los equipos
+responsables de cada lado, usando co-autoría real extraída de Git:</p>
+<pre><code>conway_gap = 0.0 if shared else 1.0 / (1.0 + social_weight)</code></pre>
+<p>Si A y B comparten al menos un autor, el gap es cero — hay una
+persona con contexto directo de ambos lados del contrato. Si no
+comparten autor directo, el gap se calcula sobre el peso de colaboración
+indirecta entre los conjuntos de autores de cada módulo (cuántas veces
+han trabajado juntos en otros archivos, según el grafo de co-autoría) —
+más colaboración social indirecta diluye el gap, aunque no exista
+superposición directa de autoría. Un gap alto con acoplamiento técnico
+fuerte es la definición operacional, medible, de un silo en riesgo real:
+dos módulos que dependen técnicamente uno del otro, mantenidos por
+personas que nunca han colaborado y no tienen ningún puente humano
+documentado entre sí — la condición exacta bajo la cual un cambio en A
+rompe a B sin que nadie del lado B se entere hasta que ya es tarde.</p>
+<h3
+id="encontrar-las-fronteras-de-microservicio-reales-no-las-que-suenan-bien-por-nombre">Encontrar
+las fronteras de microservicio reales, no las que suenan bien por
+nombre</h3>
+<p>Proponer dónde partir un sistema monolítico en servicios más pequeños
+suele hacerse por intuición de nombres ("esto suena a que va junto"). La
+alternativa con fundamento matemático es detección de comunidades sobre
+el grafo real de dependencias — el mismo problema, resuelto con el
+algoritmo de Louvain (2008), que optimiza directamente una función de
+modularidad para encontrar la partición que maximiza la densidad de
+conexión dentro de cada grupo propuesto frente a la conexión entre
+grupos:</p>
+<p>Está implementado con dos vías: si networkx está disponible en el
+entorno, se delega a su implementación probada; si no, hay un fallback
+en Python puro que reproduce la primera fase del algoritmo original
+(agregación local de nodos por ganancia de modularidad) sin depender de
+ninguna librería externa — el mismo principio de "nunca degradar de
+forma silenciosa a algo peor" que ya se aplica en el resto del análisis:
+si falta una dependencia opcional, el sistema sigue funcionando con una
+implementación propia equivalente en espíritu, no con un resultado
+vacío.</p>
+<h3
+id="el-cruce-que-amarra-todo-cuándo-el-riesgo-técnico-y-el-riesgo-humano-coinciden-en-el-mismo-archivo">El
+cruce que amarra todo: cuándo el riesgo técnico y el riesgo humano
+coinciden en el mismo archivo</h3>
+<p>La pieza más directamente accionable de todo el sistema combina dos
+análisis que, por separado, ya son útiles, pero que juntos producen una
+alerta de un tipo distinto: radio de explosión técnico (qué tan crítico
+es un archivo para el resto del sistema si falla o cambia) cruzado con
+bus factor (cuántas personas realmente entienden ese archivo hoy).</p>
+<pre><code>if br.blast_score &lt; blast_score_threshold or bf.bus_factor &gt; 1:
+continue
+at_risk = (not bf.primary_owner_active) or (days_inactive &gt; inactivity_threshold_days)</code></pre>
+<p>Un archivo del que depende gran parte del sistema, mantenido por una
+sola persona, que además ya no está activa en el proyecto o lleva más de
+seis meses sin tocarlo, genera una alerta explícita de colapso de
+conocimiento inminente — con severidad graduada según qué tan crítico es
+el archivo, y un mensaje en lenguaje natural listo para presentarle a un
+responsable técnico sin que tenga que interpretar números sueltos:
+<em>"'{archivo}' tiene un radio de explosión del 82% pero depende de un
+único autor que ya no está activo en el proyecto"</em>. Ese es
+exactamente el tipo de hallazgo que ningún análisis puramente técnico ni
+puramente social puede producir por separado — nace del cruce.</p>
+<h3 id="por-qué-medir-esto-en-vez-de-solo-citarlo-importa">Por qué medir
+esto en vez de solo citarlo importa</h3>
+<p>La Ley de Conway, dicha en abstracto, es una observación interesante
+pero inaccionable — no le dice a un equipo <em>cuál</em> de sus cien
+módulos es el silo real, ni <em>cuánto</em> riesgo humano concentra.
+Convertirla en un número por arista, verificable contra datos reales de
+Git y del grafo de dependencias, la transforma de anécdota citable a
+señal de alerta temprana: un lugar concreto donde invertir en
+documentación, en rotación de code review, o en pair programming
+dirigido, antes de que el silo se note de la peor forma posible — cuando
+alguien ya se fue y nadie más puede tocar ese módulo con confianza.</p>
+<p>¿Alguien más ha intentado medir el acoplamiento
+organización-arquitectura de forma cuantitativa en su propio proyecto?
+Me interesa comparar qué señales han usado para el lado "social" del
+cruce.</p>
+<p>#SoftwareArchitecture #ConwaysLaw #EngineeringManagement #Git
+#GraphTheory #SoftwareEngineering #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareArchitecture</span><span class="tag-pill">#ConwaysLaw</span><span class="tag-pill">#EngineeringManagement</span><span class="tag-pill">#Git</span><span class="tag-pill">#GraphTheory</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="bus-factor-medido-en-serio">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)</h2>
+        <div class="post-body">
+<p>El nombre viene de una broma macabra de los años 90 que se volvió
+terminología estándar de la industria: Bus Factor = el número mínimo de
+personas cuya ausencia simultánea (por el motivo que sea, el autobús es
+solo la forma memorable de decirlo) dejaría partes críticas de un
+proyecto sin nadie que las entienda de verdad.</p>
+<p>La pregunta que casi todo el mundo hace para estimarlo es:
+<em>"¿cuántas personas tocaron este archivo?"</em> — y la until hace
+poco yo también pensaba que esa pregunta, respondida con git blame, ya
+daba la respuesta. No es así. Construyendo un analizador que calcula
+esto en serio, descubrí que un blame ingenuo miente de cinco formas
+distintas, cada una con una razón concreta y una corrección concreta.
+Esta es la lista.</p>
+<h3 id="mentira-1-miente-por-formato">Mentira 1: miente por formato</h3>
+<p>Si alguien corre un formateador automático (Black, Ruff, gofmt) sobre
+todo el repositorio, git blame le atribuye el 100% de esas líneas
+reformateadas a esa persona — como si hubiera escrito el código, cuando
+solo le cambió comillas y espacios. Es un problema real y documentado en
+la industria como "el commit del formateador que rompe el blame".</p>
+<p>La corrección compara el contenido antes/después de cada commit, pero
+normalizado (comillas unificadas, espacios colapsados), contra el diff
+crudo:</p>
+<pre><code>mechanical_ratio = 1.0 - (norm_diff / max(raw_diff, 1))
+return mechanical_ratio &gt;= MECHANICAL_COMMIT_RATIO</code></pre>
+<p>Si casi toda la diferencia "real" desaparece al normalizar, es un
+commit puramente mecánico. Esos commits se le pasan a git blame
+--ignore-rev, que reatribuye esas líneas al autor del commit anterior
+real — el que sí escribió la lógica, no el que solo la reformateó.</p>
+<h3 id="mentira-2-miente-por-escala">Mentira 2: miente por escala</h3>
+<p>Multiplicar el bus factor por la complejidad ciclomática
+<em>total</em> de un archivo comete un error de agregación: le atribuye
+la complejidad real del motor de pagos a quien escribió más líneas de
+diccionarios de configuración al lado, simplemente porque escribió más
+líneas en total. Contar líneas no es lo mismo que poseer
+complejidad.</p>
+<p>La corrección mapea cada línea de blame al nodo AST específico
+—función o clase— que la contiene, y calcula, por autor, cuánta
+complejidad ciclomática posee realmente, no cuántas líneas escribió:</p>
+<pre><code>sorted_units = sorted(units, key=lambda u: (u.end_lineno - u.lineno))
+for idx, u in enumerate(sorted_units):
+for ln in range(u.lineno, min(u.end_lineno, total_lines) + 1):
+line_complexity[ln - 1] = u.complexity</code></pre>
+<p>Las unidades más pequeñas (funciones internas) se procesan primero,
+para que una línea quede asignada a la función más específica que la
+contiene, no a la clase contenedora completa. Esto revela algo que el
+conteo de líneas esconde por completo: alguien puede tener poca
+superficie de código (pocas líneas) pero sostener la parte más compleja
+del módulo — el sistema lo llama, literalmente, el arquitecto en la
+sombra: quien cuya proporción de complejidad supera ampliamente su
+proporción de líneas. En el código quedó documentado con nombre propio
+de un caso real de auditoría ("el caso Carlos/Diana") que motivó esta
+corrección — evidencia de que no es una preocupación teórica, es un
+patrón que apareció en la práctica y engañaba al cálculo ingenuo.</p>
+<h3 id="mentira-3-miente-por-tiempo">Mentira 3: miente por tiempo</h3>
+<p>Alguien que no ha tocado un archivo en dos años no "sabe" ese código
+igual que alguien que lo tocó ayer, aunque ambos tengan el mismo
+porcentaje nominal de líneas. El conocimiento humano decae con el tiempo
+— esto no es una opinión, es un fenómeno estudiado desde 1885 por
+Hermann Ebbinghaus con su curva del olvido. El sistema aplica esa misma
+forma matemática, adaptada:</p>
+<pre><code>def _decay_factor(days_since_last: float) -&gt; float:
+w = 2.0 ** (-days_since_last / DECAY_HALF_LIFE_DAYS)
+return max(MIN_DECAY_FACTOR, w)</code></pre>
+<p>Vida media de 180 días: a los seis meses de no tocar un archivo, la
+retención efectiva de conocimiento se estima en torno al 50%, con un
+piso mínimo (nunca llega a cero — el desarrollador siempre recuerda
+algo). Este factor de decaimiento es también la base del Truck Factor,
+un concepto relacionado pero distinto: cuenta explícitamente a los
+desarrolladores que <em>ya se fueron</em> (decaimiento por debajo de
+0.35, inactivos hace más de un año aproximadamente) pero que tenían más
+del 15% de ownership — gente que ya no está pero cuyo conocimiento sigue
+siendo, en teoría, insustituible.</p>
+<p>Hay un matiz adicional que corrige un sesgo distinto: git blame solo
+ve quién escribió las líneas que <em>sobrevivieron</em> hasta hoy. No ve
+quién entiende el código lo suficientemente bien como para arreglarlo
+sin añadir líneas nuevas — alguien puede estar corrigiendo bugs
+activamente en un módulo (commits tipo "fix") sin que eso le sume
+ownership nominal. El sistema cruza esa actividad reciente de fixes con
+el ownership nominal para detectar dueños "de facto": personas con bajo
+blame nominal pero alta actividad operativa reciente, que probablemente
+entienden el código mejor hoy que quien lo escribió originalmente y no
+lo ha tocado desde entonces.</p>
+<h3 id="mentira-4-miente-por-equipo">Mentira 4: miente por equipo</h3>
+<p>Un bus factor de 4 no sirve de nada como métrica de resiliencia si
+las 4 personas son del mismo equipo — la misma reorganización, el mismo
+recorte de presupuesto, o el mismo proyecto que se los lleva a todos a
+la vez, y el módulo se queda igual de huérfano que si hubiera tenido
+solo una persona. El bus factor nominal, sin este ajuste, puede estar
+dando una falsa sensación de seguridad.</p>
+<p>La corrección detecta comunidades ("tribus") sobre un grafo de
+co-autoría, usando Label Propagation (Raghavan, Albert &amp; Kumar,
+2007), implementado desde cero sin depender de librerías externas de
+grafos: cada autor arranca con su propia etiqueta, y en cada iteración
+adopta la etiqueta que predomina, ponderada por peso, entre sus
+colaboradores directos — hasta que el sistema converge o se agota un
+máximo de iteraciones:</p>
+<pre><code>best_label = max(weight_by_label.items(), key=lambda kv: (kv[1], -kv[0]))[0]</code></pre>
+<p>Con semilla aleatoria fija, para que el resultado sea reproducible
+entre corridas del mismo repositorio. El resultado permite calcular un
+bus factor <em>tribal</em> — no "cuántas personas", sino "cuántos grupos
+verdaderamente independientes" sostienen un módulo.</p>
+<h3 id="mentira-5-miente-por-alcance">Mentira 5: miente por alcance</h3>
+<p>Un archivo con bus factor 1 no es solo riesgo para ese archivo — es
+riesgo para todo lo que depende de él, con la salvedad de que ese riesgo
+no viaja gratis: se atenúa con la distancia. "El equipo de Frontend
+depende de una API que solo entiende una persona en Backend" es
+exactamente el tipo de frase que esta idea busca poder generar
+automáticamente, no solo intuir.</p>
+<p>La propagación recorre el grafo de dependencias en anchura desde cada
+archivo de riesgo alto o crítico, atenuando la contribución de riesgo
+por cada salto:</p>
+<pre><code>contribution = base_risk * (attenuation ** hop_dist)
+if contribution &lt; TRANSITIVE_MIN_REPORT:
+continue</code></pre>
+<p>Con un corte explícito por umbral mínimo, para no inundar el reporte
+con contribuciones de riesgo tan diluidas por la distancia que ya no
+aportan información útil — la lista final se ordena por contribución y
+se trunca, priorizando las cadenas de riesgo humano más significativas
+del proyecto completo.</p>
+<h3 id="el-resumen-correcto-de-todo-esto-perplejidad-no-conteo">El
+resumen correcto de todo esto: perplejidad, no conteo</h3>
+<p>Después de aplicar las cinco correcciones, hace falta un solo número
+que resuma "qué tan concentrado está el conocimiento" de un archivo — y
+aquí es donde el sistema usa la herramienta matemáticamente correcta
+para esto: entropía de Shannon sobre la distribución de ownership
+efectivo entre autores.</p>
+<p>H(X) = -Σ p_i · log2(p_i)</p>
+<p>H=0 si un solo autor posee todo (el peor caso posible). H=log2(N) si
+N autores tienen ownership perfectamente uniforme (el mejor caso). Y el
+paso final es elegante: el bus factor efectivo no es un conteo directo
+de autores, es 2^H — el número de autores "equivalentes" que tendría el
+archivo si el conocimiento estuviera distribuido de forma perfectamente
+uniforme entre ellos. Quienes hayan trabajado con modelos de lenguaje
+reconocerán esta fórmula: es exactamente la misma matemática detrás de
+la perplejidad, la métrica estándar para medir qué tan "sorprendido"
+está un modelo por una distribución de probabilidad. Aquí, en vez de
+medir sorpresa sobre predicciones de texto, mide concentración de
+conocimiento humano — mismo principio de información, dominio
+completamente distinto.</p>
+<p>Y hay una última decisión que vale la pena nombrar porque es fácil no
+tomarla: si no hay historial de Git disponible, el sistema no inventa un
+número aproximado contando funciones o clases del archivo para no dejar
+el campo vacío. Devuelve bus_factor: None, explícito. Un dato faltante
+declarado como faltante es más útil — y mucho más honesto — que un
+número que parece preciso sin serlo.</p>
+<h3
+id="por-qué-esto-importa-más-allá-de-una-métrica-de-vanidad-para-el-dashboard-de-ingeniería">Por
+qué esto importa más allá de una métrica de vanidad para el dashboard de
+ingeniería</h3>
+<p>Ninguna de estas cinco correcciones es exótica una vez explicada. Eso
+es justo lo que las hace valiosas: son el tipo de sesgo que cualquier
+medición ingenua de "quién sabe qué" comete por defecto, sin que nadie
+lo note, porque el número resultante <em>se ve</em> razonable — nunca es
+obviamente absurdo, solo está sistemáticamente equivocado en una
+dirección específica. Medir bien el factor humano de un proyecto no es
+una curiosidad académica: es la diferencia entre un plan de mitigación
+de riesgo que funciona (pair programming dirigido a la persona correcta,
+re-onboarding de quien realmente se está por ir) y uno que apunta al
+lugar equivocado con total confianza.</p>
+<p>¿Alguien más ha tenido que corregir sesgos parecidos midiendo
+conocimiento o propiedad de código en su equipo? Me interesa comparar
+qué otras formas de mentir ha encontrado la gente en sus propias
+mediciones.</p>
+<p>#SoftwareEngineering #EngineeringManagement #BusFactor
+#InformationTheory #Git #TeamDynamics #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#EngineeringManagement</span><span class="tag-pill">#BusFactor</span><span class="tag-pill">#InformationTheory</span><span class="tag-pill">#Git</span><span class="tag-pill">#TeamDynamics</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="rag-para-codigo-fuente">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial</h2>
+        <div class="post-body">
+<p>RAG genérico para texto y RAG para código fuente no son el mismo
+problema, aunque compartan la misma infraestructura de base (embeddings
++ índice vectorial + similitud). El código tiene propiedades que rompen
+los supuestos de un pipeline de RAG diseñado para prosa: identificadores
+exactos que importan letra por letra (auth_token_v2 no es semánticamente
+"parecido" a auth_token_v3 para un embedding denso, aunque para un
+desarrollador buscando ese símbolo específico la diferencia es todo),
+estructura jerárquica real (una función vive dentro de una clase, dentro
+de un archivo, con límites que un chunking por ventana fija ignora), y
+una relación de importancia que no es solo semántica sino también
+temporal (código de hace dos años que dice lo mismo que código de ayer
+no debería rankear igual).</p>
+<p>Voy a documentar, técnica por técnica, cómo se resuelve cada uno de
+estos problemas en un store vectorial que construí sobre ChromaDB —
+citando explícitamente de dónde viene cada idea que no es propia, porque
+me parece importante separar qué es una aplicación de una técnica
+publicada de qué es una decisión de diseño propia.</p>
+<h3 id="recuperación-jerárquica-parent-child">1. Recuperación jerárquica
+Parent-Child</h3>
+<p>El modelo de embeddings usado (all-MiniLM-L6-v2) tiene un límite de
+512 tokens. Un archivo de 2000 líneas no cabe. La solución ingenua es
+truncar — perder el 80% del archivo silenciosamente. La solución
+correcta, tomada del patrón estándar de recuperación jerárquica en RAG
+(parent-child retrieval), es indexar chunks pequeños para la búsqueda
+semántica, pero mantener el documento padre completo disponible para
+expandir el contexto una vez que un chunk hace match:</p>
+<pre><code>def add_document_hierarchical(\...):
+\# divide por AST (funciones/clases) con ventana deslizante como fallback
+\# cada chunk se embebe e indexa individualmente
+\# el documento padre completo va a un KV store separado en disco</code></pre>
+<p>El detalle de implementación que me parece correcto: el _ParentStore
+es un KV store en disco separado, sin embeddings — no contamina el
+índice HNSW de Chroma con vectores redundantes del documento completo.
+La separación de responsabilidades es limpia: el índice vectorial solo
+indexa lo que realmente se va a buscar por similitud; el store de padres
+solo necesita lookup por ID.</p>
+<h3 id="búsqueda-híbrida-denso-bm25-fusionados-con-rrf">2. Búsqueda
+híbrida: denso + BM25, fusionados con RRF</h3>
+<p>Esta es la pieza central del sistema. Similitud coseno sobre
+embeddings densos es buena para conceptos ("conexión a base de datos"
+encuentra código de conexión aunque no comparta ni una palabra literal).
+Es mala para nombres exactos — un embedding no "sabe" que auth_token_v2
+es exactamente lo que buscas, solo sabe que es semánticamente parecido a
+otras cosas relacionadas con autenticación. BM25 (ranking por frecuencia
+de términos, el estándar de recuperación de información desde los 90) es
+exactamente lo contrario: encuentra coincidencias léxicas exactas, es
+ciego al significado.</p>
+<p>Correr ambos por separado y quedarse con el mejor no funciona bien
+porque sus escores no son comparables — la distancia coseno vive en un
+rango distinto al score BM25, normalizarlos entre sí introduce supuestos
+arbitrarios. La solución estándar de la literatura de IR es Reciprocal
+Rank Fusion (RRF), que ignora los scores crudos y fusiona por
+<em>posición en el ranking</em>:</p>
+<pre><code>def _reciprocal_rank_fusion(rankings):
+fused = {}
+for ranking, k in rankings:
+for rank, doc_id in enumerate(ranking, start=1):
+fused[doc_id] = fused.get(doc_id, 0.0) + 1.0 / (k + rank)
+return fused</code></pre>
+<p>RRF es matemáticamente elegante precisamente porque no necesita que
+las dos listas sean comparables en escala — solo necesita el orden. El
+tokenizador propio para el índice BM25 además descompone snake_case y
+camelCase, para que buscar "auth token" también encuentre authToken y
+auth_token_v2 a nivel de sub-token, no solo coincidencia exacta de
+string completo.</p>
+<h3 id="fusión-adaptativa-del-parámetro-k">3. Fusión adaptativa del
+parámetro k</h3>
+<p>RRF tiene un hiperparámetro k que controla cuánto peso reciben los
+primeros puestos de cada ranking (k bajo = más peso a los primeros
+lugares de esa lista específica). La implementación estándar usa un k
+global igual para ambos rankers. Aquí se detecta heurísticamente si la
+query "parece" un identificador de código (pocas palabras, presencia de
+snake_case/camelCase) y se ajustan los k de forma asimétrica:</p>
+<pre><code>if adaptive_fusion and _looks_like_identifier_query(query):
+default_dense, default_sparse = 90, 40 \# confiar más en BM25
+else:
+default_dense, default_sparse = 60, 60</code></pre>
+<p>Un k de BM25 más bajo cuando la query parece un identificador le da
+más peso relativo a sus primeros resultados frente al ranking denso —
+reconociendo explícitamente que, para ese tipo de query, BM25 es la
+señal más confiable de las dos. Es una heurística simple (no un
+clasificador entrenado), pero está bien justificada: el costo de una
+detección equivocada es solo un peso subóptimo, no un fallo binario.</p>
+<h3 id="time-weighted-search">4. Time-Weighted Search</h3>
+<p>Dos resultados con similitud semántica idéntica no deberían rankear
+igual si uno es de ayer y el otro de hace dos años. La ponderación
+temporal aplica decaimiento exponencial de vida media sobre el score de
+similitud:</p>
+<p>Score_Final = similitud × 0.5^(edad_días / vida_media)</p>
+<p>Es la misma familia matemática que el decaimiento radiactivo que
+vimos en el analizador de código muerto de la conversación anterior —
+vida media configurable, decaimiento suave en vez de un corte binario
+tipo "ignorar todo lo de hace más de N días".</p>
+<h3 id="deduplicación-semántica-vía-knn-restringido">5. Deduplicación
+semántica vía kNN restringido</h3>
+<p>Antes de insertar un documento nuevo, se consulta el vecino más
+cercano restringido al mismo filepath (kNN sobre el índice HNSW que
+Chroma ya mantiene) — no un LSH aproximado aparte, no infraestructura
+extra. Si la similitud es ≥ 0.995, se actualiza el documento existente
+en vez de insertar uno nuevo. La decisión de reusar el índice HNSW
+existente en vez de montar una estructura de deduplicación separada es
+la correcta aquí: el costo marginal de una consulta kNN adicional,
+acotada a un filtro de metadata, es bajo, y evita mantener dos
+estructuras de datos que podrían desincronizarse.</p>
+<h3 id="contextual-retrieval-con-la-fuente-citada-explícitamente">6.
+Contextual Retrieval — con la fuente citada explícitamente</h3>
+<p>Esta es la técnica que da título a este artículo. Está tomada
+directamente de Contextual Retrieval, publicada por Anthropic
+(anthropic.com/news/contextual-retrieval), y el código lo dice así, sin
+ambigüedad. La idea del paper: un chunk aislado (return a + b) no dice
+nada sobre dónde vive ni qué hace — el embedding denso lo indexa "a
+ciegas" de su contexto. La técnica completa antepone a cada chunk un
+resumen situacional generado por un LLM <em>antes</em> de embeberlo, y
+los benchmarks publicados por Anthropic reportan una reducción de
+~35-49% en fallos de recuperación quando se combina con BM25 — que es
+exactamente la arquitectura híbrida que este store ya tiene montada.</p>
+<p>Lo que me parece más honesto de esta implementación es lo que no
+hace: este archivo no llama a ningún LLM directamente. El razonamiento
+explícito en el código es que una capa de almacenamiento no debería
+tener una dependencia de red, costo y latencia de un LLM incrustada
+dentro de su lógica — eso es una violación de responsabilidad de capas.
+En su lugar, se define una interfaz inyectable:</p>
+<pre><code>class ContextEnricher(Protocol):
+def enrich(self, chunk: ChunkInfo, full_text: str, filepath: str) -&gt; str: \...</code></pre>
+<p>El enriquecedor por defecto es puramente heurístico — antepone
+archivo, tipo y nombre del chunk ([core/api/auth.py — función
+autenticar_usuario, línea 42]), que ya resuelve el caso más común de
+"chunk huérfano" sin costo de latencia ni tokens. Para el enfoque
+completo del paper, el mismo código deja documentado el punto exacto de
+extensión:</p>
+<pre><code>class LLMContextEnricher:
+def enrich(self, chunk, full_text, filepath):
+return call_claude(f\&quot;Contexto breve para este fragmento de \&quot;
+f\&quot;{filepath} dentro del archivo completo\...\&quot;)</code></pre>
+<p>Es la forma correcta de referenciar un paper externo en código de
+producción: implementar la parte que se puede sostener sin dependencias
+nuevas, ser explícito sobre qué parte de la técnica publicada se está
+dejando fuera y por qué, y dejar el punto de inyección documentado con
+el nombre exacto de la clase que alguien tendría que escribir para
+completar la implementación real.</p>
+<h3 id="maximal-marginal-relevance-carbonell-goldstein-1998">7. Maximal
+Marginal Relevance (Carbonell &amp; Goldstein, 1998)</h3>
+<p>Un ranking combinado de alta calidad puede seguir siendo malo si sus
+primeros N resultados son casi idénticos entre sí. MMR, publicado en
+1998 para resumen extractivo de documentos, resuelve esto maximizando
+relevancia menos redundancia con lo ya seleccionado:</p>
+<pre><code>score = λ · relevancia − (1−λ) · similitud_máxima_con_lo_ya_elegido</code></pre>
+<p>La implementación es correcta y con un detalle de eficiencia bien
+pensado: solo se piden los embeddings de los candidatos a Chroma cuando
+diversify=True es solicitado explícitamente — es una llamada extra
+evitable, así que se evita por defecto. Los candidatos sin embedding
+disponible se tratan con similitud 0 contra todo lo demás (no penalizan
+ni se benefician de la diversificación), en vez de fallar o sesgar el
+resultado.</p>
+<h3 id="detección-y-migración-de-embedding-drift">8. Detección y
+migración de embedding drift</h3>
+<p>Este es el problema más silencioso de todos los que cubre el sistema,
+y el que más fácil es no darse cuenta que existe: si el modelo de
+embeddings cambia con el tiempo (una actualización, un cambio de
+proveedor), los vectores viejos y nuevos viven en espacios
+matemáticamente no comparables — comparar similitud coseno entre un
+vector generado por el modelo A y otro por el modelo B no tiene ningún
+significado matemático válido, aunque el código no lance ningún error al
+hacerlo. La degradación es silenciosa: los resultados de búsqueda
+simplemente empeoran, sin ninguna señal de por qué.</p>
+<p>La solución registra qué embedding_model se usó por documento en su
+metadata, y expone:</p>
+<pre><code>def get_embedding_drift_report(self, client_id) -&gt; dict:
+\# cuenta cuántos documentos quedaron indexados con un modelo distinto
+\# al configurado actualmente
+def reembed_stale_documents(self, client_id, batch_size=200, max_docs=None) -&gt; int:
+\# migración incremental, paginada, sin downtime --- se puede llamar
+\# periódicamente hasta que stale_count llegue a 0</code></pre>
+<p>La migración es paginada (mismo patrón de paginación acotada en
+memoria que usa el resto del store) y reanudable por lotes — no exige
+una ventana de mantenimiento, se puede correr como un cron que procesa
+max_docs documentos obsoletos por invocación hasta agotar el
+backlog.</p>
+<h3 id="graphrag-lite-combinar-similitud-con-estructura">9.
+GraphRAG-lite: combinar similitud con estructura</h3>
+<p>La frontera de responsabilidad está explícitamente declarada en el
+propio código: este store "encuentra qué se parece a esto" (similitud
+semántica); un grafo de conocimiento aparte "sabe qué está conectado con
+esto" (aristas de llamada, imports, herencia). Combinar ambas señales es
+la idea de GraphRAG. La implementación no importa el módulo de grafo de
+conocimiento directamente — usa el mismo patrón de inyección de
+dependencia que el enriquecedor de contexto (GraphExpander como
+Protocol) — precisamente para no crear una dependencia circular entre
+"quién almacena vectores" y "quién sabe la estructura del código".</p>
+<h3 id="corrección-honesta-sobre-un-supuesto-equivocado">10. Corrección
+honesta sobre un supuesto equivocado</h3>
+<p>Vale la pena señalar esto porque es coherente con el resto de la
+serie: en algún punto de la evolución de este archivo se asumió que
+existía un AsyncPersistentClient en la librería de Chroma para el modo
+embebido (base de datos local sobre disco, sin servidor). El comentario
+en el código lo corrige explícitamente: <em>"esto es una precisión sobre
+el diagnóstico original: AsyncPersistentClient no existe en la
+librería"</em>. La solución real para ese caso es un ThreadPoolExecutor
+dedicado (no el executor global compartido de asyncio, para no agotar
+hilos bajo carga) — el mismo patrón que la documentación oficial de
+Chroma recomienda vía asyncio.to_thread. Para el modo cliente-servidor
+(con un host de Chroma remoto configurado), sí se usa el AsyncHttpClient
+real de la librería, porque ahí la operación es genuinamente I/O de
+red.</p>
+<h3 id="por-qué-me-parece-que-vale-la-pena-documentarlo-así">Por qué me
+parece que vale la pena documentarlo así</h3>
+<p>Cada una de estas diez técnicas resuelve un problema real y
+específico de hacer RAG sobre código en vez de sobre texto genérico, y
+ninguna se presenta como más original de lo que es: cuando la idea viene
+de un paper o de una técnica publicada (Contextual Retrieval, MMR, RRF),
+el código lo dice, con la fuente. Cuando es una decisión de diseño
+propia sobre cómo aplicar o adaptar esa idea al caso específico de
+código fuente (el k adaptativo, la deduplicación restringida por
+filepath, el drift report), también queda claro que es eso. Me parece
+que esa distinción, tan simple de mantener, es la que separa una
+implementación que se puede auditar y confiar de una que solo suena
+bien.</p>
+<p>¿Alguien más está construyendo RAG específico para código en vez de
+reusar un pipeline genérico de texto? Me interesa comparar qué otras
+particularidades del dominio han tenido que resolver.</p>
+<p>#RAG #InformationRetrieval #VectorSearch #ChromaDB #NLP
+#SoftwareEngineering #Python #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#RAG</span><span class="tag-pill">#InformationRetrieval</span><span class="tag-pill">#VectorSearch</span><span class="tag-pill">#ChromaDB</span><span class="tag-pill">#NLP</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="llm-local-documentacion-codebase">
+        <p class="section-label">Bitácora ARCHANGEL · 8 de septiembre de 2026</p>
+        <h2 class="section-title post-title">Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing</h2>
+        <div class="post-body">
+<p>Los comentarios en el código mienten, se desactualizan o simplemente
+no existen. Los generadores de documentación automática resuelven el
+problema equivocado: describen <em>qué hace</em> una función, nunca
+<em>por qué existe</em>, <em>qué riesgo carga</em> ni <em>quién la tocó
+por última vez y bajo qué presión</em>. Quise un sistema que produjera
+perfiles forenses de cada componente — capa arquitectónica, estado de
+salud, riesgos de seguridad, deuda técnica, intención de negocio,
+entidades de dominio cross-language — usando un LLM corriendo 100%
+local, sin tokens externos ni llamadas a APIs de terceros, sobre una GPU
+de consumo real (una GTX 1050 Ti de 4 GB, para ser precisos, no una A100
+de laboratorio).</p>
+<p>El problema no fue "conectar un prompt a Ollama". Eso es un fin de
+semana. El problema real fue: ¿cómo confías en la salida de un modelo
+pequeño, cuantizado, corriendo sin supervisión humana en el loop,
+indexando una base de código completa en background, con un presupuesto
+de memoria que se agota si dos inferencias se pisan? Ahí es donde el
+proyecto dejó de ser ingeniería de prompts y se convirtió en una
+colección de problemas clásicos de aprendizaje automático, teoría de
+decisión y sistemas distribuidos con restricciones de recursos
+reales.</p>
+<h3
+id="la-arquitectura-un-pipeline-con-feedback-cerrado-no-un-script-de-una-sola-pasada">La
+arquitectura: un pipeline con feedback cerrado, no un script de una sola
+pasada</h3>
+<p>El flujo no es "leer archivo → prompt → guardar". Es un ciclo cerrado
+con cuatro fases: detectar si el cambio amerita trabajo (evitar indexar
+por gusto), generar el perfil con la variante de prompt que
+históricamente mejor funciona, auditar la propia salida del LLM antes de
+aceptarla, y priorizar qué archivo indexar primero cuando la cola crece
+más rápido de lo que la GPU puede masticar. Cada una de esas cuatro
+decisiones tiene, detrás, un modelo formal — no una heurística
+improvisada a las 2 AM.</p>
+<h3 id="los-protagonistas">Los protagonistas</h3>
+<p>1. Un motor de diff semántico decide si vale la pena re-indexar (el
+problema real del RAG ingenuo).</p>
+<p>Re-indexar todo en cada git commit es carísimo; no re-indexar nunca
+deja el índice vectorial obsoleto y el sistema empieza a alucinar
+contexto viejo. SemanticDiffEngine resuelve esto clasificando cada
+cambio en siete categorías —trivial, refactor, comportamental,
+estructural, seguridad, deuda añadida, deuda resuelta— mediante una
+cascada de comparaciones: primero diff de patrones de riesgo (máxima
+prioridad: cualquier eval(), credencial hardcodeada o SQL con f-string
+nuevo dispara reindexación inmediata sin importar el resto), luego diff
+de firmas de clase/función vía regex multilenguaje, luego diff de deuda
+técnica, y solo al final un ratio de cambio sobre líneas funcionales
+reales (sin comentarios ni whitespace):</p>
+<p>change_ratio = |líneas_viejas Δ líneas_nuevas| / max(|viejas|,
+|nuevas|, 1)</p>
+<p>Con change_ratio &gt; 0.30 se clasifica como cambio de
+comportamiento; entre 0.05 y 0.30, refactor. Solo las categorías con
+impacto semántico real disparan una nueva llamada al LLM. Es, en
+esencia, un clasificador de reglas jerárquicas diseñado explícitamente
+para minimizar el costo computacional del sistema completo — la decisión
+más barata de calcular (regex) filtra la más cara de ejecutar
+(inferencia).</p>
+<p>2. Un bandido multi-armado (UCB1) decide qué prompt usar.</p>
+<p>El sistema mantiene varias variantes de instrucción para el LLM —
+distintos framings del mismo objetivo forense. En vez de fijar una por
+configuración y esperar lo mejor, cada variante acumula un historial de
+puntajes de calidad, y la selección se resuelve con la cota superior de
+confianza de Auer, Cesa-Bianchi &amp; Fischer (2002) — el mismo
+algoritmo detrás de la asignación óptima de tráfico en experimentación
+continua:</p>
+<p>UCB1(i) = μ̂ᵢ + √(2·ln(N) / nᵢ)</p>
+<p>donde μ̂ᵢ es la calidad media observada de la variante i, N el total
+de usos acumulados de todas las variantes, y nᵢ los usos de esa variante
+específica. El primer término explota lo que ya funciona; el segundo
+explora variantes con pocas muestras, con una cota que se estrecha
+logarítmicamente a medida que N crece. El resultado: el prompt óptimo
+emerge empíricamente del uso real, sin necesidad de un experimento A/B
+manual ni de re-desplegar código para probar una redacción distinta. El
+sistema literalmente aprende a hablarle mejor al LLM con el tiempo.</p>
+<p>3. Un modelo de scoring lineal ponderado predice qué archivo va a
+romperse primero.</p>
+<p>Antes de re-indexar, el sistema necesita priorizar: no todo el
+repositorio cambia al mismo ritmo, y la cola de trabajo debe reflejar
+eso. HotPathPredictor calcula una probabilidad de cambio inminente
+combinando cinco señales normalizadas a [0,1] con pesos calibrados por
+importancia relativa:</p>
+<p>score = 0.30·churn_norm + 0.25·estado_térmico +
+0.20·conflictos_norm</p>
+<p>+ 0.15·recencia_norm + 0.10·deuda_norm</p>
+<p>Estructuralmente es el mismo esqueleto que un modelo de scoring
+crediticio o un ranking de riesgo operacional: variables heterogéneas —
+velocidad histórica de commits, estado térmico categórico, conflictos de
+merge recientes, recencia de modificación, volumen de TODOs/FIXMEs
+acumulados — normalizadas y combinadas linealmente en un único número
+accionable, que además reordena en vivo la cola de prioridad del daemon.
+Nada de "los últimos 10 archivos modificados"; es una función de riesgo
+explícita y auditable.</p>
+<p>4. Un detector de alucinaciones basado en verificación de entidades
+léxicas, no en otro LLM de juez.</p>
+<p>Este es el hallazgo que más me interesa desde la óptica de
+confiabilidad de sistemas con LLMs. Un modelo pequeño y cuantizado,
+incluso corriendo con temperature=0.2 y repeat_penalty=1.1, puede
+inventar nombres de clases que no existen en el archivo que
+supuestamente está describiendo. La mitigación no requiere gastar otra
+pasada de inferencia haciendo de juez: extrae todos los tokens en
+CamelCase del perfil generado, los cruza contra los tokens CamelCase
+presentes en el código fuente real y en el path del archivo, y penaliza
+proporcionalmente por cada entidad "fantasma":</p>
+<p>sospechosos = CamelCase(perfil) − ( CamelCase(código_fuente) ∪
+CamelCase(ruta_archivo) )</p>
+<p>penalización = min(1.0, |sospechosos| · 0.2)</p>
+<p>Esta señal entra como un componente (peso 0.10) de un
+ProfileQualityScorer compuesto por cinco dimensiones ponderadas:
+densidad de tokens de alto valor forense (0.30), cobertura obligatoria
+de contexto —capa, estado térmico, autor, riesgos, entidades de dominio—
+(0.30), longitud adecuada ni corta ni relleno vacío (0.15), coherencia
+estructural básica (0.15) y esta penalización anti-alucinación (0.10).
+El puntaje agregado decide si el perfil se acepta o se regenera con otra
+variante de prompt, hasta un máximo de reintentos. Es un caso concreto y
+verificable de <em>self-verification</em> en un pipeline de producción
+con LLMs — no una promesa de marketing sobre "modelos que se
+auto-corrigen".</p>
+<p>5. Ingeniería de restricciones reales: VRAM, backoff y latencia
+adaptativa.</p>
+<p>Ninguno de los cuatro puntos anteriores importa si el sistema tumba
+la GPU. LocalLLMBridge consulta nvidia-smi antes de cada inferencia y
+bloquea la cola si la memoria libre cae bajo un presupuesto configurado
+— sin eso, dos inferencias simultáneas en 4 GB de VRAM terminan en OOM
+silencioso. El timeout de cada llamada no es fijo: se calcula como 1.5×
+el percentil 95 de latencia de las últimas 20 llamadas, acotado entre 30
+segundos y el máximo configurado, así el sistema se adapta solo cuando
+el modelo está bajo carga sin necesidad de tocar configuración. Y ante
+fallos de red, el reintento usa backoff exponencial con jitter aleatorio
+del 20% — el detalle que casi todo el mundo omite y que evita que, si
+Ollama se cae, todos los workers reintenten exactamente al mismo segundo
+y generen una estampida (<em>thundering herd</em>) justo cuando el
+servicio intenta recuperarse.</p>
+<p>El resto del sistema —un grafo temporal que registra la evolución del
+"stress score" de cada archivo a través de sus commits (arqueología de
+código, no un snapshot), un alineador de entidades de dominio
+cross-language que reconoce que UserDTO, IUser y Account probablemente
+describen el mismo concepto de negocio en TypeScript, Python y Go, y un
+extractor de deuda técnica con severidad clasificada— completa el
+pipeline, pero las cinco piezas de arriba son las que toman decisiones
+bajo incertidumbre real.</p>
+<h3 id="por-qué-importa-el-encuadre">Por qué importa el encuadre</h3>
+<p>Nada de esto pertenece al dominio de "generación de texto". Un
+clasificador jerárquico de diffs, un bandido multi-armado, un modelo de
+scoring lineal ponderado y un verificador de alucinaciones por
+comparación de conjuntos son, cada uno, un problema de decisión con una
+solución formal conocida en la literatura de ML y sistemas — no hay
+heurística mágica ni "el LLM ya lo sabe hacer solo". Construir un
+sistema de indexación semántica local confiable resultó ser, en la
+práctica, un ejercicio de ingeniería de ML clásica aplicada a
+infraestructura de desarrollo, con la restricción adicional —nada
+trivial— de correr todo en 4 GB de VRAM, sin salir jamás a internet, y
+sin un humano revisando cada salida antes de que entre al índice
+vectorial.</p>
+<p>¿Alguien más está lidiando con verificación de alucinaciones o
+selección adaptativa de prompts en pipelines de LLMs locales? Me
+interesa mucho comparar enfoques.</p>
+<p><em>#MachineLearning #LLMOps #MultiArmedBandit #SoftwareEngineering
+#LocalLLM #Python #SintaxisG</em></p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#MachineLearning</span><span class="tag-pill">#LLMOps</span><span class="tag-pill">#MultiArmedBandit</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#LocalLLM</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="no-existe-codigo-perfecto">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una</h2>
+        <div class="post-body">
+<p>Hay una idea que cuesta aceptar cuando uno empieza a programar en
+serio, y que cuesta todavía más cuando el código en cuestión es un
+algoritmo con matemática detrás: que algo funcione correctamente en
+todos los casos que probaste no significa que sea correcto. Significa
+que es correcto <em>para los casos que probaste</em>. La diferencia
+entre esas dos frases es exactamente el espacio donde viven los bugs más
+peligrosos — los que no crashean, no lanzan excepciones, y no violan
+ninguna regla obvia. Simplemente devuelven una respuesta ligeramente
+equivocada, con total confianza.</p>
+<p>Quiero contar esto con un caso concreto: un solver de optimización
+que lleva cinco rondas de auditoría externa, y que en cada ronda seguía
+revelando una forma nueva de estar "casi bien". No para decir "miren qué
+mal escribo código" ni "miren qué bien lo arreglé" — sino porque el
+patrón que se repite en las cinco rondas es más interesante que
+cualquiera de los bugs por separado.</p>
+<h3 id="el-problema-que-resuelve-en-una-frase">El problema que resuelve,
+en una frase</h3>
+<p>El sistema necesita decidir, para cada archivo de un proyecto de
+código, en qué "nivel de detalle" incluirlo dentro de un presupuesto
+limitado de tokens (para que quepa en el contexto de un modelo de
+lenguaje): completo, resumido, solo su esqueleto, o omitido. Cada nivel
+cuesta más tokens y aporta más valor informativo. Con un presupuesto
+fijo y cientos de archivos, hay que elegir la combinación que maximiza
+el valor total sin pasarse del presupuesto. Ese problema, formalmente,
+se llama Multiple-Choice Knapsack — la mochila clásica, pero donde cada
+ítem no es "lo llevo o no lo llevo", sino "elijo una de varias versiones
+de él".</p>
+<p>Es un problema con solución exacta conocida (programación dinámica),
+acotado, bien estudiado. Nada exótico. Y aun así.</p>
+<h3
+id="primera-lección-no-rompe-nada-visible-no-es-lo-mismo-que-es-correcto">Primera
+lección: "no rompe nada visible" no es lo mismo que "es correcto"</h3>
+<p>La primera ronda de auditoría externa encontró algo que parece menor
+hasta que se piensa con cuidado: la conversión de costo en tokens a
+"slots" de la tabla de programación dinámica usaba redondeo hacia abajo.
+Un archivo que costaba, digamos, 61 tokens con una granularidad de 8,
+ocupaba 61 // 8 = 7 slots — pero 7 slots representan hasta 56 tokens, no
+61. Esa diferencia de 5 tokens no aparece en ningún test que solo mire
+"¿el resultado se ve razonable?". Aparece cuando se suman varios
+archivos con ese mismo redondeo hacia abajo, y el total de tokens
+realmente asignados termina superando el presupuesto que se le pidió al
+solver respetar.</p>
+<p>El caso mínimo que quedó documentado como test de regresión: tres
+archivos, presupuesto de 586 tokens, granularidad 8 — el resultado real
+terminaba usando 593. Siete tokens de más, sobre casi seiscientos.
+Invisible a simple vista. Real igual.</p>
+<p>La lección no es "cuidado con el redondeo" — es más específica:
+cuando una restricción se representa en dos unidades distintas (tokens
+reales vs. slots discretos de la tabla), cualquier conversión con
+pérdida entre ambas es un lugar donde la garantía que crees tener puede
+dejar de sostenerse, sin que el código lo anuncie de ninguna forma.</p>
+<h3
+id="segunda-lección-una-garantía-puede-ser-cierta-en-la-parte-que-se-prueba-y-falsa-en-la-composición">Segunda
+lección: una garantía puede ser cierta en la parte que se prueba, y
+falsa en la composición</h3>
+<p>La segunda ronda encontró algo más sutil todavía, y es mi ejemplo
+favorito de todo este proceso. Existía una función que "recuperaba"
+tokens sobrantes después de la asignación principal — si quedaba margen
+sin usar por culpa del redondeo del punto anterior, subía la calidad de
+algún archivo aprovechando ese margen. Esa función, aislada, era
+perfectamente monótona: nunca empeoraba una asignación ya construida.
+Eso se podía demostrar y se probó.</p>
+<p>El problema apareció cuando esa función se combinaba con otra que
+comparaba resultados entre <em>distintos</em> presupuestos para
+construir una curva de "cuánto valor se obtiene con cada nivel de
+presupuesto". La función de recuperación de sobrantes dependía de cuánto
+margen de redondeo tenía la asignación óptima <em>particular</em> de
+cada presupuesto — y esa asignación óptima podía ser una combinación de
+archivos completamente distinta entre un presupuesto y el siguiente. Así
+que el margen recuperado no crecía de forma consistente con el
+presupuesto. Resultado: la curva de "más presupuesto, más valor" podía
+tener una caída local — más presupuesto, <em>menos</em> valor — algo que
+no debería poder pasar nunca en un problema de este tipo, y que ningún
+test que verificara la función de recuperación por separado podía
+detectar, porque la función en sí nunca se rompió.</p>
+<p>Esto es lo que me parece más importante de compartir: verificar cada
+pieza por separado no verifica lo que pasa cuando se combinan. Las
+garantías matemáticas no siempre son composicionales — a veces sí, a
+veces no, y no hay atajo para saberlo salvo demostrarlo específicamente
+para la combinación en cuestión, no asumirlo porque cada parte por su
+lado se porta bien.</p>
+<h3
+id="tercera-lección-el-bug-más-peligroso-es-el-que-no-necesita-que-nada-falle">Tercera
+lección: el bug más peligroso es el que no necesita que nada falle</h3>
+<p>La tercera ronda encontró el caso que más me hizo repensar cómo
+diseño heurísticas de optimización. Existía un mecanismo que, antes de
+correr el algoritmo exacto, adelantaba una decisión "obvia" para
+archivos muy baratos y de muy alto valor — para ahorrar cómputo en casos
+donde la respuesta parecía evidente. Ese mecanismo escribía su decisión
+directamente en la misma estructura que el algoritmo exacto usa para
+representar "mínimos obligatorios" (por ejemplo, archivos que el usuario
+marcó como imprescindibles).</p>
+<p>El resultado: cuando la heurística acertaba, todo se veía perfecto.
+Cuando la heurística "sugería" algo que cabía perfectamente dentro del
+presupuesto — el caso común, no el excepcional — el algoritmo exacto
+dejaba de resolver el problema real. Pasaba a resolver un problema
+ligeramente más pequeño, con menos opciones disponibles para ese
+archivo, porque su heurística ya le había quitado libertad de decisión
+sin que nada indicara que eso había pasado. No había ningún error,
+ninguna advertencia, ningún presupuesto excedido. Solo un resultado
+<em>un poco peor de lo que el algoritmo exacto es capaz de
+encontrar</em>, presentado con la misma confianza que si fuera realmente
+el óptimo.</p>
+<p>Esa es, para mí, la categoría de bug más importante de entender: no
+es el que hace que algo truene. Es el que hace que un sistema diseñado
+para ser exacto deje de serlo, silenciosamente, exactamente en los casos
+donde parecía estar ayudando.</p>
+<h3 id="lo-que-cambia-cuando-se-acepta-que-no-hay-versión-final">Lo que
+cambia cuando se acepta que no hay versión final</h3>
+<p>Nada de esto se descubrió mirando el código con más atención la
+primera vez. Se descubrió porque, en cada ronda, alguien externo volvió
+a hacer la pregunta incómoda — "¿esto es realmente correcto, o solo
+parece correcto?" — y en varios casos la respuesta se verificó generando
+miles de ejemplos aleatorios contra el comportamiento esperado, no
+leyendo el código y confiando en la intuición. Varios de los bugs más
+sutiles (la no-monotonicidad entre presupuestos, la contaminación de la
+heurística) solo aparecieron con ese tipo de búsqueda sistemática, no
+habrían aparecido nunca revisando casos "razonables" a mano.</p>
+<p>Lo que me parece que vale la pena llevarse de esto, más allá del
+código puntual: la meta razonable no es "escribir código sin bugs" — es
+construir el hábito de seguir preguntando, con evidencia y no con
+confianza, si las garantías que crees tener siguen siendo ciertas
+después de cada cambio. Cada ronda de auditoría de este solver no cerró
+el tema — dejó una prueba de regresión nueva, un assert nuevo, una nota
+explicando por qué algo <em>no</em> era un bug (para que nadie vuelva a
+investigarlo desde cero), y siguió adelante. La quinta versión no es la
+versión perfecta. Es, simplemente, la que tiene una capa más de
+preguntas ya respondidas que la anterior.</p>
+<p>¿A alguien más le ha tocado encontrar un bug de este tipo — donde
+nada falla, pero una garantía silenciosa deja de cumplirse? Me interesa
+mucho comparar casos.</p>
+<p>#SoftwareEngineering #SoftwareTesting #Algorithms
+#PropertyBasedTesting #Python #CodeQuality #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SoftwareTesting</span><span class="tag-pill">#Algorithms</span><span class="tag-pill">#PropertyBasedTesting</span><span class="tag-pill">#Python</span><span class="tag-pill">#CodeQuality</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+
+      <article class="post" id="nombrar-bugs">
+        <p class="section-label">Bitácora ARCHANGEL · 7 de septiembre de 2026</p>
+        <h2 class="section-title post-title">"Síndrome del Turista", "DDoS al SO" y "Bomba 5": ponerle nombre a un bug es la mitad de no repetirlo</h2>
+        <div class="post-body">
+<p>Hay un hábito que empecé a aplicar en mi propio código y que me ha
+servido más de lo esperado: cuando encuentro un bug que no es obvio — de
+esos que no rompen nada a la vista pero sí desperdician recursos o
+rompen una garantía sutil — le pongo nombre. No un número de ticket. Un
+nombre que describa el patrón, no el síntoma puntual. La razón es
+simple: un número de issue se olvida. Un nombre como "Síndrome del
+Turista" se queda, y la próxima vez que alguien esté a punto de escribir
+código con esa misma forma, el nombre solo debería activar la alarma
+antes de terminar de escribir la función.</p>
+<p>Voy a compartir cuatro de esos bugs con nombre, todos de un mismo
+módulo (un analizador de "código muerto" — variables que se calculan
+pero nunca se usan, funciones que nadie llama). Ninguno es exótico. Los
+cuatro son del tipo que cualquiera puede escribir sin darse cuenta, y
+los cuatro enseñan algo que se generaliza mucho más allá de este caso
+puntual.</p>
+<h3
+id="ddos-al-so-cuando-paralelizar-no-es-opcional-es-obligatorio">"DDoS
+al SO": cuando paralelizar no es opcional, es obligatorio</h3>
+<p>El módulo, para decidir si una función realmente está muerta, no le
+basta con mirar el código — también cruza esa sospecha contra el
+historial de Git: ¿hace cuánto que nadie toca esta función? La primera
+versión de esa parte hacía lo más directo posible: por cada función
+candidata a "muerta", lanzaba un proceso git log — de forma síncrona,
+uno detrás de otro. Con 50 funciones sospechosas en un proyecto mediano,
+eso son 50 procesos del sistema operativo, ejecutados en serie,
+bloqueando el hilo principal mientras cada uno termina.</p>
+<p>El nombre que le puse a este patrón — "DDoS al SO" — es literal:
+estás bombardeando tu propio sistema con llamadas a un proceso externo,
+en serie, cuando no había ninguna razón real para no paralelizarlo.
+subprocess.run libera el GIL de Python mientras espera la respuesta del
+proceso externo — el intérprete no está ocupado durante esa espera, solo
+está <em>esperando</em>. Eso es exactamente el escenario de libro de
+texto para un ThreadPoolExecutor: I/O-bound, procesos independientes
+entre sí, sin necesidad de coordinación. El cambio real fue de una
+llamada síncrona en un loop a un pool de 8 workers disparando las
+consultas en paralelo.</p>
+<p>Lo que este bug enseña, más allá del caso puntual: cualquier vez que
+un loop dispara una operación que espera a algo externo — un proceso,
+una red, un disco — vale la pena preguntarse explícitamente por qué no
+está paralelizado, no asumir que "así se ve la primera versión que
+funciona" es aceptable como versión final.</p>
+<h3
+id="síndrome-del-turista-visitar-el-mismo-lugar-cuatro-veces-sin-darse-cuenta">"Síndrome
+del Turista": visitar el mismo lugar cuatro veces sin darse cuenta</h3>
+<p>Este es el que más me gusta, porque el nombre describe perfecto la
+sensación: alguien que llega a una ciudad nueva y, sin mapa mental del
+lugar, termina caminando por la misma calle cuatro veces sin notarlo,
+porque cada vez que buscaba algo distinto volvió a empezar desde cero.
+Eso era exactamente lo que hacía este código: para analizar un mismo
+archivo, recorría el árbol de sintaxis completo cuatro veces separadas —
+una vez para extraer las declaraciones de exportación pública, otra para
+buscar asignaciones muertas, otra para candidatos a función zombi, y una
+más solo para contar cuántas funciones había en total.</p>
+<p>Cada recorrido, por separado, se ve perfectamente razonable — es "un
+ast.walk() más" en una función que hace su trabajo. El problema aparece
+cuando se suma: sobre un proyecto de miles de archivos, ese factor de 4x
+en trabajo repetido sobre la misma estructura de datos es puro
+desperdicio, sin ningún beneficio a cambio, porque toda la información
+que necesitan los cuatro recorridos se puede extraer en un único paso:
+un solo ast.walk() que va guardando en listas separadas los nodos Assign
+y los nodos de función a medida que los encuentra, y todo lo demás se
+deriva de esas listas ya construidas, sin volver a tocar el árbol
+completo.</p>
+<p>La lección generalizable aquí es sobre cómo se acumula la deuda de
+rendimiento: casi nunca aparece de una sola vez de forma obvia. Aparece
+función por función, cada una razonable en aislamiento, hasta que
+alguien suma cuántas veces se está recorriendo la misma estructura y se
+da cuenta de que el trabajo total es un múltiplo innecesario del mínimo
+real.</p>
+<h3
+id="bomba-5-el-bug-de-corrección-que-se-disfraza-de-bug-de-rendimiento">"Bomba
+5": el bug de corrección que se disfraza de bug de rendimiento</h3>
+<p>Los dos anteriores eran sobre desperdiciar recursos. Este es distinto
+— es sobre llegar a una conclusión <em>incorrecta</em>, no solo lenta.
+El analizador necesita saber, para una variable declarada en el scope de
+una función, si alguna función anidada dentro de ella la lee como parte
+de un closure (para no marcarla como "muerta" si en realidad la está
+usando indirectamente). El chequeo original recorría la función anidada
+buscando qué nombres leía, y asumía que cualquier nombre leído ahí que
+no fuera un parámetro de esa función anidada venía del scope padre.</p>
+<p>El problema: si la función anidada redefine localmente ese mismo
+nombre en algún punto de su cuerpo — antes o después de leerlo, no
+importa el orden en el análisis estático simplificado — ese nombre ya no
+viene del padre en absoluto, es una variable local propia de la función
+anidada que hace <em>shadowing</em> del nombre externo. Sin detectar ese
+shadowing, el analizador creía que el padre estaba siendo usado por
+closure cuando en realidad no tenía ninguna relación real — un falso
+negativo que hacía que variables genuinamente muertas se protegieran
+como si estuvieran vivas.</p>
+<p>El nombre "Bomba 5" es menos descriptivo que los otros dos (es del
+tipo que solo tiene sentido para quien vivió la sesión de debugging),
+pero cumple la misma función: es una etiqueta corta que dispara la
+memoria de "ah, es el problema de shadowing en closures" en vez de tener
+que releer la explicación completa cada vez. El fix recolecta
+explícitamente todos los nombres que la función anidada define
+localmente — parámetros, asignaciones, funciones y clases anidadas
+dentro de ella, variables de comprensión — y los excluye del conjunto de
+"lecturas que vienen del padre". Con una excepción cuidadosa: los
+nombres declarados global/nonlocal deliberadamente no se tratan como
+locales, porque esos sí siguen refiriéndose al scope de afuera by design
+del propio lenguaje.</p>
+<h3 id="bug-7-la-corrección-de-un-bug-que-crea-el-bug-contrario">"Bug
+#7": la corrección de un bug que crea el bug contrario</h3>
+<p>Este es, para mí, el más importante de entender bien, porque es un
+patrón que se repite constantemente en ingeniería de software en
+general, no solo en análisis de código: al arreglar un falso negativo,
+es muy fácil sobrecorregir hacia un falso positivo. Si "Bomba 5" era "el
+analizador cree que hay una lectura del padre cuando no la hay" (por no
+detectar shadowing), la sobrecorrección obvia y tentadora sería "tratar
+como local cualquier nombre que aparezca asignado en cualquier punto de
+la función anidada" — pero eso rompería el caso real de global x o
+nonlocal x dentro de esa función anidada, donde el nombre sí debe seguir
+contando como una referencia genuina al scope padre.</p>
+<p>El propio comentario en el código lo dice explícitamente: el fix de
+"Bomba 5" se hizo <em>"sin reintroducir la contaminación de scope (Bug
+#7)"</em> — es decir, alguien ya había pasado por el error contrario en
+algún momento, y quedó documentado como advertencia para no repetirlo al
+tocar la misma zona del código otra vez. Esa es, quizás, la razón de
+fondo por la que nombrar los bugs importa tanto: no es solo memoria para
+uno mismo, es una señal explícita para cualquiera que vuelva a esa
+función en el futuro de que ese territorio ya se pisó mal dos veces, en
+dos direcciones opuestas, y que hay que tener cuidado de no repetir
+ninguna de las dos.</p>
+<h3 id="por-qué-esto-vale-más-que-la-suma-de-los-cuatro-bugs">Por qué
+esto vale más que la suma de los cuatro bugs</h3>
+<p>Ninguno de estos cuatro es un bug complicado de entender una vez
+explicado. Ese es justo el punto: son bugs simples, del tipo que
+cualquiera escribe, y que sobreviven en producción precisamente porque
+nada falla de forma ruidosa — el código funciona, solo funciona peor de
+lo que podría, o se equivoca en un caso específico que no salió en las
+pruebas obvias. Ponerles nombre no los hace menos comunes. Los hace más
+fáciles de reconocer la próxima vez, en otro archivo, escritos por otra
+persona, con otra forma superficial pero la misma estructura de
+fondo.</p>
+<p>Si algo me llevo de mantener este tipo de bitácora de bugs con nombre
+dentro del propio código: la documentación más útil que puede dejar una
+corrección no es "qué se cambió", es "qué patrón específico casi vuelve
+a pasar, y por qué esta vez no debería".</p>
+<p>¿Alguien más tiene la costumbre de nombrar sus bugs recurrentes? Me
+interesa ver qué nombres se les ocurren a otros equipos para los mismos
+patrones.</p>
+<p>#SoftwareEngineering #CodeQuality #Performance #Python
+#StaticAnalysis #SintaxisG</p>
+
+        </div>
+        <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#CodeQuality</span><span class="tag-pill">#Performance</span><span class="tag-pill">#Python</span><span class="tag-pill">#StaticAnalysis</span><span class="tag-pill">#SintaxisG</span></div>
+        <a class="back-to-top" href="#top">↑ Volver al índice</a>
+      </article>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

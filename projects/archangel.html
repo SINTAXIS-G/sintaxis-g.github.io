@@ -74,8 +74,10 @@
           <a href="#glosario">Glosario</a>
           <a href="#quickstart">Quickstart</a>
           <a href="#demo">Pruébalo tú mismo</a>
+          <a href="archangel-articulos.html" style="color:var(--accent);">Artículos &amp; bitácora →</a>
         </nav>
       </div>
+      <a class="mode-btn" href="archangel-articulos.html" style="text-decoration:none;">artículos →</a>
       <button class="mode-btn" id="dev-toggle">modo dev</button>
       <button class="mode-btn" id="bunker-toggle">modo búnker</button>
     </div>
@@ -499,6 +501,9 @@
     <p class="section-label">Bitácora de desarrollo</p>
     <h2>Un producto vivo, no una foto fija</h2>
     <p class="lede">Esta página se actualiza con lo que de verdad cambió en el código esta semana — verificado por sesiones que auditaron el repo directamente, no por notas de marketing.</p>
+    <div class="cta-row">
+      <a class="cta-btn primary" href="archangel-articulos.html">Leer la bitácora técnica completa →</a>
+    </div>
 
     <div class="changelog">
       <div class="changelog-entry">
@@ -960,5 +965,12 @@
 </footer>
 
 <script src="../js/main.js"></script>
+
+<!-- Control por gestos (opcional) -->
+<button id="gestos-toggle" class="gestos-toggle" aria-pressed="false">
+  <span>Activar control por gestos</span>
+</button>
+<script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>
+<script src="../gestures.js"></script>
 </body>
 </html>
