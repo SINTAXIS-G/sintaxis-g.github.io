@@ -47,6 +47,7 @@
         <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
         <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
           <a href="#resumen">¿Qué es ARCHANGEL?</a>
+          <a href="#capacidades-verificadas">Capacidades verificadas</a>
           <a href="#video">En acción</a>
           <a href="#problema">El problema → la respuesta</a>
           <a href="#fracturas">Predicción de fracturas</a>
@@ -119,6 +120,48 @@
     <div class="note-box">
       <div class="name">Es un producto con planes, no un experimento personal</div>
       <p>ARCHANGEL corre sobre una API con billing real (Stripe) y 4 planes con límites técnicos distintos — starter, team, business y enterprise. El motor de análisis en sí es 100% determinístico: no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama, corriendo en tu propia máquina) es una capa opcional encima, para chat, explicación y reparación asistida. Ver <a href="#planes" style="color:var(--accent);">detalle de planes</a> y <a href="#faq" style="color:var(--accent);">preguntas frecuentes</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="capacidades-verificadas">
+  <div class="wrap">
+    <p class="section-label">Bajo el capó</p>
+    <h2>Ocho capacidades verificadas por auditoría externa de código</h2>
+    <p class="lede">No son features de marketing — cada una fue trazada línea por línea (registro → ejecución → resultado) por una auditoría independiente del repositorio real.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">Aprendizaje real, no solo análisis estático</div>
+        <p>El feedback del usuario (explícito o implícito vía diff) recalibra los pesos del correlator en cada corrida — un ciclo cerrado de retroalimentación, no un modelo fijo.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Modo Fantasma: alertas sin que nadie las pida</div>
+        <p>Un daemon en segundo plano detecta cambios críticos y empuja alertas al HUD por sí solo — la mayoría de analizadores estáticos son pull-only; este empuja.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Sandbox de aislamiento real</div>
+        <p>Cada análisis corre en un proceso hijo aislado (multiprocessing spawn) con verificación de integridad por checksum antes de aceptar cualquier resultado.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">65+ analizadores con circuit breaker propio</div>
+        <p>Cada analizador tiene su propio circuit breaker y monitor de salud — uno que falla repetidamente se aísla solo, sin tumbar el resto del pipeline.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Taint analysis real, no solo regex</div>
+        <p>Motor de data-flow con resolución de imports, tanto intra-archivo como cross-file, con seguimiento de alias y tipado por estado (typestate).</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Detección de clones más allá del copy-paste literal</div>
+        <p>Encuentra clones Tipo II y III (variables renombradas, pequeñas variaciones estructurales) vía hash de esqueleto AST, no solo texto idéntico.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Motor de queries AQL con predicción de fallos</div>
+        <p>Un segundo motor de consultas sobre el grafo del proyecto simula cascadas de fallos N niveles de profundidad antes de que ocurran.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Seguridad de API de nivel empresarial</div>
+        <p>Rotación automática de API keys con periodo de gracia, detección de anomalías de uso por desviación estándar, y protección automática contra fuerza bruta.</p>
+      </div>
     </div>
   </div>
 </section>
