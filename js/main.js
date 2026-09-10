@@ -276,6 +276,24 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   });
 }
 
+// ---------- 9b. Menú móvil (hamburguesa) ----------
+const navToggle = document.getElementById('nav-toggle');
+const navLinksEl = document.querySelector('.nav-links');
+if (navToggle && navLinksEl) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinksEl.classList.toggle('is-open');
+    navToggle.classList.toggle('is-open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinksEl.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      navLinksEl.classList.remove('is-open');
+      navToggle.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
 // ---------- 10. Modo búnker (alto contraste) ----------
 const bunkerBtn = document.getElementById('bunker-toggle');
 if (bunkerBtn) {
@@ -336,14 +354,19 @@ const tocMenu = document.getElementById('toc-menu');
 if (tocToggle && tocMenu) {
   tocToggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    tocMenu.classList.toggle('is-open');
+    const isOpen = tocMenu.classList.toggle('is-open');
+    tocToggle.setAttribute('aria-expanded', String(isOpen));
   });
   tocMenu.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => tocMenu.classList.remove('is-open'));
+    a.addEventListener('click', () => {
+      tocMenu.classList.remove('is-open');
+      tocToggle.setAttribute('aria-expanded', 'false');
+    });
   });
   document.addEventListener('click', (e) => {
     if (!tocMenu.contains(e.target) && e.target !== tocToggle) {
       tocMenu.classList.remove('is-open');
+      tocToggle.setAttribute('aria-expanded', 'false');
     }
   });
 }
@@ -458,7 +481,75 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   });
 }
 
-// ---------- 17. Minimapa de scroll ----------
+// ---------- 18. FAQ acordeón ----------
+document.querySelectorAll('.faq-list').forEach((list) => {
+  const items = list.querySelectorAll('.faq-item');
+  items.forEach((item) => {
+    const q = item.querySelector('.faq-q');
+    if (!q) return;
+    q.addEventListener('click', () => {
+      const willOpen = !item.classList.contains('is-open');
+      items.forEach((i) => {
+        i.classList.remove('is-open');
+        const btn = i.querySelector('.faq-q');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+      if (willOpen) {
+        item.classList.add('is-open');
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+});
+
+// ---------- 19. Explorador de analizadores (filtro por categoría) ----------
+const analyzerFilters = document.querySelectorAll('.analyzer-chip');
+const analyzerCards = document.querySelectorAll('.analyzer-card');
+if (analyzerFilters.length && analyzerCards.length) {
+  analyzerFilters.forEach((chip) => {
+    chip.setAttribute('aria-pressed', chip.classList.contains('is-active') ? 'true' : 'false');
+    chip.addEventListener('click', () => {
+      analyzerFilters.forEach((c) => {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      const cat = chip.dataset.cat;
+      analyzerCards.forEach((card) => {
+        card.classList.toggle('is-visible', cat === 'all' || card.dataset.cat === cat);
+      });
+    });
+  });
+}
+
+// ---------- 19b. Calculadora de plan ----------
+const calcBtn = document.getElementById('calc-btn');
+if (calcBtn) {
+  const tierInfo = {
+    starter: { name: 'Starter', desc: '50 análisis/mes, hasta 5.000 líneas por archivo, sin batch.' },
+    team: { name: 'Team', desc: '500 análisis/mes, hasta 50.000 líneas por archivo, batch de hasta 50 archivos.' },
+    business: { name: 'Business', desc: 'Análisis ilimitados, hasta 200.000 líneas por archivo, batch de hasta 200 archivos.' },
+    enterprise: { name: 'Enterprise', desc: 'Análisis y líneas ilimitados, batch de hasta 500 archivos, SLA de 3s.' },
+  };
+  calcBtn.addEventListener('click', () => {
+    const analyses = Number(document.getElementById('calc-analyses').value) || 0;
+    const lines = Number(document.getElementById('calc-lines').value) || 0;
+    const batch = Number(document.getElementById('calc-batch').value) || 0;
+
+    let tier = 'starter';
+    if (lines > 200000 || batch > 200) tier = 'enterprise';
+    else if (analyses > 500 || lines > 50000 || batch > 50) tier = 'business';
+    else if (analyses > 50 || lines > 5000 || batch > 0) tier = 'team';
+
+    const info = tierInfo[tier];
+    const resultEl = document.getElementById('calc-result');
+    resultEl.innerHTML = `<div class="tier-name">${info.name}</div><p>${info.desc}</p>`;
+    resultEl.hidden = false;
+  });
+}
+
+// ---------- 20. Minimapa de scroll ----------
 // Se genera solo si la página tiene 4+ secciones con id — en páginas
 // cortas (como index.html) no aporta y estorba.
 const mmSections = document.querySelectorAll('section[id]');

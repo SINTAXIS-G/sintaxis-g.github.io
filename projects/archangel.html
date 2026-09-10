@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARCHANGEL Ω — SINTAXIS G</title>
-<meta name="description" content="ARCHANGEL Ω: motor de análisis estático multi-lenguaje que trata el software como un sistema físico.">
+<meta name="description" content="ARCHANGEL Ω: motor de análisis estático de código que trata el software como un sistema físico.">
 
 <meta name="author" content="Gabo">
 <meta name="robots" content="index, follow">
@@ -25,7 +25,6 @@
 <meta name="twitter:image" content="https://sintaxisg.com/assets/img/archangel-logo.png">
 
 <meta name="theme-color" content="#0a0e1a">
-<link rel="icon" href="../assets/img/favicon-archangel.ico" sizes="any">
 <link rel="icon" href="../assets/img/archangel-logo.png" type="image/png">
 <link rel="apple-touch-icon" href="../assets/img/archangel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,22 +44,35 @@
     <a class="proj-back" href="../index.html">← SINTAXIS G</a>
     <div class="mode-toggles">
       <div class="toc-wrap">
-        <button class="mode-btn" id="toc-toggle">índice ▾</button>
-        <nav class="toc-menu" id="toc-menu">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
+          <a href="#resumen">¿Qué es ARCHANGEL?</a>
           <a href="#video">En acción</a>
           <a href="#problema">El problema → la respuesta</a>
           <a href="#fracturas">Predicción de fracturas</a>
           <a href="#aql">AQL Engine v2.0</a>
           <a href="#health-score">Health Score &amp; Anti-Patrones</a>
           <a href="#taint">Taint &amp; Secret-Leak Analysis</a>
-          <a href="#sistema-nervioso">Sistema nervioso</a>
+          <a href="#sistema-nervioso">Sistema nervioso (ANS)</a>
+          <a href="#motores-autonomos">Motores autónomos</a>
+          <a href="#memoria-chat">Memoria &amp; chat con IA local</a>
           <a href="#arquitectura">Arquitectura técnica</a>
+          <a href="#analizadores">Catálogo de analizadores</a>
           <a href="#comparativa">Comparativa honesta</a>
+          <a href="#bitacora">Bitácora de desarrollo</a>
+          <a href="#planes">Planes</a>
+          <a href="#seguridad">Seguridad &amp; datos</a>
+          <a href="#roadmap">Roadmap</a>
           <a href="#mckp">Empaquetado óptimo (MCKP)</a>
           <a href="#symbolic-exec">Ejecución simbólica</a>
           <a href="#chandrasekhar">Límite de Chandrasekhar</a>
           <a href="#prompt-thermo">Prompt Thermodynamics</a>
+          <a href="#antes-despues">Antes / después</a>
           <a href="#reporte-real">Anatomía de un reporte real</a>
+          <a href="#auto-analisis">ARCHANGEL analizándose a sí mismo</a>
+          <a href="#faq">Preguntas frecuentes</a>
+          <a href="#glosario">Glosario</a>
+          <a href="#quickstart">Quickstart</a>
           <a href="#demo">Pruébalo tú mismo</a>
         </nav>
       </div>
@@ -76,9 +88,38 @@
     <p class="eyebrow">Proyecto insignia</p>
     <h1>ARCHANGEL Ω</h1>
     <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">AUTARKIC REPOSITORY CONTEXT HEURISTIC ANALYSIS NEURAL GENERATOR ENTITY LAYER</p>
-    <p class="tagline">Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
+    <p class="tagline">Motor de análisis estático que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
+    <div class="cta-row">
+      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar con soporte →</a>
+    </div>
   </div>
 </header>
+
+<section class="proj-block" id="resumen">
+  <div class="wrap">
+    <p class="section-label">¿Qué es ARCHANGEL?</p>
+    <h2>Un producto de análisis de código, no un script</h2>
+    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 69 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
+
+    <div class="featured-stats" style="margin-bottom: var(--space-lg);">
+      <div class="stat"><b>69</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
+      <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
+    </div>
+
+    <p style="color:var(--text); font-weight:600; margin-bottom: var(--space-sm);">A quién le sirve</p>
+    <div class="audience-grid">
+      <div class="audience-card"><div class="name">Dev individual</div><p>Análisis on-demand de un archivo o snippet, chat local sobre los hallazgos, y una extensión de editor para no salir del flujo de trabajo.</p></div>
+      <div class="audience-card"><div class="name">Equipo con CI/CD</div><p>Gate de regresión en pull requests (<code class="hl">/analyze/diff</code>), generador de YAML para GitHub Actions/GitLab/CircleCI/Azure/Jenkins, webhooks y análisis batch de hasta cientos de archivos.</p></div>
+      <div class="audience-card"><div class="name">Empresa con deuda técnica real</div><p>Auditoría de repos completos (clona y analiza un remoto entero), impacto financiero de la deuda técnica, watchlist de archivos críticos y planes con SLA diferenciado.</p></div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Es un producto con planes, no un experimento personal</div>
+      <p>ARCHANGEL corre sobre una API con billing real (Stripe) y 4 planes con límites técnicos distintos — starter, team, business y enterprise. El motor de análisis en sí es 100% determinístico: no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama, corriendo en tu propia máquina) es una capa opcional encima, para chat, explicación y reparación asistida. Ver <a href="#planes" style="color:var(--accent);">detalle de planes</a> y <a href="#faq" style="color:var(--accent);">preguntas frecuentes</a>.</p>
+    </div>
+  </div>
+</section>
 
 <section class="proj-block" id="video">
   <div class="wrap">
@@ -163,7 +204,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
-        <div class="terminal-line">→ 64 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line">→ 69 sub-analizadores orquestados vía DAG...</div>
         <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
         <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
         <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
@@ -293,23 +334,126 @@
     <p class="section-label">Un sistema nervioso para tu código</p>
     <h2>Auditoría continua, decisiones seguras</h2>
     <p class="lede">No es una metáfora suelta: cada mecanismo del daemon está fundamentado en un modelo publicado, con cita y año — no una analogía decorativa.</p>
+
+    <div class="status-row">
+      <span class="badge badge-stable">ALGORITMO ESTABLE</span>
+      <span class="badge badge-new">INTERFAZ DE PRODUCTO NUEVA</span>
+    </div>
+
     <div class="pillars">
-      <div class="pillar"><div class="name">Homeostasis vía control PID</div><p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt — el sistema mantiene estable la "temperatura" de deuda técnica con un bucle de retroalimentación negativa real, no un cronómetro de inactividad fijo <span class="dev-only"> (Åström &amp; Hägglund, 1995)</span>.</p></div>
+      <div class="pillar"><div class="name">Homeostasis vía control PID</div><p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt, con Kp=0.35, Ki=0.01, Kd=0.25 sobre ciclos de 15 segundos y setpoint E&lt;2.5 (Módulo de Young del código) — un bucle de retroalimentación negativa real, no un cronómetro de inactividad fijo <span class="dev-only"> (Åström &amp; Hägglund, 1995)</span>.</p></div>
       <div class="pillar"><div class="name">Percolación en redes</div><p>El grafo de llamadas AST se analiza con números de Betti y el criterio de Molloy-Reed: detecta cuándo el grado medio del grafo cruza el umbral crítico donde emerge una componente gigante conectada — riesgo real de percolación, no un conteo ingenuo de imports <span class="dev-only"> (Molloy &amp; Reed, 1995)</span>.</p></div>
       <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado <span class="dev-only"> (Bellman, 1957)</span>.</p></div>
       <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo <span class="dev-only"> (Kellerer, Pferschy &amp; Pisinger, 2004)</span>.</p></div>
-      <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Las ramas Git generadas son "anticuerpos": si el desarrollador las mergea, refuerzo; si las borra sin mergear, castigo. El daemon aprende el estilo arquitectónico real con el tiempo, no repite lo mismo siempre (de Castro &amp; Von Zuben, 2002).</p></div>
+      <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Cada rama Git generada es un "anticuerpo" — población de 5 por combinación (extensión de archivo + estrategia), con 2 sobrevivientes de élite por generación. Si mergeás la rama, recompensa +0.6; si la borrás sin usar, castigo −0.8. El sistema evoluciona su criterio de qué proponer con el tiempo, en vez de repetir siempre lo mismo <span class="dev-only"> (de Castro &amp; Von Zuben, 2002)</span>.</p></div>
     </div>
     <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador <span class="dev-only"> (Shannon, 1948)</span>.</p>
+
+    <div class="note-box">
+      <div class="name">Nota de ingeniería honesta</div>
+      <p>El algoritmo de ANS es maduro y estaba completo desde antes de esta versión de la página. Lo que se conectó recientemente fue el camino real hacia el producto: una API REST y un panel de UI para usarlo desde la app, en vez de solo un comando de línea de comandos. El cerebro es real y probado; la interfaz para llegar a él es nueva — lo distinguimos aquí en vez de venderlo como "battle-tested end-to-end".</p>
+    </div>
   </div>
 </section>
 
-<section class="proj-block" style="border-bottom: none;" id="arquitectura">
+<section class="proj-block" id="motores-autonomos">
+  <div class="wrap">
+    <p class="section-label">Motores autónomos</p>
+    <h2>Tres físicas más, aplicadas a decisiones reales</h2>
+    <p class="lede">Además del ANS, tres motores independientes aportan cada uno una dimensión distinta de "qué tan sano está esto y qué tan seguro es tocarlo" — con la misma honestidad sobre qué es cálculo real y qué es proxy.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">ResilienceEngine — Módulo de Young arquitectónico</div>
+        <p>Aplica E = σ/ε — la física que mide qué tan rígido o frágil es un material real — a toda tu arquitectura, clasificándola en 5 categorías inspiradas en Nassim Taleb: antifrágil, elástico, plástico, quebradizo o catastrófico. Incluye Chaos Engineering real: simula que falle un componente específico (amplificando su radio de explosión x2) y mide cuánto se degrada la resiliencia total, sin tocar nada de verdad.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">ResonanceEngine — acoplamiento por Git</div>
+        <p>Encuentra archivos que "resuenan" juntos en tu historial de Git — que cambian a la vez una y otra vez aunque el código no los importe entre sí. RCS = 0.6·probabilidad_condicional + 0.4·correlación_de_Pearson_normalizada, con 3 regímenes: silencio sísmico (&lt;0.25, independientes), resonancia controlada (0.25–0.55, esperado), o colapso armónico (&gt;0.55 — alarma real de arquitectura invisible a cualquier linter).</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Filtro de Maxwell — 8 leyes antes de mostrarte un fix</div>
+        <p>Antes de sugerirte un fix generado por IA, lo evalúa contra 8 leyes con nombre propio — Newton, Lorentz, Little, Hyrum, Postel, Reynolds, Chandrasekhar, Prigogine — cada una detectando un tipo distinto de mal diseño. Si el Maxwell Score no supera 0.72, te dice exactamente qué ley violó, en vez de dejarte descubrirlo en producción.</p>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Qué es cálculo real y qué es proxy</div>
+      <p>En ResilienceEngine, 2 de sus 5 métricas (acoplamiento y tiempo de recuperación) son proxies derivados de complejidad ciclomática y carga cognitiva, no mediciones directas — se muestra así en la propia interfaz. ResonanceEngine, sin historial de Git real, se niega a inventar un resultado: cae a un modo honesto en vez de simular datos que no tiene. El Filtro de Maxwell es informativo, no bloquea nada — la decisión de usar un fix siempre es tuya. Los tres algoritmos están completos y probados; sus paneles de producto se conectaron esta misma semana.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="memoria-chat">
+  <div class="wrap">
+    <p class="section-label">Memoria &amp; chat con IA local</p>
+    <h2>El sistema recuerda tu repo, y lo discute contigo</h2>
+    <p class="lede">Todo lo que corre en esta sección usa Ollama en tu propia máquina — nada de tu código sale hacia OpenAI, Anthropic ni ninguna API externa para chatear o pedir explicaciones.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">HyDE — memoria que entiende, no solo indexa</div>
+        <p>Antes de guardar un fragmento de código en memoria, un motor basado en reglas y AST (no un LLM) lo traduce a lenguaje natural — qué hace, qué efectos secundarios tiene, qué tan complejo es — con su propio puntaje de confianza. Buscarlo después es más preciso que comparar texto crudo.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Re-ranking híbrido</div>
+        <p>Combina 3 señales de búsqueda a la vez: similitud semántica (ChromaDB + sentence-transformers), coincidencia léxica (BM25 real) y qué tan central es un archivo en el grafo de conocimiento de tu proyecto (PageRank personalizado), con MMR para no devolver resultados redundantes.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Chat en modo debate o enjambre</div>
+        <p>Además del chat normal, podés poner a 2 personalidades de IA a debatir tu código en paralelo (Purista vs. Hacker) o convocar un Enjambre de 4 agentes (Ashby, Chandrasekhar, Lorentz, Seguridad) más un Director que sintetiza — con confianza bayesiana real (Beta-Binomial) que aprende con el uso en qué agentes confiar más.</p>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Nota de ingeniería honesta</div>
+      <p>Las señales de grafo del re-ranking dependen de que el knowledge graph de tu proyecto ya esté poblado — si no lo está, simplemente no aportan, no se inventa una señal falsa. Y los pesos de confianza del modo enjambre arrancan neutrales en un proyecto nuevo: la diferenciación "aprendida" entre agentes solo se nota con uso acumulado, no desde la primera consulta.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="arquitectura">
   <div class="wrap">
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de ~64 sub-analizadores, caché reactiva y circuit breakers. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 69 analizadores registrados (17 de métricas, 16 de física, 15 de topología, 10 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Honestidad sobre "multi-lenguaje"</div>
+      <p>El análisis profundo — el DAG completo de 69 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="analizadores">
+  <div class="wrap">
+    <p class="section-label">Catálogo de analizadores</p>
+    <h2>Ejemplos reales, no nombres de carpeta</h2>
+    <p class="lede">69 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una.</p>
+
+    <div class="analyzer-filters">
+      <button class="analyzer-chip is-active" data-cat="all">Todas</button>
+      <button class="analyzer-chip" data-cat="topology">Topología</button>
+      <button class="analyzer-chip" data-cat="semantics">Semántica</button>
+      <button class="analyzer-chip" data-cat="rules">Reglas &amp; sistemas</button>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar analyzer-card is-visible" data-cat="topology"><div class="cat-tag">Topología</div><div class="name">Clone detector</div><p>Distingue 3 niveles: copia exacta, mismo código con variables renombradas, y duplicado semántico (ej. un <code class="hl">while</code> equivalente a un <code class="hl">for</code>) — no solo un diff de texto.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="topology"><div class="cat-tag">Topología</div><div class="name">Coupling / cohesion (repulsión de Lorentz)</div><p>Asigna "carga" a cada capa arquitectónica (UI=+1, dominio=0, infraestructura=−1) y marca cuando una capa baja importa una alta — arquitectura en capas violada, modelada como repulsión electromagnética.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="topology"><div class="cat-tag">Topología</div><div class="name">Taint formal con verificación de retry</div><p>Rastrea SQL injection/RCE desde el parámetro de un endpoint hasta el <code class="hl">execute()</code>/<code class="hl">eval()</code> final, y prueba matemáticamente si un <code class="hl">@retry</code> es seguro — es decir, si reintentar no te cobra dos veces al mismo cliente.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="semantics"><div class="cat-tag">Semántica</div><div class="name">Pureza de funciones</div><p>Distingue mutar un objeto creado DENTRO de la función (seguro) de mutar uno recibido como parámetro (efecto secundario real que puede sorprender al que llama).</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="semantics"><div class="cat-tag">Semántica</div><div class="name">Dead stores (código zombie)</div><p>Cruza referencias de cero uso contra el historial de Git para no marcar falsos positivos en métodos abstractos o funciones exportadas como API pública.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="rules"><div class="cat-tag">Reglas &amp; sistemas</div><div class="name">Estructuras disipativas (Prigogine)</div><p>Marca consumers asíncronos sin dead-letter queue ni circuit breaker — sistemas que no tienen a dónde mandar la energía (los mensajes) cuando algo falla.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="rules"><div class="cat-tag">Reglas &amp; sistemas</div><div class="name">Ciclo adaptativo (Panarchy)</div><p>Clasifica archivos en fases de Holling (crecimiento/conservación/liberación/reorganización) y detecta "God Objects escleróticos" — atascados en rigidez, incapaces de reorganizarse.</p></div>
+      <div class="pillar analyzer-card is-visible" data-cat="rules"><div class="cat-tag">Reglas &amp; sistemas</div><div class="name">Entropía de Shannon</div><p>Marca over-fetching de API y colas asíncronas sin límite como "ruido que colapsa el throughput" — demasiada información sin estructura satura el canal.</p></div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Nota de ingeniería honesta</div>
+      <p>En estas categorías, la física/teoría de sistemas es el algoritmo real, no solo el nombre — las reglas de Prigogine, Panarchy y Shannon quedaron documentadas en el propio código como heurísticas inspiradas en esas teorías, no como simulaciones físicas literales.</p>
     </div>
   </div>
 </section>
@@ -318,16 +462,161 @@
   <div class="wrap">
     <p class="section-label">Comparativa honesta</p>
     <h2>En qué se diferencia, sin marketing</h2>
-    <table class="compare-table">
-      <thead><tr><th></th><th class="archangel-col">ARCHANGEL</th><th>SonarQube / Semgrep</th></tr></thead>
-      <tbody>
-        <tr><td>Output principal</td><td class="archangel-col">Campo tensorial de riesgo (D1–D5)</td><td>Score de calidad / lista de reglas</td></tr>
-        <tr><td>Taint analysis</td><td class="archangel-col">10 categorías simultáneas, sanitización contextual</td><td>Regla binaria por patrón</td></tr>
-        <tr><td>Predicción</td><td class="archangel-col">Probabilidad de fractura calibrada contra Git real</td><td>No predice, solo detecta lo ya presente</td></tr>
-        <tr><td>Intervención</td><td class="archangel-col">Rama aislada + aprendizaje de tus decisiones</td><td>Reporta; no propone ni aprende</td></tr>
-        <tr><td>Diseñado para</td><td class="archangel-col">Ser contexto de alta densidad para un LLM</td><td>Ser leído por un humano en un dashboard</td></tr>
-      </tbody>
-    </table>
+    <p class="lede">No competimos línea por línea contra la cobertura de reglas de estas herramientas — llevan años y comunidades enormes detrás. La diferencia está en qué hacen con lo que encuentran.</p>
+
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead><tr><th></th><th class="archangel-col">ARCHANGEL</th><th>SonarQube</th><th>Semgrep</th><th>CodeQL</th><th>Snyk Code</th></tr></thead>
+        <tbody>
+          <tr><td>Output principal</td><td class="archangel-col">Veredicto único por archivo (CLEAN→EMERGENCY), correlado entre categorías</td><td>Quality gate por reglas</td><td>Matches por regla léxica/AST</td><td>Resultados por query semántica (Datalog)</td><td>Vulnerabilidades con score de exploabilidad propio</td></tr>
+          <tr><td>Cómo prioriza el ruido</td><td class="archangel-col">Nodos de convergencia: 3+ categorías coincidiendo en la misma línea, con confianza bayesiana</td><td>Severidad fija por regla</td><td>Severidad fija por regla</td><td>Sin agregación entre queries distintas</td><td>Score propietario de riesgo</td></tr>
+          <tr><td>Taint analysis</td><td class="archangel-col">10 categorías simultáneas, sanitización contextual, SMT con Z3</td><td>Reglas de seguridad por patrón</td><td>Reglas de flujo de datos por patrón</td><td>Flujo de datos real, muy maduro</td><td>Motor propietario, orientado a dependencias + código</td></tr>
+          <tr><td>Predicción de fallos futuros</td><td class="archangel-col">Probabilidad de fractura calibrada contra tu historial de Git real</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td></tr>
+          <tr><td>Actúa sobre lo que encuentra</td><td class="archangel-col">Propone y aplica el fix en una rama Git aislada; aprende de cuáles aceptás o rechazás</td><td>Reporta; no propone</td><td>Autofix simple por patrón, no aprende</td><td>Reporta; no propone</td><td>Fix PRs automáticos, no aprende del rechazo</td></tr>
+          <tr><td>Chat / explicación con IA</td><td class="archangel-col">Local (Ollama) — modos normal, debate de 2 agentes, o enjambre de 4</td><td>No nativo</td><td>No nativo</td><td>No nativo</td><td>Asistente en la nube (servicio propietario)</td></tr>
+          <tr><td>Privacidad del código en la capa de IA</td><td class="archangel-col">100% local — nada sale a una API externa para chat/reparación</td><td>N/A (sin capa de IA propia)</td><td>N/A (sin capa de IA propia)</td><td>N/A (sin capa de IA propia)</td><td>Depende de infraestructura cloud de Snyk</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top: var(--space-lg); color:var(--text); font-weight:600;">Por qué elegir ARCHANGEL</p>
+    <div class="pillars" style="margin-top: var(--space-sm);">
+      <div class="pillar"><div class="name">No te ahoga en warnings</div><p>El correlator bayesiano colapsa 28 señales sueltas en 3 problemas reales priorizados — no una lista de cientos de líneas que nadie revisa completa.</p></div>
+      <div class="pillar"><div class="name">Predice, no solo detecta</div><p>El único de esta lista que te dice qué módulo probablemente va a fallar antes de que falle, calibrado contra TU historial de commits, no una fórmula genérica.</p></div>
+      <div class="pillar"><div class="name">Actúa y aprende</div><p>ANS propone refactors en ramas aisladas y ajusta su criterio según cuáles aceptás — las demás herramientas de esta tabla reportan y se olvidan.</p></div>
+      <div class="pillar"><div class="name">IA sin fuga de código</div><p>El chat y la reparación asistida corren en Ollama local — para equipos con código sensible, es la única opción de esta lista donde la capa de IA nunca toca una API externa.</p></div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Cuándo SÍ conviene usar las otras</div>
+      <p>Si necesitás la cobertura de reglas más amplia y probada en producción durante años, SonarQube tiene ese historial. Si tu prioridad es una librería enorme de queries semánticas para muchos lenguajes con soporte de GitHub, CodeQL es más maduro ahí. Semgrep gana en velocidad para reglas custom simples y en CI ligero. Y Snyk Code tiene más profundidad específica en vulnerabilidades de dependencias de terceros. ARCHANGEL no busca reemplazar esa cobertura — busca ser la capa que decide qué de todo eso importa de verdad, y que además actúa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="bitacora">
+  <div class="wrap">
+    <p class="section-label">Bitácora de desarrollo</p>
+    <h2>Un producto vivo, no una foto fija</h2>
+    <p class="lede">Esta página se actualiza con lo que de verdad cambió en el código esta semana — verificado por sesiones que auditaron el repo directamente, no por notas de marketing.</p>
+
+    <div class="changelog">
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>Se conectó la API REST y el panel de UI del ANS (Autonomic Nervous System) — el algoritmo ya era maduro, pero antes solo existía como comando de línea de comandos.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>ResilienceEngine (Módulo de Young arquitectónico) y el Filtro de Maxwell se expusieron por primera vez con endpoint y panel propios.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>ResonanceEngine (acoplamiento por co-cambio en Git) pasó de ser un número interno silencioso a tener su propio endpoint y UI visibles.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>Se corrigió un bug de persistencia en el log de entregas de webhooks: tras cualquier reinicio del proceso, los webhooks configurados se volvían invisibles y dejaban de dispararse en silencio. Ya no.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>Nuevo: análisis recurrente programado sobre repos remotos, y compartir un resultado de análisis por link público.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-09</div>
+        <p>Nuevo: campo <code class="hl">no_store</code> en <code class="hl">/analyze</code> y <code class="hl">/analyze/project</code> — pedís que tu código no se guarde en memoria semántica, y el chequeo corre antes de cualquier regla de indexado forzoso. Probado con un caso real de SQL injection: con el flag, cero apariciones en el índice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="planes">
+  <div class="wrap">
+    <p class="section-label">Planes</p>
+    <h2>4 tiers, límites técnicos reales</h2>
+    <p class="lede">Sin inventar un precio en USD que no existe públicamente — esto es la tabla de límites reales de cada plan, tal como está implementada. Para el costo exacto, el canal es hablar directo con el equipo.</p>
+
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead><tr><th>Plan</th><th>Análisis / mes</th><th>Líneas máx. / archivo</th><th>Archivos / batch</th><th>SLA (p99)</th></tr></thead>
+        <tbody>
+          <tr><td>Starter</td><td>50</td><td>5.000</td><td>— (sin batch)</td><td>30s · 99.0% uptime · soporte comunidad</td></tr>
+          <tr><td>Team</td><td>500</td><td>50.000</td><td>50</td><td>15s · 99.5% · email 48h</td></tr>
+          <tr><td>Business</td><td class="tier-highlight">Ilimitado</td><td>200.000</td><td>200</td><td>8s · 99.9% · email 24h</td></tr>
+          <tr><td>Enterprise</td><td class="tier-highlight">Ilimitado</td><td class="tier-highlight">Ilimitado</td><td>500</td><td>3s · 99.99% · Slack 4h</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:var(--space-sm); color:var(--text-dim); font-size:0.85rem;">Cada plan superior también habilita más perfiles de análisis (dense/skeleton en Starter; +full, diff en Team; +audit, rag en Business; todos en Enterprise).</p>
+
+    <div class="calc-box">
+      <p style="color:var(--text); font-weight:600; margin-bottom: var(--space-sm);">¿Cuál te conviene? Calculalo</p>
+      <div class="calc-row">
+        <div class="calc-field">
+          <label for="calc-analyses">Análisis por mes</label>
+          <input type="number" id="calc-analyses" min="0" placeholder="ej. 120">
+        </div>
+        <div class="calc-field">
+          <label for="calc-lines">Líneas del archivo más grande</label>
+          <input type="number" id="calc-lines" min="0" placeholder="ej. 30000">
+        </div>
+        <div class="calc-field">
+          <label for="calc-batch">Archivos por corrida en batch</label>
+          <input type="number" id="calc-batch" min="0" placeholder="ej. 40">
+        </div>
+      </div>
+      <button class="mode-btn" id="calc-btn">calcular mi plan →</button>
+      <div class="calc-result" id="calc-result" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="seguridad">
+  <div class="wrap">
+    <p class="section-label">Seguridad &amp; datos</p>
+    <h2>Qué pasa con tu código cuando lo analizás</h2>
+    <p class="lede">Sin promesas de privacidad que no estén implementadas todavía — esto es lo que hace el código hoy, verificado directamente contra el repositorio.</p>
+
+    <div class="status-row">
+      <span class="badge badge-stable">VERIFICADO</span>
+      <span class="badge badge-new">OPT-OUT NUEVO</span>
+    </div>
+
+    <div class="proj-split-text">
+      <p><strong style="color:var(--text)">El chat y la reparación asistida son 100% locales.</strong> Corren en Ollama, en tu propia máquina o servidor — ese código nunca sale hacia una API externa de LLM para eso.</p>
+      <p><strong style="color:var(--text)">La memoria semántica (RAG) persiste tu código — salvo que le digas que no.</strong> Con RAG activado (viene activado por defecto), el archivo completo que enviás a <code class="hl">/analyze</code> se guarda en disco sobre una base de datos vectorial local (ChromaDB), para poder buscarlo semánticamente en análisis futuros del mismo proyecto. Desde ahora, <code class="hl">POST /analyze</code> y <code class="hl">POST /analyze/project</code> aceptan un campo <code class="hl">no_store: true</code> — si lo mandás, el chequeo corre ANTES de cualquier regla de indexado, así que ni siquiera se evalúa el "siempre indexar en CRITICAL/EMERGENCY". Cubre tanto el índice semántico (VectorStore) como el Knowledge Graph: cero rastro persistente para ese análisis puntual.</p>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Probado con un caso real, no solo documentado</div>
+      <p>Se corrió el mismo archivo con una SQL injection real (veredicto CRITICAL en ambos casos) con y sin el flag. Sin <code class="hl">no_store</code>: apareció 4 veces en el índice semántico y 1 en el jerárquico — el comportamiento default de siempre. Con <code class="hl">no_store: true</code>: cero apariciones en ningún índice, pese al mismo veredicto crítico que antes se indexaba sin excepción.</p>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Lo que todavía falta</div>
+      <p>El opt-out es por request, no retroactivo: no borra lo que ya se indexó antes de que existiera este flag. Y para lo que sí se indexa por default, sigue sin haber una política de retención (TTL) — ningún job de purga automática por antigüedad. Es la siguiente pieza pendiente, más grande que el opt-out.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="roadmap">
+  <div class="wrap">
+    <p class="section-label">Roadmap</p>
+    <h2>Lo que ves hoy, y lo que viene</h2>
+    <p class="lede">Con la misma honestidad del resto de la página: esto es lo que está en desarrollo activo, no prometido para una fecha, pero sí con el trabajo ya empezado.</p>
+    <div class="roadmap-list">
+      <div class="roadmap-item">
+        <div class="rm-head"><span class="name">Alertas proactivas en tiempo real</span><span class="badge badge-dev">EN DESARROLLO</span></div>
+        <p>El backend (canal SSE) ya está montado; falta conectar el frontend para que dispare avisos mientras trabajás en otra pestaña, sin que vos preguntes nada.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="rm-head"><span class="name">Documentación educativa por hallazgo (CWE/OWASP)</span><span class="badge badge-dev">EN DESARROLLO</span></div>
+        <p>Ampliar el diccionario de explicaciones para que cubra todos los tipos de señal que los analizadores ya emiten hoy, no solo un subconjunto inicial.</p>
+      </div>
+      <div class="roadmap-item">
+        <div class="rm-head"><span class="name">Extensión de VSCode en el Marketplace</span><span class="badge badge-dev">EN DESARROLLO</span></div>
+        <p>El cliente ya está construido y funcional contra el backend; falta el empaquetado y la publicación pública para instalarla con un clic.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -410,6 +699,32 @@
   </div>
 </section>
 
+<section class="proj-block" id="antes-despues">
+  <div class="wrap">
+    <p class="section-label">Antes / después</p>
+    <h2>Así se ve un fix propuesto, no solo un warning</h2>
+    <p class="lede">Ejemplo ilustrativo del formato de propuesta que genera el ciclo de reparación — mismo patrón que usa ANS para las ramas que propone.</p>
+
+    <div class="proj-split">
+      <div>
+        <p style="font-family:var(--font-mono); font-size:0.8rem; color:#F87171; margin-bottom:0.5rem;">ANTES — CRITICAL: SQL Injection (W-1)</p>
+        <div class="code-block">def get_user(request):
+    user_id = request.GET["id"]
+    query = f"SELECT * FROM users WHERE id = {user_id}"
+    return db.execute(query)</div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-mono); font-size:0.8rem; color:#4ADE80; margin-bottom:0.5rem;">DESPUÉS — propuesto en rama aislada</p>
+        <div class="code-block">def get_user(request):
+    user_id = request.GET["id"]
+    query = "SELECT * FROM users WHERE id = %s"
+    return db.execute(query, (user_id,))</div>
+      </div>
+    </div>
+    <p style="margin-top:var(--space-sm); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Formato ilustrativo del tipo de fix que se propone — no un run capturado en vivo.</p>
+  </div>
+</section>
+
 <section class="proj-block" id="reporte-real">
   <div class="wrap">
     <p class="section-label">Anatomía de un reporte real</p>
@@ -441,6 +756,159 @@
     </div>
 
     <p style="margin-top:var(--space-lg); color:var(--text-dim); font-size:0.85rem;">Extracto real de un reporte generado sobre un archivo de prueba — condensado aquí a 3 de sus nodos de convergencia para que se lea en un minuto. El reporte completo incluyó las 28 señales, cada una con su categoría, severidad y fix hint.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="auto-analisis">
+  <div class="wrap">
+    <p class="section-label">Dogfooding</p>
+    <h2>ARCHANGEL analizándose a sí mismo</h2>
+    <p class="lede">La prueba más honesta de una herramienta de análisis es correrla contra su propio código.</p>
+    <div class="dogfood-box">
+      <div class="verdict">RESONANCEENGINE — AUTO-ANÁLISIS DEL REPO DE ARCHANGEL</div>
+      <p>Al correr ResonanceEngine (el motor que detecta acoplamiento oculto por co-cambio en Git) contra el propio repositorio de ARCHANGEL, el sistema encontró un par real de archivos en <strong style="color:var(--text)">colapso armónico</strong> — es decir, archivos que cambian juntos consistentemente en el historial de commits sin que el código los importe entre sí. Ese es exactamente el tipo de acoplamiento invisible que ningún linter tradicional puede ver, porque vive en el historial, no en el código actual.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="faq">
+  <div class="wrap">
+    <p class="section-label">Preguntas frecuentes</p>
+    <h2>Lo que preguntaría cualquiera antes de probarlo</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-1"><span>¿Reemplaza a SonarQube o Semgrep?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-1" role="region"><p>No es un competidor 1:1: cubre señales de seguridad y calidad como ellos, pero además cruza esas señales entre categorías con un correlator bayesiano — y cuando encuentra algo, puede proponer y aplicar el fix en una rama de Git aislada, en vez de solo reportarlo.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2"><span>¿Corre en la nube o en mi máquina?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-2" role="region"><p>El backend (la API de análisis) corre donde lo despliegues, self-hosted o gestionado. El chat y la reparación asistida usan Ollama de forma local — tu código nunca sale hacia OpenAI, Anthropic ni ninguna API externa de LLM para eso.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3"><span>¿Qué lenguajes soporta?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-3" role="region"><p>Análisis profundo (correlación bayesiana, físicas de código, taint cross-file) para Python. Soporte estructural — funciones, imports, seguridad básica, deuda técnica — para 14 lenguajes más: JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4"><span>¿Es gratis?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-4" role="region"><p>No — es un producto con 4 planes (starter/team/business/enterprise) según volumen de análisis mensual, tamaño de archivo y de batch. Ver la sección de <a href="#planes" style="color:var(--accent);">planes</a> para los límites exactos de cada uno.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5"><span>¿El análisis principal usa IA?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (69 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es de código abierto?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-6" role="region"><p>No, es software comercial — así está declarado explícitamente en su propia API.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a-7"><span>¿Cómo decide qué reportar de verdad y qué ignorar?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a" id="faq-a-7" role="region"><p>Con el correlator: cuando 3 o más categorías distintas de señal (seguridad, física de datos, topología, semántica) coinciden en la misma línea, se marca como nodo de convergencia real. Una señal aislada de una sola categoría resta confianza y se trata como posible ruido, en vez de alarmarte por cada detalle suelto.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Reemplaza a SonarQube o Semgrep?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No es un competidor 1:1: cubre señales de seguridad y calidad como ellos, pero además cruza esas señales entre categorías con un correlator bayesiano — y cuando encuentra algo, puede proponer y aplicar el fix en una rama de Git aislada, en vez de solo reportarlo." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Corre en la nube o en mi máquina?",
+      "acceptedAnswer": { "@type": "Answer", "text": "El backend (la API de análisis) corre donde lo despliegues, self-hosted o gestionado. El chat y la reparación asistida usan Ollama de forma local — tu código nunca sale hacia OpenAI, Anthropic ni ninguna API externa de LLM para eso." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué lenguajes soporta ARCHANGEL?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Análisis profundo (correlación bayesiana, físicas de código, taint cross-file) para Python. Soporte estructural para 14 lenguajes más: JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿ARCHANGEL es gratis?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, es un producto con 4 planes (starter, team, business, enterprise) según volumen de análisis mensual, tamaño de archivo y de batch." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El análisis principal de ARCHANGEL usa inteligencia artificial?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (69 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿ARCHANGEL es de código abierto?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, es software comercial." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo decide ARCHANGEL qué reportar de verdad y qué ignorar?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Con su correlator: cuando 3 o más categorías distintas de señal coinciden en la misma línea de código, se marca como nodo de convergencia real. Una señal aislada de una sola categoría resta confianza y se trata como posible ruido." }
+    }
+  ]
+}
+</script>
+
+<section class="proj-block glossary" id="glosario">
+  <div class="wrap">
+    <p class="section-label">Glosario</p>
+    <h2>Los términos físicos, en una frase cada uno</h2>
+    <p class="lede">Para no tener que salir de la página a buscar qué significa cada nombre.</p>
+    <dl>
+      <dt>Límite de Chandrasekhar</dt>
+      <dd>Masa cognitiva crítica de un archivo (tokens de AST corregidos por entropía) por encima de la cual se considera un Objeto Dios.</dd>
+      <dt>Fractura de Griffith</dt>
+      <dd>Modelo de mecánica de materiales (K_I = σ·√(π·a)) que ARCHANGEL usa para predecir cuándo un módulo va a "romperse" bajo su propia complejidad y deuda.</dd>
+      <dt>Módulo de Young (E = σ/ε)</dt>
+      <dd>Mide qué tan rígida o frágil es la arquitectura de un sistema completo — de antifrágil a catastrófico.</dd>
+      <dt>Percolación (Molloy-Reed)</dt>
+      <dd>Punto en el que un grafo de llamadas cruza un umbral crítico y aparece una componente gigante conectada — riesgo real de fallo en cascada.</dd>
+      <dt>Ecuación de Bellman</dt>
+      <dd>Fórmula de programación dinámica que ARCHANGEL usa para decidir qué refactor aplicar, maximizando beneficio y minimizando perturbación.</dd>
+      <dt>Selección clonal</dt>
+      <dd>Algoritmo inspirado en el sistema inmune que hace que ARCHANGEL aprenda con el tiempo de qué propuestas aceptás o rechazás.</dd>
+      <dt>Filtro de Maxwell</dt>
+      <dd>Capa que evalúa cada fix generado por IA contra 8 "leyes físicas" con nombre propio antes de mostrártelo.</dd>
+      <dt>Estructuras disipativas (Prigogine)</dt>
+      <dd>Teoría de sistemas usada para detectar colas o consumers sin forma de disipar errores (sin dead-letter queue ni circuit breaker).</dd>
+      <dt>Panarchy (ciclo adaptativo de Holling)</dt>
+      <dd>Modelo de 4 fases —crecimiento, conservación, liberación, reorganización— usado para detectar código atascado en rigidez.</dd>
+      <dt>Entropía de Shannon</dt>
+      <dd>Medida de "ruido" de información; pesa la masa cognitiva de un archivo y detecta sobrecarga de canales (over-fetching, colas sin límite).</dd>
+      <dt>Nodo de convergencia</dt>
+      <dd>Punto donde 3 o más categorías distintas de señal coinciden en la misma línea — lo que dispara un veredicto CRITICAL/EMERGENCY real, no un warning aislado.</dd>
+      <dt>Correlator bayesiano</dt>
+      <dd>Módulo que calcula la probabilidad de que una señal sea un falso positivo, combinando evidencia de múltiples analizadores a la vez.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="proj-block" id="quickstart">
+  <div class="wrap">
+    <p class="section-label">Quickstart</p>
+    <h2>Cómo se usa hoy, en la práctica</h2>
+    <p class="lede">Con la misma honestidad del resto de la página: hoy ARCHANGEL se despliega self-hosted, no hay un servicio público de autoservicio ni un paquete instalable todavía. Así es el camino real.</p>
+
+    <div class="pillars">
+      <div class="pillar"><div class="name">1 · Pedí acceso</div><p>No hay señalación pública para autoservicio hoy — el primer paso real es contactar a <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener" style="color:var(--accent);">soporte</a> para obtener tu API key.</p></div>
+      <div class="pillar"><div class="name">2 · Desplegá tu instancia</div><p>Self-hosted vía FastAPI/uvicorn (no hay paquete pip/npm todavía) — vos o tu equipo controlan dónde corre y dónde vive la base de datos.</p></div>
+      <div class="pillar"><div class="name">3 · Corré tu primer análisis</div><p>Un solo POST con tu API key y el código — sin más setup que eso para el primer resultado.</p></div>
+    </div>
+
+    <div class="terminal" style="margin-top: var(--space-lg);">
+      <div class="terminal-bar"><span></span><span></span><span></span></div>
+      <div class="terminal-body">
+        <div class="terminal-line"><span class="prompt">$</span> curl -X POST http://localhost:8000/analyze \</div>
+        <div class="terminal-line">    -H "X-Api-Key: TU_API_KEY" \</div>
+        <div class="terminal-line">    -H "Content-Type: application/json" \</div>
+        <div class="terminal-line">    -d '{"code": "def foo(): pass", "filename": "app.py"}'<span class="terminal-cursor"></span></div>
+      </div>
+    </div>
+    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);"><code class="hl">code</code> y <code class="hl">filename</code> son los únicos campos requeridos — el resto tiene default. Contra la instancia que vos despliegues, no un servicio hosteado público.</p>
   </div>
 </section>
 
@@ -481,6 +949,9 @@
   <div class="wrap">
     <p class="section-label" style="justify-content:center;">Veredicto</p>
     <p style="font-family:var(--font-mono); font-size:clamp(1.1rem, 3vw, 1.6rem); color:var(--accent); max-width:30ch; margin:0 auto;">"La Bóveda de la Verdad. El Escudo de la Coherencia."</p>
+    <div class="cta-row" style="justify-content:center;">
+      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar con soporte →</a>
+    </div>
   </div>
 </section>
 

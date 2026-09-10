@@ -88,7 +88,7 @@
     {
       "@type": "SoftwareApplication",
       "name": "ARCHANGEL",
-      "description": "Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código.",
+      "description": "Motor de análisis estático que trata el software como un sistema físico: entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Cross-platform",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -186,6 +186,9 @@
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#contacto">Contacto</a>
       </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -210,15 +213,15 @@
       <h2 class="section-title">ARCHANGEL</h2>
       <div class="featured">
         <div class="featured-desc">
-          <p>Motor de análisis estático multi-lenguaje que trata el software como un sistema físico: entropía de
+          <p>Motor de análisis estático que trata el software como un sistema físico: entropía de
             Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine
-            aplicadas al código.</p>
+            aplicadas al código. Corre como producto SaaS con planes por volumen — no es solo una herramienta interna.</p>
           <p>Backend en FastAPI, frontend en React/Vite, extensión de VSCode y GitHub Action — orquestado por un motor
             DAG con caché reactiva y detección de inconsistencias entre archivos.</p>
           <a class="featured-link" href="projects/archangel.html">Ver arquitectura completa →</a>
         </div>
         <div class="featured-stats">
-          <div class="stat"><b>~64</b><span>sub-analizadores orquestados vía DAG</span></div>
+          <div class="stat"><b>69</b><span>analizadores orquestados vía DAG</span></div>
           <div class="stat"><b>39</b><span>archivos en el módulo correlator</span></div>
           <div class="stat"><b>4</b><span>interfaces: API, web, VSCode, CI</span></div>
         </div>

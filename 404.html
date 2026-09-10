@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — SINTAXIS G</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0a0e1a">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="assets/img/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  .error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-md);
+  }
+  .error-page img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    margin-bottom: var(--space-md);
+  }
+  .error-code {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: var(--fs-small);
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-sm);
+  }
+  .error-page h1 {
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-sm);
+  }
+  .error-page p {
+    color: var(--text-dim);
+    max-width: var(--measure);
+    margin: 0 auto var(--space-lg);
+  }
+  .error-back {
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    color: var(--accent);
+    border: 1px solid var(--line);
+    padding: 0.7rem 1.4rem;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .error-back:hover { border-color: var(--accent-dim); }
+</style>
+</head>
+<body>
+
+<main class="error-page">
+  <div>
+    <img src="assets/img/logo-sintaxis-g.jpg" alt="SINTAXIS G">
+    <p class="error-code">ERROR 404 · NODO NO ENCONTRADO</p>
+    <h1>Esta ruta no existe en el grafo.</h1>
+    <p>La página que buscas fue movida, renombrada o nunca existió. El resto del sistema sigue en pie.</p>
+    <a class="error-back" href="/">← Volver al inicio</a>
+  </div>
+</main>
+
+</body>
+</html>
