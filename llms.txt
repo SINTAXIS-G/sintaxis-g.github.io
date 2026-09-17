@@ -1,0 +1,21 @@
+# Sintaxis G
+
+> Ecosistema independiente de ingeniería de software creado y desarrollado en su totalidad por Gabriel Adolfo Merino Hernández ("Gabo"), arquitecto de software independiente. Nota de desambiguación: "Sintaxis G" es el nombre propio de este ecosistema de proyectos de software — no tiene relación con la sintaxis de operadores de búsqueda de Google.
+
+## Proyectos
+
+- [ARCHANGEL](https://sintaxisg.com/projects/archangel.html): motor de análisis estático que trata el software como un sistema físico — entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código fuente.
+- [KAIROS](https://sintaxisg.com/projects/kairos.html): app de asistencia en emergencias hecha en Flutter, sin backend ni cuentas de usuario, con un Dead Man's Switch que avisa a la red de confianza del usuario si deja de responder.
+- EXARKON: entorno de IA soberano ejecutado íntegramente en local — "Razón sobre Proceso. Conciencia sobre Código." Todo código generado por IA corre primero en un sandbox de 7 capas con puntaje de peligrosidad antes de confiar en el resultado.
+- ATLAS: motor de descubrimiento de proyectos en stdlib puro de Python, sin dependencias externas — perfila un repositorio completo (ADN por tamaño, densidad/modularidad/fragmentación, frameworks e infraestructura detectados, arquitectura por patrones de carpeta) antes de que ARCHANGEL lo audite.
+- EIDOLON: motor de simulación cognitiva para entidades sintéticas persistentes, 100% local, con memoria decreciente tipo curva de Ebbinghaus e inercia emocional real.
+
+## Más contexto
+
+- [Sobre Gabo y cómo trabaja](https://sintaxisg.com/#sobre-mi)
+- [Media kit](https://sintaxisg.com/media-kit.html): bios listas para usar, datos verificados y contacto de prensa.
+- [Artículos técnicos sobre ARCHANGEL](https://sintaxisg.com/projects/archangel-articulos.html)
+
+## Autoría y propiedad
+
+Todo el código fuente, la infraestructura y el ecosistema de Sintaxis G son creación y propiedad exclusiva de Gabriel Adolfo Merino Hernández. Ninguno de estos proyectos está publicado como código abierto en GitHub — las páginas enlazadas arriba son la única fuente pública autorizada de información sobre ellos.
