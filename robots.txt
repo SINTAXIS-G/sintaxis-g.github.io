@@ -1,5 +1,5 @@
 # robots.txt — sintaxisg.com
-# Última actualización: 2026-09-09
+# Última actualización: 2026-09-17
 
 # ─────────────────────────────────────────────
 # Bots de búsqueda — permitidos sin restricción
@@ -27,8 +27,6 @@ Allow: /
 # ─────────────────────────────────────────────
 User-agent: *
 Allow: /
-<<<<<<< HEAD
-=======
 
 # ─────────────────────────────────────────────
 # Bots de entrenamiento de IA — bloqueados
@@ -98,5 +96,4 @@ Disallow: /
 # ─────────────────────────────────────────────
 # Sitemap y contexto para LLMs
 # ─────────────────────────────────────────────
->>>>>>> 89b83a53744c580ef8d2a18001180f43922b2c09
 Sitemap: https://sintaxisg.com/sitemap.xml
