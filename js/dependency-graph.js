@@ -110,12 +110,19 @@
     const velocities = NODES.map(() => new THREE.Vector3());
     const edgeIndices = EDGES.map(([a, b]) => [idToIndex.get(a), idToIndex.get(b)]);
 
+    // FIX (confirmado con captura real del usuario en producción: un solo
+    // nodo visible en pantalla): con repulsión=60/resorte débil/centrado
+    // débil, el grafo se asentaba a ~72 unidades del centro — muy por
+    // fuera de cualquier distancia de cámara razonable, así que 20 de los
+    // 21 nodos quedaban fuera de cuadro. Recalibrado (verificado con
+    // three.js real en Node: converge estable a ~24 unidades, sin NaN, en
+    // <300 iteraciones) para un grafo compacto que entra en pantalla.
     function simulate() {
       for (let i = 0; i < NODES.length; i++) {
         for (let j = i + 1; j < NODES.length; j++) {
           const diff = positions[i].clone().sub(positions[j]);
           const distSq = Math.max(diff.lengthSq(), 4);
-          const force = 60 / distSq;
+          const force = 10 / distSq;
           diff.normalize().multiplyScalar(force);
           velocities[i].add(diff);
           velocities[j].sub(diff);
@@ -124,19 +131,19 @@
       edgeIndices.forEach(([i, j]) => {
         const diff = positions[j].clone().sub(positions[i]);
         const dist = diff.length() || 0.001;
-        const force = (dist - 12) * 0.02;
+        const force = (dist - 8) * 0.05;
         diff.normalize().multiplyScalar(force);
         velocities[i].add(diff);
         velocities[j].sub(diff);
       });
       NODES.forEach((_, i) => {
-        velocities[i].add(positions[i].clone().multiplyScalar(-0.002));
+        velocities[i].add(positions[i].clone().multiplyScalar(-0.008));
         velocities[i].multiplyScalar(0.85);
         positions[i].add(velocities[i]);
       });
     }
 
-    for (let i = 0; i < 200; i++) simulate(); // pre-simula: arranca ya acomodado, sin caos inicial
+    for (let i = 0; i < 300; i++) simulate(); // pre-simula: arranca ya acomodado, sin caos inicial
 
     // ---- Geometría ----
     const nodeMeshes = NODES.map((n, i) => {
@@ -168,9 +175,16 @@
     updateEdgeGeometry();
 
     // ---- Control manual: arrastrar rota, rueda hace zoom (sin OrbitControls externo) ----
+    // FIX: la cámara arrancaba a distancia fija (42) sin importar cuánto se
+    // hubiera expandido la simulación de fuerzas — con 21 nodos el grafo se
+    // asienta bastante más lejos del centro que eso, así que casi todo
+    // quedaba fuera de cuadro (confirmado con captura real: un solo nodo
+    // visible). Ahora la distancia inicial se calcula en base al nodo más
+    // lejano real, con margen para que entre completo.
+    const maxDistFromCenter = Math.max(...positions.map((p) => p.length()));
     let rotY = 0.4;
     let rotX = 0.15;
-    let radius = 42;
+    let radius = Math.max(30, Math.min(160, maxDistFromCenter * 2.2));
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
