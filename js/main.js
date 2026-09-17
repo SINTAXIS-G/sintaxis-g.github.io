@@ -258,6 +258,187 @@ if (heroCanvas) {
   }
 }
 
+// ---------- 8b. Campo de entropía: shader WebGL reactivo al cursor ----------
+// Capa detrás de la red de partículas (z-index: -1) — si WebGL falla por
+// cualquier motivo (navegador viejo, contexto perdido, GPU sin soporte),
+// esto no rompe nada: el catch silencioso deja el hero exactamente como
+// se veía antes de este bloque.
+(function () {
+  const shaderCanvas = document.getElementById('hero-shader-canvas');
+  if (!shaderCanvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const gl = shaderCanvas.getContext('webgl') || shaderCanvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const VERTEX_SRC = `
+    attribute vec2 aPosition;
+    void main() {
+      gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+  `;
+
+  const FRAGMENT_SRC = `
+    precision mediump float;
+    uniform vec2 uResolution;
+    uniform vec2 uMouse;
+    uniform float uTime;
+
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      float a = hash(i);
+      float b = hash(i + vec2(1.0, 0.0));
+      float c = hash(i + vec2(0.0, 1.0));
+      float d = hash(i + vec2(1.0, 1.0));
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+    }
+
+    float fbm(vec2 p) {
+      float value = 0.0;
+      float amplitude = 0.5;
+      for (int i = 0; i < 4; i++) {
+        value += amplitude * noise(p);
+        p *= 2.0;
+        amplitude *= 0.5;
+      }
+      return value;
+    }
+
+    void main() {
+      vec2 uv = gl_FragCoord.xy / uResolution.xy;
+      vec2 mouseUv = uMouse / uResolution.xy;
+
+      vec2 p = uv * 3.0 + uTime * 0.03;
+      float n = fbm(p + fbm(p + uTime * 0.05));
+
+      float dist = distance(uv, mouseUv);
+      float mouseInfluence = smoothstep(0.5, 0.0, dist) * 0.6;
+      n += mouseInfluence * fbm(p * 2.0 + uTime * 0.1);
+
+      vec3 colorLow = vec3(0.039, 0.055, 0.078);
+      vec3 colorHigh = vec3(0.239, 0.855, 0.843);
+      vec3 color = mix(colorLow, colorHigh, clamp(n * 0.35, 0.0, 1.0));
+
+      float vignette = smoothstep(1.0, 0.3, length(uv - 0.5) * 1.4);
+      gl_FragColor = vec4(color, clamp(n * 0.22 * vignette, 0.0, 1.0));
+    }
+  `;
+
+  function compileShader(type, src) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, src);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.warn('[hero-shader] error de compilación:', gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vertexShader = compileShader(gl.VERTEX_SHADER, VERTEX_SRC);
+  const fragmentShader = compileShader(gl.FRAGMENT_SHADER, FRAGMENT_SRC);
+  if (!vertexShader || !fragmentShader) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.warn('[hero-shader] error de link:', gl.getProgramInfoLog(program));
+    return;
+  }
+  gl.useProgram(program);
+
+  // Un solo triángulo que cubre toda la pantalla — más barato que dos.
+  const positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1, 3, -1, -1, 3,
+  ]), gl.STATIC_DRAW);
+
+  const aPosition = gl.getAttribLocation(program, 'aPosition');
+  gl.enableVertexAttribArray(aPosition);
+  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+
+  const uResolution = gl.getUniformLocation(program, 'uResolution');
+  const uMouse = gl.getUniformLocation(program, 'uMouse');
+  const uTime = gl.getUniformLocation(program, 'uTime');
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let shaderAnimating = false;
+  let shaderRafId = null;
+  const startTime = performance.now();
+
+  function resizeShaderCanvas() {
+    const rect = shaderCanvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // tope de DPR: nitidez suficiente sin costo de retina completa
+    shaderCanvas.width = rect.width * dpr;
+    shaderCanvas.height = rect.height * dpr;
+    gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
+    mouseX = shaderCanvas.width / 2;
+    mouseY = shaderCanvas.height / 2;
+  }
+
+  function renderShader(now) {
+    if (!shaderAnimating) return;
+    gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
+    gl.uniform2f(uMouse, mouseX, shaderCanvas.height - mouseY);
+    gl.uniform1f(uTime, (now - startTime) / 1000);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    shaderRafId = requestAnimationFrame(renderShader);
+  }
+
+  function startShader() {
+    if (shaderAnimating) return;
+    shaderAnimating = true;
+    shaderRafId = requestAnimationFrame(renderShader);
+  }
+
+  function stopShader() {
+    shaderAnimating = false;
+    if (shaderRafId !== null) cancelAnimationFrame(shaderRafId);
+    shaderRafId = null;
+  }
+
+  resizeShaderCanvas();
+  window.addEventListener('resize', resizeShaderCanvas);
+
+  shaderCanvas.parentElement.addEventListener('mousemove', (e) => {
+    const rect = shaderCanvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    mouseX = (e.clientX - rect.left) * dpr;
+    mouseY = (e.clientY - rect.top) * dpr;
+  });
+
+  // Mismo criterio de pausa que la red de partículas: sin gastar GPU en un
+  // shader que nadie ve (fuera de viewport o pestaña en segundo plano).
+  const shaderObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && document.visibilityState === 'visible') startShader();
+      else stopShader();
+    });
+  }, { threshold: 0 });
+  shaderObserver.observe(shaderCanvas);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      stopShader();
+      return;
+    }
+    const rect = shaderCanvas.getBoundingClientRect();
+    const inViewport = rect.bottom > 0 && rect.top < window.innerHeight;
+    if (inViewport) startShader();
+  });
+})();
+
 // ---------- 9. Cursor personalizado ----------
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const cursorDot = document.createElement('div');
@@ -580,4 +761,308 @@ if (mmSections.length >= 6) {
     });
   }, { rootMargin: '-45% 0px -45% 0px' });
   mmSections.forEach((s) => mmObserver.observe(s));
+}
+
+// ---------- 21. Artículos: tiempo de lectura + navegador con scrollspy ----------
+const posts = document.querySelectorAll('article.post[id]');
+if (posts.length >= 2) {
+  // Tiempo de lectura estimado (≈200 palabras/min en español), agregado
+  // a la misma línea de fecha que ya trae cada post ("Bitácora · fecha").
+  posts.forEach((post) => {
+    const body = post.querySelector('.post-body');
+    const label = post.querySelector('.section-label');
+    if (!body || !label) return;
+    const words = body.textContent.trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.round(words / 200));
+    label.textContent = `${label.textContent} · ${minutes} min de lectura`;
+  });
+
+  // Navegador flotante de artículos: lista desplegable que resalta
+  // el post actual a medida que se scrollea (scrollspy).
+  const artNav = document.createElement('div');
+  artNav.className = 'article-nav';
+  artNav.innerHTML = `
+    <button class="article-nav-toggle" aria-expanded="false" aria-controls="article-nav-list">Índice de artículos ▾</button>
+    <div class="article-nav-list" id="article-nav-list"></div>`;
+  document.body.appendChild(artNav);
+
+  const artNavToggle = artNav.querySelector('.article-nav-toggle');
+  const artNavList = artNav.querySelector('.article-nav-list');
+  const artLinks = [];
+
+  posts.forEach((post) => {
+    const titleEl = post.querySelector('.post-title');
+    const a = document.createElement('a');
+    a.href = `#${post.id}`;
+    a.textContent = titleEl ? titleEl.textContent : post.id;
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      post.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      artNavList.classList.remove('is-open');
+      artNavToggle.setAttribute('aria-expanded', 'false');
+    });
+    artNavList.appendChild(a);
+    artLinks.push({ post, a });
+  });
+
+  artNavToggle.addEventListener('click', () => {
+    const isOpen = artNavList.classList.toggle('is-open');
+    artNavToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  document.addEventListener('click', (e) => {
+    if (!artNav.contains(e.target)) {
+      artNavList.classList.remove('is-open');
+      artNavToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const postObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const match = artLinks.find((l) => l.post === entry.target);
+      if (!match) return;
+      if (entry.isIntersecting) {
+        artLinks.forEach((l) => l.a.classList.remove('is-active'));
+        match.a.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  posts.forEach((p) => postObserver.observe(p));
+}
+
+// ---------- 22. Chandrasekhar Playground: simulación de colapso ----------
+// Heurística educativa (NO el motor real de masa cognitiva de ARCHANGEL,
+// que corre en Python sobre AST + entropía de Shannon — ver disclaimer
+// en la propia sección). Cada método es una partícula con gravedad
+// proporcional a su masa; si la masa total de la clase supera 1.44× lo
+// que N métodos "sanos" deberían pesar, colapsa.
+const chandraRunBtn = document.getElementById('chandra-run');
+if (chandraRunBtn) {
+  const chandraInput = document.getElementById('chandra-input');
+  const chandraCanvas = document.getElementById('chandra-canvas');
+  const chandraVerdict = document.getElementById('chandra-verdict');
+  const ctx = chandraCanvas.getContext('2d');
+
+  const HEALTHY_MASS_PER_METHOD = 20; // calibrado a mano contra 2 clases de referencia
+  const CF_RE = /\b(if|elif|else|for|while|except|and|or|try)\b/g;
+
+  function parseMethods(source) {
+    const lines = source.split('\n');
+    const methods = [];
+    let current = null;
+    for (const line of lines) {
+      const m = line.match(/^(\s*)def\s+([A-Za-z_]\w*)\s*\(/);
+      if (m && m[1].length > 0 && m[1].length <= 4) {
+        if (current) methods.push(current);
+        current = { name: m[2], lines: 0, cf: 0 };
+        continue;
+      }
+      if (current && line.trim() !== '') {
+        current.lines++;
+        const matches = line.match(CF_RE);
+        if (matches) current.cf += matches.length;
+      }
+    }
+    if (current) methods.push(current);
+    return methods;
+  }
+
+  function computeMass(m) {
+    return 8 + m.lines * 1.5 + m.cf * 6;
+  }
+
+  let particles = [];
+  let rafId = null;
+  let state = 'idle'; // idle | orbiting | collapsing | collapsed | stable
+  let stateStart = 0;
+  let centroid = { x: 0, y: 0 };
+
+  function resizeCanvas() {
+    const rect = chandraCanvas.parentElement.getBoundingClientRect();
+    chandraCanvas.width = rect.width;
+    chandraCanvas.height = rect.height || 320;
+  }
+
+  function initParticles(methods) {
+    resizeCanvas();
+    const w = chandraCanvas.width;
+    const h = chandraCanvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    centroid = { x: cx, y: cy };
+
+    particles = methods.map((m, i) => {
+      const mass = computeMass(m);
+      const angle = (i / methods.length) * Math.PI * 2;
+      const dist = Math.min(w, h) * 0.32;
+      return {
+        name: m.name,
+        mass,
+        radius: Math.max(6, Math.sqrt(mass) * 1.6),
+        x: cx + Math.cos(angle) * dist,
+        y: cy + Math.sin(angle) * dist,
+        vx: -Math.sin(angle) * 0.35,
+        vy: Math.cos(angle) * 0.35,
+      };
+    });
+  }
+
+  function step() {
+    const w = chandraCanvas.width;
+    const h = chandraCanvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const collapsing = state === 'collapsing';
+    const G = collapsing ? 0.9 : 0.045;
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        const distSq = Math.max(dx * dx + dy * dy, 100);
+        const dist = Math.sqrt(distSq);
+        const force = (G * a.mass * b.mass) / distSq;
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        a.vx += fx / a.mass;
+        a.vy += fy / a.mass;
+        b.vx -= fx / b.mass;
+        b.vy -= fy / b.mass;
+      }
+    }
+
+    particles.forEach((p) => {
+      if (!collapsing) {
+        // Fuerza de contención suave hacia el centro para que no se escapen del canvas
+        const dxc = cx - p.x;
+        const dyc = cy - p.y;
+        p.vx += dxc * 0.00008;
+        p.vy += dyc * 0.00008;
+        p.vx *= 0.995;
+        p.vy *= 0.995;
+      } else {
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+      }
+      p.x += p.vx;
+      p.y += p.vy;
+    });
+  }
+
+  function draw() {
+    const w = chandraCanvas.width;
+    const h = chandraCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Líneas de acoplamiento entre partículas cercanas
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        const maxDist = Math.min(w, h) * 0.55;
+        if (dist < maxDist) {
+          ctx.strokeStyle = state === 'collapsing'
+            ? `rgba(248, 113, 113, ${0.25 * (1 - dist / maxDist)})`
+            : `rgba(61, 218, 215, ${0.18 * (1 - dist / maxDist)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach((p) => {
+      const color = state === 'collapsing' || state === 'collapsed' ? '248,113,113' : '61,218,215';
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
+      grad.addColorStop(0, `rgba(${color}, 0.9)`);
+      grad.addColorStop(1, `rgba(${color}, 0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = `rgba(${color}, 0.95)`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  function loop(now) {
+    step();
+    draw();
+
+    if (state === 'orbiting' && now - stateStart > 1800) {
+      state = 'stable';
+      showVerdict(false);
+    } else if (state === 'collapsing' && now - stateStart > 1600) {
+      state = 'collapsed';
+      showVerdict(true);
+    }
+
+    // 'stable'/'collapsed' son estados finales: se dibuja el último frame y se
+    // corta el loop — nada de requestAnimationFrame corriendo para siempre
+    // por una simulación que el usuario ya no está mirando.
+    if (state === 'orbiting' || state === 'collapsing') {
+      rafId = requestAnimationFrame(loop);
+    } else {
+      rafId = null;
+    }
+  }
+
+  function showVerdict(collapsed) {
+    chandraVerdict.hidden = false;
+    if (collapsed) {
+      chandraVerdict.className = 'chandra-verdict is-critical';
+      chandraVerdict.textContent = `🔴 GOD OBJECT — colapsó bajo su propia masa (${totalMassLabel})`;
+    } else {
+      chandraVerdict.className = 'chandra-verdict is-clean';
+      chandraVerdict.textContent = `✓ Saludable — masa total dentro del límite (${totalMassLabel})`;
+    }
+  }
+
+  let totalMassLabel = '';
+
+  chandraRunBtn.addEventListener('click', () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    chandraVerdict.hidden = true;
+
+    const methods = parseMethods(chandraInput.value);
+    if (methods.length === 0) {
+      chandraVerdict.hidden = false;
+      chandraVerdict.className = 'chandra-verdict';
+      chandraVerdict.textContent = 'No se detectaron métodos — pegá una clase con al menos un def';
+      return;
+    }
+
+    const masses = methods.map(computeMass);
+    const total = masses.reduce((a, b) => a + b, 0);
+    const expected = methods.length * HEALTHY_MASS_PER_METHOD;
+    const mCrit = 1.44 * expected;
+    const willCollapse = total > mCrit;
+    totalMassLabel = `masa: ${total.toFixed(0)} / límite: ${mCrit.toFixed(0)}`;
+
+    initParticles(methods);
+    state = 'orbiting'; // siempre orbita un momento antes del veredicto
+    stateStart = performance.now();
+
+    // Si va a colapsar, programamos el cambio de estado tras la órbita inicial
+    if (willCollapse) {
+      setTimeout(() => {
+        state = 'collapsing';
+        stateStart = performance.now();
+      }, 1800);
+    }
+
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(loop);
+  });
+
+  window.addEventListener('resize', () => {
+    if (particles.length) resizeCanvas();
+  });
 }

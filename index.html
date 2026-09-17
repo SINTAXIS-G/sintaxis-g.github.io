@@ -98,7 +98,7 @@
     {
       "@type": "SoftwareApplication",
       "name": "EXARKON",
-      "description": "Entorno de IA soberano ejecutado íntegramente en local. «Razón sobre Proceso. Conciencia sobre Código.»",
+      "description": "Entorno de IA soberano ejecutado íntegramente en local. «Razón sobre Proceso. Conciencia sobre Código.» Todo código generado por IA corre primero en un sandbox de 7 capas con puntaje de peligrosidad antes de confiar en el resultado.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Local / offline",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -118,7 +118,7 @@
     {
       "@type": "SoftwareApplication",
       "name": "A.R.K.",
-      "description": "Navegador de privacidad estricta: dificulta el rastreo por huella digital, pausa pestañas inactivas para ahorrar recursos, y aplica borrado seguro de datos temporales si detecta manipulación externa.",
+      "description": "Navegador de privacidad estricta: bloquea telemetría y trackers en capa de red, dificulta el rastreo por huella digital, y congela pestañas inactivas a disco para liberar RAM real (100+ pestañas, menos de 500MB) con restauración instantánea.",
       "applicationCategory": "BrowserApplication",
       "operatingSystem": "Linux",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -177,7 +177,7 @@
 
   <nav class="nav">
     <div class="wrap">
-      <span class="nav-mark"><img src="assets/img/logo-sintaxis-g.jpg" alt="SINTAXIS G"
+      <span class="nav-mark"><img src="assets/img/logo-sintaxis-g.webp" alt="SINTAXIS G"
           style="height:1.75rem;width:1.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;">SINTAXIS
         G</span>
       <div class="nav-links">
@@ -194,6 +194,7 @@
   </nav>
 
   <header class="hero">
+    <canvas id="hero-shader-canvas" class="hero-shader-canvas"></canvas>
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <div class="wrap">
       <h1>Software tratado como un sistema físico.</h1>
@@ -202,7 +203,7 @@
         desarrollo, construidos desde cero por un solo arquitecto.</p>
       <div class="hero-meta">
         <div><strong>6</strong>proyectos activos</div>
-        <div><strong>100k+</strong>líneas en ARCHANGEL</div>
+        <div><strong>200k+</strong>líneas en ARCHANGEL</div>
         <div><strong>Local-first</strong>mínima dependencia de nube</div>
       </div>
     </div>
@@ -223,8 +224,8 @@
           <a class="featured-link" href="projects/archangel-articulos.html">Leer artículos →</a>
         </div>
         <div class="featured-stats">
-          <div class="stat"><b>69</b><span>analizadores orquestados vía DAG</span></div>
-          <div class="stat"><b>39</b><span>archivos en el módulo correlator</span></div>
+          <div class="stat"><b>71</b><span>analizadores orquestados vía DAG</span></div>
+          <div class="stat"><b>26</b><span>archivos en el módulo correlator</span></div>
           <div class="stat"><b>4</b><span>interfaces: API, web, VSCode, CI</span></div>
         </div>
       </div>
@@ -240,7 +241,12 @@
           <h3 class="name">EXARKON</h3>
           <span class="desc">El cerebro del ecosistema: un entorno de IA soberano ejecutado íntegramente en local. Su
             lema resume la apuesta — "Razón sobre Proceso. Conciencia sobre Código." — no basta con que ejecute líneas,
-            tiene que entender la intención detrás de ellas.</span>
+            tiene que entender la intención detrás de ellas. Todo código generado por IA corre primero dentro de un
+            sandbox de 7 capas (proceso efímero con privilegios mínimos, sistema de archivos señuelo, red bloqueada,
+            fuzzing determinístico) que le pone un puntaje de peligrosidad de 0 a 100 antes de confiar en el
+            resultado. Por debajo, un traductor de hardware ajusta en vivo cuántas capas de un modelo caben en la GPU
+            y frena la carga ante sobrecalentamiento — diseñado para correr en una GPU de consumo modesta, no en un
+            datacenter.</span>
           <p class="status">En desarrollo</p>
         </div>
         <div class="eco-item">
@@ -256,10 +262,12 @@
         <div class="eco-item">
           <h3 class="name">A.R.K.</h3>
           <span class="desc">Navegador de privacidad estricta, pensado como una capa de aislamiento entre el operador y
-            la red. Introduce variaciones controladas en Canvas/AudioContext para dificultar el rastreo por huella
-            digital, pausa a nivel de sistema las pestañas inactivas para ahorrar recursos, y valida su propia ejecución
-            contra características reales del hardware. Si detecta señales de manipulación externa, aplica un borrado
-            seguro de los datos temporales en memoria — nada queda expuesto más tiempo del necesario.</span>
+            la red. Bloquea telemetría y trackers en capa de red antes de que salga el primer byte, introduce
+            variaciones controladas en Canvas/AudioContext para dificultar el rastreo por huella digital, y mantiene
+            un log de auditoría inmutable de cada solicitud que hace — opacidad cero para quien lo usa. Su gestor de
+            memoria congela pestañas inactivas a disco y libera el proceso por completo: 100+ pestañas abiertas,
+            menos de 500MB de RAM, con restauración instantánea al volver a ellas. Cada arranque verifica su propia
+            integridad con firma criptográfica Ed25519 — si el binario fue alterado, se niega a iniciar.</span>
           <p class="status">En desarrollo</p>
         </div>
         <div class="eco-item">
@@ -380,12 +388,12 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/command-palette.js"></script>
 
   <!-- Control por gestos (opcional) -->
   <button id="gestos-toggle" class="gestos-toggle" aria-pressed="false">
     <span>Activar control por gestos</span>
   </button>
-  <script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>
   <script src="gestures.js"></script>
 </body>
 

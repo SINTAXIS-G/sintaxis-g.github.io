@@ -102,10 +102,10 @@
   <div class="wrap">
     <p class="section-label">¿Qué es ARCHANGEL?</p>
     <h2>Un producto de análisis de código, no un script</h2>
-    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 69 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
+    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 71 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><b>69</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><b>71</b><span>analizadores orquestados vía DAG</span></div>
       <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
       <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
@@ -193,7 +193,7 @@
         <p>Sobre esa lectura, un módulo de control y decisión (homeostático + modelo de decisión) elige qué corregir, respetando un presupuesto de cambio y evitando repetir estrategias que ya fallaron antes.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-problema-respuesta.png" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy">
+        <img src="../assets/img/archangel-problema-respuesta.webp" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy">
         <figcaption>Del problema detectado a la acción correctiva, en un solo ciclo cerrado.</figcaption>
       </figure>
     </div>
@@ -207,7 +207,7 @@
     <p class="lede">v8.0 del predictor: no es una fórmula suelta, es un modelo calibrado contra el historial real de Git — con la misma honestidad de ingeniería que el resto del motor.</p>
     <div class="proj-split reverse">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-fracturas.png" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy">
+        <img src="../assets/img/archangel-fracturas.webp" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy">
         <figcaption>K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.</figcaption>
       </figure>
       <div class="proj-split-text">
@@ -240,7 +240,7 @@
         <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (label, masa, estado térmico, dominio/capa — cada uno O(1) o O(log n) según el tipo) y un optimizador que hace <em>predicate pushdown</em>, reordena joins por selectividad y estima coste antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-aql-engine.png" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
+        <img src="../assets/img/archangel-aql-engine.webp" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
         <figcaption>15 extensiones integradas bajo un solo lenguaje de consulta.</figcaption>
       </figure>
     </div>
@@ -249,7 +249,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
-        <div class="terminal-line">→ 69 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line">→ 71 sub-analizadores orquestados vía DAG...</div>
         <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
         <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
         <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
@@ -300,7 +300,7 @@
   <div class="wrap">
     <p class="section-label">Health Score &amp; Anti-Patrones</p>
     <h2>Tu arquitectura, resumida en una letra</h2>
-    <p class="lede">170.000 líneas de análisis no sirven de nada si nadie las lee. El Health Score Engine las comprime en un solo número con letra — como un reporte de crédito, pero para tu código — y el Smell Detector le pone nombre a cada síntoma.</p>
+    <p class="lede">200.000 líneas de análisis no sirven de nada si nadie las lee. El Health Score Engine las comprime en un solo número con letra — como un reporte de crédito, pero para tu código — y el Smell Detector le pone nombre a cada síntoma.</p>
 
     <div class="proj-split">
       <div class="proj-split-text">
@@ -363,7 +363,7 @@
         <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-taint-analysis.png" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy">
+        <img src="../assets/img/archangel-taint-analysis.webp" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy">
         <figcaption>Fuentes, propagación, análisis de factibilidad y sinks — el camino completo del dato.</figcaption>
       </figure>
     </div>
@@ -462,12 +462,28 @@
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de 69 analizadores registrados (17 de métricas, 16 de física, 15 de topología, 10 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 71 analizadores registrados (18 de métricas, 16 de física, 15 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
     </div>
 
     <div class="note-box">
       <div class="name">Honestidad sobre "multi-lenguaje"</div>
-      <p>El análisis profundo — el DAG completo de 69 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+      <p>El análisis profundo — el DAG completo de 71 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+    </div>
+
+    <div class="depgraph-block">
+      <p class="depgraph-label">El grafo de módulos, en 3D — arrastrá para rotar, scroll para zoom</p>
+      <div class="depgraph-canvas-wrap" id="depgraph-mount">
+        <div class="depgraph-loading">cargando Three.js…</div>
+      </div>
+      <div class="depgraph-legend">
+        <span><i style="background:#3DDAD7"></i>registry / orquestación</span>
+        <span><i style="background:#4ADE80"></i>correlator</span>
+        <span><i style="background:#FBBF24"></i>physics</span>
+        <span><i style="background:#F87171"></i>topology</span>
+        <span><i style="background:#A78BFA"></i>semantics</span>
+        <span><i style="background:#60A5FA"></i>rules</span>
+      </div>
+      <p class="depgraph-disclaimer">Recorte curado a mano de ~20 módulos reales del repositorio (de 200.000+ líneas) para que se entienda de un vistazo — no es una corrida en vivo del grafo de imports completo, y el tamaño de cada nodo es una estimación relativa, no una métrica exacta de líneas.</p>
     </div>
   </div>
 </section>
@@ -476,7 +492,7 @@
   <div class="wrap">
     <p class="section-label">Catálogo de analizadores</p>
     <h2>Ejemplos reales, no nombres de carpeta</h2>
-    <p class="lede">69 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una.</p>
+    <p class="lede">71 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una.</p>
 
     <div class="analyzer-filters">
       <button class="analyzer-chip is-active" data-cat="all">Todas</button>
@@ -549,6 +565,34 @@
     </div>
 
     <div class="changelog">
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-17</div>
+        <p>Reconciliados los 3 motores de detección de patrones de seguridad (AST + 2 motores basados en regex), que compartían sinks parcialmente solapados sin fuente única de verdad. El fix de falso positivo eval()/exec() del motor AST — que ya distinguía <code class="hl">eval()</code> real de <code class="hl">objeto.eval()</code> — no se había propagado a los otros dos: <code class="hl">pandas.DataFrame.eval()</code> y <code class="hl">QApplication.exec()</code> disparaban el mismo hallazgo crítico que una ejecución de código arbitraria real. Medido contra 10 repos open-source maduros: 311 → 45 hallazgos de ese patrón. Además, cuando dos motores detectan exactamente el mismo hallazgo (misma línea, mismo CWE), ahora se fusiona en una sola señal en vez de contarlo doble.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-17</div>
+        <p>La API ahora distingue explícitamente "sin correlación disponible" (lenguaje sin corredor de análisis profundo) de "archivo limpio, cero hallazgos" — antes ambos casos eran indistinguibles para el cliente.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-16</div>
+        <p>El detector de "división insegura" pasó de una heurística de texto a una prueba matemática real con Z3: en vez de asumir que cualquier <code class="hl">if</code> alrededor de una división la protege, ahora traduce la condición a una fórmula SMT y prueba si el divisor puede ser cero. El cambio destapó un bug real que la heurística anterior escondía en silencio — un <code class="hl">if x == 0: return 1 / x</code> no se marcaba como división insegura.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-16</div>
+        <p>El reconocedor de intención algorítmica pasó de 7 a 19 patrones detectados: selection sort, insertion sort, búsqueda lineal, DFS, programación dinámica tabulada, debounce, throttle, singleton, factory, procesamiento por chunks, acumulador y aplanado recursivo, entre otros.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-16</div>
+        <p>Resolución cross-módulo real (AST puro, sin ejecutar código) para 5 analizadores de física, taint analysis, race conditions y blast radius — antes cada uno solo veía las llamadas dentro del propio archivo; ahora resuelven imports reales hacia otros archivos del mismo proyecto.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-16</div>
+        <p>Recalibrado el límite de Chandrasekhar (masa cognitiva crítica) con evidencia real de 10 repositorios open-source maduros, en vez de un factor sin medir contra código real.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-16</div>
+        <p>Triage por staleness de Git en el router predictivo: combina recencia y volumen real de cambios del historial de commits para decidir qué priorizar, en vez de un criterio estático.</p>
+      </div>
       <div class="changelog-entry">
         <div class="changelog-date">2026-09-09</div>
         <p>Se conectó la API REST y el panel de UI del ANS (Autonomic Nervous System) — el algoritmo ya era maduro, pero antes solo existía como comando de línea de comandos.</p>
@@ -672,11 +716,11 @@
   <div class="wrap">
     <p class="section-label">Empaquetado óptimo de contexto</p>
     <h2>Qué archivos le enseñas a la IA, y en qué estado</h2>
-    <p class="lede">La ventana de contexto de un LLM es finita. Con un repo de 170.000 líneas, la pregunta no es "¿cabe todo?" — nunca cabe. La pregunta real es: dado un presupuesto de tokens, ¿qué combinación de archivos, y en qué nivel de detalle cada uno, maximiza lo que la IA entiende del sistema?</p>
+    <p class="lede">La ventana de contexto de un LLM es finita. Con un repo de 200.000 líneas, la pregunta no es "¿cabe todo?" — nunca cabe. La pregunta real es: dado un presupuesto de tokens, ¿qué combinación de archivos, y en qué nivel de detalle cada uno, maximiza lo que la IA entiende del sistema?</p>
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-mckp-solver.png" alt="Diagrama del MCKP Solver: empaquetado óptimo de archivos en la ventana de contexto del LLM" loading="lazy">
+        <img src="../assets/img/archangel-mckp-solver.webp" alt="Diagrama del MCKP Solver: empaquetado óptimo de archivos en la ventana de contexto del LLM" loading="lazy">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">No es "meter lo que quepa" — es una Mochila de Múltiple Elección real.</strong> Cada archivo puede vivir en 4 estados (omitido, esqueleto, minificado, código completo), cada uno con su propio costo en tokens y su propio valor semántico. El solver corre un DP exacto que maximiza el valor total sin pasarse del presupuesto — con numpy si está disponible, y beam search cuando el problema es demasiado grande para resolverlo exacto.</p>
@@ -694,7 +738,7 @@
 
     <div class="proj-split reverse">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-symbolic-exec.png" alt="Diagrama del motor de ejecución simbólica: interpretación abstracta y verificación SMT" loading="lazy">
+        <img src="../assets/img/archangel-symbolic-exec.webp" alt="Diagrama del motor de ejecución simbólica: interpretación abstracta y verificación SMT" loading="lazy">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">5 clases de hazard, dos con veredicto matemático real.</strong> NULL_DEREF, DICT_KEY_UNSAFE, EMPTY_ITER se detectan por interpretación abstracta pura. DIV_BY_ZERO e INDEX_OUT_OF_BOUNDS van un paso más allá: con Z3 instalado, el motor construye las restricciones de camino reales (incluyendo comparaciones encadenadas como <code class="hl">0 &lt;= i &lt; n</code>) y le pregunta al solver si el caso de falla es SAT (posible, con contraejemplo) o UNSAT (matemáticamente imposible) — cero reporte si es imposible.</p>
@@ -717,13 +761,78 @@
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-chandrasekhar.png" alt="Diagrama del motor de masa cognitiva: límite de Chandrasekhar aplicado a archivos de código" loading="lazy">
+        <img src="../assets/img/archangel-chandrasekhar.webp" alt="Diagrama del motor de masa cognitiva: límite de Chandrasekhar aplicado a archivos de código" loading="lazy">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">La masa no es líneas ni caracteres — son tokens de AST corregidos por entropía.</strong> Se mide en tokens semánticos del árbol sintáctico real, y esa masa cruda se corrige por la entropía de Shannon de la distribución de nodos: dos archivos con el mismo conteo de tokens no pesan igual si uno repite el mismo patrón sintáctico y el otro es diverso de verdad.</p>
         <p><strong style="color:var(--text)">El límite es contextual, no un umbral fijo inventado.</strong> <code class="hl">M_crit = 1.44 × masa_cognitiva_promedio_del_subdirectorio</code> — un archivo se juzga contra sus vecinos reales, no contra un número mágico igual para todo el repo.</p>
         <p><strong style="color:var(--text)">La partición, cuando hace falta, es estructural — no adivina por nombre de función.</strong> Construye un grafo de cohesión interno (símbolos como nodos, estado/llamadas compartidas como aristas), cuenta componentes conexas (LCOM4) y, si el archivo sigue siendo una sola pieza, lo bisecta matemáticamente con el vector de Fiedler — solo cae a un criterio léxico si no hay señal estructural suficiente.</p>
       </div>
+    </div>
+
+    <div class="chandra-playground">
+      <p class="chandra-playground-label">Probalo — pegá una clase Python y mirá si colapsa bajo su propia masa</p>
+      <div class="chandra-grid">
+        <div>
+          <textarea id="chandra-input" class="demo-textarea" spellcheck="false" placeholder="Pegá una clase Python...">class UserManager:
+    def create_user(self, data):
+        if not data.get("email"):
+            raise ValueError("falta email")
+        if not data.get("password"):
+            raise ValueError("falta password")
+        user = User(email=data["email"])
+        db.session.add(user)
+        db.session.commit()
+        self.send_welcome_email(user)
+        return user
+
+    def send_welcome_email(self, user):
+        if user.locale == "es":
+            template = "welcome_es"
+        elif user.locale == "en":
+            template = "welcome_en"
+        else:
+            template = "welcome_default"
+        mailer.send(user.email, template)
+
+    def deactivate_user(self, user_id):
+        user = User.query.get(user_id)
+        if not user:
+            raise ValueError("no existe")
+        user.active = False
+        for session in user.sessions:
+            session.revoke()
+        db.session.commit()
+
+    def export_users_csv(self):
+        rows = []
+        for user in User.query.all():
+            if user.active:
+                rows.append([user.id, user.email, user.created_at])
+        return rows
+
+    def validate_password_strength(self, password):
+        if len(password) < 8:
+            return False
+        has_upper = any(c.isupper() for c in password)
+        has_digit = any(c.isdigit() for c in password)
+        return has_upper and has_digit
+
+    def reset_password(self, user_id, new_password):
+        if not self.validate_password_strength(new_password):
+            raise ValueError("password débil")
+        user = User.query.get(user_id)
+        user.password_hash = hash_password(new_password)
+        db.session.commit()
+        self.send_welcome_email(user)</textarea>
+          <button class="mode-btn" id="chandra-run" style="margin-top:var(--space-sm);">simular colapso →</button>
+        </div>
+        <div class="chandra-canvas-wrap">
+          <canvas id="chandra-canvas"></canvas>
+          <div class="chandra-verdict" id="chandra-verdict" hidden></div>
+        </div>
+      </div>
+      <p class="chandra-disclaimer">Heurística educativa corriendo 100% en tu navegador: cada método es una partícula cuya masa depende de cuántas líneas y ramas de control tiene, y se atraen entre sí como cuerpos con gravedad. Si la masa total de la clase supera 1.44× lo que un método "normal" debería pesar, colapsa — la misma idea del límite real, simplificada para verse. <strong>No es el motor de masa cognitiva real de ARCHANGEL</strong>, que corre en Python sobre el AST completo con corrección por entropía de Shannon (ver arriba).</p>
     </div>
   </div>
 </section>
@@ -736,7 +845,7 @@
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-prompt-thermodynamics.png" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy">
+        <img src="../assets/img/archangel-prompt-thermodynamics.webp" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">Recocido simulado real (Kirkpatrick, 1983), no una metáfora de nombre.</strong> Una "temperatura" controla exploración vs. explotación: alta al inicio (acepta prompts imperfectos, mutaciones agresivas, más libertad para el LLM), baja al converger (solo acepta mejoras, mutaciones mínimas, instrucciones precisas). 4 schedules de enfriamiento disponibles — exponencial, logarítmico, lineal, o adaptativo según la tasa de mejora reciente.</p>
@@ -843,7 +952,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5"><span>¿El análisis principal usa IA?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (69 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
+        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (71 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es de código abierto?</span><span class="faq-icon">+</span></button>
@@ -885,7 +994,7 @@
     {
       "@type": "Question",
       "name": "¿El análisis principal de ARCHANGEL usa inteligencia artificial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (69 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (71 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
     },
     {
       "@type": "Question",
@@ -1008,12 +1117,13 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+<script src="../js/dependency-graph.js"></script>
 
 <!-- Control por gestos (opcional) -->
 <button id="gestos-toggle" class="gestos-toggle" aria-pressed="false">
   <span>Activar control por gestos</span>
 </button>
-<script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>
 <script src="../gestures.js"></script>
 </body>
 </html>

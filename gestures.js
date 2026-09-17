@@ -3,6 +3,11 @@
 // Web Speech API (nativa del navegador) controla la navegación por voz.
 // Los gestos son 100% locales. La voz usa el motor de reconocimiento del navegador
 // (en Chrome eso pasa por servidores de Google; los gestos no salen de tu máquina).
+//
+// PERF: handsfree.js (~330KB) NO se carga en el <script> de la página — se
+// inyecta recién al primer clic en "Activar", porque es una feature opcional
+// que la mayoría de las visitas nunca usa. Cargarlo por adelantado le cobraba
+// esa descarga a todos, la usen o no.
 
 (function () {
   const boton = document.getElementById('gestos-toggle');
@@ -21,13 +26,12 @@
   const raiz = enProjects ? '../' : '';
   const carpetaProjects = enProjects ? '' : 'projects/';
 
-  // ---------- GESTOS: scroll con la altura de la mano ----------
+  // ---------- GESTOS: scroll con la altura de la mano (carga diferida) ----------
   let ultimoGesto = 0;
   let handsfree = null;
+  let cargandoHandsfree = null; // Promise en vuelo, evita doble-carga por doble clic
 
-  if (typeof Handsfree !== 'undefined') {
-    handsfree = new Handsfree({ hands: true });
-
+  function registrarScrollControl() {
     handsfree.use('scrollControl', (data) => {
       const hands = data.hands;
       if (!hands || !hands.landmarksVisible) return;
@@ -54,6 +58,30 @@
         ultimoGesto = ahora;
       }
     });
+  }
+
+  function cargarHandsfree() {
+    if (handsfree) return Promise.resolve(handsfree);
+    if (cargandoHandsfree) return cargandoHandsfree;
+
+    cargandoHandsfree = new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js';
+      script.onload = () => {
+        if (typeof Handsfree !== 'undefined') {
+          handsfree = new Handsfree({ hands: true });
+          registrarScrollControl();
+        }
+        resolve(handsfree);
+      };
+      script.onerror = () => {
+        console.warn('No se pudo cargar handsfree.js — solo queda control por voz');
+        resolve(null);
+      };
+      document.head.appendChild(script);
+    });
+
+    return cargandoHandsfree;
   }
 
   // ---------- VOZ: navegación por comandos ----------
@@ -168,9 +196,17 @@
   }
 
   // ---------- Botón: activa/desactiva ambos sistemas ----------
-  boton.addEventListener('click', () => {
+  boton.addEventListener('click', async () => {
     if (!activo) {
-      if (handsfree) handsfree.start();
+      const textoOriginal = etiqueta.textContent;
+      if (!handsfree) {
+        etiqueta.textContent = 'Cargando control por gestos…';
+        boton.disabled = true;
+      }
+      const hf = await cargarHandsfree();
+      boton.disabled = false;
+
+      if (hf) hf.start();
       if (reconocimiento) reconocimiento.start();
       etiqueta.textContent = 'Desactivar control por voz/gestos';
       boton.setAttribute('aria-pressed', 'true');
