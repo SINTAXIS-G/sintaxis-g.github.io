@@ -105,6 +105,52 @@
   color: var(--text);
   white-space: pre;
 }
+.code-block-wrap { position: relative; }
+.code-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  background: rgba(10, 14, 20, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.code-block:hover .code-copy-btn,
+.code-copy-btn:focus-visible { opacity: 1; }
+.code-copy-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+.code-copy-btn.is-copied { color: var(--accent); border-color: var(--accent-dim); opacity: 1; }
+
+/* ---------- Tooltips inline de glosario ---------- */
+.glossary-term {
+  border-bottom: 1px dashed var(--accent-dim);
+  cursor: help;
+}
+.glossary-tooltip {
+  position: absolute;
+  z-index: 200;
+  max-width: 22rem;
+  background: rgba(10, 14, 20, 0.95);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.glossary-tooltip.is-visible { opacity: 1; transform: translateY(0); }
 
 /* Pillars grid (physics concepts) */
 .pillars {
@@ -529,6 +575,118 @@
 }
 .chandra-verdict.is-critical { color: #F87171; border-top-color: rgba(248, 113, 113, 0.4); }
 .chandra-verdict.is-clean { color: var(--accent); border-top-color: var(--accent-dim); }
+.chandra-live-mass {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: var(--space-sm);
+  transition: color 0.2s ease;
+}
+.chandra-live-mass.is-over { color: #f87171; }
+
+/* ---------- MCKP Playground ---------- */
+.mckp-playground {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.mckp-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+.mckp-slider {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.mckp-budget-val {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0.4rem 0 var(--space-sm);
+}
+.mckp-budget-val span { color: var(--accent); font-weight: 700; }
+.mckp-files {
+  display: grid;
+  gap: 0.4rem;
+}
+.mckp-file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+.mckp-file-name { color: var(--text); }
+.mckp-file-state {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mckp-state-0 { color: var(--text-dim); background: rgba(139, 149, 165, 0.12); }
+.mckp-state-1 { color: #fbbf24; background: rgba(251, 191, 36, 0.12); }
+.mckp-state-2 { color: var(--accent); background: rgba(61, 218, 215, 0.1); }
+.mckp-state-3 { color: #4ade80; background: rgba(74, 222, 128, 0.12); }
+.mckp-disclaimer {
+  margin-top: var(--space-sm);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+/* ---------- Percolación de red ---------- */
+.percolation-playground {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.percolation-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+.percolation-canvas-wrap {
+  height: 16rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-top: var(--space-sm);
+}
+.percolation-canvas-wrap canvas { display: block; width: 100%; height: 100%; }
+.percolation-status {
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.percolation-status.is-percolated { color: var(--accent); font-weight: 600; }
+
+/* ---------- Reporte forense: filtros + contador de ruido ---------- */
+.severity-filters { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin: var(--space-md) 0; }
+.noise-counter {
+  color: #f87171;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  transition: color 0.4s ease;
+}
+.noise-counter.is-settled { color: var(--accent); }
+
+/* ---------- Antes/Después: typewriter en el bloque DESPUÉS ---------- */
+.typewriter-block.is-typing::after {
+  content: '▍';
+  color: #4ade80;
+  animation: tw-blink 0.8s step-end infinite;
+}
+@keyframes tw-blink { 50% { opacity: 0; } }
 .chandra-disclaimer {
   margin-top: var(--space-sm);
   color: var(--text-dim);
@@ -611,4 +769,108 @@
 }
 @media (max-width: 800px) {
   .depgraph-canvas-wrap { height: 20rem; }
+}
+
+/* ---------- Mapa de calor de riesgo (demo) ---------- */
+.heatmap-output {
+  margin-top: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+.heat-line {
+  padding: 0 var(--space-sm);
+  white-space: pre;
+  border-left: 3px solid transparent;
+}
+.heat-critical { background: rgba(248, 113, 113, 0.18); border-left-color: #f87171; color: var(--text); }
+.heat-high { background: rgba(251, 191, 36, 0.14); border-left-color: #fbbf24; color: var(--text); }
+.heat-medium { background: rgba(61, 218, 215, 0.08); border-left-color: var(--accent-dim); color: var(--text-dim); }
+
+/* ---------- Health Score: gauge circular animado ---------- */
+.health-gauge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-sm) 0;
+}
+.health-gauge { flex-shrink: 0; }
+.health-gauge-track {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 8;
+}
+.health-gauge-fill {
+  fill: none;
+  stroke: #fbbf24;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+  stroke-dasharray: 314.159;
+  stroke-dashoffset: 314.159;
+  transition: stroke-dashoffset 1.2s var(--ease);
+}
+.health-gauge-score {
+  fill: var(--text);
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.health-gauge-grade {
+  fill: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-anchor: middle;
+}
+
+/* ---------- CascadeAnalyzer clickeable ---------- */
+.cascade-block {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.cascade-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+.cascade-canvas-wrap {
+  height: 20rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.cascade-canvas-wrap canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
+.cascade-result {
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  min-height: 1.4em;
+}
+.cascade-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-md);
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.cascade-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.cascade-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+.cascade-disclaimer {
+  margin-top: var(--space-sm);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+@media (max-width: 700px) {
+  .cascade-canvas-wrap { height: 24rem; }
 }

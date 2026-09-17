@@ -61,7 +61,8 @@
     {
       "@type": "Person",
       "@id": "https://sintaxisg.com/#gabo",
-      "name": "Gabo",
+      "name": "Gabriel Adolfo Merino Hernández",
+      "alternateName": "Gabo",
       "url": "https://sintaxisg.com/",
       "jobTitle": "Arquitecto de software independiente",
       "sameAs": [
@@ -315,7 +316,7 @@
       <p class="section-label">Sobre mí</p>
       <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
       <div class="about-body">
-        <p>Soy <strong>Gabo</strong>, arquitecto de software independiente y creador de SINTAXIS G.</p>
+        <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
         <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
           diseño la arquitectura, desarrollo los sistemas que la componen, construyo sus interfaces y, cuando es
           necesario, también desarrollo las herramientas e infraestructura que los mantienen funcionando.</p>
@@ -340,11 +341,33 @@
           que siga siendo útil cuando las condiciones reales no son perfectas, priorizando disponibilidad, degradación
           controlada y dependencia mínima de servicios externos.</p>
 
+        <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">Debajo de la arquitectura</p>
+        <p>Python es donde paso la mayor parte del tiempo, y no en el sentido superficial: manipulación real de AST (no
+          regex disfrazado de parser), multiprocessing con aislamiento real de procesos hijo, un solver SMT (Z3) para
+          probar matemáticamente en vez de adivinar con heurísticas, criptografía real (Ed25519, AES-256-GCM) cuando el
+          problema lo exige. El resto del stack lo elijo por el problema, no por costumbre: JavaScript sin framework
+          cuando quiero control fino sobre el navegador — este mismo sitio corre así, Canvas y WebGL incluidos —, React
+          cuando la velocidad de iteración de una interfaz importa más que el control total, Flutter cuando el
+          problema es una app que tiene que funcionar sin conexión y sin backend.</p>
+        <p>Buena parte de mi trabajo reciente es orquestación de IA local: modelos corriendo en hardware de consumo,
+          recuperación híbrida de contexto, y sistemas que necesitan sostener consistencia a lo largo de miles de
+          turnos sin que un humano revise cada respuesta. <strong>EIDOLON</strong> es el ejemplo más concreto: audita
+          cada respuesta del modelo contra un canon narrativo establecido — sin embeddings ni modelos de ML, con tres
+          capas de reglas lingüísticas (negación, polaridad opuesta, conflicto de atributos) que detectan cuando el
+          LLM afirma lo contrario de lo ya establecido, aunque comparta el 85% de las palabras con el hecho original.
+          Si encuentra una contradicción, esa respuesta nunca llega a la pantalla — se regenera antes.</p>
+        <p>Y en el extremo opuesto: seguridad de sistemas, tanto defensiva (sandboxing real de procesos, análisis de
+          flujo de datos contaminados, hardening de superficie) como suficiente criterio del lado ofensivo/forense
+          como para diseñar contramedidas con fundamento, no copiando un checklist genérico.</p>
+
         <p style="margin-top:var(--space-lg); color:var(--text); font-weight:600;">Una forma particular de trabajar</p>
         <p>Prefiero tener una visión completa del sistema antes que limitarme a resolver una sola parte. Eso también
           significa que muchas veces termino construyendo herramientas que originalmente ni siquiera estaban
           contempladas en el proyecto. Si una pieza falta y esa pieza es importante para que el sistema funcione
           correctamente, prefiero construirla antes que simplemente asumir que alguien más la proporcionará.</p>
+        <p>Esa misma visión completa también sirve para descartar: cuando diseño un módulo nuevo, es común que termine
+          tirando tantas ideas como las que implemento, si no aportan una señal real y solo inflarían el sistema sin
+          motivo.</p>
         <p>Trabajo directamente sobre el código y las decisiones técnicas de mis proyectos, manteniendo una relación
           estrecha entre arquitectura, implementación y evolución del sistema.</p>
         <p>No busco utilizar más tecnología de la necesaria. Busco que cada pieza tenga una razón para existir.</p>
@@ -379,6 +402,7 @@
         <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://x.com/SINTAXIS_G" target="_blank" rel="noopener">X</a>
         <a href="https://www.instagram.com/sintaxis_.g" target="_blank" rel="noopener">Instagram</a>
+        <a href="media-kit.html">Media Kit</a>
       </div>
     </div>
   </section>

@@ -235,6 +235,20 @@
       <div class="pillar"><div class="name">X06 · DarkMatterDetector</div><p>5 tipos de acoplamiento invisible que ningún grafo de imports ve: variables de entorno compartidas, estado global/singleton compartido, mismos archivos o endpoints de I/O, co-cambio temporal sin import, y similitud semántica por coseno de embeddings &gt;0.85 entre módulos sin ninguna arista explícita entre ellos.</p></div>
     </div>
 
+    <div class="cascade-block">
+      <p class="cascade-label">CascadeAnalyzer, clickeable — hacé clic en cualquier módulo y mirá cómo se propaga el fallo</p>
+      <div class="cascade-canvas-wrap">
+        <canvas id="cascade-canvas"></canvas>
+      </div>
+      <div class="cascade-result" id="cascade-result">Clickeá un nodo para simular una falla ahí.</div>
+      <div class="cascade-legend">
+        <span><i style="background:#3ddad7"></i>sano</span>
+        <span><i style="background:#f87171"></i>afectado por la cascada</span>
+        <span><i style="background:#4ade80"></i>firewall node — absorbe y frena</span>
+      </div>
+      <p class="cascade-disclaimer">Grafo de 10 módulos fijado a mano para la demo (posiciones y conexiones ilustrativas) — la propagación en olas con amortiguación 0.65 por nivel y el criterio de "firewall node" sí replican la lógica real de CascadeAnalyzer descrita arriba.</p>
+    </div>
+
     <div class="proj-split" style="margin-top: var(--space-lg);">
       <div class="proj-split-text">
         <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (label, masa, estado térmico, dominio/capa — cada uno O(1) o O(log n) según el tipo) y un optimizador que hace <em>predicate pushdown</em>, reordena joins por selectividad y estima coste antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
@@ -312,7 +326,15 @@
         <div class="terminal-bar"><span></span><span></span><span></span></div>
         <div class="terminal-body">
           <div class="terminal-line">╔═══ ARCHITECTURAL HEALTH REPORT ══════</div>
-          <div class="terminal-line">║ <span class="warn">🟡</span> Overall Score : 71.4/100 [B] STABLE</div>
+          <div class="health-gauge-row">
+            <svg class="health-gauge" viewBox="0 0 120 120" width="110" height="110" role="img" aria-label="Health Score 71.4 sobre 100, grado B, estable">
+              <circle class="health-gauge-track" cx="60" cy="60" r="50" />
+              <circle class="health-gauge-fill" id="health-gauge-fill" cx="60" cy="60" r="50" data-pct="71.4" />
+              <text x="60" y="56" class="health-gauge-score" id="health-gauge-score">0</text>
+              <text x="60" y="74" class="health-gauge-grade">[B]</text>
+            </svg>
+            <div class="terminal-line" style="border:none; padding:0;">║ <span class="warn">🟡</span> Overall Score : 71.4/100 [B] STABLE</div>
+          </div>
           <div class="health-bars">
             <div class="health-bar"><span class="hb-label">Structural</span><span class="hb-track"><span class="hb-fill" style="--pct:74.2%"></span></span><span class="hb-val">74.2</span></div>
             <div class="health-bar"><span class="hb-label">Temporal</span><span class="hb-track"><span class="hb-fill" style="--pct:61.0%"></span></span><span class="hb-val">61.0</span></div>
@@ -391,6 +413,17 @@
       <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado <span class="dev-only"> (Bellman, 1957)</span>.</p></div>
       <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo <span class="dev-only"> (Kellerer, Pferschy &amp; Pisinger, 2004)</span>.</p></div>
       <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Cada rama Git generada es un "anticuerpo" — población de 5 por combinación (extensión de archivo + estrategia), con 2 sobrevivientes de élite por generación. Si mergeás la rama, recompensa +0.6; si la borrás sin usar, castigo −0.8. El sistema evoluciona su criterio de qué proponer con el tiempo, en vez de repetir siempre lo mismo <span class="dev-only"> (de Castro &amp; Von Zuben, 2002)</span>.</p></div>
+    </div>
+
+    <div class="percolation-playground">
+      <p class="percolation-label">El umbral de percolación, en vivo — subí el grado medio y mirá cuándo aparece la componente gigante</p>
+      <input type="range" id="percolation-slider" class="mckp-slider" min="0" max="3" step="0.1" value="0.5">
+      <div class="mckp-budget-val">grado medio del grafo: <span id="percolation-val">0.5</span></div>
+      <div class="percolation-canvas-wrap">
+        <canvas id="percolation-canvas"></canvas>
+      </div>
+      <div class="percolation-status" id="percolation-status">FRAGMENTADA — 30 nodos, sin componente dominante</div>
+      <p class="mckp-disclaimer">Grafo aleatorio real (Erdős–Rényi, 30 nodos) recalculado en tu navegador en cada movimiento del slider — no una animación pre-armada. El salto de fase ocurre justo donde predice la teoría: alrededor de grado medio ≈ 1.</p>
     </div>
     <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador <span class="dev-only"> (Shannon, 1948)</span>.</p>
 
@@ -727,6 +760,14 @@
         <p><strong style="color:var(--text)">v4.5 — 4 auditorías externas, la última encontró un bug que ningún test anterior detectaba.</strong> El DP en sí nunca falló: es monótono por construcción (más presupuesto nunca da menos valor). El bug vivía una capa arriba, en cómo se combinaba con un mecanismo de recuperación de tokens desperdiciados por redondeo — esa combinación sí podía romper la monotonía entre presupuestos distintos. Se encontró con testing basado en propiedades (no un caso construido a mano), en el primer intento.</p>
       </div>
     </div>
+
+    <div class="mckp-playground">
+      <p class="mckp-label">Movés el presupuesto, el DP real decide qué entra y en qué estado</p>
+      <input type="range" id="mckp-budget" class="mckp-slider" min="0" max="1210" step="10" value="300">
+      <div class="mckp-budget-val"><span id="mckp-budget-val">300</span> tokens de presupuesto</div>
+      <div class="mckp-files" id="mckp-files"></div>
+      <p class="mckp-disclaimer">DP exacto de mochila de múltiple elección corriendo en tu navegador sobre 6 archivos de ejemplo con costos/valores fijados a mano — mismo algoritmo que describe el solver real (maximiza valor sin pasar el presupuesto, un estado por archivo), a escala de juguete.</p>
+    </div>
   </div>
 </section>
 
@@ -825,7 +866,11 @@
         user.password_hash = hash_password(new_password)
         db.session.commit()
         self.send_welcome_email(user)</textarea>
-          <button class="mode-btn" id="chandra-run" style="margin-top:var(--space-sm);">simular colapso →</button>
+          <div class="chandra-live-mass" id="chandra-live-mass">masa: — / límite: —</div>
+          <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-sm);">
+            <button class="mode-btn" id="chandra-run">simular colapso →</button>
+            <button class="mode-btn" id="chandra-bisect" hidden>bisectar →</button>
+          </div>
         </div>
         <div class="chandra-canvas-wrap">
           <canvas id="chandra-canvas"></canvas>
@@ -872,7 +917,7 @@
       </div>
       <div>
         <p style="font-family:var(--font-mono); font-size:0.8rem; color:#4ADE80; margin-bottom:0.5rem;">DESPUÉS — propuesto en rama aislada</p>
-        <div class="code-block">def get_user(request):
+        <div class="code-block typewriter-block" id="typewriter-after">def get_user(request):
     user_id = request.GET["id"]
     query = "SELECT * FROM users WHERE id = %s"
     return db.execute(query, (user_id,))</div>
@@ -886,7 +931,7 @@
   <div class="wrap">
     <p class="section-label">Anatomía de un reporte real</p>
     <h2>Esto no es un mockup — es un extracto real, condensado</h2>
-    <p class="lede">Reporte forense real de ARCHANGEL sobre un snippet de prueba. De 28 señales individuales detectadas, el correlator las agrupa en <strong style="color:var(--text)">nodos de convergencia</strong> — puntos donde varias categorías distintas (seguridad, memoria, dataflow, invariantes) apuntan al mismo lugar exacto — para que veas 3 problemas reales en vez de 28 alertas sueltas sin priorizar.</p>
+    <p class="lede">Reporte forense real de ARCHANGEL sobre un snippet de prueba. De <span class="noise-counter" id="noise-counter">28</span> señales individuales detectadas, el correlator las agrupa en <strong style="color:var(--text)">nodos de convergencia</strong> — puntos donde varias categorías distintas (seguridad, memoria, dataflow, invariantes) apuntan al mismo lugar exacto — para que veas 3 problemas reales en vez de 28 alertas sueltas sin priorizar.</p>
 
     <div class="report-header">
       <div class="report-verdict"><span class="badge badge-critical">EMERGENCY</span></div>
@@ -894,7 +939,13 @@
       <div class="report-stat"><span class="rs-label">Debt Grade</span><span class="rs-val" style="color:#F87171">CCC</span></div>
     </div>
 
-    <div class="forensic-nodes">
+    <div class="severity-filters">
+      <button class="analyzer-chip is-active" data-sev="all">Todas (3)</button>
+      <button class="analyzer-chip" data-sev="crit">CRITICAL (2)</button>
+      <button class="analyzer-chip" data-sev="high">HIGH (1)</button>
+    </div>
+
+    <div class="forensic-nodes" id="forensic-nodes">
       <div class="forensic-node crit">
         <div class="fn-head"><span class="badge badge-critical">CRITICAL</span><span class="fn-line">L1</span><span class="fn-conv">Convergencia — 4 categorías, 100%</span></div>
         <p class="fn-diag">Principio de Robustez: 7 violaciones (Maxwell score=0.19). El recurso abierto más abajo (L11) puede filtrar datos sensibles si esta precondición no se valida — el correlator conecta ambas líneas como una sola cadena causal, no dos hallazgos aislados.</p>
@@ -1095,8 +1146,12 @@
     def _internal_helper(self):
         api_key = "sk-live-abc123xyz"
         pass</textarea>
-      <button class="mode-btn" id="demo-run" style="margin-top:var(--space-sm);">extraer mapa →</button>
+      <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-sm);">
+        <button class="mode-btn" id="demo-run">extraer mapa →</button>
+        <button class="mode-btn" id="demo-heatmap">ver mapa de calor →</button>
+      </div>
       <div class="code-block" id="demo-output" style="margin-top:var(--space-md); min-height:4rem;">// el resultado aparece aquí</div>
+      <div class="heatmap-output" id="demo-heatmap-output" hidden></div>
       <p style="margin-top:var(--space-sm); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Demo por patrones de texto, no un parser real — no la confundas con el motor de ARCHANGEL.</p>
     </div>
   </div>
