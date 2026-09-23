@@ -104,10 +104,10 @@
   <div class="wrap">
     <p class="section-label">¿Qué es ARCHANGEL?</p>
     <h2>Un producto de análisis de código, no un script</h2>
-    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 71 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
+    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 73 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><b>71</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><b>73</b><span>analizadores orquestados vía DAG</span></div>
       <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
       <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
@@ -161,7 +161,7 @@
         <p>Cada análisis corre en un proceso hijo aislado (multiprocessing spawn) con verificación de integridad por checksum antes de aceptar cualquier resultado.</p>
       </div>
       <div class="pillar">
-        <div class="name">65+ analizadores con circuit breaker propio</div>
+        <div class="name">73 analizadores con circuit breaker propio</div>
         <p>Cada analizador tiene su propio circuit breaker y monitor de salud — uno que falla repetidamente se aísla solo, sin tumbar el resto del pipeline.</p>
       </div>
       <div class="pillar">
@@ -281,7 +281,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
-        <div class="terminal-line">→ 71 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line">→ 73 sub-analizadores orquestados vía DAG...</div>
         <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
         <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
         <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
@@ -397,7 +397,7 @@
     </div>
     <div class="proj-split" style="margin-top: var(--space-lg);">
       <div class="proj-split-text">
-        <p><strong style="color:var(--text)">10 categorías de taint, no un booleano.</strong> Cada valor puede pertenecer a SQLI, CMDI, CODEI, PATH, XSS, SSRF, DESER, SSTI, LDAP o SECRET al mismo tiempo — un sanitizador solo retira la categoría que de verdad neutraliza: <code class="hl">html.escape()</code> quita XSS, no SQLI.</p>
+        <p><strong style="color:var(--text)">12 categorías de taint, no un booleano.</strong> Cada valor puede pertenecer a SQLI, CMDI, CODEI, PATH, XSS, SSRF, DESER, SSTI, LDAP, XXE, CRLFI o SECRET al mismo tiempo — un sanitizador solo retira la categoría que de verdad neutraliza: <code class="hl">html.escape()</code> quita XSS, no SQLI.</p>
         <p><strong style="color:var(--text)">Resúmenes de función memoizados.</strong> Cada función se analiza una sola vez para derivar qué categorías llegan a su return y qué parámetros muta por referencia — no recorre el cuerpo completo en cada punto donde se llama.</p>
         <p><strong style="color:var(--text)">Alias y mutación de contenedores.</strong> <code class="hl">b = a</code> hace que ambos apunten a la misma ubicación; una mutación in-place como <code class="hl">a.append(x)</code> contamina esa ubicación y se refleja en todos sus alias.</p>
         <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
@@ -513,12 +513,12 @@
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de 71 analizadores registrados (18 de métricas, 16 de física, 15 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 73 analizadores registrados (18 de métricas, 16 de física, 17 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
     </div>
 
     <div class="note-box">
       <div class="name">Honestidad sobre "multi-lenguaje"</div>
-      <p>El análisis profundo — el DAG completo de 71 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+      <p>El análisis profundo — el DAG completo de 73 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
     </div>
 
     <div class="depgraph-block">
@@ -543,7 +543,7 @@
   <div class="wrap">
     <p class="section-label">Catálogo de analizadores</p>
     <h2>Ejemplos reales, no nombres de carpeta</h2>
-    <p class="lede">71 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una.</p>
+    <p class="lede">73 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una.</p>
 
     <div class="analyzer-filters">
       <button class="analyzer-chip is-active" data-cat="all">Todas</button>
@@ -582,7 +582,7 @@
         <tbody>
           <tr><td>Output principal</td><td class="archangel-col">Veredicto único por archivo (CLEAN→EMERGENCY), correlado entre categorías</td><td>Quality gate por reglas</td><td>Matches por regla léxica/AST</td><td>Resultados por query semántica (Datalog)</td><td>Vulnerabilidades con score de exploabilidad propio</td></tr>
           <tr><td>Cómo prioriza el ruido</td><td class="archangel-col">Nodos de convergencia: 3+ categorías coincidiendo en la misma línea, con confianza bayesiana</td><td>Severidad fija por regla</td><td>Severidad fija por regla</td><td>Sin agregación entre queries distintas</td><td>Score propietario de riesgo</td></tr>
-          <tr><td>Taint analysis</td><td class="archangel-col">10 categorías simultáneas, sanitización contextual, SMT con Z3</td><td>Reglas de seguridad por patrón</td><td>Reglas de flujo de datos por patrón</td><td>Flujo de datos real, muy maduro</td><td>Motor propietario, orientado a dependencias + código</td></tr>
+          <tr><td>Taint analysis</td><td class="archangel-col">12 categorías simultáneas, sanitización contextual, SMT con Z3</td><td>Reglas de seguridad por patrón</td><td>Reglas de flujo de datos por patrón</td><td>Flujo de datos real, muy maduro</td><td>Motor propietario, orientado a dependencias + código</td></tr>
           <tr><td>Predicción de fallos futuros</td><td class="archangel-col">Probabilidad de fractura calibrada contra tu historial de Git real</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td><td>No predice, solo detecta lo ya presente</td></tr>
           <tr><td>Actúa sobre lo que encuentra</td><td class="archangel-col">Propone y aplica el fix en una rama Git aislada; aprende de cuáles aceptás o rechazás</td><td>Reporta; no propone</td><td>Autofix simple por patrón, no aprende</td><td>Reporta; no propone</td><td>Fix PRs automáticos, no aprende del rechazo</td></tr>
           <tr><td>Chat / explicación con IA</td><td class="archangel-col">Local (Ollama) — modos normal, debate de 2 agentes, o enjambre de 4</td><td>No nativo</td><td>No nativo</td><td>No nativo</td><td>Asistente en la nube (servicio propietario)</td></tr>
@@ -1021,7 +1021,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5"><span>¿El análisis principal usa IA?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (71 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
+        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (73 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es de código abierto?</span><span class="faq-icon">+</span></button>
@@ -1063,7 +1063,7 @@
     {
       "@type": "Question",
       "name": "¿El análisis principal de ARCHANGEL usa inteligencia artificial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (71 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (73 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
     },
     {
       "@type": "Question",
