@@ -176,6 +176,31 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 .stat b { display: block; font-size: 1.6rem; font-family: var(--font-mono); }
 .stat span { color: var(--text-dim); font-size: var(--fs-small); }
 
+/* ---------- Mapa del ecosistema ---------- */
+.system-map { background: linear-gradient(180deg, rgba(61, 218, 215, 0.035), transparent); }
+.system-intro {
+  max-width: var(--measure);
+  color: var(--text-dim);
+  margin-bottom: var(--space-lg);
+}
+.system-threads { border-top: 1px solid var(--line); }
+.system-thread {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line);
+}
+.system-step {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  padding-top: 0.2rem;
+}
+.system-thread h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+.system-thread p { color: var(--text-dim); max-width: var(--measure); }
+.system-thread strong { color: var(--text); font-weight: 600; }
+
 /* ---------- Ecosystem list ---------- */
 .eco-list { border-top: 1px solid var(--line); }
 .eco-item {

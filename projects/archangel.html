@@ -47,6 +47,8 @@
         <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
         <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
           <a href="#resumen">¿Qué es ARCHANGEL?</a>
+          <a href="#encaje">¿Encaja con tu equipo?</a>
+          <a href="#reporte-real">Ver un reporte real</a>
           <a href="#capacidades-verificadas">Capacidades verificadas</a>
           <a href="#video">En acción</a>
           <a href="#problema">El problema → la respuesta</a>
@@ -69,7 +71,6 @@
           <a href="#chandrasekhar">Límite de Chandrasekhar</a>
           <a href="#prompt-thermo">Prompt Thermodynamics</a>
           <a href="#antes-despues">Antes / después</a>
-          <a href="#reporte-real">Anatomía de un reporte real</a>
           <a href="#auto-analisis">ARCHANGEL analizándose a sí mismo</a>
           <a href="#faq">Preguntas frecuentes</a>
           <a href="#glosario">Glosario</a>
@@ -93,7 +94,8 @@
     <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">AUTARKIC REPOSITORY CONTEXT HEURISTIC ANALYSIS NEURAL GENERATOR ENTITY LAYER</p>
     <p class="tagline">Motor de análisis estático que trata el software como un sistema físico: entropía, fractura, propagación de riesgo y aprendizaje continuo aplicados al código.</p>
     <div class="cta-row">
-      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar con soporte →</a>
+      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar sobre tu repositorio →</a>
+      <a class="cta-btn" href="#reporte-real">Ver un reporte real →</a>
     </div>
   </div>
 </header>
@@ -110,16 +112,32 @@
       <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
 
-    <p style="color:var(--text); font-weight:600; margin-bottom: var(--space-sm);">A quién le sirve</p>
+    <div class="note-box">
+      <div class="name">Un producto comercial, con una ruta de adopción real</div>
+      <p>ARCHANGEL se ofrece mediante acceso licenciado a su API: el motor, su repositorio y su operación no se distribuyen al cliente. Cada plan define capacidad, límites técnicos e integración; tu equipo consume los resultados sin tener que mantener el núcleo del producto. Ver <a href="#quickstart" style="color:var(--accent);">cómo se adopta</a> y <a href="#planes" style="color:var(--accent);">los límites por plan</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="encaje">
+  <div class="wrap">
+    <p class="section-label">Decisión de adopción</p>
+    <h2>Para equipos que necesitan decidir qué corregir primero</h2>
+    <p class="lede">ARCHANGEL tiene sentido cuando el problema ya no es encontrar más warnings, sino separar el ruido de los riesgos que realmente justifican tiempo de ingeniería.</p>
+
     <div class="audience-grid">
-      <div class="audience-card"><div class="name">Dev individual</div><p>Análisis on-demand de un archivo o snippet, chat local sobre los hallazgos, y una extensión de editor para no salir del flujo de trabajo.</p></div>
-      <div class="audience-card"><div class="name">Equipo con CI/CD</div><p>Gate de regresión en pull requests (<code class="hl">/analyze/diff</code>), generador de YAML para GitHub Actions/GitLab/CircleCI/Azure/Jenkins, webhooks y análisis batch de hasta cientos de archivos.</p></div>
-      <div class="audience-card"><div class="name">Empresa con deuda técnica real</div><p>Auditoría de repos completos (clona y analiza un remoto entero), impacto financiero de la deuda técnica, watchlist de archivos críticos y planes con SLA diferenciado.</p></div>
+      <div class="audience-card"><div class="name">CI con demasiadas alertas</div><p>Cuando una lista de reglas deja de ser accionable, el correlator agrupa señales relacionadas y devuelve un veredicto por archivo para priorizar revisión.</p></div>
+      <div class="audience-card"><div class="name">Repositorios Python críticos</div><p>La capa de análisis profundo trabaja sobre AST real, flujo de datos y relaciones entre archivos; está pensada para deuda, seguridad y acoplamiento que no se ven en una regla aislada.</p></div>
+      <div class="audience-card"><div class="name">Código que requiere control</div><p>El análisis se consume mediante una API con credenciales y límites por plan; la capa opcional de IA para chat y reparación puede operar localmente, sin enviar código a un proveedor externo de LLM.</p></div>
     </div>
 
     <div class="note-box">
-      <div class="name">Es un producto con planes, no un experimento personal</div>
-      <p>ARCHANGEL corre sobre una API con billing real (Stripe) y 4 planes con límites técnicos distintos — starter, team, business y enterprise. El motor de análisis en sí es 100% determinístico: no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama, corriendo en tu propia máquina) es una capa opcional encima, para chat, explicación y reparación asistida. Ver <a href="#planes" style="color:var(--accent);">detalle de planes</a> y <a href="#faq" style="color:var(--accent);">preguntas frecuentes</a>.</p>
+      <div class="name">Cuándo no sería la primera herramienta</div>
+      <p>Si la prioridad es cobertura madura y uniforme para muchos lenguajes, una plataforma consolidada de reglas puede ser un mejor punto de partida. ARCHANGEL profundiza hoy en Python y aporta más valor como capa de priorización, investigación y decisión sobre un repositorio que ya importa.</p>
+    </div>
+    <div class="cta-row">
+      <a class="cta-btn primary" href="#reporte-real">Así se ve una decisión del motor →</a>
+      <a class="cta-btn" href="#quickstart">Conocer la ruta de adopción →</a>
     </div>
   </div>
 </section>
@@ -991,7 +1009,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-2"><span>¿Corre en la nube o en mi máquina?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-2" role="region"><p>El backend (la API de análisis) corre donde lo despliegues, self-hosted o gestionado. El chat y la reparación asistida usan Ollama de forma local — tu código nunca sale hacia OpenAI, Anthropic ni ninguna API externa de LLM para eso.</p></div>
+        <div class="faq-a" id="faq-a-2" role="region"><p>ARCHANGEL se consume como un servicio mediante API con credenciales: el motor y su repositorio no se entregan al cliente. El chat y la reparación asistida pueden usar Ollama de forma local, sin enviar código hacia OpenAI, Anthropic ni otra API externa de LLM.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3"><span>¿Qué lenguajes soporta?</span><span class="faq-icon">+</span></button>
@@ -1030,7 +1048,7 @@
     {
       "@type": "Question",
       "name": "¿Corre en la nube o en mi máquina?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El backend (la API de análisis) corre donde lo despliegues, self-hosted o gestionado. El chat y la reparación asistida usan Ollama de forma local — tu código nunca sale hacia OpenAI, Anthropic ni ninguna API externa de LLM para eso." }
+      "acceptedAnswer": { "@type": "Answer", "text": "ARCHANGEL se consume como un servicio mediante API con credenciales: el motor y su repositorio no se entregan al cliente. El chat y la reparación asistida pueden usar Ollama de forma local, sin enviar código hacia OpenAI, Anthropic ni otra API externa de LLM." }
     },
     {
       "@type": "Question",
@@ -1097,26 +1115,26 @@
 
 <section class="proj-block" id="quickstart">
   <div class="wrap">
-    <p class="section-label">Quickstart</p>
-    <h2>Cómo se usa hoy, en la práctica</h2>
-    <p class="lede">Con la misma honestidad del resto de la página: hoy ARCHANGEL se despliega self-hosted, no hay un servicio público de autoservicio ni un paquete instalable todavía. Así es el camino real.</p>
+    <p class="section-label">Ruta de adopción</p>
+    <h2>Del primer repositorio al gate de pull request</h2>
+    <p class="lede">No es necesario cambiar todo el flujo de ingeniería de una vez. ARCHANGEL se consume mediante una API con acceso licenciado: el motor permanece operado por el producto y tu equipo empieza con un repositorio, un caso de uso y una credencial.</p>
 
     <div class="pillars">
-      <div class="pillar"><div class="name">1 · Pedí acceso</div><p>No hay señalación pública para autoservicio hoy — el primer paso real es contactar a <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener" style="color:var(--accent);">soporte</a> para obtener tu API key.</p></div>
-      <div class="pillar"><div class="name">2 · Desplegá tu instancia</div><p>Self-hosted vía FastAPI/uvicorn (no hay paquete pip/npm todavía) — vos o tu equipo controlan dónde corre y dónde vive la base de datos.</p></div>
-      <div class="pillar"><div class="name">3 · Corré tu primer análisis</div><p>Un solo POST con tu API key y el código — sin más setup que eso para el primer resultado.</p></div>
+      <div class="pillar"><div class="name">1 · Delimita el primer caso</div><p>Elige un repositorio Python cuyo riesgo, deuda o volumen de alertas ya justifique una lectura más profunda que un linter convencional.</p></div>
+      <div class="pillar"><div class="name">2 · Obtén acceso al servicio</div><p>El acceso se solicita a <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener" style="color:var(--accent);">SINTAXIS G</a>. Tu equipo recibe una credencial y los límites del plan; no recibe el repositorio ni una copia del motor.</p></div>
+      <div class="pillar"><div class="name">3 · Intégralo donde decide el equipo</div><p>Empieza por la API y luego llévalo al editor, a un pull request o a un análisis batch. La integración se adapta al flujo existente, sin que tu equipo tenga que operar el núcleo de ARCHANGEL.</p></div>
     </div>
 
     <div class="terminal" style="margin-top: var(--space-lg);">
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
-        <div class="terminal-line"><span class="prompt">$</span> curl -X POST http://localhost:8000/analyze \</div>
+        <div class="terminal-line"><span class="prompt">$</span> curl -X POST $ARCHANGEL_API_URL/analyze \</div>
         <div class="terminal-line">    -H "X-Api-Key: TU_API_KEY" \</div>
         <div class="terminal-line">    -H "Content-Type: application/json" \</div>
         <div class="terminal-line">    -d '{"code": "def foo(): pass", "filename": "app.py"}'<span class="terminal-cursor"></span></div>
       </div>
     </div>
-    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);"><code class="hl">code</code> y <code class="hl">filename</code> son los únicos campos requeridos — el resto tiene default. Contra la instancia que vos despliegues, no un servicio hosteado público.</p>
+    <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);"><code class="hl">code</code> y <code class="hl">filename</code> son los únicos campos requeridos. La credencial identifica el plan contratado, aplica sus límites y da acceso al motor sin distribuir su repositorio.</p>
   </div>
 </section>
 
@@ -1162,7 +1180,7 @@
     <p class="section-label" style="justify-content:center;">Veredicto</p>
     <p style="font-family:var(--font-mono); font-size:clamp(1.1rem, 3vw, 1.6rem); color:var(--accent); max-width:30ch; margin:0 auto;">"La Bóveda de la Verdad. El Escudo de la Coherencia."</p>
     <div class="cta-row" style="justify-content:center;">
-      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar con soporte →</a>
+      <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar sobre tu repositorio →</a>
     </div>
   </div>
 </section>
