@@ -38,15 +38,15 @@
 <style>
   /* Estilos propios de la bitácora — usan las variables ya definidas en variables.css */
   #top { scroll-margin-top: 6rem; }
-  .blog-index { display: grid; gap: var(--space-sm); margin: var(--space-lg) 0; }
+  .blog-index { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); margin: var(--space-lg) 0; }
   .post-card {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem;
     padding: 1rem 1.25rem; border: 1px solid var(--line);
     border-radius: 8px; text-decoration: none; color: var(--text);
     background: var(--surface); transition: border-color .15s ease, transform .15s ease;
   }
   .post-card:hover { border-color: var(--accent); transform: translateX(2px); }
-  .post-card-title { font-weight: 600; font-family: var(--font-sans); }
+  .post-card-title { font-weight: 600; font-family: var(--font-sans); min-width: 0; overflow-wrap: anywhere; }
   .post-card-date { font-family: var(--font-mono); font-size: 0.8rem; opacity: 0.65; white-space: nowrap; }
   .post { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
   .post:first-of-type { border-top: none; }

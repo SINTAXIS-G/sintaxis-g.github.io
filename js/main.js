@@ -162,7 +162,7 @@ console.log(
   'color:#8B95A5; font-family:monospace; font-size:13px; font-style:italic;'
 );
 console.log(
-  '%c¿Fisgoneando el código? Buena señal. github.com/SINTAXIS-G',
+  '%c¿Fisgoneando el código? Buena señal. Hablemos: linkedin.com/company/sintaxis-g',
   'color:#3DDAD7; font-family:monospace; font-size:12px;'
 );
 

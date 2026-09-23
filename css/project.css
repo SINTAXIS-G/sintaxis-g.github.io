@@ -73,7 +73,7 @@
 /* Two-column: text + figure */
 .proj-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-lg);
   align-items: center;
 }
@@ -219,11 +219,14 @@
 }
 .finding.is-typed div { opacity: 1; transform: translateX(0); }
 .finding span:first-child { color: var(--text-dim); width: 9rem; flex-shrink: 0; }
+.finding span:last-child { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .finding span:first-child { width: 6.5rem; } }
 .finding .critica { color: #F87171; }
 .finding .alta { color: #FBBF24; }
 
+.proj-split > * { min-width: 0; }
 @media (max-width: 800px) {
-  .proj-split { grid-template-columns: 1fr; }
+  .proj-split { grid-template-columns: minmax(0, 1fr); }
   .proj-split.reverse .proj-split-text,
   .proj-split.reverse .proj-split-figure { order: initial; }
 }
@@ -873,4 +876,16 @@
 }
 @media (max-width: 700px) {
   .cascade-canvas-wrap { height: 24rem; }
+}
+
+/* ---------- Móvil: sin desbordamiento horizontal ---------- */
+@media (max-width: 800px) {
+  /* La barra de modos tiene 6 botones: en pantallas angostas pasa a dos filas. */
+  .proj-nav .wrap { flex-wrap: wrap; height: auto; min-height: 4rem; padding-top: 0.5rem; padding-bottom: 0.5rem; gap: 0.5rem var(--space-sm); }
+  .proj-nav .mode-toggles { flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; min-width: 0; }
+  /* Las tablas comparativas se desplazan dentro de su propio contenedor. */
+  .compare-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .compare-table td:first-child { width: auto; min-width: 8rem; }
+  /* Términos técnicos largos no deben ensanchar la columna. */
+  .proj-split-text code, .pillar code, .lede code { overflow-wrap: anywhere; }
 }

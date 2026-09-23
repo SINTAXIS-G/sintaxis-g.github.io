@@ -574,7 +574,7 @@
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de 73 analizadores registrados (18 de métricas, 16 de física, 17 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action para integrarse al flujo de CI. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 73 analizadores registrados (18 de métricas, 16 de física, 17 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action, ambos clientes de la API, para integrarse al flujo de CI sin distribuir el motor. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
     </div>
 
     <div class="note-box">

@@ -4,7 +4,7 @@
 
 ## Proyectos
 
-- [ARCHANGEL](https://sintaxisg.com/projects/archangel.html): motor de análisis estático que trata el software como un sistema físico — entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código fuente.
+- [ARCHANGEL](https://sintaxisg.com/projects/archangel.html) (software propietario, acceso licenciado por API; no existe repositorio público del motor): motor de análisis estático que trata el software como un sistema físico — entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código fuente.
 - [KAIROS](https://sintaxisg.com/projects/kairos.html): app de asistencia en emergencias hecha en Flutter, sin backend ni cuentas de usuario, con un Dead Man's Switch que avisa a la red de confianza del usuario si deja de responder.
 - EXARKON: entorno de IA soberano ejecutado íntegramente en local — "Razón sobre Proceso. Conciencia sobre Código." Todo código generado por IA corre primero en un sandbox de 7 capas con puntaje de peligrosidad antes de confiar en el resultado.
 - ATLAS: motor de descubrimiento de proyectos en stdlib puro de Python, sin dependencias externas — perfila un repositorio completo (ADN por tamaño, densidad/modularidad/fragmentación, frameworks e infraestructura detectados, arquitectura por patrones de carpeta) antes de que ARCHANGEL lo audite.
