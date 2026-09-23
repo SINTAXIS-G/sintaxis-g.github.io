@@ -60,6 +60,7 @@
           <a href="#motores-autonomos">Motores autónomos</a>
           <a href="#memoria-chat">Memoria &amp; chat con IA local</a>
           <a href="#arquitectura">Arquitectura técnica</a>
+          <a href="#rust">Rust donde importa</a>
           <a href="#analizadores">Catálogo de analizadores</a>
           <a href="#comparativa">Comparativa honesta</a>
           <a href="#bitacora">Bitácora de desarrollo</a>
@@ -432,7 +433,8 @@
       <div class="pillar"><div class="name">Cuando no puede saber, lo dice</div><p>Una llamada opaca (el constructor implícito de un <code class="hl">@dataclass</code>) asume que el taint pasa, pero marca el hallazgo <code class="hl">OPAQUE_CALL</code> con confianza media. Un valor decidido dentro de una rama que depende de datos no confiables (el clásico bypass de autorización) lleva <code class="hl">IMPLICIT_FLOW</code>. Lo leído de una base de datos o un archivo lleva <code class="hl">SECOND_ORDER</code>.</p></div>
       <div class="pillar"><div class="name">Cruza archivos</div><p><code class="hl">from modulo import fn; fn(tainted)</code> e <code class="hl">import modulo; modulo.fn(tainted)</code> se resuelven con el resumen real de esa función, calculado con el contexto de su propio archivo. Sigue sin resolver, a propósito: métodos vía instanciación de clase, más de un salto de re-export e imports dinámicos. El costo por función está acotado.</p></div>
       <div class="pillar"><div class="name">Fuga de secretos sobre el mismo motor</div><p>W-3 no es un grep: <code class="hl">password</code>, <code class="hl">token</code>, <code class="hl">api_key</code>… siembran la categoría SECRET por nombre, y viaja por alias (<code class="hl">temp = password; print(temp)</code> se detecta). Los prefijos <code class="hl">is_</code>, <code class="hl">has_</code>, <code class="hl">requires_</code> no la siembran.</p></div>
-      <div class="pillar"><div class="name">Motor en Rust, con red de seguridad</div><p>El motor completo tiene una implementación en Rust (PyO3) que es la ruta por defecto. Si encuentra un caso que no puede decidir igual que el motor Python (por ejemplo, aritmética no lineal en la poda de caminos), falla a propósito y cae al motor Python, en lugar de aproximar. La equivalencia se mide con un diferencial contra código real de proyectos maduros.</p></div>
+      <div class="pillar"><div class="name">Motor en Rust, con red de seguridad</div><p>El motor completo tiene una implementación en Rust (PyO3) que es la ruta por defecto. Si encuentra un caso que no puede decidir igual que el motor Python (por ejemplo, aritmética no lineal en la poda de caminos), falla a propósito y cae al motor Python, en lugar de aproximar. Su equivalencia se midió sobre 12.919 archivos reales, con y sin resolución entre archivos: cero divergencias, incluido el texto que ve el usuario. <a href="#rust" style="color:var(--accent);">Detalle en la sección de Rust</a>.</p></div>
+      <div class="pillar"><div class="name">Cubre el Python moderno</div><p>Modela <code class="hl">lambda</code> (captura sin inventar taint), <code class="hl">yield</code>, el operador walrus, <code class="hl">match/case</code>, <code class="hl">except*</code> y código asíncrono (<code class="hl">await</code>, <code class="hl">async with</code>, <code class="hl">async for</code>). Hasta hace poco caían en silencio al no-op: en el corpus real aparecían en miles de archivos. Ampliarlo sumó 118 hallazgos en 36 archivos, entre ellos <code class="hl">lambda: eval(value)</code> y datos contaminados llegando a <code class="hl">subprocess.Popen</code>.</p></div>
     </div>
 
     <div class="note-box">
@@ -579,7 +581,7 @@
 
     <div class="note-box">
       <div class="name">Honestidad sobre "multi-lenguaje"</div>
-      <p>El análisis profundo — el DAG completo de 73 analizadores, el correlator bayesiano, taint analysis cross-file — corre solo sobre Python, con <code class="hl">ast.parse()</code> real de CPython. Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+      <p>El análisis profundo — el DAG completo de 73 analizadores, el correlator bayesiano, taint analysis cross-file — corre sobre Python, con <code class="hl">ast.parse()</code> real de CPython; las rutas más costosas tienen además una implementación en Rust (ver <a href="#rust" style="color:var(--accent);">Rust donde importa</a>). Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
     </div>
 
     <div class="depgraph-block">
@@ -596,6 +598,28 @@
         <span><i style="background:#60A5FA"></i>rules</span>
       </div>
       <p class="depgraph-disclaimer">Recorte curado a mano de ~20 módulos reales del repositorio (de 200.000+ líneas) para que se entienda de un vistazo — no es una corrida en vivo del grafo de imports completo, y el tamaño de cada nodo es una estimación relativa, no una métrica exacta de líneas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="rust">
+  <div class="wrap">
+    <p class="section-label">Rendimiento</p>
+    <h2>Rust donde importa, Python donde se entiende</h2>
+    <p class="lede">Los analizadores más costosos tienen una segunda implementación en Rust (PyO3). No reemplaza al motor Python: lo acelera, y ante cualquier caso que no pueda decidir igual, le devuelve el trabajo. Lo que sigue son las decisiones y las mediciones, no una promesa de velocidad.</p>
+
+    <div class="pillars">
+      <div class="pillar"><div class="name">Qué está en Rust</div><p>El motor de taint (W-1), la fuga de información (W-3), el analizador de la Ley de Ashby y el traductor HyDE de la memoria. Se eligieron por su costo medido y porque corren en hilos que compiten por el GIL. El resto de los 73 analizadores sigue en Python.</p></div>
+      <div class="pillar"><div class="name">Dos fases para tener paralelismo real</div><p>Primero se convierte el AST con el GIL retenido; después el cómputo corre en Rust puro con el GIL liberado. Así varios hilos analizan a la vez en vez de competir por el GIL de Python. Lo que necesita el texto de cada hallazgo o la semántica exacta de <code class="hl">ast</code> se sigue obteniendo del <code class="hl">ast</code> real de CPython, no se reimplementa.</p></div>
+      <div class="pillar"><div class="name">Rust primero, Python como red</div><p>Cada analizador porta un despachador: intenta Rust y, ante cualquier excepción (extensión no compilada, caso no soportado), cae al motor Python. Lo que Rust no puede decidir igual (por ejemplo, aritmética no lineal en la poda de caminos, que Python resuelve con Z3) lanza a propósito en vez de aproximar. En el corpus, eso ocurre en alrededor de 0.1% de los archivos.</p></div>
+      <div class="pillar"><div class="name">Paridad medida contra código real</div><p>Un diferencial completo contra el motor Python sobre 12.919 archivos de 10 proyectos maduros (airflow, pandas, sqlalchemy, yt-dlp, matplotlib, aiohttp, black, flask, urllib3, pyyaml) más un corpus adversarial, con y sin resolución entre archivos. Resultado: cero divergencias reales y cero diferencias en el texto que muestra el correlador. Ashby y HyDE se compararon igual, sobre 6.613 archivos, con coincidencia exacta.</p></div>
+      <div class="pillar"><div class="name">Velocidad, con el método a la vista</div><p>Medido en un hilo con archivos reales, los portes resultan entre 1.7× y 6.8× más rápidos según el analizador y el modo (con y sin resolución entre archivos). El traductor HyDE llega a 7.9× de throughput con 6 hilos concurrentes. Son medidas de esos analizadores, no del tiempo total de un análisis, donde pesa el resto del DAG.</p></div>
+      <div class="pillar"><div class="name">Portar obliga a leer el original</div><p>Comparar dos implementaciones destapó defectos del motor Python que se corrigieron en ambos: <code class="hl">await</code>, <code class="hl">async with</code> y <code class="hl">async for</code> se ignoraban en silencio (en cientos de archivos del corpus), y constructos como <code class="hl">lambda</code> o <code class="hl">match</code> nunca se modelaban. Varios errores del analizador de Ashby en Python se replicaron a propósito hasta cerrar la paridad, para no mezclar un cambio de comportamiento con un cambio de lenguaje.</p></div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Un primer port que no era fiel, y cómo se corrigió</div>
+      <p>La primera versión del port de taint parecía correcta y no lo era: un diferencial exhaustivo mostró 175 archivos (1.35%) con hallazgos perdidos o de más, y con textos abreviados que el usuario sí ve. Se corrigió de raíz: las tablas de sinks, mensajes y sanitizadores se generan desde Python (con una verificación que falla si se desincronizan) en lugar de mantenerse a mano en dos lenguajes. Es el motivo por el que esta sección habla de diferenciales y no de "confianza".</p>
     </div>
   </div>
 </section>
@@ -691,6 +715,22 @@
     </div>
 
     <div class="changelog">
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-23</div>
+        <p>La presión del controlador PID de Prompt Thermodynamics quedaba pegada en 1.00 sin importar cuánto bajara el score: el error nunca es negativo y el integral solo crecía. Se corrigió con integración condicional y descarga al alcanzar el objetivo, y ahora tiene tests. En el demo del módulo, la presión baja de 1.00 a 0.24 al pasar el score de 3.2 a 0.1. Un defecto de arranque parecido (patada derivativa) se corrigió también en el PID del motor de resiliencia.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-23</div>
+        <p>El motor de taint en Rust alcanzó paridad con el de Python: 12.919 archivos reales, con y sin resolución entre archivos, cero divergencias. Un diferencial previo había encontrado 175 archivos divergentes (1.35%) y se corrigió de raíz. Además, el análisis ahora modela <code class="hl">lambda</code>, <code class="hl">yield</code>, walrus, <code class="hl">match</code>, <code class="hl">except*</code> y código asíncrono, que antes se ignoraban en silencio: +118 hallazgos en 36 archivos.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-21 a 2026-09-23</div>
+        <p>Portados a Rust, con despachador que cae a Python ante cualquier caso no soportado: el análisis de taint, el de fuga de información, el de la Ley de Ashby y el traductor HyDE de la memoria. Cada uno se verificó contra el motor Python sobre miles de archivos reales.</p>
+      </div>
+      <div class="changelog-entry">
+        <div class="changelog-date">2026-09-20</div>
+        <p>Nuevo analizador, el número 73: detecta el consumo doble de un iterador (<code class="hl">it = iter(x); a = list(it); b = list(it)</code>), un error determinista cuya segunda lectura siempre queda vacía.</p>
+      </div>
       <div class="changelog-entry">
         <div class="changelog-date">2026-09-17</div>
         <p>Reconciliados los 3 motores de detección de patrones de seguridad (AST + 2 motores basados en regex), que compartían sinks parcialmente solapados sin fuente única de verdad. El fix de falso positivo eval()/exec() del motor AST — que ya distinguía <code class="hl">eval()</code> real de <code class="hl">objeto.eval()</code> — no se había propagado a los otros dos: <code class="hl">pandas.DataFrame.eval()</code> y <code class="hl">QApplication.exec()</code> disparaban el mismo hallazgo crítico que una ejecución de código arbitraria real. Medido contra 10 repos open-source maduros: 311 → 45 hallazgos de ese patrón. Además, cuando dos motores detectan exactamente el mismo hallazgo (misma línea, mismo CWE), ahora se fusiona en una sola señal en vez de contarlo doble.</p>
@@ -1002,7 +1042,7 @@
       <div class="pillar"><div class="name">Aceptación tipo Metropolis</div><p>Un intento peor se acepta con probabilidad <code class="hl">exp(−ΔE/T)</code>: a temperatura alta el sistema puede retroceder para salir de un mínimo local; al enfriarse, solo acepta mejoras. La población de estrategias (con elitismo y crossover) se selecciona con pesos de Boltzmann sobre su fitness medido.</p></div>
       <div class="pillar"><div class="name">Memoria de lo que ya falló</div><p>Guarda cada intento, detecta si el LLM devolvió exactamente el mismo código (checksum) y extrae los patrones que causan rechazos — <code class="hl">except:</code>, <code class="hl">pass</code>, <code class="hl">**kwargs</code>, <code class="hl">Any</code>, retornos <code class="hl">None/True/False</code> — para inyectarlos en el siguiente prompt como "no los repitas".</p></div>
       <div class="pillar"><div class="name">Cinco desenlaces, no un contador de reintentos</div><p>Convergencia (score bajo el umbral), agotamiento (tope de iteraciones), <strong style="color:var(--text)">oscilación</strong> (mejora/empeora alternado: reinicia el integral del PID y recalienta el sistema), estancamiento (varios intentos sin mejora, con el mismo tratamiento) y <strong style="color:var(--text)">divergencia</strong> (estancado y con el score por encima del primer intento: se aborta porque el LLM está empeorando el código).</p></div>
-      <div class="pillar"><div class="name">Presión PID traducida a urgencia</div><p>El controlador PID (con anti-windup) produce una presión de 0 a 1 que entra al prompt como nivel de urgencia (media, alta o crítica). Pasadas las primeras iteraciones (umbral que también evoluciona), el prompt autoriza explícitamente cambiar firma y estructura si hace falta.</p></div>
+      <div class="pillar"><div class="name">Presión PID traducida a urgencia</div><p>El controlador PID produce una presión de 0 a 1 que entra al prompt como nivel de urgencia (media, alta o crítica), y baja a medida que el score baja: integra de forma condicional (no acumula mientras la salida ya está saturada), descarga el integral al alcanzar el objetivo y no da patada derivativa en la primera muestra. En el demo del propio módulo, con scores de 3.2 a 0.1, la presión pasa de 1.00 a 0.24. Pasadas las primeras iteraciones (umbral que también evoluciona), el prompt autoriza explícitamente cambiar firma y estructura si hace falta.</p></div>
       <div class="pillar"><div class="name">LLM local, con o sin streaming</div><p>El puente habla con Ollama o con cualquier servidor compatible con OpenAI (LM Studio, llama.cpp) y tiene modo mock para probar el ciclo sin modelo. La API es síncrona, asíncrona con flujo de eventos en vivo, o en segundo plano con trabajos cancelables.</p></div>
     </div>
 
@@ -1025,7 +1065,7 @@
 
     <div class="note-box">
       <div class="name">Qué garantiza el bucle, y qué no</div>
-      <p><strong style="color:var(--text)">Garantiza</strong> que el resultado nunca es peor que el original: el ciclo devuelve el mejor intento medido, y si ninguno mejora el score inicial, devuelve tu código sin tocar. Tampoco confía en que el modelo "diga" que arregló algo: cada candidato pasa por el validador determinista. <strong style="color:var(--text)">No garantiza</strong> convergencia — depende del modelo local y de cuántas violaciones haya — y el score mide las violaciones que el motor sabe detectar, no la corrección funcional del programa. En el propio módulo hay documentado un bug real que la auditoría interna encontró y corrigió (18-sep-2026): el crossover ponderaba al elite en vez de al candidato nuevo, lo que invertía el propósito del annealing (exploraba cuando debía converger y al revés).</p>
+      <p><strong style="color:var(--text)">Garantiza</strong> que el resultado nunca es peor que el original: el ciclo devuelve el mejor intento medido, y si ninguno mejora el score inicial, devuelve tu código sin tocar. Tampoco confía en que el modelo "diga" que arregló algo: cada candidato pasa por el validador determinista. <strong style="color:var(--text)">No garantiza</strong> convergencia — depende del modelo local y de cuántas violaciones haya — y el score mide las violaciones que el motor sabe detectar, no la corrección funcional del programa. En el propio módulo hay documentado un bug real que la auditoría interna encontró y corrigió (18-sep-2026): el crossover ponderaba al elite en vez de al candidato nuevo, lo que invertía el propósito del annealing (exploraba cuando debía converger y al revés). Otro, encontrado al ejecutar el demo (23-sep-2026): la presión del PID quedaba pegada en 1.00 porque el error nunca es negativo y el integral solo crecía. Se corrigió y ahora tiene tests. Una patada derivativa parecida en la primera muestra se corrigió también en el PID del motor de resiliencia.</p>
     </div>
   </div>
 </section>
