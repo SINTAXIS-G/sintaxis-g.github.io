@@ -13,7 +13,10 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="KAIROS — SINTAXIS G">
 <meta property="og:description" content="App de asistencia en emergencias personales: Dead Man's Switch, red de confianza y recursos offline, sin backend ni cuentas.">
-<meta property="og:image" content="https://sintaxisg.com/assets/img/kairos-logo.png">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-kairos.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo de KAIROS: una K con una figura humana abrazando.">
 <meta property="og:url" content="https://sintaxisg.com/projects/kairos.html">
 <meta property="og:site_name" content="SINTAXIS G">
 <meta property="og:locale" content="es_MX">
@@ -22,11 +25,13 @@
 <meta name="twitter:site" content="@SINTAXIS_G">
 <meta name="twitter:title" content="KAIROS — SINTAXIS G">
 <meta name="twitter:description" content="App de asistencia en emergencias personales, sin backend ni cuentas.">
-<meta name="twitter:image" content="https://sintaxisg.com/assets/img/kairos-logo.png">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-kairos.jpg">
+<meta name="twitter:image:alt" content="Logo de KAIROS: una K con una figura humana abrazando.">
 
 <meta name="theme-color" content="#0a0e1a">
-<link rel="icon" href="../assets/img/kairos-logo.png" type="image/png">
-<link rel="apple-touch-icon" href="../assets/img/kairos-logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-kairos-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-kairos-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-kairos.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -43,6 +48,7 @@
   <div class="wrap">
     <a class="proj-back" href="../index.html">← SINTAXIS G</a>
     <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
       <div class="toc-wrap">
         <button class="mode-btn" id="toc-toggle">índice ▾</button>
         <nav class="toc-menu" id="toc-menu">
@@ -60,13 +66,14 @@
       </div>
       <button class="mode-btn" id="dev-toggle">modo dev</button>
       <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
     </div>
   </div>
 </nav>
 
 <header class="proj-hero">
   <div class="wrap">
-    <img src="../assets/img/kairos-logo.png" alt="Logo de KAIROS" class="proj-logo">
+    <img src="../assets/img/kairos-logo-640.webp" alt="Logo de KAIROS" class="proj-logo" width="640" height="480">
     <p class="eyebrow">Proyecto en producción · Flutter</p>
     <h1>KAIROS</h1>
     <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">ASISTENCIA EN EMERGENCIAS PERSONALES — SIN BACKEND, SIN CUENTAS</p>
@@ -88,23 +95,23 @@
     <p class="lede">Cinco pantallas del núcleo de la app — desde pedir ayuda hasta lo que ve quien encuentra el teléfono de alguien más.</p>
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:var(--space-sm);">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/kairos-screenshot-boton-sos.webp" alt="Pantalla principal de KAIROS con el botón NECESITO AYUDA" loading="lazy">
+        <img src="../assets/img/kairos-screenshot-boton-sos.webp" alt="Pantalla principal de KAIROS con el botón NECESITO AYUDA" loading="lazy" width="716" height="1455">
         <figcaption>El botón único de emergencia — dos estados: pedir ayuda o sesión activa.</figcaption>
       </figure>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/kairos-screenshot-dms.webp" alt="Cuenta regresiva del Dead Man's Switch en KAIROS" loading="lazy">
+        <img src="../assets/img/kairos-screenshot-dms.webp" alt="Cuenta regresiva del Dead Man's Switch en KAIROS" loading="lazy" width="720" height="1452">
         <figcaption>El Dead Man's Switch, contando — cancelable con un toque en cualquier parte.</figcaption>
       </figure>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/kairos-screenshot-mapa.webp" alt="Mapa de recursos cercanos en KAIROS, offline-first" loading="lazy">
+        <img src="../assets/img/kairos-screenshot-mapa.webp" alt="Mapa de recursos cercanos en KAIROS, offline-first" loading="lazy" width="720" height="1445">
         <figcaption>Recursos cercanos — hospitales y farmacias, con respaldo 100% offline.</figcaption>
       </figure>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/kairos-screenshot-botiquin.webp" alt="Botiquín Digital de KAIROS con fichas de primeros auxilios verificadas" loading="lazy">
+        <img src="../assets/img/kairos-screenshot-botiquin.webp" alt="Botiquín Digital de KAIROS con fichas de primeros auxilios verificadas" loading="lazy" width="718" height="1438">
         <figcaption>Botiquín Digital — solo contenido revisado fuera de la app, nunca inventado.</figcaption>
       </figure>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/kairos-screenshot-rescatista.webp" alt="Modo Rescatista de KAIROS para quien encuentra el teléfono" loading="lazy">
+        <img src="../assets/img/kairos-screenshot-rescatista.webp" alt="Modo Rescatista de KAIROS para quien encuentra el teléfono" loading="lazy" width="717" height="1436">
         <figcaption>Modo Rescatista — lo que ve quien encuentra el teléfono, sin exponer todo el perfil.</figcaption>
       </figure>
     </div>

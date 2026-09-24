@@ -13,7 +13,10 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ARCHANGEL Ω — A.R.C.H.A.N.G.E.L. | SINTAXIS G">
 <meta property="og:description" content="Motor de análisis estático que trata el software como un sistema físico: entropía, fractura de Griffith, taint analysis y predicción de fallos.">
-<meta property="og:image" content="https://sintaxisg.com/assets/img/archangel-logo.png">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
 <meta property="og:url" content="https://sintaxisg.com/projects/archangel.html">
 <meta property="og:site_name" content="SINTAXIS G">
 <meta property="og:locale" content="es_MX">
@@ -22,11 +25,13 @@
 <meta name="twitter:site" content="@SINTAXIS_G">
 <meta name="twitter:title" content="ARCHANGEL Ω — SINTAXIS G">
 <meta name="twitter:description" content="Motor de análisis estático que trata el software como un sistema físico.">
-<meta name="twitter:image" content="https://sintaxisg.com/assets/img/archangel-logo.png">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
 
 <meta name="theme-color" content="#0a0e1a">
-<link rel="icon" href="../assets/img/archangel-logo.png" type="image/png">
-<link rel="apple-touch-icon" href="../assets/img/archangel-logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -43,6 +48,7 @@
   <div class="wrap">
     <a class="proj-back" href="../index.html">← SINTAXIS G</a>
     <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
       <div class="toc-wrap">
         <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
         <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
@@ -83,13 +89,14 @@
       <a class="mode-btn" href="archangel-articulos.html" style="text-decoration:none;">artículos →</a>
       <button class="mode-btn" id="dev-toggle">modo dev</button>
       <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
     </div>
   </div>
 </nav>
 
 <header class="proj-hero">
   <div class="wrap">
-    <img src="../assets/img/archangel-logo.png" alt="ARCHANGEL Ω logo" class="proj-logo">
+    <img src="../assets/img/archangel-logo-640.webp" alt="ARCHANGEL Ω logo" class="proj-logo" width="640" height="349">
     <p class="eyebrow">Proyecto insignia</p>
     <h1>ARCHANGEL Ω</h1>
     <p style="font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em; color:var(--text-dim); margin-top:0.5rem;">AUTARKIC REPOSITORY CONTEXT HEURISTIC ANALYSIS NEURAL GENERATOR ENTITY LAYER</p>
@@ -220,7 +227,7 @@
         <p>Sobre esa lectura, un módulo de control y decisión (homeostático + modelo de decisión) elige qué corregir, respetando un presupuesto de cambio y evitando repetir estrategias que ya fallaron antes.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-problema-respuesta.webp" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy">
+        <img src="../assets/img/archangel-problema-respuesta.webp" alt="Diagrama: problemas del software mapeados a la respuesta del sistema ARCHANGEL" loading="lazy" width="1024" height="1536">
         <figcaption>Del problema detectado a la acción correctiva, en un solo ciclo cerrado.</figcaption>
       </figure>
     </div>
@@ -234,7 +241,7 @@
     <p class="lede">v8.0 del predictor: no es una fórmula suelta, es un modelo calibrado contra el historial real de Git — con la misma honestidad de ingeniería que el resto del motor.</p>
     <div class="proj-split reverse">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-fracturas.webp" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy">
+        <img src="../assets/img/archangel-fracturas.webp" alt="Predicción de fracturas catastróficas: fórmula de Griffith aplicada a un módulo de software" loading="lazy" width="1402" height="1122">
         <figcaption>K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.</figcaption>
       </figure>
       <div class="proj-split-text">
@@ -281,7 +288,7 @@
         <p>Sobre estas extensiones corre <strong style="color:var(--text)">AQL</strong>, el lenguaje que las conecta: consultas con índices 4D (label, masa, estado térmico, dominio/capa — cada uno O(1) o O(log n) según el tipo) y un optimizador que hace <em>predicate pushdown</em>, reordena joins por selectividad y estima coste antes de ejecutar — igual que un EXPLAIN ANALYZE, pero sobre el grafo arquitectónico completo en vez de una tabla.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-aql-engine.webp" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy">
+        <img src="../assets/img/archangel-aql-engine.webp" alt="Diagrama de AQL Engine v2.0 con sus 15 extensiones" loading="lazy" width="1536" height="1024">
         <figcaption>15 extensiones integradas bajo un solo lenguaje de consulta.</figcaption>
       </figure>
     </div>
@@ -412,7 +419,7 @@
         <p><strong style="color:var(--text)">Nunca poda una rama que no puede probar imposible.</strong> Con Z3 disponible resuelve caminos por SMT real; sin Z3 cae a un chequeo de intervalos. Cuando no hay certeza, el resultado es "posiblemente alcanzable" — prefiere el falso positivo ocasional antes que esconder una vulnerabilidad real.</p>
       </div>
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-taint-analysis.webp" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy">
+        <img src="../assets/img/archangel-taint-analysis.webp" alt="Diagrama de análisis de taint y fuga de secretos en ARCHANGEL" loading="lazy" width="1536" height="1024">
         <figcaption>Fuentes, propagación, análisis de factibilidad y sinks — el camino completo del dato.</figcaption>
       </figure>
     </div>
@@ -886,7 +893,7 @@
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-mckp-solver.webp" alt="Diagrama del MCKP Solver: empaquetado óptimo de archivos en la ventana de contexto del LLM" loading="lazy">
+        <img src="../assets/img/archangel-mckp-solver.webp" alt="Diagrama del MCKP Solver: empaquetado óptimo de archivos en la ventana de contexto del LLM" loading="lazy" width="1536" height="1024">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">No es "meter lo que quepa" — es una Mochila de Múltiple Elección real.</strong> Cada archivo puede vivir en 4 estados (omitido, esqueleto, minificado, código completo), cada uno con su propio costo en tokens y su propio valor semántico. El solver corre un DP exacto que maximiza el valor total sin pasarse del presupuesto — con numpy si está disponible, y beam search cuando el problema es demasiado grande para resolverlo exacto.</p>
@@ -912,7 +919,7 @@
 
     <div class="proj-split reverse">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-symbolic-exec.webp" alt="Diagrama del motor de ejecución simbólica: interpretación abstracta y verificación SMT" loading="lazy">
+        <img src="../assets/img/archangel-symbolic-exec.webp" alt="Diagrama del motor de ejecución simbólica: interpretación abstracta y verificación SMT" loading="lazy" width="1535" height="1024">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">5 clases de hazard, dos con veredicto matemático real.</strong> NULL_DEREF, DICT_KEY_UNSAFE, EMPTY_ITER se detectan por interpretación abstracta pura. DIV_BY_ZERO e INDEX_OUT_OF_BOUNDS van un paso más allá: con Z3 instalado, el motor construye las restricciones de camino reales (incluyendo comparaciones encadenadas como <code class="hl">0 &lt;= i &lt; n</code>) y le pregunta al solver si el caso de falla es SAT (posible, con contraejemplo) o UNSAT (matemáticamente imposible) — cero reporte si es imposible.</p>
@@ -935,7 +942,7 @@
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-chandrasekhar.webp" alt="Diagrama del motor de masa cognitiva: límite de Chandrasekhar aplicado a archivos de código" loading="lazy">
+        <img src="../assets/img/archangel-chandrasekhar.webp" alt="Diagrama del motor de masa cognitiva: límite de Chandrasekhar aplicado a archivos de código" loading="lazy" width="784" height="1168">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">La masa no es líneas ni caracteres — son tokens de AST corregidos por entropía.</strong> Se mide en tokens semánticos del árbol sintáctico real, y esa masa cruda se corrige por la entropía de Shannon de la distribución de nodos: dos archivos con el mismo conteo de tokens no pesan igual si uno repite el mismo patrón sintáctico y el otro es diverso de verdad.</p>
@@ -1023,7 +1030,7 @@
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
-        <img src="../assets/img/archangel-prompt-thermodynamics.webp" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy">
+        <img src="../assets/img/archangel-prompt-thermodynamics.webp" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy" width="1536" height="1024">
       </figure>
       <div class="proj-split-text">
         <p><strong style="color:var(--text)">Recocido simulado real (Kirkpatrick, 1983), no una metáfora de nombre.</strong> Una "temperatura" controla exploración vs. explotación: alta al inicio (acepta prompts imperfectos, mutaciones agresivas, más libertad para el LLM), baja al converger (solo acepta mejoras, mutaciones mínimas, instrucciones precisas). 4 schedules de enfriamiento disponibles — exponencial, logarítmico, lineal, o adaptativo según la tasa de mejora reciente.</p>

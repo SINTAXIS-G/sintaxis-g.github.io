@@ -227,6 +227,16 @@
   function injectTrigger() {
     const nav = document.querySelector('.nav .wrap');
     if (!nav) return;
+    // Si el HTML ya trae el botón (evita que la barra crezca tras cargar el JS),
+    // solo se conecta y se ajusta el atajo según la plataforma.
+    const existing = nav.querySelector('.cmdk-trigger');
+    if (existing) {
+      const isMacExisting = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+      const kbd = existing.querySelector('kbd');
+      if (kbd) kbd.textContent = `${isMacExisting ? '⌘' : 'Ctrl'} K`;
+      existing.addEventListener('click', open);
+      return;
+    }
     const btn = document.createElement('button');
     btn.className = 'cmdk-trigger';
     btn.type = 'button';

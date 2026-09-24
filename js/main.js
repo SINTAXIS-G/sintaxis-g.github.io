@@ -1614,12 +1614,17 @@ if (noiseCounter) {
   const toggles = document.querySelector('.mode-toggles');
   if (!toggles) return; // index.html no tiene esta barra — no aplica ahí
 
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'mode-btn';
-  btn.id = 'focus-toggle';
-  btn.textContent = 'modo lectura';
-  toggles.appendChild(btn);
+  // El botón ya viene en el HTML de las páginas de proyecto (así la barra no
+  // cambia de tamaño tras cargar el JS); si falta, se crea como antes.
+  let btn = document.getElementById('focus-toggle');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mode-btn';
+    btn.id = 'focus-toggle';
+    btn.textContent = 'modo lectura';
+    toggles.appendChild(btn);
+  }
 
   btn.addEventListener('click', () => {
     const active = document.body.classList.toggle('focus-mode');
