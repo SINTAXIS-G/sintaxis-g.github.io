@@ -57,6 +57,7 @@
           <a href="#reporte-real">Ver un reporte real</a>
           <a href="#capacidades-verificadas">Capacidades verificadas</a>
           <a href="#video">En acción</a>
+          <a href="#frontend">El frontend por dentro</a>
           <a href="#problema">El problema → la respuesta</a>
           <a href="#fracturas">Predicción de fracturas</a>
           <a href="#aql">AQL Engine v2.0</a>
@@ -212,6 +213,54 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="frontend">
+  <div class="wrap">
+    <p class="section-label">El frontend por dentro</p>
+    <h2>Una interfaz para trabajar con el análisis, no un visor de JSON</h2>
+    <p class="lede">El frontend es una aplicación React con un motor 3D propio sobre three.js: más de 20 paneles y cerca de 29 mil líneas de interfaz (JavaScript, JSX y CSS). El video de arriba lo muestra en acción; esto es lo que hay dentro, según lo que el código hace hoy.</p>
+
+    <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Dos puertas de entrada</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">Reactor · para quien analiza código</div><p>Análisis en tiempo real con convergencia de señales, deuda técnica y clasificación de riesgo. Desde ahí se salta directo a Analyze, Diff, Batch, Project y Webhooks.</p></div>
+      <div class="pillar"><div class="name">Executive Bridge · para quien decide</div><p>KPIs de deuda estimada, riesgo, SLA y uptime en cuatro pestañas (resumen, sesión, tendencias y reportes), y un <em>Board View</em> pensado para proyectarse en una sala de juntas.</p></div>
+    </div>
+
+    <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">El núcleo de uso diario</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">Analyze · el Laboratorio</div><p>Editor con resaltado de sintaxis propio (un tokenizador sin dependencias) y mapa de calor por línea. Puedes analizar solo la selección, comparar tus últimos 5 análisis entre sí y exportar el resultado a Markdown, HTML, CSV, JSON o PDF.</p></div>
+      <div class="pillar"><div class="name">Diff · el Tribunal</div><p>Dos versiones lado a lado con resaltado de líneas, cambio de puntaje por categoría y un sello final: <strong style="color:var(--text)">APROBADO</strong>, <strong style="color:var(--text)">CON RESERVAS</strong> o <strong style="color:var(--text)">BLOQUEADO</strong>.</p></div>
+      <div class="pillar"><div class="name">Batch · la Fábrica</div><p>Arrastras archivos o das la URL de un repositorio. Resultados en una tabla que se ordena y filtra por veredicto, con exportación a CSV y JSON.</p></div>
+      <div class="pillar"><div class="name">Project · el Cartógrafo</div><p>Árbol del proyecto, mapa de calor con una celda por archivo y la topología 3D de dependencias. Un clic en cualquier archivo lo abre en Analyze con su código.</p></div>
+    </div>
+
+    <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Monitoreo, inteligencia y herramientas</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">Monitoreo</div><p><strong style="color:var(--text)">Usage</strong>: consumo de 30 días, proyección de cuándo se agota la cuota y desglose por tipo. <strong style="color:var(--text)">Webhooks</strong>: prueba en vivo con latencia real e historial de disparos. <strong style="color:var(--text)">Watchlist</strong>: archivos vigilados con tendencia de riesgo y re-análisis prioritario. <strong style="color:var(--text)">Bus</strong>: el flujo de eventos del motor en vivo (SSE o WebSocket), con filtros, pausa, exportación NDJSON y detección de ráfagas. <strong style="color:var(--text)">Feedback</strong>: qué analizadores son ruidosos según tus marcas.</p></div>
+      <div class="pillar"><div class="name">Inteligencia</div><p><strong style="color:var(--text)">AQL</strong>: consola de consultas con resaltado, plantillas, historial y exportación. <strong style="color:var(--text)">Memoria</strong>: búsqueda sobre todo lo ya analizado. <strong style="color:var(--text)">Oráculo IA</strong>: el chat local con Modo Combate (dos posturas en paralelo), veredicto de Enjambre, reparación termodinámica con autopsia y mini-grafos de radio de explosión dentro de la conversación. <strong style="color:var(--text)">ANS</strong>: encender o apagar el daemon, ver su feed y aprobar o rechazar sus propuestas.</p></div>
+      <div class="pillar"><div class="name">Herramientas</div><p><strong style="color:var(--text)">Budget</strong>: planificador del presupuesto de contexto (MCKP). <strong style="color:var(--text)">Refactor</strong>: plan quirúrgico para un God Object. <strong style="color:var(--text)">CI/CD</strong>: genera la configuración para GitHub Actions, GitLab CI, CircleCI, Azure DevOps y Jenkins, con umbrales tomados de tu análisis, badge, esquema SARIF y detección de drift. <strong style="color:var(--text)">Integraciones</strong>: VSCode, GitHub Actions, tokens y snippets de SDK en Python, JS y Go. <strong style="color:var(--text)">Resiliencia</strong>: Módulo de Young y chaos probe. <strong style="color:var(--text)">Schedule</strong>: auditorías recurrentes de un repositorio remoto.</p></div>
+    </div>
+
+    <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Detalles que se notan</p>
+    <div class="pillars">
+      <div class="pillar"><div class="name">Visor forense</div><p>El margen del código lleva una franja de calor y, al pasar el cursor, un resumen de la señal sin tapar el código. Al saltar desde la tabla de señales, el resto del código se atenúa y desenfoca para aislar el bloque que importa.</p></div>
+      <div class="pillar"><div class="name">Cada señal se explica y se califica</div><p>Cada tipo de hallazgo trae una explicación educativa. Puedes marcarlo como falso positivo o confirmado (también en lote), y el panel de Feedback te muestra el efecto acumulado.</p></div>
+      <div class="pillar"><div class="name">Resultados que se comparten</div><p>Un enlace público de solo lectura (<code class="hl">?share=</code>) que quien lo recibe abre sin API key ni cuenta, en una página ligera sin el HUD completo.</p></div>
+      <div class="pillar"><div class="name">Topología 3D con seis vistas</div><p>Campo, foco, rayos X, doppler, térmica y entropía. Los archivos se agrupan por directorio y las señales viajan como partículas entre ellos.</p></div>
+      <div class="pillar"><div class="name">Rápido de recorrer</div><p>Paleta de comandos (Ctrl o ⌘ + K) para saltar a cualquiera de las ~22 pantallas, atajos <code class="hl">Alt+1…9</code>, centro de notificaciones y un "Novedades" dentro de la app.</p></div>
+      <div class="pillar"><div class="name">Modo Profesional y accesibilidad</div><p>Un interruptor entre la vista 3D y una vista Profesional sin fondo animado. El audio generativo es opcional (temas reactor, ambient, neural o silencio) y la pantalla de entrada respeta <code class="hl">prefers-reduced-motion</code>.</p></div>
+      <div class="pillar"><div class="name">Un cliente de API que aguanta</div><p>Reintentos con backoff y jitter, cola por prioridad, timeout adaptativo según el p99 histórico de cada endpoint, monitor de SLA, indicador del circuit breaker y banner de conexión perdida.</p></div>
+      <div class="pillar"><div class="name">Freno en lo destructivo</div><p>El borrado de datos (tipo GDPR) exige elegir el modo explícitamente (el parcial es el predeterminado), escribir una frase exacta, permite un solo intento a la vez y muestra los conteos reales que devolvió el backend antes de poder cerrar.</p></div>
+      <div class="pillar"><div class="name">Los planes se ven</div><p>Un panel que requiere otro plan muestra una tarjeta clara con lo que falta, en lugar de un error genérico. El plan activo y el estado del circuit breaker viven en la barra superior.</p></div>
+      <div class="pillar"><div class="name">Los logos son indicadores de salud</div><p>Los logos de ARCHANGEL en la interfaz cambian con el estado real del sistema (partículas más rápidas en error, más lentas en calma) en vez de ser decoración.</p></div>
+    </div>
+
+    <div class="note-box">
+      <div class="name">Lo que conviene saber</div>
+      <p>El frontend no funciona solo: es un cliente de la API, así que lo que ves depende del plan y de que el servicio esté disponible. Varios paneles avanzados degradan a un estado vacío explícito cuando el backend aún no expone un campo, en vez de inventar datos. Algunos paneles (Watchlist y Feedback, por ejemplo) requieren un plan superior. Y las cifras de dinero del Executive Bridge son estimaciones del modelo de deuda, no mediciones.</p>
     </div>
   </div>
 </section>
