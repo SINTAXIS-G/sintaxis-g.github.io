@@ -156,6 +156,20 @@
     <p class="section-label">Lo que sale del teléfono</p>
     <h2>Qué se envía, a quién y cuándo</h2>
     <p class="lede">Aquí está la lista completa de todo lo que sale de tu teléfono, y por qué. Nada de esto pasa por servidores de Sintaxis G.</p>
+    <div class="flow" aria-label="Diagrama: qué sale del teléfono y hacia quién">
+      <div class="flow-phone">
+        <div class="flow-title">Tu teléfono</div>
+        <p>Perfil médico, red de confianza, ubicación, sesión y ajustes. Todo se queda aquí.</p>
+      </div>
+      <ul class="flow-list">
+        <li><span class="flow-arrow" aria-hidden="true">→</span><div><strong class="k-strong">Tu red de confianza</strong><span>por SMS · ubicación y datos médicos que marcaste · tú envías el borrador</span></div></li>
+        <li><span class="flow-arrow" aria-hidden="true">→</span><div><strong class="k-strong">Overpass API</strong><span>coordenadas exactas e IP · al buscar ayuda cercana con conexión</span></div></li>
+        <li><span class="flow-arrow" aria-hidden="true">→</span><div><strong class="k-strong">OpenStreetMap</strong><span>zona del mapa e IP · solo si no bajaste el mapa</span></div></li>
+        <li><span class="flow-arrow" aria-hidden="true">→</span><div><strong class="k-strong">GitHub</strong><span>archivo que pides e IP · al descargar mapas y recursos</span></div></li>
+        <li><span class="flow-arrow" aria-hidden="true">→</span><div><strong class="k-strong">Google y Cloudflare</strong><span>solo tu IP · verificación de conexión, sin datos tuyos</span></div></li>
+        <li class="flow-none"><span class="flow-arrow" aria-hidden="true">✕</span><div><strong class="k-strong">Sintaxis G</strong><span>no recibe nada · no hay servidor, cuentas ni analítica</span></div></li>
+      </ul>
+    </div>
     <div class="pillars">
       <div class="pillar">
         <div class="name">SMS a tu red de confianza</div>

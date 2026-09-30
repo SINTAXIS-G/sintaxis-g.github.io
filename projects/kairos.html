@@ -84,6 +84,7 @@
           <a href="#filosofia">Filosofía de diseño</a>
           <a href="#flujo">El flujo que importa</a>
           <a href="#niveles">Qué hace, por momento de uso</a>
+          <a href="#cobertura">Dónde funciona hoy</a>
           <a href="#radio-impacto">Qué se sostiene solo</a>
           <a href="#privacidad">Privacidad por diseño</a>
           <a href="#permisos">Permisos de Android</a>
@@ -187,6 +188,17 @@
     <p class="section-label">El flujo que importa</p>
     <h2>De tocar un botón a que alguien se entere</h2>
     <p class="lede">Este es el único camino de toda la app donde una cadena de eventos corre sin que el usuario vuelva a tocar nada. Todo lo demás — avisar a la red manualmente, resolver la sesión, pedir un viaje — es siempre una acción explícita.</p>
+    <div class="dms-timeline">
+      <div class="dms-bar" role="img" aria-label="Línea de tiempo: 2 minutos de conteo en silencio, 1 minuto de pre-alarma, y al minuto 3 el aviso y la alarma">
+        <span class="dms-seg dms-seg-quiet">Conteo en silencio · 2 min</span>
+        <span class="dms-seg dms-seg-pre">Pre-alarma · 1 min</span>
+      </div>
+      <ol class="dms-steps">
+        <li><span class="dms-time">0:00</span><strong class="k-strong">Empieza el conteo</strong><span>Con la sesión activa. Cualquier toque en la pantalla lo reinicia.</span></li>
+        <li><span class="dms-time">2:00</span><strong class="k-strong">Pre-alarma</strong><span>Voz y vibración preguntan «¿sigues ahí?». Un toque en cualquier parte la cancela.</span></li>
+        <li><span class="dms-time">3:00</span><strong class="k-strong">Se agota el tiempo</strong><span>Se abre el SMS a tu red y suena la alarma, salvo que tengas activo el Modo silencioso.</span></li>
+      </ol>
+    </div>
     <div class="proj-split">
       <div class="proj-split-text">
         <p><strong class="k-strong">1. El usuario toca "NECESITO AYUDA".</strong> Arranca la sesión de asistencia, empieza a monitorear la batería y pide la ubicación GPS.</p>
@@ -265,6 +277,41 @@
         <p class="status">6 funciones</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="proj-block" id="cobertura">
+  <div class="wrap">
+    <p class="section-label">Dónde funciona hoy</p>
+    <h2>Ciudad de México y norte del Estado de México</h2>
+    <p class="lede">Kairos empieza aquí. Los recursos offline, los mapas y las líneas de ayuda que incluye son de esta zona. Fuera de ella la app sigue funcionando, pero sin mapas descargables propios.</p>
+    <div class="cov-grid">
+      <svg class="cov-svg" viewBox="0 0 457 522" role="img" aria-labelledby="cov-title cov-desc">
+      <title id="cov-title">Zonas de mapa descargables de Kairos</title>
+      <desc id="cov-desc">Seis rectángulos que muestran el área de cada mapa descargable: el centro de la Ciudad de México y cinco zonas del norte del Estado de México. Algunas zonas se traslapan.</desc>
+      <rect class="cov-zone" x="45.9" y="295.5" width="227.6" height="97.3" rx="4"/>
+      <rect class="cov-zone" x="216.6" y="457.9" width="118.0" height="50.5" rx="4"/>
+      <rect class="cov-zone" x="129.4" y="140.8" width="293.8" height="124.4" rx="4"/>
+      <rect class="cov-zone" x="14.0" y="14.0" width="336.7" height="143.7" rx="4"/>
+      <rect class="cov-zone" x="153.9" y="312.0" width="234.2" height="99.3" rx="4"/>
+      <rect class="cov-zone" x="163.2" y="217.9" width="279.4" height="118.4" rx="4"/>
+      <g class="cov-num" transform="translate(159.7 344.1)"><circle r="11"/><text y="4" text-anchor="middle">1</text></g>
+      <g class="cov-num" transform="translate(275.6 483.2)"><circle r="11"/><text y="4" text-anchor="middle">2</text></g>
+      <g class="cov-num" transform="translate(276.3 203.0)"><circle r="11"/><text y="4" text-anchor="middle">3</text></g>
+      <g class="cov-num" transform="translate(182.3 85.9)"><circle r="11"/><text y="4" text-anchor="middle">4</text></g>
+      <g class="cov-num" transform="translate(271.0 361.7)"><circle r="11"/><text y="4" text-anchor="middle">5</text></g>
+      <g class="cov-num" transform="translate(302.9 277.1)"><circle r="11"/><text y="4" text-anchor="middle">6</text></g>
+    </svg>
+      <ol class="cov-legend">
+      <li><span class="cov-badge">1</span><span><strong class="k-strong">Atizapán</strong><br><span class="cov-size">81 MB</span></span></li>
+      <li><span class="cov-badge">2</span><span><strong class="k-strong">CDMX Centro-Reforma</strong><br><span class="cov-size">52 MB</span></span></li>
+      <li><span class="cov-badge">3</span><span><strong class="k-strong">Cuautitlán</strong><br><span class="cov-size">38 MB</span></span></li>
+      <li><span class="cov-badge">4</span><span><strong class="k-strong">Huehuetoca</strong><br><span class="cov-size">26 MB</span></span></li>
+      <li><span class="cov-badge">5</span><span><strong class="k-strong">Tlalnepantla</strong><br><span class="cov-size">49 MB</span></span></li>
+      <li><span class="cov-badge">6</span><span><strong class="k-strong">Tultitlán</strong><br><span class="cov-size">55 MB</span></span></li>
+      </ol>
+    </div>
+    <p class="k-note k-note-sm k-mt-md">Límites aproximados de cada descarga, sin mapa base. Las zonas se traslapan a propósito para que no queden huecos entre ellas.</p>
   </div>
 </section>
 
