@@ -51,7 +51,7 @@
       "name": "KAIROS",
       "description": "App de asistencia en emergencias personales en Flutter, sin backend ni cuentas, con Dead Man's Switch que avisa a la red de confianza del usuario si deja de responder.",
       "applicationCategory": "SafetyApplication",
-      "operatingSystem": "Android, iOS",
+      "operatingSystem": "Android",
       "url": "https://sintaxisg.com/projects/kairos.html",
       "image": "https://sintaxisg.com/assets/img/og-kairos.jpg",
       "inLanguage": "es-MX",
@@ -86,6 +86,7 @@
           <a href="#niveles">Qué hace, por momento de uso</a>
           <a href="#radio-impacto">Qué se sostiene solo</a>
           <a href="#privacidad">Privacidad por diseño</a>
+          <a href="#permisos">Permisos de Android</a>
           <a href="#stack">Stack técnico</a>
           <a href="#auditorias">Lo que ya se rompió una vez</a>
           <a href="#nunca">Lo que nunca encontrarás aquí</a>
@@ -104,10 +105,11 @@
 <header class="proj-hero">
   <div class="wrap">
     <img src="../assets/img/kairos-logo-640.webp" alt="Logo de KAIROS" class="proj-logo" width="640" height="480">
-    <p class="eyebrow">Proyecto en producción · Flutter</p>
+    <p class="eyebrow">Primeras etapas · Android · Flutter</p>
     <h1>KAIROS</h1>
     <p class="proj-kicker">ASISTENCIA EN EMERGENCIAS PERSONALES — SIN BACKEND, SIN CUENTAS</p>
     <p class="tagline">Una app pensada para el peor momento de alguien: GPS, red de contactos de confianza, recursos de salud cercanos y un Dead Man's Switch que avisa solo si la persona deja de responder. No es un tracker permanente. No es una red social. Todo vive en el teléfono.</p>
+    <p class="proj-scope">Por ahora solo para Android, con mapas y recursos de la Ciudad de México y el Estado de México. Está en sus primeras etapas.</p>
     <p class="lema-maestro k-mt-sm">"Hay aplicaciones diseñadas para los días normales. Kairos fue diseñado para los días que nadie quiere vivir."</p>
     <div class="hero-meta k-mt-lg">
       <div><strong>117</strong>archivos .dart</div>
@@ -219,7 +221,7 @@
     <div class="eco-list">
       <div class="eco-item">
         <h3 class="name">Pedir ayuda<br><span class="eco-sub">Antes de que nadie más sepa</span></h3>
-        <span class="desc"><strong>1.</strong> Botón único «NECESITO AYUDA», con dos estados: pedir ayuda o sesión activa.<br><strong>2.</strong> GPS que se degrada en tres niveles: en vivo → última ubicación conocida → aviso honesto de que no se pudo obtener.<br><strong>3.</strong> Gesto de pantalla ciega: mantener presionado ~2.5 s para pedir ayuda sin ver la pantalla.<br><strong>4.</strong> Botón físico de pánico: 3 toques a «bajar volumen» con la pantalla apagada. Solo Android, opt-in, vía Servicio de Accesibilidad.<br><strong>5.</strong> Guiones de llamada para cinco escenarios (médico, robo, accidente vial, violencia en el hogar, sismo). Nunca marca el 911 solo.<br><strong>6.</strong> Modo simple: tablero de pictogramas sin párrafos que leer; un toque arranca la ayuda y muestra el guion.</span>
+        <span class="desc"><strong>1.</strong> Botón único «NECESITO AYUDA», con dos estados: pedir ayuda o sesión activa.<br><strong>2.</strong> GPS que se degrada en tres niveles: en vivo → última ubicación conocida → aviso honesto de que no se pudo obtener.<br><strong>3.</strong> Gesto de pantalla ciega: mantener presionado ~2.5 s para pedir ayuda sin ver la pantalla.<br><strong>4.</strong> Botón físico de pánico: 3 toques a «bajar volumen» con la pantalla apagada. Opt-in, vía Servicio de Accesibilidad de Android.<br><strong>5.</strong> Guiones de llamada para cinco escenarios (médico, robo, accidente vial, violencia en el hogar, sismo). Nunca marca el 911 solo.<br><strong>6.</strong> Modo simple: tablero de pictogramas sin párrafos que leer; un toque arranca la ayuda y muestra el guion.</span>
         <p class="status">6 funciones</p>
       </div>
       <div class="eco-item">
@@ -229,7 +231,7 @@
       </div>
       <div class="eco-item">
         <h3 class="name">Si dejas de responder<br><span class="eco-sub">Lo que actúa sin que lo toques</span></h3>
-        <span class="desc"><strong>13.</strong> Dead Man's Switch: pre-alarma a los 2 min, cancelable con un toque; expira a los 3.<br><strong>14.</strong> Alarma de supervivencia: sirena + flash + vibración, solo tras confirmación o expiración del DMS.<br><strong>15.</strong> Servicio en primer plano en Android para que el conteo no se congele con la pantalla apagada.<br><strong>16.</strong> Detección de caídas por acelerómetro (golpe + inmovilidad, 20 s para confirmar). Opt-in.<br><strong>17.</strong> Chequeo de inactividad prolongada: si pasan N días sin abrir Kairos, una notificación te lo recuerda. Opt-in.<br><strong>18.</strong> Check-in de actividad planeada: «salgo a correr, avisa si no confirmo en 1 hora» (de 30 min a 6 h).<br><strong>19.</strong> Modo silencioso: si expira el Dead Man's Switch, avisa a la red pero NO enciende sirena ni flash, para no delatar a quien se esconde de un agresor. Opt-in, con confirmación que explica el trade-off.</span>
+        <span class="desc"><strong>13.</strong> Dead Man's Switch: pre-alarma a los 2 min, cancelable con un toque; expira a los 3.<br><strong>14.</strong> Alarma de supervivencia: sirena + flash + vibración, solo tras confirmación o expiración del DMS.<br><strong>15.</strong> Servicio en primer plano para que el conteo no se congele con la pantalla apagada.<br><strong>16.</strong> Detección de caídas por acelerómetro (golpe + inmovilidad, 20 s para confirmar). Opt-in.<br><strong>17.</strong> Chequeo de inactividad prolongada: si pasan N días sin abrir Kairos, una notificación te lo recuerda. Opt-in.<br><strong>18.</strong> Check-in de actividad planeada: «salgo a correr, avisa si no confirmo en 1 hora» (de 30 min a 6 h).<br><strong>19.</strong> Modo silencioso: si expira el Dead Man's Switch, avisa a la red pero NO enciende sirena ni flash, para no delatar a quien se esconde de un agresor. Opt-in, con confirmación que explica el trade-off.</span>
         <p class="status">7 funciones</p>
       </div>
       <div class="eco-item">
@@ -239,7 +241,7 @@
       </div>
       <div class="eco-item">
         <h3 class="name">Recursos cercanos<br><span class="eco-sub">Ayuda física alrededor</span></h3>
-        <span class="desc"><strong>23.</strong> Mapa de hospitales, farmacias y clínicas con anillos de distancia, brújula al más cercano y filtros por tipo y urgencia.<br><strong>24.</strong> 6 zonas de mapa descargables bajo demanda, sin depender de Google Maps.<br><strong>25.</strong> Base crítica empaquetada con la app (3,787 recursos) como último respaldo sin red.<br><strong>26.</strong> Pedir un viaje o abrir direcciones en la app de mapas, con caché etiquetada y validada por distancia.</span>
+        <span class="desc"><strong>23.</strong> Mapa de hospitales, farmacias y clínicas con anillos de distancia, brújula al más cercano y filtros por tipo y urgencia.<br><strong>24.</strong> 6 zonas de mapa descargables bajo demanda (centro de CDMX, Atizapán, Cuautitlán, Huehuetoca, Tlalnepantla y Tultitlán), sin depender de Google Maps.<br><strong>25.</strong> Base crítica empaquetada con la app (3,787 recursos) como último respaldo sin red.<br><strong>26.</strong> Pedir un viaje o abrir direcciones en la app de mapas, con caché etiquetada y validada por distancia.</span>
         <p class="status">4 funciones</p>
       </div>
       <div class="eco-item">
@@ -296,13 +298,63 @@
     <div class="proj-split">
       <div class="proj-split-text">
         <p>Todo vive en el dispositivo. No hay servidor propio ni cuenta de usuario que crear.</p>
-        <p>El cifrado se usa solo donde de verdad se justifica: perfil médico y palabra de seguridad van en almacenamiento cifrado del sistema (Keystore/Keychain). El resto de la app, a propósito, no paga ese costo en cada lectura.</p>
+        <p>El cifrado se usa solo donde de verdad se justifica: perfil médico y palabra de seguridad van en el almacenamiento cifrado de Android (Keystore). El resto de la app, a propósito, no paga ese costo en cada lectura.</p>
         <p>Kairos nunca pide permiso de acceso a los contactos del teléfono. La red de confianza se carga siempre a mano — es una decisión de diseño, no una limitación técnica.</p>
       </div>
       <div class="note-box note-box-flush">
         <div class="name">Decisiones de diseño que no se negocian</div>
         <p>No auto-envía el SMS de alerta — siempre queda como borrador para que una persona decida. La única excepción es la ubicación en vivo: opt-in, apagada por defecto, con su propio interruptor, y solo hacia contactos que ya se avisaron. No enciende la alarma física al pedir ayuda. No genera contenido médico en tiempo real: todo el material offline se revisa fuera de la app antes de entrar. No convierte la bitácora del cuidador en un expediente permanente — se borra sola a las 72 horas.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="permisos">
+  <div class="wrap">
+    <p class="section-label">Permisos de Android</p>
+    <h2>Qué pide Kairos, y por qué</h2>
+    <p class="lede">Una app de emergencias necesita permisos delicados. Esta es la lista completa, sacada del manifiesto de la app, con la razón de cada uno. Los que dependen de una función opcional solo se piden cuando la activas.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">Ubicación precisa y aproximada</div>
+        <p>Para darte tu posición durante una emergencia y buscar hospitales y farmacias cerca. Se pide cuando usas esas funciones.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Ubicación en segundo plano</div>
+        <p>Para que, con la pantalla apagada, el Dead Man's Switch conserve tu última posición cuando expire. Sin este permiso dejaría de actualizarla justo en el caso que existe para cubrir.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Enviar SMS</div>
+        <p>Solo para la ubicación en vivo, que es opcional y está apagada por defecto. El SMS de alerta normal no lo usa: se abre como borrador y tú lo envías. Se pide cuando activas esa función.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Servicio en primer plano</div>
+        <p>Para mantener vivo el conteo del Dead Man's Switch con la pantalla apagada. Android lo muestra como una notificación fija mientras dura la sesión.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Notificaciones</div>
+        <p>Para esa notificación fija y para los recordatorios de medicamentos, el chequeo de inactividad y los check-ins de actividad.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Vibración</div>
+        <p>Para la pre-alarma, la alarma de supervivencia y el metrónomo de RCP.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Internet</div>
+        <p>Solo para descargar mapas y recursos, y buscar ayuda cercana cuando hay conexión. No hay servidor propio ni cuentas.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Inicio del sistema</div>
+        <p>Para retomar los recordatorios y avisos programados después de reiniciar el teléfono.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Servicio de accesibilidad (opcional)</div>
+        <p>Solo para el botón físico de pánico. Escucha únicamente las teclas de volumen; no lee lo que hay en pantalla. Lo activas tú en Ajustes de Android, que muestra su advertencia genérica para cualquier servicio de este tipo.</p>
+      </div>
+    </div>
+    <div class="note-box note-box-flush k-mt-md">
+      <div class="name">Lo que Kairos nunca pide</div>
+      <p>Contactos, cámara ni micrófono. El flash de la alarma funciona sin permiso de cámara. Además, desactiva el respaldo automático de Android, para que el perfil médico y la red de confianza no salgan hacia la nube de Google: el único respaldo es el archivo cifrado que tú exportas.</p>
     </div>
   </div>
 </section>
@@ -318,11 +370,11 @@
       </div>
       <div class="pillar">
         <div class="name">flutter_secure_storage</div>
-        <p>Keystore/Keychain del sistema — reservado solo para perfil médico y palabra de seguridad.</p>
+        <p>Keystore de Android — reservado solo para perfil médico y palabra de seguridad.</p>
       </div>
       <div class="pillar">
         <div class="name">flutter_foreground_task</div>
-        <p>Mantiene vivo el proceso en Android durante el conteo del Dead Man's Switch, con la pantalla apagada.</p>
+        <p>Mantiene vivo el proceso durante el conteo del Dead Man's Switch, con la pantalla apagada.</p>
       </div>
       <div class="pillar">
         <div class="name">connectivity_plus + http</div>
