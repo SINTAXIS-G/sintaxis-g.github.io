@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Ley de Conway, verificada con datos | SINTAXIS G</title>
+<meta name="description" content="Cómo medir la Ley de Conway en un proyecto real cruzando el grafo técnico de dependencias con el grafo social de colaboración extraído de Git.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/ley-de-conway-verificada.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="La Ley de Conway, verificada con datos en vez de citada de memoria">
+<meta property="og:description" content="Cómo medir la Ley de Conway en un proyecto real cruzando el grafo técnico de dependencias con el grafo social de colaboración extraído de Git.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/ley-de-conway-verificada.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareArchitecture">
+<meta property="article:tag" content="ConwaysLaw">
+<meta property="article:tag" content="EngineeringManagement">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="GraphTheory">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="La Ley de Conway, verificada con datos">
+<meta name="twitter:description" content="Cómo medir la Ley de Conway en un proyecto real cruzando el grafo técnico de dependencias con el grafo social de colaboración extraído de Git.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/ley-de-conway-verificada.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/ley-de-conway-verificada.html"
+      },
+      "headline": "La Ley de Conway, verificada con datos en vez de citada de memoria",
+      "description": "Cómo medir la Ley de Conway en un proyecto real cruzando el grafo técnico de dependencias con el grafo social de colaboración extraído de Git.",
+      "url": "https://sintaxisg.com/articulos/ley-de-conway-verificada.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1397,
+      "keywords": "SoftwareArchitecture, ConwaysLaw, EngineeringManagement, Git, GraphTheory, SoftwareEngineering, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "La Ley de Conway, verificada con datos",
+          "item": "https://sintaxisg.com/articulos/ley-de-conway-verificada.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html" aria-current="page">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 7 min de lectura</p>
+    <h1 class="section-title post-hero-title">La Ley de Conway, verificada con datos en vez de citada de memoria</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="ley-de-conway-verificada">
+      <div class="post-body">
+<p>En 1967, Melvin Conway escribió una frase que se convirtió en una de
+las citas más repetidas de ingeniería de software: <em>"cualquier
+organización que diseñe un sistema producirá un diseño cuya estructura
+es una copia de la estructura de comunicación de esa organización"</em>.
+Se cita constantemente en charlas y artículos, casi siempre como una
+observación cualitativa — "miren, los microservicios reflejan los
+equipos" — y casi nunca con un número detrás que la sostenga para un
+proyecto específico.</p>
+<p>Eso es lo que me propuse resolver: si la Ley de Conway es cierta para
+un sistema en concreto, tiene que poder medirse cruzando dos grafos que
+normalmente viven en herramientas separadas — el grafo técnico de
+dependencias del código, y el grafo social de colaboración extraído del
+historial real de Git. Esto es cómo se ve esa medición hecha con rigor,
+y también cómo se ve corregir los errores que salieron en el
+intento.</p>
+<h2
+id="lo-primero-admitir-que-la-versión-anterior-no-hacía-lo-que-decía">Lo
+primero: admitir que la versión anterior no hacía lo que decía</h2>
+<p>Antes de entrar en las ideas nuevas, vale la pena ser transparente
+sobre algo poco común de admitir en público: la primera versión de este
+analizador tenía en su documentación una promesa de integración con Git
+que, revisando el código real, no existía en ningún parámetro ni import.
+Era, literalmente, publicidad engañosa involuntaria — un docstring
+aspiracional que describía lo que el módulo debería hacer, no lo que
+hacía.</p>
+<p>La corrección no fue solo implementar la integración real (que sí se
+hizo). Fue añadir un campo explícito, integration_status, que reporta en
+tiempo de ejecución qué análisis están activos con datos reales y cuáles
+están operando en modo heurístico degradado por falta de alguna
+dependencia externa. La diferencia entre "prometer algo en un
+comentario" y "declarar en runtime si esa promesa se está cumpliendo
+ahora mismo" es exactamente la diferencia entre documentación
+aspiracional y observabilidad real.</p>
+<h2
+id="el-error-de-clasificación-que-cualquier-analizador-basado-en-nombres-puede-cometer">El
+error de clasificación que cualquier analizador basado en nombres puede
+cometer</h2>
+<p>Antes de cruzar grafos, hace falta clasificar de qué dominio de
+responsabilidad es cada símbolo del código — ¿esto es lógica de
+autenticación, de persistencia, de testing? La forma ingenua es buscar
+palabras clave como substring del nombre. Esa forma ingenua tiene dos
+fallas estructurales que cualquiera puede reproducir sin darse
+cuenta:</p>
+<p>Falla de substring: buscar la palabra "auth" como substring hace que
+"author" también matchee — un campo llamado author_id en una tabla de
+comentarios queda mal clasificado como lógica de autenticación,
+simplemente porque comparte cuatro letras seguidas. La corrección
+tokeniza el identificador completo (soportando snake_case, camelCase,
+PascalCase y SCREAMING_SNAKE_CASE) y compara palabras completas, no
+substrings:</p>
+<pre><code>def _tokenize_identifier(name: str) -&gt; List[str]:
+parts = re.split(r\&quot;[_\\d]+\&quot;, name)
+tokens = []
+for p in parts:
+tokens.extend(_WORD_SPLIT_RE.findall(p))
+return [t.lower() for t in tokens if t]</code></pre>
+<p>Falla de shadowing por orden de lista: un símbolo llamado
+test_auth_db toca genuinamente tres dominios a la vez — testing,
+autenticación, y persistencia. Un clasificador que devuelve solo la
+primera coincidencia que encuentra, según el orden en que están
+definidas las reglas internamente, pierde silenciosamente las otras dos,
+y el resultado depende de un detalle de implementación (el orden de una
+lista) que no tiene ningún significado semántico. La corrección devuelve
+el conjunto completo de dominios que matchean, no el primero:</p>
+<pre><code>def _classify_concerns(name: str) -&gt; Set[str]:
+tokens = set(_tokenize_identifier(name))
+matches = set()
+for concern, signals in _CONCERN_SIGNALS:
+if tokens &amp; set(signals):
+matches.add(concern)
+return matches</code></pre>
+<p>El propio archivo incluye, como caso de prueba permanente, dos
+funciones con nombres diseñados específicamente para verificar ambas
+correcciones a la vez: test_auth_db() (debe matchear los tres dominios
+simultáneamente) y testify_in_court() (no debe matchear "testing" pese a
+compartir el substring "test"). Tener el caso de regresión viviendo en
+el propio módulo, no solo en un archivo de tests aparte, es una forma de
+dejar la lección donde nadie pueda evitar verla al tocar el código de
+clasificación en el futuro.</p>
+<h2
+id="la-medición-central-qué-tan-alineados-están-los-equipos-que-mantienen-dos-módulos-acoplados">La
+medición central: qué tan alineados están los equipos que mantienen dos
+módulos acoplados</h2>
+<p>Esta es la idea que le da sustancia real a la cita de Conway. Para
+cada arista del grafo técnico —el módulo A importa o llama al módulo B—
+se calcula qué tan alineados están, socialmente, los equipos
+responsables de cada lado, usando co-autoría real extraída de Git:</p>
+<pre><code>conway_gap = 0.0 if shared else 1.0 / (1.0 + social_weight)</code></pre>
+<p>Si A y B comparten al menos un autor, el gap es cero — hay una
+persona con contexto directo de ambos lados del contrato. Si no
+comparten autor directo, el gap se calcula sobre el peso de colaboración
+indirecta entre los conjuntos de autores de cada módulo (cuántas veces
+han trabajado juntos en otros archivos, según el grafo de co-autoría) —
+más colaboración social indirecta diluye el gap, aunque no exista
+superposición directa de autoría. Un gap alto con acoplamiento técnico
+fuerte es la definición operacional, medible, de un silo en riesgo real:
+dos módulos que dependen técnicamente uno del otro, mantenidos por
+personas que nunca han colaborado y no tienen ningún puente humano
+documentado entre sí — la condición exacta bajo la cual un cambio en A
+rompe a B sin que nadie del lado B se entere hasta que ya es tarde.</p>
+<h2
+id="encontrar-las-fronteras-de-microservicio-reales-no-las-que-suenan-bien-por-nombre">Encontrar
+las fronteras de microservicio reales, no las que suenan bien por
+nombre</h2>
+<p>Proponer dónde partir un sistema monolítico en servicios más pequeños
+suele hacerse por intuición de nombres ("esto suena a que va junto"). La
+alternativa con fundamento matemático es detección de comunidades sobre
+el grafo real de dependencias — el mismo problema, resuelto con el
+algoritmo de Louvain (2008), que optimiza directamente una función de
+modularidad para encontrar la partición que maximiza la densidad de
+conexión dentro de cada grupo propuesto frente a la conexión entre
+grupos:</p>
+<p>Está implementado con dos vías: si networkx está disponible en el
+entorno, se delega a su implementación probada; si no, hay un fallback
+en Python puro que reproduce la primera fase del algoritmo original
+(agregación local de nodos por ganancia de modularidad) sin depender de
+ninguna librería externa — el mismo principio de "nunca degradar de
+forma silenciosa a algo peor" que ya se aplica en el resto del análisis:
+si falta una dependencia opcional, el sistema sigue funcionando con una
+implementación propia equivalente en espíritu, no con un resultado
+vacío.</p>
+<h2
+id="el-cruce-que-amarra-todo-cuándo-el-riesgo-técnico-y-el-riesgo-humano-coinciden-en-el-mismo-archivo">El
+cruce que amarra todo: cuándo el riesgo técnico y el riesgo humano
+coinciden en el mismo archivo</h2>
+<p>La pieza más directamente accionable de todo el sistema combina dos
+análisis que, por separado, ya son útiles, pero que juntos producen una
+alerta de un tipo distinto: radio de explosión técnico (qué tan crítico
+es un archivo para el resto del sistema si falla o cambia) cruzado con
+bus factor (cuántas personas realmente entienden ese archivo hoy).</p>
+<pre><code>if br.blast_score &lt; blast_score_threshold or bf.bus_factor &gt; 1:
+continue
+at_risk = (not bf.primary_owner_active) or (days_inactive &gt; inactivity_threshold_days)</code></pre>
+<p>Un archivo del que depende gran parte del sistema, mantenido por una
+sola persona, que además ya no está activa en el proyecto o lleva más de
+seis meses sin tocarlo, genera una alerta explícita de colapso de
+conocimiento inminente — con severidad graduada según qué tan crítico es
+el archivo, y un mensaje en lenguaje natural listo para presentarle a un
+responsable técnico sin que tenga que interpretar números sueltos:
+<em>"'{archivo}' tiene un radio de explosión del 82% pero depende de un
+único autor que ya no está activo en el proyecto"</em>. Ese es
+exactamente el tipo de hallazgo que ningún análisis puramente técnico ni
+puramente social puede producir por separado — nace del cruce.</p>
+<h2 id="por-qué-medir-esto-en-vez-de-solo-citarlo-importa">Por qué medir
+esto en vez de solo citarlo importa</h2>
+<p>La Ley de Conway, dicha en abstracto, es una observación interesante
+pero inaccionable — no le dice a un equipo <em>cuál</em> de sus cien
+módulos es el silo real, ni <em>cuánto</em> riesgo humano concentra.
+Convertirla en un número por arista, verificable contra datos reales de
+Git y del grafo de dependencias, la transforma de anécdota citable a
+señal de alerta temprana: un lugar concreto donde invertir en
+documentación, en rotación de code review, o en pair programming
+dirigido, antes de que el silo se note de la peor forma posible — cuando
+alguien ya se fue y nadie más puede tocar ese módulo con confianza.</p>
+<p>¿Alguien más ha intentado medir el acoplamiento
+organización-arquitectura de forma cuantitativa en su propio proyecto?
+Me interesa comparar qué señales han usado para el lado "social" del
+cruce.</p>
+<p>#SoftwareArchitecture #ConwaysLaw #EngineeringManagement #Git
+#GraphTheory #SoftwareEngineering #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareArchitecture</span><span class="tag-pill">#ConwaysLaw</span><span class="tag-pill">#EngineeringManagement</span><span class="tag-pill">#Git</span><span class="tag-pill">#GraphTheory</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="pid-bellman-seleccion-clonal.html" rel="prev"><span class="dir">← Anterior</span>PID + Bellman + Selección Clonal para refactorizar</a><a class="next" href="bus-factor-medido-en-serio.html" rel="next"><span class="dir">Siguiente →</span>El Bus Factor, medido en serio</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

@@ -14,7 +14,16 @@
 
 - [Sobre Gabo y cómo trabaja](https://sintaxisg.com/#sobre-mi)
 - [Media kit](https://sintaxisg.com/media-kit.html): bios listas para usar, datos verificados y contacto de prensa.
-- [Artículos técnicos sobre ARCHANGEL](https://sintaxisg.com/projects/archangel-articulos.html)
+- [Bitácora técnica de ARCHANGEL (índice de artículos)](https://sintaxisg.com/projects/archangel-articulos.html)
+  - [Termodinámica aplicada a corregir código con LLMs: por qué "generar y volver a intentar" no es una estrategia](https://sintaxisg.com/articulos/termodinamica-llms.html): Por qué «generar y volver a intentar» no converge: recocido simulado, un termostato sobre el error y memoria para que un LLM corrija código sin repetirse.
+  - [Dónde cortar un God Object: bisección espectral aplicada a refactoring](https://sintaxisg.com/articulos/god-object-biseccion-espectral.html): Cómo decidir por dónde partir una clase de 2000 líneas: clustering espectral, vector de Fiedler y una verificación de que el corte realmente vale la pena.
+  - [PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar](https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html): Un daemon que decide cuándo, qué y cuánto refactorizar con control PID, ecuación de Bellman y selección clonal, en lugar de un umbral de inactividad fijo.
+  - [La Ley de Conway, verificada con datos en vez de citada de memoria](https://sintaxisg.com/articulos/ley-de-conway-verificada.html): Cómo medir la Ley de Conway en un proyecto real cruzando el grafo técnico de dependencias con el grafo social de colaboración extraído de Git.
+  - [¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)](https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html): Por qué git blame miente al estimar el Bus Factor —cinco formas en que un blame ingenuo falla— y cómo medir qué partes de un proyecto dependen de una sola persona.
+  - [RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial](https://sintaxisg.com/articulos/rag-para-codigo-fuente.html): Diez técnicas de RAG pensadas para código (recuperación parent-child, búsqueda híbrida con RRF, MMR, GraphRAG-lite…), cada una con su fuente, sobre ChromaDB.
+  - [Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing](https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html): Perfiles forenses de cada componente con un LLM 100% local en una GTX 1050 Ti de 4 GB: la documentación automática terminó siendo un problema de ML, no de parsing.
+  - [No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una](https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html): Un solver de optimización auditado en cinco rondas y tres bugs invisibles que no crashean: la diferencia entre «funciona» y «es correcto».
+  - ["Síndrome del Turista", "DDoS al SO" y "Bomba 5": ponerle nombre a un bug es la mitad de no repetirlo](https://sintaxisg.com/articulos/nombrar-bugs.html): Cuatro bugs con nombre —Síndrome del Turista, DDoS al SO, Bomba 5…— y por qué nombrar un patrón evita repetirlo mejor que un número de ticket.
 
 ## Autoría y propiedad
 

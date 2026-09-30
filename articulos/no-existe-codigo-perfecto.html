@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No existe el código perfecto: 5 auditorías, 3 bugs invisibles | SINTAXIS G</title>
+<meta name="description" content="Un solver de optimización auditado en cinco rondas y tres bugs invisibles que no crashean: la diferencia entre «funciona» y «es correcto».">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una">
+<meta property="og:description" content="Un solver de optimización auditado en cinco rondas y tres bugs invisibles que no crashean: la diferencia entre «funciona» y «es correcto».">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="SoftwareTesting">
+<meta property="article:tag" content="Algorithms">
+<meta property="article:tag" content="PropertyBasedTesting">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="CodeQuality">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="No existe el código perfecto: 5 auditorías, 3 bugs invisibles">
+<meta name="twitter:description" content="Un solver de optimización auditado en cinco rondas y tres bugs invisibles que no crashean: la diferencia entre «funciona» y «es correcto».">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html"
+      },
+      "headline": "No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una",
+      "description": "Un solver de optimización auditado en cinco rondas y tres bugs invisibles que no crashean: la diferencia entre «funciona» y «es correcto».",
+      "url": "https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1299,
+      "keywords": "SoftwareEngineering, SoftwareTesting, Algorithms, PropertyBasedTesting, Python, CodeQuality, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "No existe el código perfecto: 5 auditorías, 3 bugs invisibles",
+          "item": "https://sintaxisg.com/articulos/no-existe-codigo-perfecto.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html" aria-current="page">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 6 min de lectura</p>
+    <h1 class="section-title post-hero-title">No existe el código perfecto: 5 auditorías, 3 bugs invisibles, y lo que aprendí de cada una</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="no-existe-codigo-perfecto">
+      <div class="post-body">
+<p>Hay una idea que cuesta aceptar cuando uno empieza a programar en
+serio, y que cuesta todavía más cuando el código en cuestión es un
+algoritmo con matemática detrás: que algo funcione correctamente en
+todos los casos que probaste no significa que sea correcto. Significa
+que es correcto <em>para los casos que probaste</em>. La diferencia
+entre esas dos frases es exactamente el espacio donde viven los bugs más
+peligrosos — los que no crashean, no lanzan excepciones, y no violan
+ninguna regla obvia. Simplemente devuelven una respuesta ligeramente
+equivocada, con total confianza.</p>
+<p>Quiero contar esto con un caso concreto: un solver de optimización
+que lleva cinco rondas de auditoría externa, y que en cada ronda seguía
+revelando una forma nueva de estar "casi bien". No para decir "miren qué
+mal escribo código" ni "miren qué bien lo arreglé" — sino porque el
+patrón que se repite en las cinco rondas es más interesante que
+cualquiera de los bugs por separado.</p>
+<h2 id="el-problema-que-resuelve-en-una-frase">El problema que resuelve,
+en una frase</h2>
+<p>El sistema necesita decidir, para cada archivo de un proyecto de
+código, en qué "nivel de detalle" incluirlo dentro de un presupuesto
+limitado de tokens (para que quepa en el contexto de un modelo de
+lenguaje): completo, resumido, solo su esqueleto, o omitido. Cada nivel
+cuesta más tokens y aporta más valor informativo. Con un presupuesto
+fijo y cientos de archivos, hay que elegir la combinación que maximiza
+el valor total sin pasarse del presupuesto. Ese problema, formalmente,
+se llama Multiple-Choice Knapsack — la mochila clásica, pero donde cada
+ítem no es "lo llevo o no lo llevo", sino "elijo una de varias versiones
+de él".</p>
+<p>Es un problema con solución exacta conocida (programación dinámica),
+acotado, bien estudiado. Nada exótico. Y aun así.</p>
+<h2
+id="primera-lección-no-rompe-nada-visible-no-es-lo-mismo-que-es-correcto">Primera
+lección: "no rompe nada visible" no es lo mismo que "es correcto"</h2>
+<p>La primera ronda de auditoría externa encontró algo que parece menor
+hasta que se piensa con cuidado: la conversión de costo en tokens a
+"slots" de la tabla de programación dinámica usaba redondeo hacia abajo.
+Un archivo que costaba, digamos, 61 tokens con una granularidad de 8,
+ocupaba 61 // 8 = 7 slots — pero 7 slots representan hasta 56 tokens, no
+61. Esa diferencia de 5 tokens no aparece en ningún test que solo mire
+"¿el resultado se ve razonable?". Aparece cuando se suman varios
+archivos con ese mismo redondeo hacia abajo, y el total de tokens
+realmente asignados termina superando el presupuesto que se le pidió al
+solver respetar.</p>
+<p>El caso mínimo que quedó documentado como test de regresión: tres
+archivos, presupuesto de 586 tokens, granularidad 8 — el resultado real
+terminaba usando 593. Siete tokens de más, sobre casi seiscientos.
+Invisible a simple vista. Real igual.</p>
+<p>La lección no es "cuidado con el redondeo" — es más específica:
+cuando una restricción se representa en dos unidades distintas (tokens
+reales vs. slots discretos de la tabla), cualquier conversión con
+pérdida entre ambas es un lugar donde la garantía que crees tener puede
+dejar de sostenerse, sin que el código lo anuncie de ninguna forma.</p>
+<h2
+id="segunda-lección-una-garantía-puede-ser-cierta-en-la-parte-que-se-prueba-y-falsa-en-la-composición">Segunda
+lección: una garantía puede ser cierta en la parte que se prueba, y
+falsa en la composición</h2>
+<p>La segunda ronda encontró algo más sutil todavía, y es mi ejemplo
+favorito de todo este proceso. Existía una función que "recuperaba"
+tokens sobrantes después de la asignación principal — si quedaba margen
+sin usar por culpa del redondeo del punto anterior, subía la calidad de
+algún archivo aprovechando ese margen. Esa función, aislada, era
+perfectamente monótona: nunca empeoraba una asignación ya construida.
+Eso se podía demostrar y se probó.</p>
+<p>El problema apareció cuando esa función se combinaba con otra que
+comparaba resultados entre <em>distintos</em> presupuestos para
+construir una curva de "cuánto valor se obtiene con cada nivel de
+presupuesto". La función de recuperación de sobrantes dependía de cuánto
+margen de redondeo tenía la asignación óptima <em>particular</em> de
+cada presupuesto — y esa asignación óptima podía ser una combinación de
+archivos completamente distinta entre un presupuesto y el siguiente. Así
+que el margen recuperado no crecía de forma consistente con el
+presupuesto. Resultado: la curva de "más presupuesto, más valor" podía
+tener una caída local — más presupuesto, <em>menos</em> valor — algo que
+no debería poder pasar nunca en un problema de este tipo, y que ningún
+test que verificara la función de recuperación por separado podía
+detectar, porque la función en sí nunca se rompió.</p>
+<p>Esto es lo que me parece más importante de compartir: verificar cada
+pieza por separado no verifica lo que pasa cuando se combinan. Las
+garantías matemáticas no siempre son composicionales — a veces sí, a
+veces no, y no hay atajo para saberlo salvo demostrarlo específicamente
+para la combinación en cuestión, no asumirlo porque cada parte por su
+lado se porta bien.</p>
+<h2
+id="tercera-lección-el-bug-más-peligroso-es-el-que-no-necesita-que-nada-falle">Tercera
+lección: el bug más peligroso es el que no necesita que nada falle</h2>
+<p>La tercera ronda encontró el caso que más me hizo repensar cómo
+diseño heurísticas de optimización. Existía un mecanismo que, antes de
+correr el algoritmo exacto, adelantaba una decisión "obvia" para
+archivos muy baratos y de muy alto valor — para ahorrar cómputo en casos
+donde la respuesta parecía evidente. Ese mecanismo escribía su decisión
+directamente en la misma estructura que el algoritmo exacto usa para
+representar "mínimos obligatorios" (por ejemplo, archivos que el usuario
+marcó como imprescindibles).</p>
+<p>El resultado: cuando la heurística acertaba, todo se veía perfecto.
+Cuando la heurística "sugería" algo que cabía perfectamente dentro del
+presupuesto — el caso común, no el excepcional — el algoritmo exacto
+dejaba de resolver el problema real. Pasaba a resolver un problema
+ligeramente más pequeño, con menos opciones disponibles para ese
+archivo, porque su heurística ya le había quitado libertad de decisión
+sin que nada indicara que eso había pasado. No había ningún error,
+ninguna advertencia, ningún presupuesto excedido. Solo un resultado
+<em>un poco peor de lo que el algoritmo exacto es capaz de
+encontrar</em>, presentado con la misma confianza que si fuera realmente
+el óptimo.</p>
+<p>Esa es, para mí, la categoría de bug más importante de entender: no
+es el que hace que algo truene. Es el que hace que un sistema diseñado
+para ser exacto deje de serlo, silenciosamente, exactamente en los casos
+donde parecía estar ayudando.</p>
+<h2 id="lo-que-cambia-cuando-se-acepta-que-no-hay-versión-final">Lo que
+cambia cuando se acepta que no hay versión final</h2>
+<p>Nada de esto se descubrió mirando el código con más atención la
+primera vez. Se descubrió porque, en cada ronda, alguien externo volvió
+a hacer la pregunta incómoda — "¿esto es realmente correcto, o solo
+parece correcto?" — y en varios casos la respuesta se verificó generando
+miles de ejemplos aleatorios contra el comportamiento esperado, no
+leyendo el código y confiando en la intuición. Varios de los bugs más
+sutiles (la no-monotonicidad entre presupuestos, la contaminación de la
+heurística) solo aparecieron con ese tipo de búsqueda sistemática, no
+habrían aparecido nunca revisando casos "razonables" a mano.</p>
+<p>Lo que me parece que vale la pena llevarse de esto, más allá del
+código puntual: la meta razonable no es "escribir código sin bugs" — es
+construir el hábito de seguir preguntando, con evidencia y no con
+confianza, si las garantías que crees tener siguen siendo ciertas
+después de cada cambio. Cada ronda de auditoría de este solver no cerró
+el tema — dejó una prueba de regresión nueva, un assert nuevo, una nota
+explicando por qué algo <em>no</em> era un bug (para que nadie vuelva a
+investigarlo desde cero), y siguió adelante. La quinta versión no es la
+versión perfecta. Es, simplemente, la que tiene una capa más de
+preguntas ya respondidas que la anterior.</p>
+<p>¿A alguien más le ha tocado encontrar un bug de este tipo — donde
+nada falla, pero una garantía silenciosa deja de cumplirse? Me interesa
+mucho comparar casos.</p>
+<p>#SoftwareEngineering #SoftwareTesting #Algorithms
+#PropertyBasedTesting #Python #CodeQuality #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SoftwareTesting</span><span class="tag-pill">#Algorithms</span><span class="tag-pill">#PropertyBasedTesting</span><span class="tag-pill">#Python</span><span class="tag-pill">#CodeQuality</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="llm-local-documentacion-codebase.html" rel="prev"><span class="dir">← Anterior</span>Un LLM local que documenta tu codebase</a><a class="next" href="nombrar-bugs.html" rel="next"><span class="dir">Siguiente →</span>Ponerle nombre a un bug es la mitad de no repetirlo</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

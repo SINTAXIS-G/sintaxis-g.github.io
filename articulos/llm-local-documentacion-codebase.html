@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un LLM local que documenta tu codebase | SINTAXIS G</title>
+<meta name="description" content="Perfiles forenses de cada componente con un LLM 100% local en una GTX 1050 Ti de 4 GB: la documentación automática terminó siendo un problema de ML, no de parsing.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing">
+<meta property="og:description" content="Perfiles forenses de cada componente con un LLM 100% local en una GTX 1050 Ti de 4 GB: la documentación automática terminó siendo un problema de ML, no de parsing.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-08">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="MachineLearning">
+<meta property="article:tag" content="LLMOps">
+<meta property="article:tag" content="MultiArmedBandit">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="LocalLLM">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="Un LLM local que documenta tu codebase">
+<meta name="twitter:description" content="Perfiles forenses de cada componente con un LLM 100% local en una GTX 1050 Ti de 4 GB: la documentación automática terminó siendo un problema de ML, no de parsing.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html"
+      },
+      "headline": "Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing",
+      "description": "Perfiles forenses de cada componente con un LLM 100% local en una GTX 1050 Ti de 4 GB: la documentación automática terminó siendo un problema de ML, no de parsing.",
+      "url": "https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html",
+      "datePublished": "2026-09-08",
+      "dateModified": "2026-09-08",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1433,
+      "keywords": "MachineLearning, LLMOps, MultiArmedBandit, SoftwareEngineering, LocalLLM, Python, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Un LLM local que documenta tu codebase",
+          "item": "https://sintaxisg.com/articulos/llm-local-documentacion-codebase.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html" aria-current="page">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-08">8 de septiembre de 2026</time> · 7 min de lectura</p>
+    <h1 class="section-title post-hero-title">Le puse un LLM local a mi codebase para que se documentara sola — y terminé resolviendo problemas de ML, no de parsing</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="llm-local-documentacion-codebase">
+      <div class="post-body">
+<p>Los comentarios en el código mienten, se desactualizan o simplemente
+no existen. Los generadores de documentación automática resuelven el
+problema equivocado: describen <em>qué hace</em> una función, nunca
+<em>por qué existe</em>, <em>qué riesgo carga</em> ni <em>quién la tocó
+por última vez y bajo qué presión</em>. Quise un sistema que produjera
+perfiles forenses de cada componente — capa arquitectónica, estado de
+salud, riesgos de seguridad, deuda técnica, intención de negocio,
+entidades de dominio cross-language — usando un LLM corriendo 100%
+local, sin tokens externos ni llamadas a APIs de terceros, sobre una GPU
+de consumo real (una GTX 1050 Ti de 4 GB, para ser precisos, no una A100
+de laboratorio).</p>
+<p>El problema no fue "conectar un prompt a Ollama". Eso es un fin de
+semana. El problema real fue: ¿cómo confías en la salida de un modelo
+pequeño, cuantizado, corriendo sin supervisión humana en el loop,
+indexando una base de código completa en background, con un presupuesto
+de memoria que se agota si dos inferencias se pisan? Ahí es donde el
+proyecto dejó de ser ingeniería de prompts y se convirtió en una
+colección de problemas clásicos de aprendizaje automático, teoría de
+decisión y sistemas distribuidos con restricciones de recursos
+reales.</p>
+<h2
+id="la-arquitectura-un-pipeline-con-feedback-cerrado-no-un-script-de-una-sola-pasada">La
+arquitectura: un pipeline con feedback cerrado, no un script de una sola
+pasada</h2>
+<p>El flujo no es "leer archivo → prompt → guardar". Es un ciclo cerrado
+con cuatro fases: detectar si el cambio amerita trabajo (evitar indexar
+por gusto), generar el perfil con la variante de prompt que
+históricamente mejor funciona, auditar la propia salida del LLM antes de
+aceptarla, y priorizar qué archivo indexar primero cuando la cola crece
+más rápido de lo que la GPU puede masticar. Cada una de esas cuatro
+decisiones tiene, detrás, un modelo formal — no una heurística
+improvisada a las 2 AM.</p>
+<h2 id="los-protagonistas">Los protagonistas</h2>
+<p>1. Un motor de diff semántico decide si vale la pena re-indexar (el
+problema real del RAG ingenuo).</p>
+<p>Re-indexar todo en cada git commit es carísimo; no re-indexar nunca
+deja el índice vectorial obsoleto y el sistema empieza a alucinar
+contexto viejo. SemanticDiffEngine resuelve esto clasificando cada
+cambio en siete categorías —trivial, refactor, comportamental,
+estructural, seguridad, deuda añadida, deuda resuelta— mediante una
+cascada de comparaciones: primero diff de patrones de riesgo (máxima
+prioridad: cualquier eval(), credencial hardcodeada o SQL con f-string
+nuevo dispara reindexación inmediata sin importar el resto), luego diff
+de firmas de clase/función vía regex multilenguaje, luego diff de deuda
+técnica, y solo al final un ratio de cambio sobre líneas funcionales
+reales (sin comentarios ni whitespace):</p>
+<p>change_ratio = |líneas_viejas Δ líneas_nuevas| / max(|viejas|,
+|nuevas|, 1)</p>
+<p>Con change_ratio &gt; 0.30 se clasifica como cambio de
+comportamiento; entre 0.05 y 0.30, refactor. Solo las categorías con
+impacto semántico real disparan una nueva llamada al LLM. Es, en
+esencia, un clasificador de reglas jerárquicas diseñado explícitamente
+para minimizar el costo computacional del sistema completo — la decisión
+más barata de calcular (regex) filtra la más cara de ejecutar
+(inferencia).</p>
+<p>2. Un bandido multi-armado (UCB1) decide qué prompt usar.</p>
+<p>El sistema mantiene varias variantes de instrucción para el LLM —
+distintos framings del mismo objetivo forense. En vez de fijar una por
+configuración y esperar lo mejor, cada variante acumula un historial de
+puntajes de calidad, y la selección se resuelve con la cota superior de
+confianza de Auer, Cesa-Bianchi &amp; Fischer (2002) — el mismo
+algoritmo detrás de la asignación óptima de tráfico en experimentación
+continua:</p>
+<p>UCB1(i) = μ̂ᵢ + √(2·ln(N) / nᵢ)</p>
+<p>donde μ̂ᵢ es la calidad media observada de la variante i, N el total
+de usos acumulados de todas las variantes, y nᵢ los usos de esa variante
+específica. El primer término explota lo que ya funciona; el segundo
+explora variantes con pocas muestras, con una cota que se estrecha
+logarítmicamente a medida que N crece. El resultado: el prompt óptimo
+emerge empíricamente del uso real, sin necesidad de un experimento A/B
+manual ni de re-desplegar código para probar una redacción distinta. El
+sistema literalmente aprende a hablarle mejor al LLM con el tiempo.</p>
+<p>3. Un modelo de scoring lineal ponderado predice qué archivo va a
+romperse primero.</p>
+<p>Antes de re-indexar, el sistema necesita priorizar: no todo el
+repositorio cambia al mismo ritmo, y la cola de trabajo debe reflejar
+eso. HotPathPredictor calcula una probabilidad de cambio inminente
+combinando cinco señales normalizadas a [0,1] con pesos calibrados por
+importancia relativa:</p>
+<p>score = 0.30·churn_norm + 0.25·estado_térmico +
+0.20·conflictos_norm</p>
+<p>+ 0.15·recencia_norm + 0.10·deuda_norm</p>
+<p>Estructuralmente es el mismo esqueleto que un modelo de scoring
+crediticio o un ranking de riesgo operacional: variables heterogéneas —
+velocidad histórica de commits, estado térmico categórico, conflictos de
+merge recientes, recencia de modificación, volumen de TODOs/FIXMEs
+acumulados — normalizadas y combinadas linealmente en un único número
+accionable, que además reordena en vivo la cola de prioridad del daemon.
+Nada de "los últimos 10 archivos modificados"; es una función de riesgo
+explícita y auditable.</p>
+<p>4. Un detector de alucinaciones basado en verificación de entidades
+léxicas, no en otro LLM de juez.</p>
+<p>Este es el hallazgo que más me interesa desde la óptica de
+confiabilidad de sistemas con LLMs. Un modelo pequeño y cuantizado,
+incluso corriendo con temperature=0.2 y repeat_penalty=1.1, puede
+inventar nombres de clases que no existen en el archivo que
+supuestamente está describiendo. La mitigación no requiere gastar otra
+pasada de inferencia haciendo de juez: extrae todos los tokens en
+CamelCase del perfil generado, los cruza contra los tokens CamelCase
+presentes en el código fuente real y en el path del archivo, y penaliza
+proporcionalmente por cada entidad "fantasma":</p>
+<p>sospechosos = CamelCase(perfil) − ( CamelCase(código_fuente) ∪
+CamelCase(ruta_archivo) )</p>
+<p>penalización = min(1.0, |sospechosos| · 0.2)</p>
+<p>Esta señal entra como un componente (peso 0.10) de un
+ProfileQualityScorer compuesto por cinco dimensiones ponderadas:
+densidad de tokens de alto valor forense (0.30), cobertura obligatoria
+de contexto —capa, estado térmico, autor, riesgos, entidades de dominio—
+(0.30), longitud adecuada ni corta ni relleno vacío (0.15), coherencia
+estructural básica (0.15) y esta penalización anti-alucinación (0.10).
+El puntaje agregado decide si el perfil se acepta o se regenera con otra
+variante de prompt, hasta un máximo de reintentos. Es un caso concreto y
+verificable de <em>self-verification</em> en un pipeline de producción
+con LLMs — no una promesa de marketing sobre "modelos que se
+auto-corrigen".</p>
+<p>5. Ingeniería de restricciones reales: VRAM, backoff y latencia
+adaptativa.</p>
+<p>Ninguno de los cuatro puntos anteriores importa si el sistema tumba
+la GPU. LocalLLMBridge consulta nvidia-smi antes de cada inferencia y
+bloquea la cola si la memoria libre cae bajo un presupuesto configurado
+— sin eso, dos inferencias simultáneas en 4 GB de VRAM terminan en OOM
+silencioso. El timeout de cada llamada no es fijo: se calcula como 1.5×
+el percentil 95 de latencia de las últimas 20 llamadas, acotado entre 30
+segundos y el máximo configurado, así el sistema se adapta solo cuando
+el modelo está bajo carga sin necesidad de tocar configuración. Y ante
+fallos de red, el reintento usa backoff exponencial con jitter aleatorio
+del 20% — el detalle que casi todo el mundo omite y que evita que, si
+Ollama se cae, todos los workers reintenten exactamente al mismo segundo
+y generen una estampida (<em>thundering herd</em>) justo cuando el
+servicio intenta recuperarse.</p>
+<p>El resto del sistema —un grafo temporal que registra la evolución del
+"stress score" de cada archivo a través de sus commits (arqueología de
+código, no un snapshot), un alineador de entidades de dominio
+cross-language que reconoce que UserDTO, IUser y Account probablemente
+describen el mismo concepto de negocio en TypeScript, Python y Go, y un
+extractor de deuda técnica con severidad clasificada— completa el
+pipeline, pero las cinco piezas de arriba son las que toman decisiones
+bajo incertidumbre real.</p>
+<h2 id="por-qué-importa-el-encuadre">Por qué importa el encuadre</h2>
+<p>Nada de esto pertenece al dominio de "generación de texto". Un
+clasificador jerárquico de diffs, un bandido multi-armado, un modelo de
+scoring lineal ponderado y un verificador de alucinaciones por
+comparación de conjuntos son, cada uno, un problema de decisión con una
+solución formal conocida en la literatura de ML y sistemas — no hay
+heurística mágica ni "el LLM ya lo sabe hacer solo". Construir un
+sistema de indexación semántica local confiable resultó ser, en la
+práctica, un ejercicio de ingeniería de ML clásica aplicada a
+infraestructura de desarrollo, con la restricción adicional —nada
+trivial— de correr todo en 4 GB de VRAM, sin salir jamás a internet, y
+sin un humano revisando cada salida antes de que entre al índice
+vectorial.</p>
+<p>¿Alguien más está lidiando con verificación de alucinaciones o
+selección adaptativa de prompts en pipelines de LLMs locales? Me
+interesa mucho comparar enfoques.</p>
+<p><em>#MachineLearning #LLMOps #MultiArmedBandit #SoftwareEngineering
+#LocalLLM #Python #SintaxisG</em></p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#MachineLearning</span><span class="tag-pill">#LLMOps</span><span class="tag-pill">#MultiArmedBandit</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#LocalLLM</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="rag-para-codigo-fuente.html" rel="prev"><span class="dir">← Anterior</span>RAG para código fuente: diez técnicas en un store vectorial</a><a class="next" href="no-existe-codigo-perfecto.html" rel="next"><span class="dir">Siguiente →</span>No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

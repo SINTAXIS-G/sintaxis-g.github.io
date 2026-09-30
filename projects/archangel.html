@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARCHANGEL Ω — SINTAXIS G</title>
-<meta name="description" content="ARCHANGEL Ω: motor de análisis estático de código que trata el software como un sistema físico.">
+<title>ARCHANGEL Ω: análisis estático de código | SINTAXIS G</title>
+<meta name="description" content="ARCHANGEL Ω es un motor de análisis estático de código con 73 analizadores, taint analysis y predicción de fallos. Servicio por API con acceso licenciado.">
 
 <meta name="author" content="Gabo">
 <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@SINTAXIS_G">
-<meta name="twitter:title" content="ARCHANGEL Ω — SINTAXIS G">
+<meta name="twitter:title" content="ARCHANGEL Ω: análisis estático de código | SINTAXIS G">
 <meta name="twitter:description" content="Motor de análisis estático que trata el software como un sistema físico.">
 <meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
 <meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
@@ -1245,6 +1245,29 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://sintaxisg.com/projects/archangel.html#software",
+      "name": "ARCHANGEL Ω",
+      "alternateName": "ARCHANGEL",
+      "description": "Motor de análisis estático de código con 73 analizadores y un correlator bayesiano: taint analysis, predicción de fallos y física del software. Se consume como servicio por API con acceso licenciado.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Cross-platform",
+      "isAccessibleForFree": false,
+      "url": "https://sintaxisg.com/projects/archangel.html",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "inLanguage": "es-MX",
+      "creator": { "@id": "https://sintaxisg.com/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "SINTAXIS G", "item": "https://sintaxisg.com/" },
+        { "@type": "ListItem", "position": 2, "name": "ARCHANGEL Ω", "item": "https://sintaxisg.com/projects/archangel.html" }
+      ]
+    },
+    {
   "@type": "FAQPage",
   "mainEntity": [
     {
@@ -1282,6 +1305,8 @@
       "name": "¿Cómo decide ARCHANGEL qué reportar de verdad y qué ignorar?",
       "acceptedAnswer": { "@type": "Answer", "text": "Con su correlator: cuando 3 o más categorías distintas de señal coinciden en la misma línea de código, se marca como nodo de convergencia real. Una señal aislada de una sola categoría resta confianza y se trata como posible ruido." }
     }
+  ]
+}
   ]
 }
 </script>

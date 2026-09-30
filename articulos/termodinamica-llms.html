@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termodinámica aplicada a corregir código con LLMs | SINTAXIS G</title>
+<meta name="description" content="Por qué «generar y volver a intentar» no converge: recocido simulado, un termostato sobre el error y memoria para que un LLM corrija código sin repetirse.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/termodinamica-llms.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Termodinámica aplicada a corregir código con LLMs: por qué &quot;generar y volver a intentar&quot; no es una estrategia">
+<meta property="og:description" content="Por qué «generar y volver a intentar» no converge: recocido simulado, un termostato sobre el error y memoria para que un LLM corrija código sin repetirse.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/termodinamica-llms.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="ControlTheory">
+<meta property="article:tag" content="SimulatedAnnealing">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="PromptEngineering">
+<meta property="article:tag" content="EvolutionaryAlgorithms">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="Termodinámica aplicada a corregir código con LLMs">
+<meta name="twitter:description" content="Por qué «generar y volver a intentar» no converge: recocido simulado, un termostato sobre el error y memoria para que un LLM corrija código sin repetirse.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/termodinamica-llms.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/termodinamica-llms.html"
+      },
+      "headline": "Termodinámica aplicada a corregir código con LLMs: por qué \"generar y volver a intentar\" no es una estrategia",
+      "description": "Por qué «generar y volver a intentar» no converge: recocido simulado, un termostato sobre el error y memoria para que un LLM corrija código sin repetirse.",
+      "url": "https://sintaxisg.com/articulos/termodinamica-llms.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1489,
+      "keywords": "SoftwareEngineering, ControlTheory, SimulatedAnnealing, LLM, PromptEngineering, EvolutionaryAlgorithms, Python, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Termodinámica aplicada a corregir código con LLMs",
+          "item": "https://sintaxisg.com/articulos/termodinamica-llms.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html" aria-current="page">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 7 min de lectura</p>
+    <h1 class="section-title post-hero-title">Termodinámica aplicada a corregir código con LLMs: por qué &quot;generar y volver a intentar&quot; no es una estrategia</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="termodinamica-llms">
+      <div class="post-body">
+<p>Hay una idea que atraviesa varias disciplinas aparentemente lejanas
+entre sí — metalurgia, control automático, biología evolutiva,
+cibernética — y es esta: un sistema que busca una solución en un espacio
+muy grande no debería moverse igual al principio que al final.</p>
+<p>En metalurgia, esto se llama recocido: un metal fundido, si se enfría
+de golpe, queda con defectos cristalinos permanentes — la estructura
+interna no tuvo tiempo de acomodarse. Si se enfría lento, los átomos
+alcanzan una configuración de menor energía, más estable. Kirkpatrick lo
+formalizó en 1983 como <em>simulated annealing</em>: un algoritmo de
+optimización que al principio acepta soluciones peores con cierta
+probabilidad (temperatura alta, exploración), y a medida que "enfría",
+se vuelve cada vez más exigente hasta converger (temperatura baja,
+explotación).</p>
+<p>En control automático, la misma tensión aparece de otra forma: un
+sistema no debe reaccionar solo al error actual (eso es miope, causa
+oscilación), ni solo a la tendencia (eso es lento para reaccionar a
+shocks). Necesita las tres perspectivas — proporcional, integral,
+derivativa — combinadas.</p>
+<p>Y en biología evolutiva, la exploración/explotación se resuelve con
+mutación y selección: generar variación, dejar sobrevivir lo que
+funciona, repetir.</p>
+<p>La pregunta que me hice fue: ¿qué pasa si un LLM generando código es,
+estructuralmente, el mismo problema? Un LLM que corrige código contra un
+conjunto de reglas de calidad está buscando en un espacio enorme de
+posibles soluciones, con feedback ruidoso, y sin garantía de que la
+siguiente generación sea mejor que la anterior. Tratar ese proceso como
+"generar → si falla, reintentar con el mismo prompt" es, literalmente,
+la versión de enfriar el metal de golpe.</p>
+<p>Así que construí un ciclo de regeneración de código que le pide
+prestado el marco teórico a los tres campos de arriba a la vez, no como
+metáfora decorativa, sino como mecanismo de control real.</p>
+<h2
+id="el-problema-de-fondo-el-llm-no-sabe-cuándo-está-mejorando-ni-cuándo-está-estancado">El
+problema de fondo: el LLM no sabe cuándo está mejorando ni cuándo está
+estancado</h2>
+<p>Cuando le pides a un LLM que corrija una violación de calidad en su
+propio código generado, tres cosas malas pueden pasar, y ninguna es
+rara:</p>
+<p>Puede oscilar — arreglar el problema A introduciendo el problema B, y
+en el siguiente intento arreglar B reintroduciendo A. Puede estancarse —
+generar variaciones cosméticas del mismo código roto, sin tocar la causa
+real. O puede simplemente repetir literalmente el mismo código que ya
+falló, porque el prompt no le dejó suficientemente claro que ese camino
+ya se descartó.</p>
+<p>Ninguno de estos tres modos de fallo se detecta mirando un solo
+intento. Se necesita memoria del proceso — no memoria del código,
+memoria de los <em>intentos</em>.</p>
+<h2 id="traducir-física-a-instrucciones-de-lenguaje-natural">Traducir
+física a instrucciones de lenguaje natural</h2>
+<p>El punto de entrada del sistema no es el código en sí, sino
+violaciones detectadas por analizadores estáticos previos — cosas como
+"esta función excede el límite de masa cognitiva" o "este módulo tiene
+acoplamiento aferente crítico". El primer subsistema traduce cada una de
+esas violaciones, expresadas en términos casi físicos (masa, límite,
+umbral), a una directiva de reparación en lenguaje natural: una
+estrategia concreta (extraer clase, añadir validación, reducir
+acoplamiento), un conjunto de restricciones explícitas, y — esto es lo
+que marca la diferencia frente a un prompt genérico — una lista de
+anti-patrones a evitar, extraídos del historial real de intentos
+fallidos, no inventados de antemano.</p>
+<p>Esa traducción es la bisagra entre "un analizador estático encontró
+algo" y "un LLM entiende qué hacer al respecto" — y es sorprendentemente
+fácil hacerla mal si se limita a pegarle al prompt el nombre técnico de
+la violación sin contexto accionable.</p>
+<h2 id="temperatura-como-control-de-libertad-creativa">Temperatura como
+control de libertad creativa</h2>
+<p>Aquí es donde entra el annealing, aplicado no a un espacio de
+soluciones numéricas sino a un espacio de <em>prompts</em>. Al principio
+del ciclo, la temperatura está alta: el sistema le da al LLM más
+libertad, acepta variantes de prompt más agresivas, explora estrategias
+distintas entre sí. A medida que el ciclo avanza — y sobre todo si
+detecta mejora consistente — la temperatura baja, y el prompt se vuelve
+cada vez más restrictivo y específico, empujando al LLM hacia una
+convergencia fina en vez de seguir explorando ampliamente.</p>
+<p>La parte interesante es que el enfriamiento no tiene por qué ser una
+función fija del tiempo. Un schedule adaptativo observa la tasa de
+mejora reciente: si el sistema está mejorando rápido, se permite seguir
+explorando un poco más antes de cerrar el espacio de búsqueda; si la
+mejora se estanca, enfría más agresivamente para forzar convergencia. Es
+la misma idea que un annealing de metalurgia real, donde el ritmo de
+enfriamiento no es arbitrario — depende de qué tan lejos está el
+material del equilibrio.</p>
+<h2
+id="un-termostato-sobre-el-error-de-violaciones-no-sobre-temperatura-de-metal">Un
+termostato sobre el error de violaciones, no sobre temperatura de
+metal</h2>
+<p>En paralelo al annealing corre un controlador PID clásico — pero el
+"error" que mide no es una variable física, es la puntuación de
+violaciones de calidad del código generado en el intento anterior,
+comparada contra el objetivo (idealmente cero). El componente
+proporcional reacciona al error actual: muchas violaciones, más presión
+en el prompt. El integral acumula el historial: si el error persiste
+ciclo tras ciclo aunque sea pequeño, la presión escala progresivamente —
+esto es lo que evita que el sistema se conforme con una mejora parcial
+estancada. El derivativo mira la velocidad de cambio: si el error está
+cayendo rápido, reduce la presión para no sobrecorregir y terminar
+generando un prompt tan restrictivo que asfixie al LLM.</p>
+<p>La salida de ese PID no mueve un actuador físico — mueve un parámetro
+de "presión del prompt", que determina cuántas restricciones explícitas,
+cuántos ejemplos negativos, y qué tan estricto es el lenguaje de la
+siguiente instrucción que recibe el modelo.</p>
+<h2 id="selección-de-estrategias-como-física-estadística">Selección de
+estrategias como física estadística</h2>
+<p>Cuando hay varias estrategias de prompt candidatas compitiendo
+(variantes con distinto énfasis, distinta agresividad, distinto
+framing), la elección de cuál probar a continuación no es determinista
+ni aleatoria uniforme — usa pesos de Boltzmann. Cada estrategia tiene
+una "energía" inversamente proporcional a qué tan bien le fue en
+intentos anteriores, y la probabilidad de selección de cada una es
+proporcional a exp(-energía/temperatura). A temperatura alta, todas las
+estrategias tienen probabilidad similar de ser elegidas (exploración); a
+temperatura baja, la mejor estrategia domina casi por completo
+(explotación) — la misma temperatura que gobierna el annealing gobierna
+también esta selección, así que ambos mecanismos se mueven sincronizados
+a lo largo del ciclo.</p>
+<p>Sobre ese pool de estrategias corre además una capa evolutiva: las
+mejores sobreviven de un ciclo al siguiente (elitismo), se cruzan entre
+sí (crossover, combinando fragmentos de la mejor estrategia conocida con
+el candidato más reciente), y el resultado del cruce se muta antes de
+reincorporarse al pool. Es selección natural aplicada al espacio de
+instrucciones de un prompt, no al espacio de parámetros de un
+modelo.</p>
+<h2 id="la-memoria-que-evita-que-el-sistema-se-repita-a-sí-mismo">La
+memoria que evita que el sistema se repita a sí mismo</h2>
+<p>Ninguno de los mecanismos anteriores sirve de mucho si el sistema no
+recuerda lo que ya intentó. Por eso el ciclo mantiene memoria episódica
+de cada intento: qué código se generó, si mejoró o empeoró, y qué
+fragmentos específicos aparecieron en los intentos que fallaron. Esos
+fragmentos fallidos no se descartan — se convierten en anti-ejemplos
+explícitos inyectados en el siguiente prompt, con el código exacto que
+ya se probó y ya se rechazó, para que el LLM no vuelva a proponerlo con
+otro nombre de variable.</p>
+<p>Esa misma memoria es la que permite detectar los dos modos de fallo
+que mencioné al principio sin necesidad de mirar un solo intento
+aislado: oscilación (una secuencia estricta de
+mejora-empeora-mejora-empeora en los últimos intentos) y estancamiento
+(ninguna mejora en una ventana reciente, aunque el error no haya
+empeorado tampoco). Ambos son señales de que insistir con la misma
+estrategia es inútil, y ambos disparan una intervención distinta —
+típicamente, forzar un salto de temperatura hacia arriba para romper el
+patrón, en vez de seguir enfriando hacia una convergencia que no va a
+llegar.</p>
+<h2
+id="por-qué-me-parece-que-esto-importa-más-allá-del-caso-puntual">Por
+qué me parece que esto importa más allá del caso puntual</h2>
+<p>Lo que más se me quedó pensando después de construir esto es que
+"usar un LLM en un loop de corrección" se trata casi siempre como un
+problema de prompting — mejor instrucción, mejor ejemplo, mejor formato.
+Y sí importa. Pero por debajo hay un problema de control de un proceso
+estocástico con feedback ruidoso, que es exactamente el tipo de problema
+que la teoría de control, la física estadística y los algoritmos
+evolutivos llevan décadas resolviendo para otros dominios. Tratar la
+corrección de código por LLM sin ese marco es dejar sobre la mesa
+herramientas ya probadas, y reinventar peor una versión ad-hoc de las
+mismas ideas — usualmente sin anti-windup, sin detección de oscilación,
+y sin memoria de qué ya falló.</p>
+<p>¿Alguien más está encontrando este tipo de paralelismo entre teoría
+de control clásica y el diseño de loops de agentes LLM? Me interesa
+mucho comparar enfoques.</p>
+<p>#SoftwareEngineering #ControlTheory #SimulatedAnnealing #LLM
+#PromptEngineering #EvolutionaryAlgorithms #Python #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#ControlTheory</span><span class="tag-pill">#SimulatedAnnealing</span><span class="tag-pill">#LLM</span><span class="tag-pill">#PromptEngineering</span><span class="tag-pill">#EvolutionaryAlgorithms</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="next" href="god-object-biseccion-espectral.html" rel="next"><span class="dir">Siguiente →</span>Dónde cortar un God Object: bisección espectral</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

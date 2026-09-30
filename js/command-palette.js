@@ -59,15 +59,15 @@
     { title: 'Carta al usuario', url: '/projects/kairos.html#carta', group: 'KAIROS' },
 
     // ---------- Artículos ----------
-    { title: 'Termodinámica aplicada a corregir código con LLMs', url: '/projects/archangel-articulos.html#termodinamica-llms', group: 'Artículos' },
-    { title: 'Dónde cortar un God Object: bisección espectral', url: '/projects/archangel-articulos.html#god-object-biseccion-espectral', group: 'Artículos' },
-    { title: 'PID + Bellman + Selección Clonal', url: '/projects/archangel-articulos.html#pid-bellman-seleccion-clonal', group: 'Artículos' },
-    { title: 'La Ley de Conway, verificada con datos', url: '/projects/archangel-articulos.html#ley-de-conway-verificada', group: 'Artículos' },
-    { title: 'El Bus Factor, medido en serio', url: '/projects/archangel-articulos.html#bus-factor-medido-en-serio', group: 'Artículos' },
-    { title: 'RAG para código fuente: diez técnicas', url: '/projects/archangel-articulos.html#rag-para-codigo-fuente', group: 'Artículos' },
-    { title: 'Le puse un LLM local a mi codebase', url: '/projects/archangel-articulos.html#llm-local-documentacion-codebase', group: 'Artículos' },
-    { title: 'No existe el código perfecto', url: '/projects/archangel-articulos.html#no-existe-codigo-perfecto', group: 'Artículos' },
-    { title: 'Ponerle nombre a un bug', url: '/projects/archangel-articulos.html#nombrar-bugs', group: 'Artículos' },
+    { title: 'Termodinámica aplicada a corregir código con LLMs', url: '/articulos/termodinamica-llms.html', group: 'Artículos' },
+    { title: 'Dónde cortar un God Object: bisección espectral', url: '/articulos/god-object-biseccion-espectral.html', group: 'Artículos' },
+    { title: 'PID + Bellman + Selección Clonal', url: '/articulos/pid-bellman-seleccion-clonal.html', group: 'Artículos' },
+    { title: 'La Ley de Conway, verificada con datos', url: '/articulos/ley-de-conway-verificada.html', group: 'Artículos' },
+    { title: 'El Bus Factor, medido en serio', url: '/articulos/bus-factor-medido-en-serio.html', group: 'Artículos' },
+    { title: 'RAG para código fuente: diez técnicas', url: '/articulos/rag-para-codigo-fuente.html', group: 'Artículos' },
+    { title: 'Le puse un LLM local a mi codebase', url: '/articulos/llm-local-documentacion-codebase.html', group: 'Artículos' },
+    { title: 'No existe el código perfecto', url: '/articulos/no-existe-codigo-perfecto.html', group: 'Artículos' },
+    { title: 'Ponerle nombre a un bug', url: '/articulos/nombrar-bugs.html', group: 'Artículos' },
   ];
 
   let overlay = null;

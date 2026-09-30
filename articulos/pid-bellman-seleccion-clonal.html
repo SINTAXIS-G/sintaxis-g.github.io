@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PID + Bellman + Selección Clonal para refactorizar | SINTAXIS G</title>
+<meta name="description" content="Un daemon que decide cuándo, qué y cuánto refactorizar con control PID, ecuación de Bellman y selección clonal, en lugar de un umbral de inactividad fijo.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar">
+<meta property="og:description" content="Un daemon que decide cuándo, qué y cuánto refactorizar con control PID, ecuación de Bellman y selección clonal, en lugar de un umbral de inactividad fijo.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="ControlSystems">
+<meta property="article:tag" content="TechnicalDebt">
+<meta property="article:tag" content="ArtificialImmuneSystems">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="PID + Bellman + Selección Clonal para refactorizar">
+<meta name="twitter:description" content="Un daemon que decide cuándo, qué y cuánto refactorizar con control PID, ecuación de Bellman y selección clonal, en lugar de un umbral de inactividad fijo.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html"
+      },
+      "headline": "PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar",
+      "description": "Un daemon que decide cuándo, qué y cuánto refactorizar con control PID, ecuación de Bellman y selección clonal, en lugar de un umbral de inactividad fijo.",
+      "url": "https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 756,
+      "keywords": "SoftwareEngineering, ControlSystems, TechnicalDebt, ArtificialImmuneSystems, Python, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PID + Bellman + Selección Clonal para refactorizar",
+          "item": "https://sintaxisg.com/articulos/pid-bellman-seleccion-clonal.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html" aria-current="page">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 4 min de lectura</p>
+    <h1 class="section-title post-hero-title">PID + Bellman + Selección Clonal: cómo construí un daemon que decide cuándo, qué y cuánto refactorizar</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="pid-bellman-seleccion-clonal">
+      <div class="post-body">
+<h2
+id="le-construí-un-sistema-nervioso-autónomo-a-mi-código-no-es-una-metáfora-bonita">Le
+construí un Sistema Nervioso Autónomo a mi código (no es una metáfora
+bonita)</h2>
+<p>Los linters te dicen qué está mal. Este sistema intenta decidir
+cuándo intervenir, qué hacer y cuánto riesgo asumir.</p>
+<p>Esa es la diferencia que me llevó a construirlo. Cualquier daemon
+puede correr un análisis estático cada cierto tiempo. Pero ninguno de
+los que probé sabía responder tres preguntas que en realidad son las que
+importan: ¿el código está lo bastante degradado como para justificar
+tocarlo ahora? ¿Qué tipo de cambio conviene, dado el estado real del
+archivo? ¿Y cuánto puedo arriesgar en un solo ciclo sin generar un PR
+que nadie va a revisar?</p>
+<p>La respuesta fácil es un IDLE_THRESHOLD fijo: "si el archivo no
+cambia en 5 minutos, refactoriza". Es lo que tenía al principio, y es
+exactamente lo que decidí tirar.</p>
+<h2 id="la-idea-tratar-el-código-como-un-organismo-con-reflejos">La
+idea: tratar el código como un organismo con reflejos</h2>
+<p>En vez de un cronómetro, diseñé un sistema con dos modos, calcado de
+la dualidad simpático/parasimpático del sistema nervioso autónomo
+real:</p>
+<ul>
+<li><p>Modo simpático (activo): mientras escribes, el daemon corre
+auditorías rápidas y reacciona con alertas de bajo costo — el
+equivalente a un reflejo.</p></li>
+<li><p>Modo parasimpático (reposo): cuando detecta inactividad, entra en
+modo de curación profunda — analiza, decide y propone.</p></li>
+</ul>
+<p>La clave no es la metáfora en sí, sino que cada transición y cada
+decisión dentro de ella está gobernada por un modelo matemático real, no
+por una regla arbitraria. Tres piezas hacen el trabajo pesado.</p>
+<h2 id="los-tres-protagonistas">Los tres protagonistas</h2>
+<p>1. Un controlador PID decide <em>cuándo</em> intervenir. En vez de un
+umbral fijo, el daemon mide continuamente qué tan "degradado" está el
+código reciente y calcula un error contra un setpoint de calidad
+deseado. Ese error retroalimenta un controlador
+proporcional-integral-derivativo clásico: si el código se degrada
+rápido, el sistema baja su umbral de paciencia y se vuelve más agresivo;
+si está sano, se relaja. Es un termostato real para deuda técnica, con
+memoria (el término integral) y sensibilidad al cambio de tendencia (el
+derivativo).</p>
+<p>2. Bellman + Knapsack deciden <em>qué hacer</em> y <em>cuánto</em>.
+Cada archivo problemático tiene varias estrategias de refactor posibles.
+En vez de aplicar "la primera que calce", el daemon modela esto como un
+problema de control óptimo discreto (ecuación de Bellman) para elegir la
+estrategia que más reduce el riesgo con el menor patch posible. Y como
+no puede curar todo a la vez, decide qué archivos atacar en cada ciclo
+resolviendo un Knapsack de opción múltiple: un presupuesto de líneas de
+cambio tolerable, un grupo por archivo, una estrategia por ítem. El
+resultado es una cartera de cambios optimizada, no una lista de "top 5
+por riesgo".</p>
+<p>3. CLONALG aprende qué refactors acepta el desarrollador. Esta es la
+pieza que más me gusta, porque resuelve un problema muy concreto: si el
+daemon propone una rama de refactor y tú la borras sin mergear, mañana
+no debería insistir con lo mismo. Implementé un Sistema Inmunológico
+Artificial vía Selección Clonal — el mismo principio que usan los
+algoritmos inspirados en cómo el cuerpo aprende a reconocer antígenos.
+Cada tipo de refactor mantiene una población de "candidatos" con
+distinta afinidad; los que sobreviven (los que mergeas) se clonan y
+mutan ligeramente para explorar variaciones cercanas; los que no, se
+descartan y se reemplazan por opciones nuevas. Con el tiempo, el sistema
+converge hacia el estilo arquitectónico específico de cada desarrollador
+— y esa memoria sobrevive a reinicios del daemon.</p>
+<p>El resto del sistema combina análisis topológico de datos, métricas
+estructurales derivadas del grafo de llamadas real, calibración
+histórica contra Git y un canal de alertas de mínima interferencia —
+pero esos tres son los que toman las decisiones.</p>
+<h2 id="un-poco-de-la-matemática-para-quien-quiera-verla">Un poco de la
+matemática, para quien quiera verla</h2>
+<p>El PID, en su forma clásica:</p>
+<p>u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt</p>
+<p>La selección de estrategia, como ecuación de optimalidad de Bellman
+sobre un MDP finito:</p>
+<p>V(x) = max_u [ r(x,u) + γ·V(x') ]</p>
+<p>Y el presupuesto de cambios, como programación dinámica sobre
+Knapsack de opción múltiple:</p>
+<p>dp[w] = max( dp[w], dp[w - peso(item)] + valor(item) )</p>
+<p>Nada de esto es una metáfora suelta: cada decisión que el daemon toma
+—cuándo, qué y cuánto— está respaldada por un modelo verificable, no por
+una heurística inventada. Lo interesante no es que "parezca" un sistema
+nervioso; es que resuelve, con matemática real, tres problemas de
+decisión bajo incertidumbre que casi siempre se abordan con reglas
+fijas.</p>
+<p>¿Alguien más está aplicando teoría de control o algoritmos
+bioinspirados a herramientas internas de desarrollo? Me interesa
+comparar notas.</p>
+<p><em>#SoftwareEngineering #ControlSystems #TechnicalDebt
+#ArtificialImmuneSystems #Python #SintaxisG</em></p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#ControlSystems</span><span class="tag-pill">#TechnicalDebt</span><span class="tag-pill">#ArtificialImmuneSystems</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="god-object-biseccion-espectral.html" rel="prev"><span class="dir">← Anterior</span>Dónde cortar un God Object: bisección espectral</a><a class="next" href="ley-de-conway-verificada.html" rel="next"><span class="dir">Siguiente →</span>La Ley de Conway, verificada con datos</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

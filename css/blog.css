@@ -1,0 +1,59 @@
+/* Estilos de la bitácora (índice y páginas de artículo) — usan las variables de variables.css */
+#top { scroll-margin-top: 6rem; }
+  .blog-index { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); margin: var(--space-lg) 0; }
+  .post-card {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem;
+    padding: 1rem 1.25rem; border: 1px solid var(--line);
+    border-radius: 8px; text-decoration: none; color: var(--text);
+    background: var(--surface); transition: border-color .15s ease, transform .15s ease;
+  }
+  .post-card:hover { border-color: var(--accent); transform: translateX(2px); }
+  .post-card-title { font-weight: 600; font-family: var(--font-sans); min-width: 0; overflow-wrap: anywhere; }
+  .post-card-date { font-family: var(--font-mono); font-size: 0.8rem; opacity: 0.65; white-space: nowrap; }
+  .post { padding: var(--space-lg) 0; border-top: 1px solid var(--line); }
+  .post:first-of-type { border-top: none; }
+  .post-title { margin-bottom: var(--space-md); }
+  .post-body p { margin: 0 0 1.1em; line-height: 1.7; }
+  .post-body h2 { margin: 1.8em 0 0.8em; font-family: var(--font-sans); color: var(--accent); font-size: 1.15rem; }
+  .post-body em { color: var(--text); opacity: 0.9; }
+  .post-body pre {
+    background: #0D1117; border: 1px solid var(--line);
+    border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1.2em 0;
+  }
+  .post-body code { font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.6; }
+  .post-body p code { background: rgba(255,255,255,0.06); padding: 0.1em 0.4em; border-radius: 4px; }
+  .post-tags { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag-pill {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid var(--line);
+    opacity: 0.7;
+  }
+  .back-to-top { display: inline-block; margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+  .back-to-top:hover { text-decoration: underline; }
+  .blog-intro { max-width: 68ch; }
+
+/* --- Páginas de artículo individuales --- */
+.hero .crumbs { font-family: var(--font-mono); font-size: 0.78rem; opacity: 0.7; margin: 0 0 var(--space-sm); max-width: none; }
+.hero .crumbs a { color: inherit; text-decoration: none; }
+.hero .crumbs a:hover { color: var(--accent); text-decoration: underline; }
+.hero .crumbs span[aria-hidden] { margin: 0 0.4em; }
+.hero .section-label { margin-top: 0; font-size: var(--fs-small); }
+.hero .post-hero-title { font-size: clamp(1.7rem, 3.6vw, 2.6rem); max-width: 26ch; margin-bottom: 0; }
+.article-page { padding: var(--space-lg) 0 var(--space-xl); }
+.article-page .post { border-top: none; padding-top: 0; max-width: 72ch; }
+.post-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--space-sm); margin-top: var(--space-lg); }
+.post-nav a {
+  display: block; padding: 1rem 1.25rem; border: 1px solid var(--line); border-radius: 8px;
+  text-decoration: none; color: var(--text); background: var(--surface); transition: border-color .15s ease;
+}
+.post-nav a:hover { border-color: var(--accent); }
+.post-nav .dir { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); margin-bottom: 0.3rem; }
+.post-nav .next { text-align: right; }
+.post-cta { margin-top: var(--space-lg); padding: 1.25rem 1.5rem; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--surface); max-width: 72ch; }
+.post-cta p { margin: 0 0 0.75rem; line-height: 1.6; }
+.post-cta a { color: var(--accent); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: none; }
+.post-cta a:hover { text-decoration: underline; }
+.post-card { flex-direction: column; align-items: stretch; }
+.post-card-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1rem; }
+.post-card-desc { font-size: 0.9rem; opacity: 0.75; line-height: 1.55; margin: 0; }
+.post-card.is-read .post-card-date::after { content: " · leído"; color: var(--accent); }

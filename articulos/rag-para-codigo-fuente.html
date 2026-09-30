@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG para código fuente: diez técnicas en un store vectorial | SINTAXIS G</title>
+<meta name="description" content="Diez técnicas de RAG pensadas para código (recuperación parent-child, búsqueda híbrida con RRF, MMR, GraphRAG-lite…), cada una con su fuente, sobre ChromaDB.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/rag-para-codigo-fuente.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial">
+<meta property="og:description" content="Diez técnicas de RAG pensadas para código (recuperación parent-child, búsqueda híbrida con RRF, MMR, GraphRAG-lite…), cada una con su fuente, sobre ChromaDB.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/rag-para-codigo-fuente.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="InformationRetrieval">
+<meta property="article:tag" content="VectorSearch">
+<meta property="article:tag" content="ChromaDB">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="RAG para código fuente: diez técnicas en un store vectorial">
+<meta name="twitter:description" content="Diez técnicas de RAG pensadas para código (recuperación parent-child, búsqueda híbrida con RRF, MMR, GraphRAG-lite…), cada una con su fuente, sobre ChromaDB.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/rag-para-codigo-fuente.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/rag-para-codigo-fuente.html"
+      },
+      "headline": "RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial",
+      "description": "Diez técnicas de RAG pensadas para código (recuperación parent-child, búsqueda híbrida con RRF, MMR, GraphRAG-lite…), cada una con su fuente, sobre ChromaDB.",
+      "url": "https://sintaxisg.com/articulos/rag-para-codigo-fuente.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 2023,
+      "keywords": "RAG, InformationRetrieval, VectorSearch, ChromaDB, NLP, SoftwareEngineering, Python, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "RAG para código fuente: diez técnicas en un store vectorial",
+          "item": "https://sintaxisg.com/articulos/rag-para-codigo-fuente.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html" aria-current="page">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 10 min de lectura</p>
+    <h1 class="section-title post-hero-title">RAG para código fuente: diez técnicas, con su fuente citada, en un solo store vectorial</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="rag-para-codigo-fuente">
+      <div class="post-body">
+<p>RAG genérico para texto y RAG para código fuente no son el mismo
+problema, aunque compartan la misma infraestructura de base (embeddings
++ índice vectorial + similitud). El código tiene propiedades que rompen
+los supuestos de un pipeline de RAG diseñado para prosa: identificadores
+exactos que importan letra por letra (auth_token_v2 no es semánticamente
+"parecido" a auth_token_v3 para un embedding denso, aunque para un
+desarrollador buscando ese símbolo específico la diferencia es todo),
+estructura jerárquica real (una función vive dentro de una clase, dentro
+de un archivo, con límites que un chunking por ventana fija ignora), y
+una relación de importancia que no es solo semántica sino también
+temporal (código de hace dos años que dice lo mismo que código de ayer
+no debería rankear igual).</p>
+<p>Voy a documentar, técnica por técnica, cómo se resuelve cada uno de
+estos problemas en un store vectorial que construí sobre ChromaDB —
+citando explícitamente de dónde viene cada idea que no es propia, porque
+me parece importante separar qué es una aplicación de una técnica
+publicada de qué es una decisión de diseño propia.</p>
+<h2 id="recuperación-jerárquica-parent-child">1. Recuperación jerárquica
+Parent-Child</h2>
+<p>El modelo de embeddings usado (all-MiniLM-L6-v2) tiene un límite de
+512 tokens. Un archivo de 2000 líneas no cabe. La solución ingenua es
+truncar — perder el 80% del archivo silenciosamente. La solución
+correcta, tomada del patrón estándar de recuperación jerárquica en RAG
+(parent-child retrieval), es indexar chunks pequeños para la búsqueda
+semántica, pero mantener el documento padre completo disponible para
+expandir el contexto una vez que un chunk hace match:</p>
+<pre><code>def add_document_hierarchical(\...):
+\# divide por AST (funciones/clases) con ventana deslizante como fallback
+\# cada chunk se embebe e indexa individualmente
+\# el documento padre completo va a un KV store separado en disco</code></pre>
+<p>El detalle de implementación que me parece correcto: el _ParentStore
+es un KV store en disco separado, sin embeddings — no contamina el
+índice HNSW de Chroma con vectores redundantes del documento completo.
+La separación de responsabilidades es limpia: el índice vectorial solo
+indexa lo que realmente se va a buscar por similitud; el store de padres
+solo necesita lookup por ID.</p>
+<h2 id="búsqueda-híbrida-denso-bm25-fusionados-con-rrf">2. Búsqueda
+híbrida: denso + BM25, fusionados con RRF</h2>
+<p>Esta es la pieza central del sistema. Similitud coseno sobre
+embeddings densos es buena para conceptos ("conexión a base de datos"
+encuentra código de conexión aunque no comparta ni una palabra literal).
+Es mala para nombres exactos — un embedding no "sabe" que auth_token_v2
+es exactamente lo que buscas, solo sabe que es semánticamente parecido a
+otras cosas relacionadas con autenticación. BM25 (ranking por frecuencia
+de términos, el estándar de recuperación de información desde los 90) es
+exactamente lo contrario: encuentra coincidencias léxicas exactas, es
+ciego al significado.</p>
+<p>Correr ambos por separado y quedarse con el mejor no funciona bien
+porque sus escores no son comparables — la distancia coseno vive en un
+rango distinto al score BM25, normalizarlos entre sí introduce supuestos
+arbitrarios. La solución estándar de la literatura de IR es Reciprocal
+Rank Fusion (RRF), que ignora los scores crudos y fusiona por
+<em>posición en el ranking</em>:</p>
+<pre><code>def _reciprocal_rank_fusion(rankings):
+fused = {}
+for ranking, k in rankings:
+for rank, doc_id in enumerate(ranking, start=1):
+fused[doc_id] = fused.get(doc_id, 0.0) + 1.0 / (k + rank)
+return fused</code></pre>
+<p>RRF es matemáticamente elegante precisamente porque no necesita que
+las dos listas sean comparables en escala — solo necesita el orden. El
+tokenizador propio para el índice BM25 además descompone snake_case y
+camelCase, para que buscar "auth token" también encuentre authToken y
+auth_token_v2 a nivel de sub-token, no solo coincidencia exacta de
+string completo.</p>
+<h2 id="fusión-adaptativa-del-parámetro-k">3. Fusión adaptativa del
+parámetro k</h2>
+<p>RRF tiene un hiperparámetro k que controla cuánto peso reciben los
+primeros puestos de cada ranking (k bajo = más peso a los primeros
+lugares de esa lista específica). La implementación estándar usa un k
+global igual para ambos rankers. Aquí se detecta heurísticamente si la
+query "parece" un identificador de código (pocas palabras, presencia de
+snake_case/camelCase) y se ajustan los k de forma asimétrica:</p>
+<pre><code>if adaptive_fusion and _looks_like_identifier_query(query):
+default_dense, default_sparse = 90, 40 \# confiar más en BM25
+else:
+default_dense, default_sparse = 60, 60</code></pre>
+<p>Un k de BM25 más bajo cuando la query parece un identificador le da
+más peso relativo a sus primeros resultados frente al ranking denso —
+reconociendo explícitamente que, para ese tipo de query, BM25 es la
+señal más confiable de las dos. Es una heurística simple (no un
+clasificador entrenado), pero está bien justificada: el costo de una
+detección equivocada es solo un peso subóptimo, no un fallo binario.</p>
+<h2 id="time-weighted-search">4. Time-Weighted Search</h2>
+<p>Dos resultados con similitud semántica idéntica no deberían rankear
+igual si uno es de ayer y el otro de hace dos años. La ponderación
+temporal aplica decaimiento exponencial de vida media sobre el score de
+similitud:</p>
+<p>Score_Final = similitud × 0.5^(edad_días / vida_media)</p>
+<p>Es la misma familia matemática que el decaimiento radiactivo que
+vimos en el analizador de código muerto de la conversación anterior —
+vida media configurable, decaimiento suave en vez de un corte binario
+tipo "ignorar todo lo de hace más de N días".</p>
+<h2 id="deduplicación-semántica-vía-knn-restringido">5. Deduplicación
+semántica vía kNN restringido</h2>
+<p>Antes de insertar un documento nuevo, se consulta el vecino más
+cercano restringido al mismo filepath (kNN sobre el índice HNSW que
+Chroma ya mantiene) — no un LSH aproximado aparte, no infraestructura
+extra. Si la similitud es ≥ 0.995, se actualiza el documento existente
+en vez de insertar uno nuevo. La decisión de reusar el índice HNSW
+existente en vez de montar una estructura de deduplicación separada es
+la correcta aquí: el costo marginal de una consulta kNN adicional,
+acotada a un filtro de metadata, es bajo, y evita mantener dos
+estructuras de datos que podrían desincronizarse.</p>
+<h2 id="contextual-retrieval-con-la-fuente-citada-explícitamente">6.
+Contextual Retrieval — con la fuente citada explícitamente</h2>
+<p>Esta es la técnica que da título a este artículo. Está tomada
+directamente de Contextual Retrieval, publicada por Anthropic
+(anthropic.com/news/contextual-retrieval), y el código lo dice así, sin
+ambigüedad. La idea del paper: un chunk aislado (return a + b) no dice
+nada sobre dónde vive ni qué hace — el embedding denso lo indexa "a
+ciegas" de su contexto. La técnica completa antepone a cada chunk un
+resumen situacional generado por un LLM <em>antes</em> de embeberlo, y
+los benchmarks publicados por Anthropic reportan una reducción de
+~35-49% en fallos de recuperación quando se combina con BM25 — que es
+exactamente la arquitectura híbrida que este store ya tiene montada.</p>
+<p>Lo que me parece más honesto de esta implementación es lo que no
+hace: este archivo no llama a ningún LLM directamente. El razonamiento
+explícito en el código es que una capa de almacenamiento no debería
+tener una dependencia de red, costo y latencia de un LLM incrustada
+dentro de su lógica — eso es una violación de responsabilidad de capas.
+En su lugar, se define una interfaz inyectable:</p>
+<pre><code>class ContextEnricher(Protocol):
+def enrich(self, chunk: ChunkInfo, full_text: str, filepath: str) -&gt; str: \...</code></pre>
+<p>El enriquecedor por defecto es puramente heurístico — antepone
+archivo, tipo y nombre del chunk ([core/api/auth.py — función
+autenticar_usuario, línea 42]), que ya resuelve el caso más común de
+"chunk huérfano" sin costo de latencia ni tokens. Para el enfoque
+completo del paper, el mismo código deja documentado el punto exacto de
+extensión:</p>
+<pre><code>class LLMContextEnricher:
+def enrich(self, chunk, full_text, filepath):
+return call_claude(f\&quot;Contexto breve para este fragmento de \&quot;
+f\&quot;{filepath} dentro del archivo completo\...\&quot;)</code></pre>
+<p>Es la forma correcta de referenciar un paper externo en código de
+producción: implementar la parte que se puede sostener sin dependencias
+nuevas, ser explícito sobre qué parte de la técnica publicada se está
+dejando fuera y por qué, y dejar el punto de inyección documentado con
+el nombre exacto de la clase que alguien tendría que escribir para
+completar la implementación real.</p>
+<h2 id="maximal-marginal-relevance-carbonell-goldstein-1998">7. Maximal
+Marginal Relevance (Carbonell &amp; Goldstein, 1998)</h2>
+<p>Un ranking combinado de alta calidad puede seguir siendo malo si sus
+primeros N resultados son casi idénticos entre sí. MMR, publicado en
+1998 para resumen extractivo de documentos, resuelve esto maximizando
+relevancia menos redundancia con lo ya seleccionado:</p>
+<pre><code>score = λ · relevancia − (1−λ) · similitud_máxima_con_lo_ya_elegido</code></pre>
+<p>La implementación es correcta y con un detalle de eficiencia bien
+pensado: solo se piden los embeddings de los candidatos a Chroma cuando
+diversify=True es solicitado explícitamente — es una llamada extra
+evitable, así que se evita por defecto. Los candidatos sin embedding
+disponible se tratan con similitud 0 contra todo lo demás (no penalizan
+ni se benefician de la diversificación), en vez de fallar o sesgar el
+resultado.</p>
+<h2 id="detección-y-migración-de-embedding-drift">8. Detección y
+migración de embedding drift</h2>
+<p>Este es el problema más silencioso de todos los que cubre el sistema,
+y el que más fácil es no darse cuenta que existe: si el modelo de
+embeddings cambia con el tiempo (una actualización, un cambio de
+proveedor), los vectores viejos y nuevos viven en espacios
+matemáticamente no comparables — comparar similitud coseno entre un
+vector generado por el modelo A y otro por el modelo B no tiene ningún
+significado matemático válido, aunque el código no lance ningún error al
+hacerlo. La degradación es silenciosa: los resultados de búsqueda
+simplemente empeoran, sin ninguna señal de por qué.</p>
+<p>La solución registra qué embedding_model se usó por documento en su
+metadata, y expone:</p>
+<pre><code>def get_embedding_drift_report(self, client_id) -&gt; dict:
+\# cuenta cuántos documentos quedaron indexados con un modelo distinto
+\# al configurado actualmente
+def reembed_stale_documents(self, client_id, batch_size=200, max_docs=None) -&gt; int:
+\# migración incremental, paginada, sin downtime --- se puede llamar
+\# periódicamente hasta que stale_count llegue a 0</code></pre>
+<p>La migración es paginada (mismo patrón de paginación acotada en
+memoria que usa el resto del store) y reanudable por lotes — no exige
+una ventana de mantenimiento, se puede correr como un cron que procesa
+max_docs documentos obsoletos por invocación hasta agotar el
+backlog.</p>
+<h2 id="graphrag-lite-combinar-similitud-con-estructura">9.
+GraphRAG-lite: combinar similitud con estructura</h2>
+<p>La frontera de responsabilidad está explícitamente declarada en el
+propio código: este store "encuentra qué se parece a esto" (similitud
+semántica); un grafo de conocimiento aparte "sabe qué está conectado con
+esto" (aristas de llamada, imports, herencia). Combinar ambas señales es
+la idea de GraphRAG. La implementación no importa el módulo de grafo de
+conocimiento directamente — usa el mismo patrón de inyección de
+dependencia que el enriquecedor de contexto (GraphExpander como
+Protocol) — precisamente para no crear una dependencia circular entre
+"quién almacena vectores" y "quién sabe la estructura del código".</p>
+<h2 id="corrección-honesta-sobre-un-supuesto-equivocado">10. Corrección
+honesta sobre un supuesto equivocado</h2>
+<p>Vale la pena señalar esto porque es coherente con el resto de la
+serie: en algún punto de la evolución de este archivo se asumió que
+existía un AsyncPersistentClient en la librería de Chroma para el modo
+embebido (base de datos local sobre disco, sin servidor). El comentario
+en el código lo corrige explícitamente: <em>"esto es una precisión sobre
+el diagnóstico original: AsyncPersistentClient no existe en la
+librería"</em>. La solución real para ese caso es un ThreadPoolExecutor
+dedicado (no el executor global compartido de asyncio, para no agotar
+hilos bajo carga) — el mismo patrón que la documentación oficial de
+Chroma recomienda vía asyncio.to_thread. Para el modo cliente-servidor
+(con un host de Chroma remoto configurado), sí se usa el AsyncHttpClient
+real de la librería, porque ahí la operación es genuinamente I/O de
+red.</p>
+<h2 id="por-qué-me-parece-que-vale-la-pena-documentarlo-así">Por qué me
+parece que vale la pena documentarlo así</h2>
+<p>Cada una de estas diez técnicas resuelve un problema real y
+específico de hacer RAG sobre código en vez de sobre texto genérico, y
+ninguna se presenta como más original de lo que es: cuando la idea viene
+de un paper o de una técnica publicada (Contextual Retrieval, MMR, RRF),
+el código lo dice, con la fuente. Cuando es una decisión de diseño
+propia sobre cómo aplicar o adaptar esa idea al caso específico de
+código fuente (el k adaptativo, la deduplicación restringida por
+filepath, el drift report), también queda claro que es eso. Me parece
+que esa distinción, tan simple de mantener, es la que separa una
+implementación que se puede auditar y confiar de una que solo suena
+bien.</p>
+<p>¿Alguien más está construyendo RAG específico para código en vez de
+reusar un pipeline genérico de texto? Me interesa comparar qué otras
+particularidades del dominio han tenido que resolver.</p>
+<p>#RAG #InformationRetrieval #VectorSearch #ChromaDB #NLP
+#SoftwareEngineering #Python #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#RAG</span><span class="tag-pill">#InformationRetrieval</span><span class="tag-pill">#VectorSearch</span><span class="tag-pill">#ChromaDB</span><span class="tag-pill">#NLP</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#Python</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="bus-factor-medido-en-serio.html" rel="prev"><span class="dir">← Anterior</span>El Bus Factor, medido en serio</a><a class="next" href="llm-local-documentacion-codebase.html" rel="next"><span class="dir">Siguiente →</span>Un LLM local que documenta tu codebase</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

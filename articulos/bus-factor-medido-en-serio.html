@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Bus Factor, medido en serio | SINTAXIS G</title>
+<meta name="description" content="Por qué git blame miente al estimar el Bus Factor —cinco formas en que un blame ingenuo falla— y cómo medir qué partes de un proyecto dependen de una sola persona.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)">
+<meta property="og:description" content="Por qué git blame miente al estimar el Bus Factor —cinco formas en que un blame ingenuo falla— y cómo medir qué partes de un proyecto dependen de una sola persona.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="EngineeringManagement">
+<meta property="article:tag" content="BusFactor">
+<meta property="article:tag" content="InformationTheory">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="TeamDynamics">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="El Bus Factor, medido en serio">
+<meta name="twitter:description" content="Por qué git blame miente al estimar el Bus Factor —cinco formas en que un blame ingenuo falla— y cómo medir qué partes de un proyecto dependen de una sola persona.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html"
+      },
+      "headline": "¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)",
+      "description": "Por qué git blame miente al estimar el Bus Factor —cinco formas en que un blame ingenuo falla— y cómo medir qué partes de un proyecto dependen de una sola persona.",
+      "url": "https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1549,
+      "keywords": "SoftwareEngineering, EngineeringManagement, BusFactor, InformationTheory, Git, TeamDynamics, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "El Bus Factor, medido en serio",
+          "item": "https://sintaxisg.com/articulos/bus-factor-medido-en-serio.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html" aria-current="page">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 8 min de lectura</p>
+    <h1 class="section-title post-hero-title">¿Qué pasa si a tu mejor programador lo atropella un autobús? (El Bus Factor, medido en serio)</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="bus-factor-medido-en-serio">
+      <div class="post-body">
+<p>El nombre viene de una broma macabra de los años 90 que se volvió
+terminología estándar de la industria: Bus Factor = el número mínimo de
+personas cuya ausencia simultánea (por el motivo que sea, el autobús es
+solo la forma memorable de decirlo) dejaría partes críticas de un
+proyecto sin nadie que las entienda de verdad.</p>
+<p>La pregunta que casi todo el mundo hace para estimarlo es:
+<em>"¿cuántas personas tocaron este archivo?"</em> — y hasta hace
+poco yo también pensaba que esa pregunta, respondida con git blame, ya
+daba la respuesta. No es así. Construyendo un analizador que calcula
+esto en serio, descubrí que un blame ingenuo miente de cinco formas
+distintas, cada una con una razón concreta y una corrección concreta.
+Esta es la lista.</p>
+<h2 id="mentira-1-miente-por-formato">Mentira 1: miente por formato</h2>
+<p>Si alguien corre un formateador automático (Black, Ruff, gofmt) sobre
+todo el repositorio, git blame le atribuye el 100% de esas líneas
+reformateadas a esa persona — como si hubiera escrito el código, cuando
+solo le cambió comillas y espacios. Es un problema real y documentado en
+la industria como "el commit del formateador que rompe el blame".</p>
+<p>La corrección compara el contenido antes/después de cada commit, pero
+normalizado (comillas unificadas, espacios colapsados), contra el diff
+crudo:</p>
+<pre><code>mechanical_ratio = 1.0 - (norm_diff / max(raw_diff, 1))
+return mechanical_ratio &gt;= MECHANICAL_COMMIT_RATIO</code></pre>
+<p>Si casi toda la diferencia "real" desaparece al normalizar, es un
+commit puramente mecánico. Esos commits se le pasan a git blame
+--ignore-rev, que reatribuye esas líneas al autor del commit anterior
+real — el que sí escribió la lógica, no el que solo la reformateó.</p>
+<h2 id="mentira-2-miente-por-escala">Mentira 2: miente por escala</h2>
+<p>Multiplicar el bus factor por la complejidad ciclomática
+<em>total</em> de un archivo comete un error de agregación: le atribuye
+la complejidad real del motor de pagos a quien escribió más líneas de
+diccionarios de configuración al lado, simplemente porque escribió más
+líneas en total. Contar líneas no es lo mismo que poseer
+complejidad.</p>
+<p>La corrección mapea cada línea de blame al nodo AST específico
+—función o clase— que la contiene, y calcula, por autor, cuánta
+complejidad ciclomática posee realmente, no cuántas líneas escribió:</p>
+<pre><code>sorted_units = sorted(units, key=lambda u: (u.end_lineno - u.lineno))
+for idx, u in enumerate(sorted_units):
+for ln in range(u.lineno, min(u.end_lineno, total_lines) + 1):
+line_complexity[ln - 1] = u.complexity</code></pre>
+<p>Las unidades más pequeñas (funciones internas) se procesan primero,
+para que una línea quede asignada a la función más específica que la
+contiene, no a la clase contenedora completa. Esto revela algo que el
+conteo de líneas esconde por completo: alguien puede tener poca
+superficie de código (pocas líneas) pero sostener la parte más compleja
+del módulo — el sistema lo llama, literalmente, el arquitecto en la
+sombra: quien cuya proporción de complejidad supera ampliamente su
+proporción de líneas. En el código quedó documentado con nombre propio
+de un caso real de auditoría ("el caso Carlos/Diana") que motivó esta
+corrección — evidencia de que no es una preocupación teórica, es un
+patrón que apareció en la práctica y engañaba al cálculo ingenuo.</p>
+<h2 id="mentira-3-miente-por-tiempo">Mentira 3: miente por tiempo</h2>
+<p>Alguien que no ha tocado un archivo en dos años no "sabe" ese código
+igual que alguien que lo tocó ayer, aunque ambos tengan el mismo
+porcentaje nominal de líneas. El conocimiento humano decae con el tiempo
+— esto no es una opinión, es un fenómeno estudiado desde 1885 por
+Hermann Ebbinghaus con su curva del olvido. El sistema aplica esa misma
+forma matemática, adaptada:</p>
+<pre><code>def _decay_factor(days_since_last: float) -&gt; float:
+w = 2.0 ** (-days_since_last / DECAY_HALF_LIFE_DAYS)
+return max(MIN_DECAY_FACTOR, w)</code></pre>
+<p>Vida media de 180 días: a los seis meses de no tocar un archivo, la
+retención efectiva de conocimiento se estima en torno al 50%, con un
+piso mínimo (nunca llega a cero — el desarrollador siempre recuerda
+algo). Este factor de decaimiento es también la base del Truck Factor,
+un concepto relacionado pero distinto: cuenta explícitamente a los
+desarrolladores que <em>ya se fueron</em> (decaimiento por debajo de
+0.35, inactivos hace más de un año aproximadamente) pero que tenían más
+del 15% de ownership — gente que ya no está pero cuyo conocimiento sigue
+siendo, en teoría, insustituible.</p>
+<p>Hay un matiz adicional que corrige un sesgo distinto: git blame solo
+ve quién escribió las líneas que <em>sobrevivieron</em> hasta hoy. No ve
+quién entiende el código lo suficientemente bien como para arreglarlo
+sin añadir líneas nuevas — alguien puede estar corrigiendo bugs
+activamente en un módulo (commits tipo "fix") sin que eso le sume
+ownership nominal. El sistema cruza esa actividad reciente de fixes con
+el ownership nominal para detectar dueños "de facto": personas con bajo
+blame nominal pero alta actividad operativa reciente, que probablemente
+entienden el código mejor hoy que quien lo escribió originalmente y no
+lo ha tocado desde entonces.</p>
+<h2 id="mentira-4-miente-por-equipo">Mentira 4: miente por equipo</h2>
+<p>Un bus factor de 4 no sirve de nada como métrica de resiliencia si
+las 4 personas son del mismo equipo — la misma reorganización, el mismo
+recorte de presupuesto, o el mismo proyecto que se los lleva a todos a
+la vez, y el módulo se queda igual de huérfano que si hubiera tenido
+solo una persona. El bus factor nominal, sin este ajuste, puede estar
+dando una falsa sensación de seguridad.</p>
+<p>La corrección detecta comunidades ("tribus") sobre un grafo de
+co-autoría, usando Label Propagation (Raghavan, Albert &amp; Kumar,
+2007), implementado desde cero sin depender de librerías externas de
+grafos: cada autor arranca con su propia etiqueta, y en cada iteración
+adopta la etiqueta que predomina, ponderada por peso, entre sus
+colaboradores directos — hasta que el sistema converge o se agota un
+máximo de iteraciones:</p>
+<pre><code>best_label = max(weight_by_label.items(), key=lambda kv: (kv[1], -kv[0]))[0]</code></pre>
+<p>Con semilla aleatoria fija, para que el resultado sea reproducible
+entre corridas del mismo repositorio. El resultado permite calcular un
+bus factor <em>tribal</em> — no "cuántas personas", sino "cuántos grupos
+verdaderamente independientes" sostienen un módulo.</p>
+<h2 id="mentira-5-miente-por-alcance">Mentira 5: miente por alcance</h2>
+<p>Un archivo con bus factor 1 no es solo riesgo para ese archivo — es
+riesgo para todo lo que depende de él, con la salvedad de que ese riesgo
+no viaja gratis: se atenúa con la distancia. "El equipo de Frontend
+depende de una API que solo entiende una persona en Backend" es
+exactamente el tipo de frase que esta idea busca poder generar
+automáticamente, no solo intuir.</p>
+<p>La propagación recorre el grafo de dependencias en anchura desde cada
+archivo de riesgo alto o crítico, atenuando la contribución de riesgo
+por cada salto:</p>
+<pre><code>contribution = base_risk * (attenuation ** hop_dist)
+if contribution &lt; TRANSITIVE_MIN_REPORT:
+continue</code></pre>
+<p>Con un corte explícito por umbral mínimo, para no inundar el reporte
+con contribuciones de riesgo tan diluidas por la distancia que ya no
+aportan información útil — la lista final se ordena por contribución y
+se trunca, priorizando las cadenas de riesgo humano más significativas
+del proyecto completo.</p>
+<h2 id="el-resumen-correcto-de-todo-esto-perplejidad-no-conteo">El
+resumen correcto de todo esto: perplejidad, no conteo</h2>
+<p>Después de aplicar las cinco correcciones, hace falta un solo número
+que resuma "qué tan concentrado está el conocimiento" de un archivo — y
+aquí es donde el sistema usa la herramienta matemáticamente correcta
+para esto: entropía de Shannon sobre la distribución de ownership
+efectivo entre autores.</p>
+<p>H(X) = -Σ p_i · log2(p_i)</p>
+<p>H=0 si un solo autor posee todo (el peor caso posible). H=log2(N) si
+N autores tienen ownership perfectamente uniforme (el mejor caso). Y el
+paso final es elegante: el bus factor efectivo no es un conteo directo
+de autores, es 2^H — el número de autores "equivalentes" que tendría el
+archivo si el conocimiento estuviera distribuido de forma perfectamente
+uniforme entre ellos. Quienes hayan trabajado con modelos de lenguaje
+reconocerán esta fórmula: es exactamente la misma matemática detrás de
+la perplejidad, la métrica estándar para medir qué tan "sorprendido"
+está un modelo por una distribución de probabilidad. Aquí, en vez de
+medir sorpresa sobre predicciones de texto, mide concentración de
+conocimiento humano — mismo principio de información, dominio
+completamente distinto.</p>
+<p>Y hay una última decisión que vale la pena nombrar porque es fácil no
+tomarla: si no hay historial de Git disponible, el sistema no inventa un
+número aproximado contando funciones o clases del archivo para no dejar
+el campo vacío. Devuelve bus_factor: None, explícito. Un dato faltante
+declarado como faltante es más útil — y mucho más honesto — que un
+número que parece preciso sin serlo.</p>
+<h2
+id="por-qué-esto-importa-más-allá-de-una-métrica-de-vanidad-para-el-dashboard-de-ingeniería">Por
+qué esto importa más allá de una métrica de vanidad para el dashboard de
+ingeniería</h2>
+<p>Ninguna de estas cinco correcciones es exótica una vez explicada. Eso
+es justo lo que las hace valiosas: son el tipo de sesgo que cualquier
+medición ingenua de "quién sabe qué" comete por defecto, sin que nadie
+lo note, porque el número resultante <em>se ve</em> razonable — nunca es
+obviamente absurdo, solo está sistemáticamente equivocado en una
+dirección específica. Medir bien el factor humano de un proyecto no es
+una curiosidad académica: es la diferencia entre un plan de mitigación
+de riesgo que funciona (pair programming dirigido a la persona correcta,
+re-onboarding de quien realmente se está por ir) y uno que apunta al
+lugar equivocado con total confianza.</p>
+<p>¿Alguien más ha tenido que corregir sesgos parecidos midiendo
+conocimiento o propiedad de código en su equipo? Me interesa comparar
+qué otras formas de mentir ha encontrado la gente en sus propias
+mediciones.</p>
+<p>#SoftwareEngineering #EngineeringManagement #BusFactor
+#InformationTheory #Git #TeamDynamics #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#EngineeringManagement</span><span class="tag-pill">#BusFactor</span><span class="tag-pill">#InformationTheory</span><span class="tag-pill">#Git</span><span class="tag-pill">#TeamDynamics</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="ley-de-conway-verificada.html" rel="prev"><span class="dir">← Anterior</span>La Ley de Conway, verificada con datos</a><a class="next" href="rag-para-codigo-fuente.html" rel="next"><span class="dir">Siguiente →</span>RAG para código fuente: diez técnicas en un store vectorial</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

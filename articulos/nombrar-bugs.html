@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ponerle nombre a un bug es la mitad de no repetirlo | SINTAXIS G</title>
+<meta name="description" content="Cuatro bugs con nombre —Síndrome del Turista, DDoS al SO, Bomba 5…— y por qué nombrar un patrón evita repetirlo mejor que un número de ticket.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/nombrar-bugs.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="&quot;Síndrome del Turista&quot;, &quot;DDoS al SO&quot; y &quot;Bomba 5&quot;: ponerle nombre a un bug es la mitad de no repetirlo">
+<meta property="og:description" content="Cuatro bugs con nombre —Síndrome del Turista, DDoS al SO, Bomba 5…— y por qué nombrar un patrón evita repetirlo mejor que un número de ticket.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/nombrar-bugs.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="CodeQuality">
+<meta property="article:tag" content="Performance">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="StaticAnalysis">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="Ponerle nombre a un bug es la mitad de no repetirlo">
+<meta name="twitter:description" content="Cuatro bugs con nombre —Síndrome del Turista, DDoS al SO, Bomba 5…— y por qué nombrar un patrón evita repetirlo mejor que un número de ticket.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/nombrar-bugs.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/nombrar-bugs.html"
+      },
+      "headline": "\"Síndrome del Turista\", \"DDoS al SO\" y \"Bomba 5\": ponerle nombre a un bug es la mitad de no repetirlo",
+      "description": "Cuatro bugs con nombre —Síndrome del Turista, DDoS al SO, Bomba 5…— y por qué nombrar un patrón evita repetirlo mejor que un número de ticket.",
+      "url": "https://sintaxisg.com/articulos/nombrar-bugs.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1483,
+      "keywords": "SoftwareEngineering, CodeQuality, Performance, Python, StaticAnalysis, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Ponerle nombre a un bug es la mitad de no repetirlo",
+          "item": "https://sintaxisg.com/articulos/nombrar-bugs.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html" aria-current="page">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 7 min de lectura</p>
+    <h1 class="section-title post-hero-title">&quot;Síndrome del Turista&quot;, &quot;DDoS al SO&quot; y &quot;Bomba 5&quot;: ponerle nombre a un bug es la mitad de no repetirlo</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="nombrar-bugs">
+      <div class="post-body">
+<p>Hay un hábito que empecé a aplicar en mi propio código y que me ha
+servido más de lo esperado: cuando encuentro un bug que no es obvio — de
+esos que no rompen nada a la vista pero sí desperdician recursos o
+rompen una garantía sutil — le pongo nombre. No un número de ticket. Un
+nombre que describa el patrón, no el síntoma puntual. La razón es
+simple: un número de issue se olvida. Un nombre como "Síndrome del
+Turista" se queda, y la próxima vez que alguien esté a punto de escribir
+código con esa misma forma, el nombre solo debería activar la alarma
+antes de terminar de escribir la función.</p>
+<p>Voy a compartir cuatro de esos bugs con nombre, todos de un mismo
+módulo (un analizador de "código muerto" — variables que se calculan
+pero nunca se usan, funciones que nadie llama). Ninguno es exótico. Los
+cuatro son del tipo que cualquiera puede escribir sin darse cuenta, y
+los cuatro enseñan algo que se generaliza mucho más allá de este caso
+puntual.</p>
+<h2
+id="ddos-al-so-cuando-paralelizar-no-es-opcional-es-obligatorio">"DDoS
+al SO": cuando paralelizar no es opcional, es obligatorio</h2>
+<p>El módulo, para decidir si una función realmente está muerta, no le
+basta con mirar el código — también cruza esa sospecha contra el
+historial de Git: ¿hace cuánto que nadie toca esta función? La primera
+versión de esa parte hacía lo más directo posible: por cada función
+candidata a "muerta", lanzaba un proceso git log — de forma síncrona,
+uno detrás de otro. Con 50 funciones sospechosas en un proyecto mediano,
+eso son 50 procesos del sistema operativo, ejecutados en serie,
+bloqueando el hilo principal mientras cada uno termina.</p>
+<p>El nombre que le puse a este patrón — "DDoS al SO" — es literal:
+estás bombardeando tu propio sistema con llamadas a un proceso externo,
+en serie, cuando no había ninguna razón real para no paralelizarlo.
+subprocess.run libera el GIL de Python mientras espera la respuesta del
+proceso externo — el intérprete no está ocupado durante esa espera, solo
+está <em>esperando</em>. Eso es exactamente el escenario de libro de
+texto para un ThreadPoolExecutor: I/O-bound, procesos independientes
+entre sí, sin necesidad de coordinación. El cambio real fue de una
+llamada síncrona en un loop a un pool de 8 workers disparando las
+consultas en paralelo.</p>
+<p>Lo que este bug enseña, más allá del caso puntual: cualquier vez que
+un loop dispara una operación que espera a algo externo — un proceso,
+una red, un disco — vale la pena preguntarse explícitamente por qué no
+está paralelizado, no asumir que "así se ve la primera versión que
+funciona" es aceptable como versión final.</p>
+<h2
+id="síndrome-del-turista-visitar-el-mismo-lugar-cuatro-veces-sin-darse-cuenta">"Síndrome
+del Turista": visitar el mismo lugar cuatro veces sin darse cuenta</h2>
+<p>Este es el que más me gusta, porque el nombre describe perfecto la
+sensación: alguien que llega a una ciudad nueva y, sin mapa mental del
+lugar, termina caminando por la misma calle cuatro veces sin notarlo,
+porque cada vez que buscaba algo distinto volvió a empezar desde cero.
+Eso era exactamente lo que hacía este código: para analizar un mismo
+archivo, recorría el árbol de sintaxis completo cuatro veces separadas —
+una vez para extraer las declaraciones de exportación pública, otra para
+buscar asignaciones muertas, otra para candidatos a función zombi, y una
+más solo para contar cuántas funciones había en total.</p>
+<p>Cada recorrido, por separado, se ve perfectamente razonable — es "un
+ast.walk() más" en una función que hace su trabajo. El problema aparece
+cuando se suma: sobre un proyecto de miles de archivos, ese factor de 4x
+en trabajo repetido sobre la misma estructura de datos es puro
+desperdicio, sin ningún beneficio a cambio, porque toda la información
+que necesitan los cuatro recorridos se puede extraer en un único paso:
+un solo ast.walk() que va guardando en listas separadas los nodos Assign
+y los nodos de función a medida que los encuentra, y todo lo demás se
+deriva de esas listas ya construidas, sin volver a tocar el árbol
+completo.</p>
+<p>La lección generalizable aquí es sobre cómo se acumula la deuda de
+rendimiento: casi nunca aparece de una sola vez de forma obvia. Aparece
+función por función, cada una razonable en aislamiento, hasta que
+alguien suma cuántas veces se está recorriendo la misma estructura y se
+da cuenta de que el trabajo total es un múltiplo innecesario del mínimo
+real.</p>
+<h2
+id="bomba-5-el-bug-de-corrección-que-se-disfraza-de-bug-de-rendimiento">"Bomba
+5": el bug de corrección que se disfraza de bug de rendimiento</h2>
+<p>Los dos anteriores eran sobre desperdiciar recursos. Este es distinto
+— es sobre llegar a una conclusión <em>incorrecta</em>, no solo lenta.
+El analizador necesita saber, para una variable declarada en el scope de
+una función, si alguna función anidada dentro de ella la lee como parte
+de un closure (para no marcarla como "muerta" si en realidad la está
+usando indirectamente). El chequeo original recorría la función anidada
+buscando qué nombres leía, y asumía que cualquier nombre leído ahí que
+no fuera un parámetro de esa función anidada venía del scope padre.</p>
+<p>El problema: si la función anidada redefine localmente ese mismo
+nombre en algún punto de su cuerpo — antes o después de leerlo, no
+importa el orden en el análisis estático simplificado — ese nombre ya no
+viene del padre en absoluto, es una variable local propia de la función
+anidada que hace <em>shadowing</em> del nombre externo. Sin detectar ese
+shadowing, el analizador creía que el padre estaba siendo usado por
+closure cuando en realidad no tenía ninguna relación real — un falso
+negativo que hacía que variables genuinamente muertas se protegieran
+como si estuvieran vivas.</p>
+<p>El nombre "Bomba 5" es menos descriptivo que los otros dos (es del
+tipo que solo tiene sentido para quien vivió la sesión de debugging),
+pero cumple la misma función: es una etiqueta corta que dispara la
+memoria de "ah, es el problema de shadowing en closures" en vez de tener
+que releer la explicación completa cada vez. El fix recolecta
+explícitamente todos los nombres que la función anidada define
+localmente — parámetros, asignaciones, funciones y clases anidadas
+dentro de ella, variables de comprensión — y los excluye del conjunto de
+"lecturas que vienen del padre". Con una excepción cuidadosa: los
+nombres declarados global/nonlocal deliberadamente no se tratan como
+locales, porque esos sí siguen refiriéndose al scope de afuera by design
+del propio lenguaje.</p>
+<h2 id="bug-7-la-corrección-de-un-bug-que-crea-el-bug-contrario">"Bug
+#7": la corrección de un bug que crea el bug contrario</h2>
+<p>Este es, para mí, el más importante de entender bien, porque es un
+patrón que se repite constantemente en ingeniería de software en
+general, no solo en análisis de código: al arreglar un falso negativo,
+es muy fácil sobrecorregir hacia un falso positivo. Si "Bomba 5" era "el
+analizador cree que hay una lectura del padre cuando no la hay" (por no
+detectar shadowing), la sobrecorrección obvia y tentadora sería "tratar
+como local cualquier nombre que aparezca asignado en cualquier punto de
+la función anidada" — pero eso rompería el caso real de global x o
+nonlocal x dentro de esa función anidada, donde el nombre sí debe seguir
+contando como una referencia genuina al scope padre.</p>
+<p>El propio comentario en el código lo dice explícitamente: el fix de
+"Bomba 5" se hizo <em>"sin reintroducir la contaminación de scope (Bug
+#7)"</em> — es decir, alguien ya había pasado por el error contrario en
+algún momento, y quedó documentado como advertencia para no repetirlo al
+tocar la misma zona del código otra vez. Esa es, quizás, la razón de
+fondo por la que nombrar los bugs importa tanto: no es solo memoria para
+uno mismo, es una señal explícita para cualquiera que vuelva a esa
+función en el futuro de que ese territorio ya se pisó mal dos veces, en
+dos direcciones opuestas, y que hay que tener cuidado de no repetir
+ninguna de las dos.</p>
+<h2 id="por-qué-esto-vale-más-que-la-suma-de-los-cuatro-bugs">Por qué
+esto vale más que la suma de los cuatro bugs</h2>
+<p>Ninguno de estos cuatro es un bug complicado de entender una vez
+explicado. Ese es justo el punto: son bugs simples, del tipo que
+cualquiera escribe, y que sobreviven en producción precisamente porque
+nada falla de forma ruidosa — el código funciona, solo funciona peor de
+lo que podría, o se equivoca en un caso específico que no salió en las
+pruebas obvias. Ponerles nombre no los hace menos comunes. Los hace más
+fáciles de reconocer la próxima vez, en otro archivo, escritos por otra
+persona, con otra forma superficial pero la misma estructura de
+fondo.</p>
+<p>Si algo me llevo de mantener este tipo de bitácora de bugs con nombre
+dentro del propio código: la documentación más útil que puede dejar una
+corrección no es "qué se cambió", es "qué patrón específico casi vuelve
+a pasar, y por qué esta vez no debería".</p>
+<p>¿Alguien más tiene la costumbre de nombrar sus bugs recurrentes? Me
+interesa ver qué nombres se les ocurren a otros equipos para los mismos
+patrones.</p>
+<p>#SoftwareEngineering #CodeQuality #Performance #Python
+#StaticAnalysis #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#CodeQuality</span><span class="tag-pill">#Performance</span><span class="tag-pill">#Python</span><span class="tag-pill">#StaticAnalysis</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="no-existe-codigo-perfecto.html" rel="prev"><span class="dir">← Anterior</span>No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>

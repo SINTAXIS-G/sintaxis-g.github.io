@@ -932,6 +932,40 @@ if (posts.length >= 2) {
   posts.forEach((p) => postObserver.observe(p));
 }
 
+// Artículos con URL propia (/articulos/<slug>.html): el tiempo de lectura ya
+// viene en el HTML. Se conserva el progreso "leído" con la misma clave de
+// localStorage que usaba la bitácora cuando todo vivía en una sola página,
+// y el índice de la bitácora marca las tarjetas de los artículos leídos.
+function readPostsSet() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem('archangel_read_posts') || '[]'));
+  } catch (e) {
+    return new Set();
+  }
+}
+if (posts.length === 1) {
+  const soloPost = posts[0];
+  const soloObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting || entry.boundingClientRect.top >= 0) return;
+      const set = readPostsSet();
+      set.add(soloPost.id);
+      try {
+        localStorage.setItem('archangel_read_posts', JSON.stringify([...set]));
+      } catch (e) { /* modo privado o cuota llena — no persiste, no rompe */ }
+      soloObserver.disconnect();
+    });
+  });
+  soloObserver.observe(soloPost);
+}
+const readCards = document.querySelectorAll('.post-card[data-slug]');
+if (readCards.length) {
+  const set = readPostsSet();
+  readCards.forEach((card) => {
+    if (set.has(card.dataset.slug)) card.classList.add('is-read');
+  });
+}
+
 // ---------- 22. Chandrasekhar Playground: simulación de colapso ----------
 // Heurística educativa (NO el motor real de masa cognitiva de ARCHANGEL,
 // que corre en Python sobre AST + entropía de Shannon — ver disclaimer

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dónde cortar un God Object: bisección espectral | SINTAXIS G</title>
+<meta name="description" content="Cómo decidir por dónde partir una clase de 2000 líneas: clustering espectral, vector de Fiedler y una verificación de que el corte realmente vale la pena.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://sintaxisg.com/articulos/god-object-biseccion-espectral.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dónde cortar un God Object: bisección espectral aplicada a refactoring">
+<meta property="og:description" content="Cómo decidir por dónde partir una clase de 2000 líneas: clustering espectral, vector de Fiedler y una verificación de que el corte realmente vale la pena.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+<meta property="og:url" content="https://sintaxisg.com/articulos/god-object-biseccion-espectral.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta property="article:published_time" content="2026-09-07">
+<meta property="article:author" content="https://sintaxisg.com/#gabo">
+<meta property="article:section" content="Bitácora ARCHANGEL">
+<meta property="article:tag" content="SoftwareArchitecture">
+<meta property="article:tag" content="GraphTheory">
+<meta property="article:tag" content="SpectralClustering">
+<meta property="article:tag" content="Refactoring">
+<meta property="article:tag" content="LinearAlgebra">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SoftwareEngineering">
+<meta property="article:tag" content="SintaxisG">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="Dónde cortar un God Object: bisección espectral">
+<meta name="twitter:description" content="Cómo decidir por dónde partir una clase de 2000 líneas: clustering espectral, vector de Fiedler y una verificación de que el corte realmente vale la pena.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+<meta name="twitter:image:alt" content="Emblema de ARCHANGEL, motor de análisis estático, sobre fondo oscuro.">
+
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://sintaxisg.com/articulos/god-object-biseccion-espectral.html#article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://sintaxisg.com/articulos/god-object-biseccion-espectral.html"
+      },
+      "headline": "Dónde cortar un God Object: bisección espectral aplicada a refactoring",
+      "description": "Cómo decidir por dónde partir una clase de 2000 líneas: clustering espectral, vector de Fiedler y una verificación de que el corte realmente vale la pena.",
+      "url": "https://sintaxisg.com/articulos/god-object-biseccion-espectral.html",
+      "datePublished": "2026-09-07",
+      "dateModified": "2026-09-07",
+      "author": {
+        "@id": "https://sintaxisg.com/#gabo"
+      },
+      "publisher": {
+        "@id": "https://sintaxisg.com/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://sintaxisg.com/projects/archangel-articulos.html#blog"
+      },
+      "about": {
+        "@id": "https://sintaxisg.com/projects/archangel.html#software"
+      },
+      "inLanguage": "es-MX",
+      "image": "https://sintaxisg.com/assets/img/og-archangel.jpg",
+      "wordCount": 1567,
+      "keywords": "SoftwareArchitecture, GraphTheory, SpectralClustering, Refactoring, LinearAlgebra, Python, SoftwareEngineering, SintaxisG"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "SINTAXIS G",
+          "item": "https://sintaxisg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Bitácora ARCHANGEL",
+          "item": "https://sintaxisg.com/projects/archangel-articulos.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Dónde cortar un God Object: bisección espectral",
+          "item": "https://sintaxisg.com/articulos/god-object-biseccion-espectral.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../projects/archangel-articulos.html">← Bitácora</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">artículos ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de artículos">
+          <a href="termodinamica-llms.html">Termodinámica aplicada a corregir código con LLMs</a>
+          <a href="god-object-biseccion-espectral.html" aria-current="page">Dónde cortar un God Object: bisección espectral</a>
+          <a href="pid-bellman-seleccion-clonal.html">PID + Bellman + Selección Clonal para refactorizar</a>
+          <a href="ley-de-conway-verificada.html">La Ley de Conway, verificada con datos</a>
+          <a href="bus-factor-medido-en-serio.html">El Bus Factor, medido en serio</a>
+          <a href="rag-para-codigo-fuente.html">RAG para código fuente: diez técnicas en un store vectorial</a>
+          <a href="llm-local-documentacion-codebase.html">Un LLM local que documenta tu codebase</a>
+          <a href="no-existe-codigo-perfecto.html">No existe el código perfecto: 5 auditorías, 3 bugs invisibles</a>
+          <a href="nombrar-bugs.html">Ponerle nombre a un bug es la mitad de no repetirlo</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top" style="min-height:auto; padding: var(--space-xl) 0 var(--space-md);">
+  <div class="wrap">
+    <p class="crumbs"><a href="../index.html">SINTAXIS G</a><span aria-hidden="true">/</span><a href="../projects/archangel-articulos.html">Bitácora ARCHANGEL</a></p>
+    <p class="section-label">Bitácora ARCHANGEL · <time datetime="2026-09-07">7 de septiembre de 2026</time> · 8 min de lectura</p>
+    <h1 class="section-title post-hero-title">Dónde cortar un God Object: bisección espectral aplicada a refactoring</h1>
+  </div>
+</header>
+
+<main class="article-page">
+  <div class="wrap">
+    <article class="post" id="god-object-biseccion-espectral">
+      <div class="post-body">
+<p>Hay una pregunta que todo el que ha heredado una clase de 2000 líneas
+se ha hecho alguna vez: <em>¿por dónde la parto?</em> La respuesta
+habitual es intuición — "esto de aquí parece que va junto, esto de allá
+parece otra cosa". Es una heurística válida, pero no es una respuesta
+que se pueda verificar matemáticamente, ni automatizar con
+garantías.</p>
+<p>Hay un campo entero dedicado a esta pregunta, solo que aplicado a
+otro tipo de grafos: clustering espectral. Y la razón por la que decidí
+traerlo a refactoring de código es que el problema es formalmente el
+mismo: dado un grafo con pesos en las aristas, encontrar la partición
+que minimiza las conexiones cortadas y maximiza la cohesión interna de
+cada grupo. Da igual si los nodos son píxeles de una imagen, personas en
+una red social, o métodos de una clase.</p>
+<h2
+id="primero-medir-la-deformación-un-módulo-de-young-para-código">Primero,
+medir la deformación: un módulo de Young para código</h2>
+<p>Antes de decidir dónde cortar, hace falta una función objetivo — algo
+que responda "qué tan mal está esto" con un número, no con una opinión.
+Tomé prestada la definición física del Módulo de Young (E = esfuerzo /
+deformación — resistencia de un material a deformarse bajo carga) y
+construí un análogo estructural:</p>
+<p>E_clase = (acoplamiento_externo)² / cohesión_interna</p>
+<p>E_total = Σ E_clase + penalización_por_complejidad</p>
+<p>Aquí está la parte que me parece más honesta de admitir en público:
+esta fórmula no es la ecuación de Young real con las mismas unidades ni
+el mismo significado físico. Es una analogía funcional — el acoplamiento
+hace de "esfuerzo externo" y la cohesión hace de "resistencia interna",
+y elevar el acoplamiento al cuadrado mientras la cohesión divide
+reproduce el comportamiento cualitativo que quiero: pequeños aumentos de
+acoplamiento externo con baja cohesión disparan la energía rápidamente
+(como una grieta que se propaga), mientras que alta cohesión amortigua
+ese mismo acoplamiento. Es física como <em>inspiración de forma
+funcional</em>, no física aplicada literalmente. Prefiero decirlo así de
+claro a dejar que suene a que hay un paper detrás.</p>
+<p>Lo que sí es matemáticamente riguroso y verificable es cómo se
+calcula la cohesión: uso LCOM4 (Lack of Cohesion of Methods, variante
+4), que no es una heurística arbitraria — es el número de componentes
+conexos en el grafo donde los nodos son métodos de una clase y hay una
+arista entre dos métodos si comparten estado de instancia o se llaman
+entre sí:</p>
+<pre><code>G = nx.Graph()
+for i, a in enumerate(methods):
+for b in methods[i+1:]:
+shared = a.shared_state &amp; b.shared_state
+calls = (a.name in b.calls) or (b.name in a.calls)
+if shared or calls:
+G.add_edge(a.name, b.name)
+return nx.number_connected_components(G)</code></pre>
+<p>Si esto da 1, la clase es un solo componente conexo — genuinamente
+cohesiva, todos sus métodos están relacionados directa o
+transitivamente. Si da 3, hay tres subgrafos que nunca se tocan entre sí
+— que es la definición formal, no intuitiva, de "esto son tres clases
+disfrazadas de una". No es una opinión de estilo, es teoría de grafos
+aplicada directamente: la cohesión de una clase es, literalmente, su
+conectividad como grafo.</p>
+<h2 id="el-límite-de-masa-crítica-con-la-salvedad-correspondiente">El
+límite de masa crítica, con la salvedad correspondiente</h2>
+<p>La detección de "God Objects" usa el nombre del límite de
+Chandrasekhar (masa máxima de una enana blanca antes de colapsar en
+supernova) para el punto donde una clase se vuelve, en la práctica,
+inmantenible: líneas de código, número de métodos, fan-out, y el propio
+LCOM4, cada uno con un umbral.</p>
+<p>De nuevo, transparencia sobre qué tan literal es la analogía: los
+umbrales (300 líneas, 12 métodos, fan-out 8, LCOM4 &gt; 3) están
+calibrados empíricamente contra proyectos reales, no derivados de
+ninguna constante física ni de una fórmula de masa crítica real. El
+nombre es una metáfora sobre el <em>tipo</em> de fenómeno (un sistema
+que acumula "masa" hasta un punto de colapso estructural), no una
+afirmación de que exista una ley universal con ese valor exacto — de la
+misma forma que "punto de ebullición" de un proyecto no implica que haya
+termodinámica literal midiendo grados Celsius. Vale la pena decirlo así
+de explícito, porque la línea entre "metáfora útil para razonar" y
+"pseudociencia disfrazada de rigor" se cruza fácil si no se es honesto
+sobre qué parte es matemática verificable y qué parte es nomenclatura
+evocadora.</p>
+<h2 id="ahora-sí-el-corte-el-vector-de-fiedler">Ahora sí, el corte: el
+vector de Fiedler</h2>
+<p>Con la función de energía definida, la pregunta real es dónde cortar
+una clase que superó su límite. Aquí es donde entra matemática que sí es
+rigurosa de punta a punta, sin metáfora de por medio: bisección
+espectral usando el Laplaciano del grafo.</p>
+<p>Se construye un grafo de cohesión donde los nodos son métodos y el
+peso de cada arista es la fuerza de acoplamiento interno entre ellos
+(estado compartido, llamadas directas, parámetros compartidos). El
+Laplaciano de ese grafo es:</p>
+<p>L = D - W</p>
+<p>donde D es la matriz diagonal de grados (suma de pesos por nodo) y W
+es la matriz de adyacencia ponderada. Este objeto tiene una propiedad
+extraordinaria: sus eigenvalores codifican la estructura de comunidades
+del grafo completo. El primer eigenvalor siempre es 0 (con eigenvector
+constante). El segundo eigenvalor más pequeño — λ₂, el valor de Fiedler
+— mide qué tan "conectado" está el grafo en su conjunto: cerca de 0
+significa que el grafo está casi partido en dos piezas naturalmente;
+lejos de 0 significa que está fuertemente entrelazado y cualquier corte
+va a doler.</p>
+<p>Lo notable es el eigenvector correspondiente a λ₂ (el vector de
+Fiedler): sus componentes, positivas o negativas, indican de qué lado de
+la partición óptima cae cada nodo. No es aproximación ni heurística de
+búsqueda — es la solución de un problema de optimización continua
+(minimizar el "normalized cut" de Shi &amp; Malik) relajado a álgebra
+lineal, resuelto de forma exacta vía descomposición espectral:</p>
+<pre><code>eigenvalues, eigenvectors = np.linalg.eigh(L)
+fiedler_val = eigenvalues[1]
+fiedler_vec = eigenvectors[:, 1]
+group_a = [node for i, node in enumerate(nodes) if fiedler_vec[i] &lt; 0]
+group_b = [node for i, node in enumerate(nodes) if fiedler_vec[i] &gt;= 0]</code></pre>
+<p>El signo del componente del vector de Fiedler asigna cada método a un
+lado del corte. Es elegante porque no hay parámetro que ajustar a mano
+ni umbral arbitrario en esta parte — el propio espectro de la matriz
+encuentra la fractura natural. La bisección se aplica recursivamente
+para obtener más de dos clusters cuando hace falta, y se detiene cuando
+λ₂ es tan pequeño que el grafo ya estaba casi desconectado de por sí —
+en cuyo caso el algoritmo lo detecta y usa componentes conexas
+directamente en vez de forzar un corte innecesario sobre algo que ya
+estaba roto.</p>
+<h2
+id="la-parte-que-casi-nadie-hace-verificar-que-el-corte-valga-la-pena">La
+parte que casi nadie hace: verificar que el corte valga la pena</h2>
+<p>Esta es, para mí, la decisión de diseño más importante de todo el
+sistema, y es puramente matemática, sin metáfora física de ningún tipo.
+Después de simular el corte, se recalcula E_total con la nueva
+estructura propuesta, y:</p>
+<p>ΔE = E_después − E_antes</p>
+<p>Si ΔE ≥ 0, el refactor se rechaza explícitamente, con la
+justificación numérica exacta de por qué. Si |ΔE| es menor que un
+épsilon de tolerancia, también se rechaza — la mejora existe pero es tan
+marginal que no justifica el costo/riesgo de tocar el código. Y hay un
+tercer caso, más sutil: si λ₂ era casi cero desde el principio, el corte
+es técnicamente válido pero trivial — el grafo ya estaba casi partido en
+dos antes de que el algoritmo hiciera nada, así que el mérito real de
+"encontrar la fractura" es bajo, y el sistema lo señala como advertencia
+en vez de presentarlo como un hallazgo fuerte.</p>
+<p>Este tipo de verificador con capacidad real de decir "no" es la pieza
+que le da legitimidad matemática al resto: no basta con que la teoría
+espectral sea elegante, hace falta que el propio sistema pueda
+demostrar, con la misma función objetivo, que el remedio no es peor que
+la enfermedad.</p>
+<h2
+id="por-qué-me-parece-que-vale-la-pena-separar-esto-en-dos-capas">Por
+qué me parece que vale la pena separar esto en dos capas</h2>
+<p>Escribiendo este sistema aprendí algo que me parece generalizable:
+cuando se usa una analogía física para razonar sobre software, hay dos
+capas completamente distintas que conviene no mezclar. Una es la
+metáfora organizativa — nombres como "energía", "masa crítica",
+"colapso" — que ayudan a pensar el problema y comunicarlo, pero no son
+matemática verificable por sí solas. La otra es la matemática que se
+toma prestada literalmente — teoría espectral de grafos, componentes
+conexos, eigendecomposición — que sí es rigurosa independientemente del
+nombre que se le ponga.</p>
+<p>La bisección espectral funciona exactamente igual sin necesidad de
+llamarla "línea de fractura" — es álgebra lineal estándar, con seis
+décadas de literatura detrás (Fiedler la introdujo en 1973). El nombre
+físico solo la hace más memorable. Pero LCOM4 como conteo de componentes
+conexos, o el vector de Fiedler como solución del corte mínimo
+normalizado, seguirían siendo exactamente igual de correctos si les
+quitara toda la ropa metafórica. Esa es la prueba de fuego que uso ahora
+para cualquier pieza nueva del sistema: si la metáfora desaparece, ¿la
+matemática de abajo se sostiene sola? Si la respuesta es sí, vale la
+pena construirla. Si la respuesta es no, es solo un nombre bonito sobre
+una heurística — y prefiero saberlo antes de publicarlo como si fuera lo
+primero.</p>
+<p>¿Alguien más ha aplicado clustering espectral o teoría de grafos a
+decisiones de refactoring? Tengo curiosidad por ver otros enfoques al
+mismo problema.</p>
+<p>#SoftwareArchitecture #GraphTheory #SpectralClustering #Refactoring
+#LinearAlgebra #Python #SoftwareEngineering #SintaxisG</p>
+      </div>
+      <div class="post-tags"><span class="tag-pill">#SoftwareArchitecture</span><span class="tag-pill">#GraphTheory</span><span class="tag-pill">#SpectralClustering</span><span class="tag-pill">#Refactoring</span><span class="tag-pill">#LinearAlgebra</span><span class="tag-pill">#Python</span><span class="tag-pill">#SoftwareEngineering</span><span class="tag-pill">#SintaxisG</span></div>
+    </article>
+
+    <div class="post-cta">
+      <p>Estas notas salen del desarrollo de <strong>ARCHANGEL</strong>, un motor de análisis estático que se consume como servicio por API.</p>
+      <a href="../projects/archangel.html">Ver qué hace ARCHANGEL →</a>
+    </div>
+
+    <nav class="post-nav" aria-label="Más artículos"><a class="prev" href="termodinamica-llms.html" rel="prev"><span class="dir">← Anterior</span>Termodinámica aplicada a corregir código con LLMs</a><a class="next" href="pid-bellman-seleccion-clonal.html" rel="next"><span class="dir">Siguiente →</span>PID + Bellman + Selección Clonal para refactorizar</a></nav>
+    <a class="back-to-top" href="../projects/archangel-articulos.html">← Todos los artículos de la bitácora</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+</body>
+</html>
