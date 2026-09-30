@@ -911,3 +911,5 @@
 .proj-block-closing { border-bottom: none; text-align: center; }
 .closing-line { font-family: var(--font-mono); font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--accent); max-width: 32ch; margin: 0 auto; }
 .proj-scope { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); margin-top: var(--space-sm); }
+.legal-list { list-style: disc; padding-left: 1.25rem; max-width: var(--measure); color: var(--text-dim); }
+.legal-list li { margin-bottom: var(--space-xs); line-height: 1.6; }

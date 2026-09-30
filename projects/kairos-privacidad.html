@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de privacidad de KAIROS | SINTAXIS G</title>
+<meta name="description" content="Qué datos guarda KAIROS, dónde, cómo se protegen y qué servicios externos ven algo cuando la app se conecta. Sin cuentas, sin servidor propio, sin analítica.">
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxisg.com/projects/kairos-privacidad.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Política de privacidad de KAIROS — SINTAXIS G">
+<meta property="og:description" content="Qué datos guarda KAIROS, dónde, cómo se protegen y qué servicios externos ven algo cuando la app se conecta.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/og-kairos.jpg">
+<meta property="og:url" content="https://sintaxisg.com/projects/kairos-privacidad.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-kairos-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-kairos-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-kairos.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/kairos-theme.css">
+<script>try{if(localStorage.getItem('kairos_theme')==='dark')document.documentElement.classList.add('k-dark')}catch(e){}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://sintaxisg.com/projects/kairos-privacidad.html#webpage",
+      "name": "Política de privacidad de KAIROS",
+      "url": "https://sintaxisg.com/projects/kairos-privacidad.html",
+      "inLanguage": "es-MX",
+      "dateModified": "2026-09-30",
+      "about": { "@id": "https://sintaxisg.com/projects/kairos.html#software" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "SINTAXIS G", "item": "https://sintaxisg.com/" },
+        { "@type": "ListItem", "position": 2, "name": "KAIROS", "item": "https://sintaxisg.com/projects/kairos.html" },
+        { "@type": "ListItem", "position": 3, "name": "Política de privacidad", "item": "https://sintaxisg.com/projects/kairos-privacidad.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="kairos.html">← KAIROS</a>
+    <div class="mode-toggles">
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
+          <a href="#resumen">En corto</a>
+          <a href="#responsable">Quién es el responsable</a>
+          <a href="#datos">Qué datos guarda la app</a>
+          <a href="#proteccion">Cómo se protegen</a>
+          <a href="#salidas">Lo que sale del teléfono</a>
+          <a href="#permisos">Permisos</a>
+          <a href="#conservacion">Cuánto tiempo se conservan</a>
+          <a href="#derechos">Tus derechos</a>
+          <a href="#sitio">Este sitio web</a>
+          <a href="#cambios">Cambios a esta política</a>
+        </nav>
+      </div>
+      <button type="button" class="mode-btn" id="theme-toggle" aria-pressed="false">tema oscuro</button>
+      <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+    </div>
+  </div>
+</nav>
+
+<header class="proj-hero">
+  <div class="wrap">
+    <p class="eyebrow">KAIROS · Android</p>
+    <h1>Política de privacidad</h1>
+    <p class="proj-kicker">ÚLTIMA ACTUALIZACIÓN: 30 DE SEPTIEMBRE DE 2026</p>
+    <p class="tagline">Qué datos guarda Kairos, dónde, cómo se protegen y qué servicios externos ven algo cuando la app se conecta. Escrita para leerse, no para esconderse.</p>
+  </div>
+</header>
+
+<main>
+<section class="proj-block" id="resumen">
+  <div class="wrap">
+    <p class="section-label">En corto</p>
+    <h2>Tus datos viven en tu teléfono</h2>
+    <div class="note-box note-box-flush note-box-thick">
+      <div class="name">Lo esencial</div>
+      <p class="k-mb-sm">Kairos no tiene cuentas, ni servidor propio, ni publicidad, ni analítica, ni reportes automáticos de fallos. Tu perfil médico, tu red de confianza y tu ubicación se guardan en tu teléfono. Sintaxis G no los recibe y no puede verlos.</p>
+      <p class="k-mb-sm">Eso no significa que nada salga del teléfono. Los avisos a tu red salen por SMS, y cinco servicios externos ven algo cuando la app se conecta (incluida tu ubicación exacta al buscar hospitales cercanos). Todo está detallado en la sección <a href="#salidas">Lo que sale del teléfono</a>.</p>
+      <p>Esta política describe lo que la app hace hoy, en sus primeras etapas, disponible solo para Android.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="responsable">
+  <div class="wrap">
+    <p class="section-label">Quién es el responsable</p>
+    <h2>Quién decide y a quién escribirle</h2>
+    <p>El responsable de esta política y del diseño de la app es <strong class="k-strong">Gabriel Adolfo Merino Hernandez</strong>, fundador de Sintaxis G.</p>
+    <p>Para cualquier duda o solicitud sobre tus datos: <a href="mailto:adolfo1440000@gmail.com">adolfo1440000@gmail.com</a>.</p>
+    <p>Como los datos se quedan en tu teléfono, quien de verdad los controla eres tú. Sintaxis G no guarda una copia que pueda consultar, corregir o borrar por ti.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="datos">
+  <div class="wrap">
+    <p class="section-label">Qué datos guarda la app</p>
+    <h2>Todo se guarda en tu teléfono</h2>
+    <p class="lede">Kairos solo guarda lo que tú capturas o lo que la app necesita para funcionar. Una parte es información de salud, que es un dato sensible: por eso se te pide cargarla tú, con calma, y decidir qué se incluye en un aviso.</p>
+    <ul class="legal-list">
+      <li><strong class="k-strong">Tu nombre</strong>, para que los mensajes de alerta digan quién eres.</li>
+      <li><strong class="k-strong">Tu red de confianza:</strong> nombre, teléfono y nivel de acceso de cada contacto. Se cargan a mano; la app nunca lee la agenda del teléfono.</li>
+      <li><strong class="k-strong">Tu perfil médico:</strong> tipo de sangre, alergias, medicamentos y sus horarios de recordatorio, condiciones, notas de emergencia y la categoría «Cómo ayudarme».</li>
+      <li><strong class="k-strong">Tu palabra de seguridad</strong>, acordada con tu red para validar que un aviso es real.</li>
+      <li><strong class="k-strong">Tu ubicación:</strong> la actual y la última conocida, y un caché local de las zonas donde buscaste recursos.</li>
+      <li><strong class="k-strong">La sesión de asistencia:</strong> la línea de tiempo de una emergencia activa y los avisos pendientes de reintento.</li>
+      <li><strong class="k-strong">La bitácora del cuidador</strong>, que se borra sola a las 72 horas.</li>
+      <li><strong class="k-strong">Tus ajustes y avances:</strong> accesibilidad, checklists, check-ins, chequeo de inactividad y funciones opcionales que hayas activado.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-block" id="proteccion">
+  <div class="wrap">
+    <p class="section-label">Cómo se protegen</p>
+    <h2>Qué está cifrado y qué no</h2>
+    <ul class="legal-list">
+      <li><strong class="k-strong">Perfil médico y palabra de seguridad</strong> van en el almacenamiento cifrado de Android (Keystore).</li>
+      <li><strong class="k-strong">El resto</strong> (red de confianza, ajustes, sesión) se guarda en el almacenamiento privado de la app, sin cifrado adicional de Kairos. Otras apps no pueden leerlo, pero quien desbloquee tu teléfono podría abrir Kairos y verlo.</li>
+      <li><strong class="k-strong">Sin respaldo en la nube:</strong> la app desactiva el respaldo automático de Android, para que tus datos no terminen en tu cuenta de Google sin que lo decidas.</li>
+      <li><strong class="k-strong">Respaldo propio:</strong> puedes exportar un archivo cifrado (AES-256-GCM, con la clave derivada de tu contraseña por PBKDF2 de 200,000 iteraciones). Si olvidas la contraseña, no hay forma de recuperarlo: ni Kairos ni Sintaxis G la conocen.</li>
+      <li><strong class="k-strong">Modo Rescatista:</strong> quien encuentra tu teléfono ve solo lo que ese modo muestra, no tu perfil completo.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-block" id="salidas">
+  <div class="wrap">
+    <p class="section-label">Lo que sale del teléfono</p>
+    <h2>Qué se envía, a quién y cuándo</h2>
+    <p class="lede">Aquí está la lista completa de todo lo que sale de tu teléfono, y por qué. Nada de esto pasa por servidores de Sintaxis G.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="name">SMS a tu red de confianza</div>
+        <p>El aviso de emergencia se abre como borrador en tu app de SMS y tú decides enviarlo. Puede incluir tu ubicación (un enlace de Google Maps) y la información médica que marcaste para incluir. El mensaje viaja por tu operador, y quien lo recibe lo conserva: Kairos no controla qué hacen con él. Kairos tampoco puede saber si el mensaje llegó.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Ubicación en vivo (opcional)</div>
+        <p>Es la única función que envía SMS sin que toques «Enviar» cada vez. Está apagada por defecto; la activas tú y Android te pide el permiso de SMS. Manda actualizaciones de ubicación, cada 5 minutos por defecto, solo a los contactos que ya avisaste durante esa emergencia.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Overpass API (mapas de OpenStreetMap)</div>
+        <p>Al buscar hospitales, farmacias y clínicas con conexión, la app envía tus coordenadas exactas y un radio de búsqueda a overpass-api.de o, si falla, a overpass.kumi.systems. Esos servidores son de terceros y ven además tu dirección IP. No reciben tu nombre, perfil ni contactos.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Teselas de OpenStreetMap</div>
+        <p>Solo si no descargaste el mapa de tu zona: para dibujar el mapa, la app pide imágenes a tile.openstreetmap.org, que ve qué zona miras y tu IP. Con el mapa descargado no hay peticiones.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">GitHub</div>
+        <p>Para descargar mapas y el catálogo de recursos offline, la app se conecta a GitHub, que ve tu IP y qué archivo pides. No sube nada tuyo.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Verificación de conexión</div>
+        <p>Para saber si de verdad hay internet, la app hace una petición vacía a connectivitycheck.gstatic.com (Google) y a cp.cloudflare.com. No lleva tus datos, pero ambos ven tu IP.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Apps que tú abres</div>
+        <p>Si pides un viaje, abres direcciones o llamas, se abre Uber, DiDi, Google Maps o el marcador del teléfono con el destino. Desde ahí rigen las políticas de esas apps. Lo mismo al compartir una checklist con el selector de Android.</p>
+      </div>
+      <div class="pillar">
+        <div class="name">Lo que no sale</div>
+        <p>Kairos no envía datos a Sintaxis G, no usa cuentas, publicidad, analítica ni reportes automáticos de errores, y no vende ni comparte tus datos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-block" id="permisos">
+  <div class="wrap">
+    <p class="section-label">Permisos</p>
+    <h2>Qué permisos pide la app</h2>
+    <p>La lista completa de permisos de Android, con la razón de cada uno, está en <a href="kairos.html#permisos">la página de Kairos</a>. Los de funciones opcionales solo se piden cuando las activas.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="conservacion">
+  <div class="wrap">
+    <p class="section-label">Cuánto tiempo se conservan</p>
+    <h2>Hasta que tú decidas borrarlos</h2>
+    <ul class="legal-list">
+      <li>Tus datos se conservan en el teléfono hasta que los edites, los borres o desinstales la app.</li>
+      <li>La bitácora del cuidador se borra sola después de 72 horas.</li>
+      <li>Al desinstalar Kairos o borrar sus datos desde los ajustes de Android, se elimina lo guardado en la app. Como no hay respaldo en la nube, no queda copia en ningún otro lado.</li>
+      <li>Los archivos de respaldo que exportes los controlas tú: si los guardas, los conservas; si los compartes, ya no dependen de Kairos.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-block" id="derechos">
+  <div class="wrap">
+    <p class="section-label">Tus derechos</p>
+    <h2>Acceder, corregir, borrar y oponerte</h2>
+    <p>Puedes acceder, rectificar, cancelar u oponerte al tratamiento de tus datos personales (derechos ARCO), y retirar tu consentimiento cuando quieras. Dentro de la app puedes ver, editar y borrar todo lo que guardaste, y apagar cualquier función opcional.</p>
+    <p>Para datos de salud, tu consentimiento es la base del tratamiento: al capturar tu perfil médico y activar una función opcional aceptas que la app los use para ese fin, y lo retiras borrando el dato o desactivando la función.</p>
+    <p>Si quieres ejercer un derecho o tienes una duda, escribe a <a href="mailto:adolfo1440000@gmail.com">adolfo1440000@gmail.com</a>. Como Sintaxis G no tiene copia de tus datos, lo que podemos hacer es orientarte y atender cualquier mensaje que nos hayas enviado por correo. También puedes acudir a la autoridad de protección de datos personales de México.</p>
+  </div>
+</section>
+
+<section class="proj-block" id="sitio">
+  <div class="wrap">
+    <p class="section-label">Este sitio web</p>
+    <h2>Qué pasa cuando visitas sintaxisg.com</h2>
+    <ul class="legal-list">
+      <li>El sitio no usa analítica ni cookies de seguimiento.</li>
+      <li>Guarda en tu navegador (almacenamiento local) cosas que solo tú ves: el tema claro u oscuro que elijas y los artículos que ya leíste.</li>
+      <li>Carga tipografías de Google Fonts, por lo que Google ve tu IP al abrir el sitio.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proj-block" id="cambios">
+  <div class="wrap">
+    <p class="section-label">Cambios a esta política</p>
+    <h2>Cómo te enteras si cambia</h2>
+    <p>Esta es la versión inicial, del <strong class="k-strong">30 de septiembre de 2026</strong>. Si cambia algo que afecte tus datos, como agregar una conexión nueva o un servicio, se actualizará esta página con la nueva fecha antes de que el cambio llegue a la app.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/kairos-theme.js"></script>
+</body>
+</html>
