@@ -101,7 +101,9 @@ if (finding) {
         findingObserver.unobserve(finding);
       }
     });
-  }, { threshold: 0.4 });
+  // 0.1 y no 0.4: en móvil la lista mide más que la pantalla, y con 0.4 nunca
+  // llegaba a ser visible el 40 % a la vez, así que los hallazgos no aparecían.
+  }, { threshold: 0.1 });
   findingObserver.observe(finding);
 }
 

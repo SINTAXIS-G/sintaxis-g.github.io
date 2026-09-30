@@ -220,7 +220,10 @@
 .finding.is-typed div { opacity: 1; transform: translateX(0); }
 .finding span:first-child { color: var(--text-dim); width: 9rem; flex-shrink: 0; }
 .finding span:last-child { min-width: 0; overflow-wrap: anywhere; }
-@media (max-width: 480px) { .finding span:first-child { width: 6.5rem; } }
+@media (max-width: 480px) {
+  .finding div { flex-direction: column; gap: 0.15rem; }
+  .finding span:first-child { width: auto; }
+}
 .finding .critica { color: #F87171; }
 .finding .alta { color: #FBBF24; }
 
@@ -891,3 +894,19 @@
   /* Términos técnicos largos no deben ensanchar la columna. */
   .proj-split-text code, .pillar code, .lede code { overflow-wrap: anywhere; }
 }
+
+/* ---------- KAIROS page (antes inline en projects/kairos.html) ---------- */
+.proj-kicker { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--text-dim); margin-top: 0.5rem; }
+.k-mt-sm { margin-top: var(--space-sm); }
+.k-mt-md { margin-top: var(--space-md); }
+.k-mt-lg { margin-top: var(--space-lg); }
+.k-mb-sm { margin-bottom: var(--space-sm); }
+.k-strong { color: var(--text); }
+.k-note { color: var(--text-dim); font-size: 0.9rem; }
+.k-note-sm { font-size: 0.85rem; }
+.shots-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-sm); }
+.eco-sub { font-size: 0.75rem; color: var(--text-dim); font-weight: 400; }
+.note-box-flush { margin-top: 0; }
+.note-box-thick { border-left-width: 3px; }
+.proj-block-closing { border-bottom: none; text-align: center; }
+.closing-line { font-family: var(--font-mono); font-size: clamp(1.1rem, 3vw, 1.6rem); color: var(--accent); max-width: 32ch; margin: 0 auto; }

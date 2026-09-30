@@ -1,0 +1,42 @@
+/* Tema claro de la página de KAIROS.
+   Es el tema por defecto de esta página (una app de emergencias y accesibilidad
+   no debería obligar a leer gris sobre negro). El oscuro sigue disponible con
+   el botón "tema oscuro" y se recuerda por navegador. Modo búnker no se toca:
+   body.bunker-mode redefine las variables y gana sobre esto. */
+
+html:not(.k-dark) {
+  --bg: #FAF7F2;
+  --surface: #FFFFFF;
+  --line: #DDD5C6;
+  --text: #171B22;
+  --text-dim: #464F5E;      /* ~8:1 sobre --bg */
+  --accent: #0A6B68;        /* ~5.8:1 sobre --bg, sirve como texto */
+  --accent-dim: #0F8581;
+  color-scheme: light;
+}
+
+/* Superficies translúcidas que en style.css están fijas en oscuro */
+html:not(.k-dark) .nav,
+html:not(.k-dark) .gestos-toggle { background: rgba(250, 247, 242, 0.92); }
+
+/* Las terminales siguen siendo terminales: fondo oscuro con sus propios colores */
+html:not(.k-dark) .terminal {
+  --text: #E4E7EB;
+  --text-dim: #9AA4B2;
+  --accent: #3DDAD7;
+  --accent-dim: #2A9E9C;
+  --line: #1F2937;
+  --surface: #141A24;
+  color: var(--text);   /* el color se hereda ya resuelto: hay que reafirmarlo */
+  box-shadow: 0 10px 30px rgba(23, 27, 34, 0.12);
+}
+
+/* Tarjetas con algo de relieve, para que no dependan solo del borde */
+html:not(.k-dark) .pillar,
+html:not(.k-dark) .eco-item,
+html:not(.k-dark) .note-box { box-shadow: 0 1px 2px rgba(23, 27, 34, 0.05); }
+html:not(.k-dark) .toc-menu { box-shadow: 0 8px 24px rgba(23, 27, 34, 0.12); }
+
+/* Las barras de impacto viven dentro de la terminal; no requieren cambios */
+/* El logo trae fondo blanco: multiply lo funde con el crema */
+html:not(.k-dark) .proj-logo { mix-blend-mode: multiply; }
