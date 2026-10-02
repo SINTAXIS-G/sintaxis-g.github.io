@@ -241,6 +241,7 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 }
 .eco-item .name { font-weight: 700; font-size: var(--fs-h3); padding-top: 0.15rem; }
 .eco-item .desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
+.eco-item .desc strong { color: var(--text); }
 .eco-item .status {
   font-family: var(--font-mono);
   font-size: var(--fs-small);
@@ -260,6 +261,28 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   border-radius: 50% 50% 16px 50%;
 }
 .about-body { max-width: var(--measure); color: var(--text-dim); }
+.about-subhead {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.about-quote {
+  margin: var(--space-md) 0 0;
+  padding: var(--space-md) var(--space-md);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 14px 14px 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-voice);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
 .about-body p + p { margin-top: var(--space-sm); }
 .about-body strong { color: var(--text); font-weight: 600; }
 
