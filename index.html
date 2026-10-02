@@ -37,7 +37,7 @@
   <meta name="twitter:image:alt" content="Logo de SINTAXIS G sobre fondo oscuro con el lema de la marca.">
 
   <!-- Color de tema en la barra del navegador (móvil) -->
-  <meta name="theme-color" content="#0a0e1a">
+  <meta name="theme-color" content="#131110">
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
@@ -178,8 +178,8 @@
 
   <nav class="nav">
     <div class="wrap">
-      <span class="nav-mark"><img src="assets/img/logo-sintaxis-g.webp" alt="SINTAXIS G"
-          style="height:1.75rem;width:1.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="1024" height="1024">SINTAXIS
+      <span class="nav-mark"><img src="assets/img/logo-sintaxis-g-v2.webp" alt="SINTAXIS G"
+          style="height:2.75rem;width:2.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="804" height="813">SINTAXIS
         G</span>
       <div class="nav-links">
         <a href="#archangel">ARCHANGEL</a>
@@ -198,8 +198,10 @@
     <canvas id="hero-shader-canvas" class="hero-shader-canvas"></canvas>
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <div class="wrap">
-      <h1>Software tratado como un sistema físico.</h1>
-      <p class="lema-maestro">"No instalo sistemas. Forjo arquitecturas."</p>
+      <img src="assets/img/logo-sintaxis-g-v2.webp" alt="Sello de SINTAXIS G" width="804" height="813"
+        style="display:block;width:7rem;height:7rem;margin:0 0 var(--space-md);border-radius:50%;">
+      <h1 style="font-family:var(--font-voice);font-weight:600;">Software tratado como un sistema físico.</h1>
+      <p class="lema-maestro" style="font-family:var(--font-voice);font-style:italic;">"No instalo sistemas. Forjo arquitecturas."</p>
       <p>SINTAXIS G es el ecosistema de herramientas de Gabo: análisis estático, entornos de IA soberana y tooling de
         desarrollo, construidos desde cero por un solo arquitecto.</p>
       <div class="hero-meta">
@@ -210,10 +212,12 @@
     </div>
   </header>
 
+  <div class="fracture-divider" aria-hidden="true"></div>
+
   <section id="archangel">
     <div class="wrap">
       <p class="section-label">Proyecto insignia</p>
-      <h2 class="section-title">ARCHANGEL</h2>
+      <h2 class="section-title stress-title" style="view-transition-name: vt-archangel-title;">ARCHANGEL</h2>
       <div class="featured">
         <div class="featured-desc">
           <p>Motor de análisis estático que trata el software como un sistema físico: entropía de
@@ -232,6 +236,8 @@
       </div>
     </div>
   </section>
+
+  <div class="fracture-seam" aria-hidden="true"></div>
 
   <section id="sistema" class="system-map">
     <div class="wrap">
@@ -271,7 +277,9 @@
     </div>
   </section>
 
-  <section id="ecosistema">
+  <div class="fracture-seam fracture-seam--mirror" aria-hidden="true"></div>
+
+  <section id="ecosistema" style="font-family:var(--font-plex);">
     <div class="wrap">
       <p class="section-label">El resto del ecosistema</p>
       <h2 class="section-title">Cada sistema resuelve un problema que se negó a delegar</h2>
@@ -320,7 +328,7 @@
           <p class="status">v0.4.0</p>
         </div>
         <div class="eco-item">
-          <h3 class="name">KAIROS</h3>
+          <h3 class="name stress-title" style="view-transition-name: vt-kairos-title;">KAIROS</h3>
           <span class="desc">App de asistencia en emergencias en Flutter — 117 archivos, ~23.200 líneas, sin backend ni
             cuentas. Su corazón es un Dead Man's Switch: si la persona deja de responder, dispara el aviso a su red de
             confianza y una alarma física, sin que nadie tenga que tocar nada. Cada decisión de diseño está documentada
@@ -349,10 +357,13 @@
     </div>
   </section>
 
+  <div class="fracture-seam" aria-hidden="true"></div>
+
   <section id="sobre-mi">
     <div class="wrap">
       <p class="section-label">Sobre mí</p>
       <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
+      <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo">
       <div class="about-body">
         <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
         <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
@@ -431,21 +442,48 @@
     </div>
   </section>
 
+  <div class="fracture-seam fracture-seam--mirror" aria-hidden="true"></div>
+
   <section id="contacto" class="contact">
     <div class="wrap">
       <p class="section-label">Contacto</p>
       <h2 class="section-title">Sígueme el rastro</h2>
+      <p class="contact-intro">¿Tenés un repositorio que te preocupa, o simplemente querés hablar de arquitectura? Es el lugar correcto.</p>
       <div class="contact-links">
-        <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://x.com/SINTAXIS_G" target="_blank" rel="noopener">X</a>
-        <a href="https://www.instagram.com/sintaxis_.g" target="_blank" rel="noopener">Instagram</a>
-        <a href="media-kit.html">Media Kit</a>
+        <a class="contact-card" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="9" width="4" height="12" rx="1"></rect><circle cx="5" cy="4.5" r="2.5"></circle><path d="M11 9h4v2.2c.8-1.5 2.3-2.5 4.3-2.5 3.6 0 4.7 2.3 4.7 6V21h-4v-5.7c0-1.7 0-3.8-2.3-3.8-2.3 0-2.7 1.8-2.7 3.7V21h-4V9z"></path></svg>
+          </span>
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a class="contact-card" href="https://x.com/SINTAXIS_G" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 3l7.5 9.5L3.3 21h2.5l6-6.8 4.6 6.8H21l-7.8-9.9L20.3 3h-2.5l-5.6 6.4L7.3 3H3z"></path></svg>
+          </span>
+          <span class="contact-label">X</span>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a class="contact-card" href="https://www.instagram.com/sintaxis_.g" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4.2" fill="var(--bg)" stroke="var(--bg)"></circle><circle cx="17.3" cy="6.7" r="1.1" fill="var(--bg)" stroke="none"></circle></svg>
+          </span>
+          <span class="contact-label">Instagram</span>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a class="contact-card" href="media-kit.html">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2z"></path><path d="M15 2v5h5" fill="none" stroke="var(--bg)" stroke-width="1.4"></path></svg>
+          </span>
+          <span class="contact-label">Media Kit</span>
+          <span class="contact-arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="wrap">SINTAXIS G — SOBERANIA EN CADA CICLO DE RELOJ.</div>
+    <div class="wrap"><span class="footer-mark" aria-hidden="true">⬡</span><span class="footer-brand">SINTAXIS G</span><span class="footer-lema"> — Soberanía en cada ciclo de reloj.</span></div>
   </footer>
 
   <script src="js/main.js"></script>

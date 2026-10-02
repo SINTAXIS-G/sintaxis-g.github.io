@@ -40,3 +40,32 @@ html:not(.k-dark) .toc-menu { box-shadow: 0 8px 24px rgba(23, 27, 34, 0.12); }
 /* Las barras de impacto viven dentro de la terminal; no requieren cambios */
 /* El logo trae fondo blanco: multiply lo funde con el crema */
 html:not(.k-dark) .proj-logo { mix-blend-mode: multiply; }
+
+/* ---------- Identidad de calma ----------
+   El resto del ecosistema usa grietas (mecánica de fractura) y un título
+   que "pesa" más bajo tensión — coherente con ARCHANGEL, pero KAIROS es
+   una app de emergencias: necesita transmitir consuelo, no ruptura ni
+   estrés. Se reemplazan ambos lenguajes visuales aquí, en el único lugar
+   donde la identidad del sitio debe apartarse del resto. */
+
+/* Costuras de fractura → transición suave, sin filo */
+.proj-hero::after,
+.proj-block:not(.proj-block-closing)::after {
+  clip-path: none;
+  background: var(--line);
+  height: 1px;
+}
+
+/* Esquinas "forjadas" (asimétricas, una curva + una recta) → esquinas
+   parejas y suaves en todas partes */
+.pillar, .finding, .audience-card, .roadmap-item,
+.cta-btn, .calc-box, .proj-video,
+.proj-split-figure img {
+  border-radius: 16px !important;
+}
+.note-box, .dogfood-box, .forensic-node {
+  border-radius: 0 16px 16px 0 !important;
+}
+
+/* Peso tipográfico "bajo estrés" → título estable, sin tensión */
+.stress-title { font-variation-settings: 'wght' 500 !important; }

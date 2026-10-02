@@ -1,16 +1,18 @@
 :root {
-  /* Color */
-  --bg: #0A0E14;
-  --surface: #141A24;
-  --line: #1F2937;
-  --text: #E4E7EB;
-  --text-dim: #8B95A5;
-  --accent: #3DDAD7;
-  --accent-dim: #2A9E9C;
+  /* Color — "Forja + Entropía": grises cálidos casi puros, un único acento cobre */
+  --bg: #131110;
+  --surface: #1F1C19;
+  --line: #322D28;
+  --text: #EDE8E2;
+  --text-dim: #8A8277;
+  --accent: #D8672E;
+  --accent-dim: #A64F23;
 
   /* Type */
   --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-voice: 'Fraunces', Georgia, serif;
+  --font-plex: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --fs-hero: clamp(2.75rem, 7vw, 5.5rem);
   --fs-h2: clamp(1.75rem, 4vw, 2.75rem);

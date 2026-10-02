@@ -32,6 +32,10 @@ const revealTargets = document.querySelectorAll(
 revealTargets.forEach((el) => el.classList.add('reveal'));
 
 if (revealTargets.length) {
+  // threshold bajo + rootMargin negativo abajo: el elemento empieza a
+  // aparecer apenas asoma en el viewport, no cuando ya el 15% de un
+  // bloque alto (párrafos largos) quedó visible — eso era lo que dejaba
+  // la sección en blanco 1-2s al llegar a ella.
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -39,9 +43,46 @@ if (revealTargets.length) {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.01, rootMargin: '0px 0px -5% 0px' });
 
   revealTargets.forEach((el) => revealObserver.observe(el));
+}
+
+// ---------- 2.5 Peso tipográfico bajo estrés ----------
+// Los títulos de proyecto (.stress-title) ganan peso de fuente a
+// medida que se acercan al centro del viewport — metáfora de tensión
+// mecánica aplicada a la tipografía. Usa font-variation-settings sobre
+// una variable font real (Space Grotesk 300..700), por eso no corre
+// en el compositor como transform/opacity: se limita a 1-2 títulos
+// por página y se desactiva con prefers-reduced-motion.
+const stressTitles = document.querySelectorAll('.stress-title');
+if (stressTitles.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const MIN_WEIGHT = 350;
+  const MAX_WEIGHT = 700;
+  let stressTicking = false;
+
+  const updateStress = () => {
+    const vh = window.innerHeight;
+    const viewportCenter = vh / 2;
+    stressTitles.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const elCenter = r.top + r.height / 2;
+      const dist = Math.abs(elCenter - viewportCenter);
+      const t = Math.max(0, 1 - dist / (vh * 0.6));
+      const weight = Math.round(MIN_WEIGHT + t * (MAX_WEIGHT - MIN_WEIGHT));
+      el.style.fontVariationSettings = `'wght' ${weight}`;
+    });
+    stressTicking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!stressTicking) {
+      requestAnimationFrame(updateStress);
+      stressTicking = true;
+    }
+  }, { passive: true });
+
+  updateStress();
 }
 
 // ---------- 3. Barra de progreso de scroll ----------
