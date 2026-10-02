@@ -299,6 +299,33 @@
         <p><strong style="color:var(--text)">Puntos de fractura con topología real.</strong> Más allá del mapa heurístico de fragilidad, localiza puntos de articulación reales del grafo (algoritmo de Tarjan) y conectividad algebraica (valor de Fiedler) — no una intuición sobre qué función es crítica, sino la estructura del grafo diciéndolo.</p>
       </div>
     </div>
+
+    <div class="griffith-demo" id="griffith-demo">
+      <p class="section-label" style="margin-bottom:var(--space-sm);">Pruébalo vos mismo</p>
+      <div class="griffith-controls">
+        <label>
+          <span>a — deuda técnica acumulada: <code class="gd-val" id="gd-a-val">1.0</code> cm</span>
+          <input type="range" id="gd-a" min="0.1" max="5" step="0.1" value="1">
+        </label>
+        <label>
+          <span>σ — presión de release: <code class="gd-val" id="gd-sigma-val">3.0</code> MPa</span>
+          <input type="range" id="gd-sigma" min="0" max="10" step="0.1" value="3">
+        </label>
+      </div>
+      <svg id="gd-svg" viewBox="0 0 320 100" class="griffith-svg" role="img" aria-label="Visualización de una probeta con una grieta que puede propagarse">
+        <g id="gd-left"><rect x="0" y="20" width="160" height="60" fill="var(--surface)" stroke="var(--line)"></rect></g>
+        <g id="gd-right"><rect x="160" y="20" width="160" height="60" fill="var(--surface)" stroke="var(--line)"></rect></g>
+        <path id="gd-crack" d="M 160 50 L 160 50" stroke="var(--accent)" stroke-width="2" fill="none"></path>
+      </svg>
+      <div class="griffith-readout">
+        <div>K_I = <code id="gd-ki">0.00</code></div>
+        <div>K_IC = <code>12.00</code></div>
+        <div id="gd-verdict" class="gd-verdict gd-verdict--ok">Estable</div>
+      </div>
+      <button type="button" id="gd-reset" class="cta-btn" hidden>Reiniciar probeta →</button>
+      <p style="color:var(--text-dim); font-size:0.85rem; margin-top:var(--space-sm);">Mismo criterio que arriba, en vivo: K_I = σ·√(π·a). Cuando supera K_IC, la fractura no es gradual — es catastrófica, igual que en el material real.</p>
+    </div>
+
     <div class="note-box">
       <div class="name">Nota de ingeniería honesta</div>
       <p>La extensión que conecta este módulo con el resto del sistema (IRKnowledgeGraph, IRDelta) consume primitivas que, al momento de esta versión, todavía no existían en el checkout activo. En vez de fingir la integración, cada primitiva se define como un contrato (Protocol) con un fallback local — mismo patrón defensivo que el resto del motor. Cuando el módulo real aterriza, esta pieza lo usa sin cambios.</p>
@@ -1422,6 +1449,7 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script src="../js/griffith-demo.js"></script>
 <script src="../js/command-palette.js"></script>
 <script src="../js/dependency-graph.js"></script>
 

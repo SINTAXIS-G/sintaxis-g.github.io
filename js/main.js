@@ -4,6 +4,74 @@
 // en la página actual, ese bloque simplemente no hace nada.
 // ============================================================
 
+// ---------- 0. Saludo de bienvenida (hora local + visita recurrente) ----------
+// No es "bienvenido" genérico para todo el mundo: cambia según la hora del
+// que está mirando la pantalla ahora mismo, y reconoce si ya estuvo acá
+// antes (localStorage, nada de cookies ni tracking real — vive solo en
+// este navegador). Vocabulario físico (entropía, energía, disipación) en
+// vez de la metáfora de forja — coherente con lo que el sitio ya cita
+// (Shannon, Prigogine) en vez de ser una postal de herrería. Varias
+// frases por franja, elegidas al azar en cada carga para que no se
+// sienta siempre igual entre visitas.
+const heroGreeting = document.getElementById('hero-greeting');
+if (heroGreeting) {
+  const GREETINGS = {
+    madrugada: [
+      'Sistema en reposo térmico — mínima entropía, máxima calma.',
+      'A esta hora el sistema disipa poca energía. Como vos, seguramente.',
+      'Baja entropía, pocas señales — casi en equilibrio.',
+      'El ruido de fondo baja a esta hora. Se nota la diferencia.',
+    ],
+    manana: [
+      'El sistema empieza a ganar energía.',
+      'Arranca el ciclo — la entropía vuelve a subir.',
+      'Primeras señales del día: el sistema se reactiva.',
+      'Energía en aumento, como cualquier sistema al amanecer.',
+    ],
+    tarde: [
+      'Sistema en régimen estable — alta actividad, bajo control.',
+      'Máxima disipación de energía del ciclo.',
+      'El sistema corre a régimen pleno.',
+      'Punto de mayor actividad del ciclo diario.',
+    ],
+    noche: [
+      'El sistema se enfría, pero nunca llega a cero absoluto.',
+      'Menor energía, mismo sistema — nunca realmente en reposo.',
+      'De noche el sistema disipa menos, pero sigue vivo.',
+      'Entropía descendiendo, proceso sin detenerse del todo.',
+    ],
+  };
+  const RETURNING_SUFFIXES = [
+    ' El sistema te reconoce — estado repetido, no aleatorio.',
+    ' Segunda medición, mismo observador.',
+    ' El patrón se repite: volviste.',
+    ' No es ruido, es una señal repetida: volviste.',
+  ];
+  const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  const hour = new Date().getHours();
+  let pool;
+  if (hour < 6) pool = GREETINGS.madrugada;
+  else if (hour < 12) pool = GREETINGS.manana;
+  else if (hour < 19) pool = GREETINGS.tarde;
+  else pool = GREETINGS.noche;
+
+  let greeting = pickRandom(pool);
+
+  try {
+    if (localStorage.getItem('sg_visited')) {
+      greeting += pickRandom(RETURNING_SUFFIXES);
+    } else {
+      localStorage.setItem('sg_visited', '1');
+    }
+  } catch (e) {
+    // Storage bloqueado (modo privado, permisos) — el saludo normal
+    // igual se muestra, solo sin la parte de "visita recurrente".
+  }
+
+  heroGreeting.textContent = greeting;
+}
+
 // ---------- 1. Nav activo según sección visible ----------
 const sections = document.querySelectorAll('section[id], header[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
@@ -83,6 +151,78 @@ if (stressTitles.length && !window.matchMedia('(prefers-reduced-motion: reduce)'
   }, { passive: true });
 
   updateStress();
+}
+
+// ---------- 2.6 Física de arrastre en los stats del hero ----------
+// "Software tratado como un sistema físico" tomado literal: estos bloques
+// son masas con resorte (spring-mass-damper) hacia su posición de reposo,
+// no un transition: ease de CSS. Se arrastran con inercia real y se
+// asientan con un rebote amortiguado, como un objeto físico de verdad.
+const physicsEls = document.querySelectorAll('.hero-meta > div');
+if (physicsEls.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const SPRING_K = 0.012;
+  const DAMPING = 0.18;
+
+  physicsEls.forEach((el) => {
+    el.classList.add('physics-drag');
+    let x = 0, y = 0, vx = 0, vy = 0;
+    let dragging = false, lastX = 0, lastY = 0, lastT = 0;
+    let rafId = null;
+
+    const render = () => { el.style.transform = `translate(${x}px, ${y}px)`; };
+
+    const step = () => {
+      const ax = -SPRING_K * x - DAMPING * vx;
+      const ay = -SPRING_K * y - DAMPING * vy;
+      vx += ax;
+      vy += ay;
+      x += vx;
+      y += vy;
+      render();
+      if (Math.abs(vx) > 0.02 || Math.abs(vy) > 0.02 || Math.abs(x) > 0.05 || Math.abs(y) > 0.05) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        x = 0; y = 0; vx = 0; vy = 0;
+        render();
+        rafId = null;
+      }
+    };
+
+    el.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      if (rafId) cancelAnimationFrame(rafId);
+      el.setPointerCapture(e.pointerId);
+      lastX = e.clientX;
+      lastY = e.clientY;
+      lastT = performance.now();
+      el.classList.add('is-dragging');
+    });
+
+    el.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const now = performance.now();
+      const dt = Math.max(now - lastT, 1);
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      x += dx;
+      y += dy;
+      vx = (dx / dt) * 16;
+      vy = (dy / dt) * 16;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      lastT = now;
+      render();
+    });
+
+    const release = () => {
+      if (!dragging) return;
+      dragging = false;
+      el.classList.remove('is-dragging');
+      rafId = requestAnimationFrame(step);
+    };
+    el.addEventListener('pointerup', release);
+    el.addEventListener('pointercancel', release);
+  });
 }
 
 // ---------- 3. Barra de progreso de scroll ----------
@@ -216,6 +356,14 @@ if (heroCanvas) {
   const NODE_COUNT = 36;
   const LINK_DIST = 140;
 
+  // Mismo acento único (cobre) de día y de noche — de noche baja la
+  // energía (opacidad), no cambia de color. Mismo criterio de hora que
+  // el shader de fondo, coordinado por la hora local del visitante.
+  const heroHourNow = new Date().getHours();
+  const heroIsNight = heroHourNow < 6 || heroHourNow >= 19;
+  const NODE_RGB = '216, 103, 46';
+  const NODE_ENERGY = heroIsNight ? 0.45 : 1.0;
+
   // isAnimating + rafId: antes el bucle corría para siempre vía
   // requestAnimationFrame recursivo, incluso con el hero fuera de
   // pantalla (scrolleado) o la pestaña en segundo plano — CPU/GPU
@@ -257,7 +405,7 @@ if (heroCanvas) {
         const dy = nodes[i].y - nodes[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < LINK_DIST) {
-          ctx.strokeStyle = `rgba(61, 218, 215, ${0.12 * (1 - dist / LINK_DIST)})`;
+          ctx.strokeStyle = `rgba(${NODE_RGB}, ${0.12 * NODE_ENERGY * (1 - dist / LINK_DIST)})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -268,7 +416,7 @@ if (heroCanvas) {
     }
 
     nodes.forEach((n) => {
-      ctx.fillStyle = 'rgba(61, 218, 215, 0.5)';
+      ctx.fillStyle = `rgba(${NODE_RGB}, ${0.5 * NODE_ENERGY})`;
       ctx.beginPath();
       ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2);
       ctx.fill();
@@ -345,55 +493,77 @@ if (heroCanvas) {
     }
   `;
 
+  // Celdas de convección de Rayleigh-Bénard — la imagen clásica de las
+  // "estructuras disipativas" de Prigogine que ya se nombran en el copy
+  // del sitio: orden hexagonal que emerge de un fluido disipando energía.
+  // Reemplaza al fbm genérico anterior por algo que es una referencia
+  // física real, no una nebulosa decorativa sin significado.
   const FRAGMENT_SRC = `
     precision mediump float;
     uniform vec2 uResolution;
     uniform vec2 uMouse;
     uniform float uTime;
+    uniform vec3 uColorLow;
+    uniform vec3 uColorHigh;
+    uniform float uEnergy;
 
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    vec4 hexCoords(vec2 uv) {
+      vec2 r = vec2(1.0, 1.7320508);
+      vec2 h = r * 0.5;
+      vec2 a = mod(uv, r) - h;
+      vec2 b = mod(uv - h, r) - h;
+      vec2 gv = dot(a, a) < dot(b, b) ? a : b;
+      vec2 id = uv - gv;
+      return vec4(gv, id);
     }
 
-    float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      float a = hash(i);
-      float b = hash(i + vec2(1.0, 0.0));
-      float c = hash(i + vec2(0.0, 1.0));
-      float d = hash(i + vec2(1.0, 1.0));
-      vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-    }
-
-    float fbm(vec2 p) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      for (int i = 0; i < 4; i++) {
-        value += amplitude * noise(p);
-        p *= 2.0;
-        amplitude *= 0.5;
-      }
-      return value;
+    float hexDist(vec2 p) {
+      p = abs(p);
+      float c = dot(p, vec2(0.5, 0.8660254));
+      c = max(c, p.x);
+      return c;
     }
 
     void main() {
       vec2 uv = gl_FragCoord.xy / uResolution.xy;
       vec2 mouseUv = uMouse / uResolution.xy;
 
-      vec2 p = uv * 3.0 + uTime * 0.03;
-      float n = fbm(p + fbm(p + uTime * 0.05));
+      float scale = 11.0;
+      vec2 p = (uv - 0.5) * scale * (uResolution.x / uResolution.y);
+
+      float t = uTime * 0.08 * uEnergy;
+      p += vec2(t * 0.5, t * 0.3);
+
+      vec4 hc = hexCoords(p);
+      float d = hexDist(hc.xy);
+
+      // Cada celda respira a su propio ritmo (fase distinta por id) — una
+      // convección real no pulsa sincronizada, cada celda es su propio
+      // mini-sistema disipando energía.
+      float cellSeed = fract(sin(dot(hc.zw, vec2(12.9898, 78.233))) * 43758.5453);
+      float pulse = 0.5 + 0.5 * sin(uTime * (0.4 + cellSeed * 0.5) * uEnergy + cellSeed * 6.283);
 
       float dist = distance(uv, mouseUv);
-      float mouseInfluence = smoothstep(0.5, 0.0, dist) * 0.6;
-      n += mouseInfluence * fbm(p * 2.0 + uTime * 0.1);
+      float mouseInfluence = smoothstep(0.4, 0.0, dist) * 0.6;
 
-      vec3 colorLow = vec3(0.039, 0.055, 0.078);
-      vec3 colorHigh = vec3(0.239, 0.855, 0.843);
-      vec3 color = mix(colorLow, colorHigh, clamp(n * 0.35, 0.0, 1.0));
+      float body = 1.0 - smoothstep(0.2, 0.56, d);
+      float wall = smoothstep(0.53, 0.577, d) * (1.0 - smoothstep(0.577, 0.62, d));
 
-      float vignette = smoothstep(1.0, 0.3, length(uv - 0.5) * 1.4);
-      gl_FragColor = vec4(color, clamp(n * 0.22 * vignette, 0.0, 1.0));
+      float n = body * (0.45 + pulse * 0.55 + mouseInfluence);
+      n = clamp(n, 0.0, 1.0);
+      n *= mix(0.45, 1.0, uEnergy);
+
+      vec3 color = mix(uColorLow, uColorHigh, n);
+      color = mix(color, uColorLow * 0.4, wall * 0.7);
+
+      float vignette = smoothstep(1.1, 0.2, length(uv - 0.5) * 1.3);
+      // Fondo ambiental real: tiene que perder contra cualquier texto
+      // encima, no ser el protagonista de la pantalla.
+      float a = clamp((0.04 + n * 0.22) * vignette, 0.0, 1.0);
+      // El canvas usa premultiplied alpha por defecto — sin multiplicar
+      // el color acá, el navegador compone mal y bajar el alpha no
+      // cambia nada visualmente (bug que tenía también el shader viejo).
+      gl_FragColor = vec4(color * a, a);
     }
   `;
 
@@ -437,6 +607,20 @@ if (heroCanvas) {
   const uResolution = gl.getUniformLocation(program, 'uResolution');
   const uMouse = gl.getUniformLocation(program, 'uMouse');
   const uTime = gl.getUniformLocation(program, 'uTime');
+  const uColorLow = gl.getUniformLocation(program, 'uColorLow');
+  const uColorHigh = gl.getUniformLocation(program, 'uColorHigh');
+  const uEnergy = gl.getUniformLocation(program, 'uEnergy');
+
+  // Un solo acento en todo el sitio (cobre) — de noche no cambia de
+  // color, cambia de energía: celdas más lentas y atenuadas, nunca
+  // apagadas del todo. Mismo criterio de hora que la red de partículas
+  // 2D (heroIsNight, más abajo); cada capa calcula la suya porque viven
+  // en closures separados, pero ambas leen la misma hora real.
+  const hourNow = new Date().getHours();
+  const isNight = hourNow < 6 || hourNow >= 19;
+  gl.uniform3f(uColorLow, 0.0745, 0.0667, 0.0627);
+  gl.uniform3f(uColorHigh, 0.847, 0.404, 0.180);
+  gl.uniform1f(uEnergy, isNight ? 0.45 : 1.0);
 
   let mouseX = 0;
   let mouseY = 0;

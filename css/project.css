@@ -1009,3 +1009,35 @@
 .flow-arrow { flex: none; font-family: var(--font-mono); color: var(--accent); }
 .flow-none { border-style: dashed; }
 @media (max-width: 720px) { .flow { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Demo interactiva: criterio de Griffith/Irwin ---------- */
+.griffith-demo {
+  margin-top: var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: 20px 4px;
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.griffith-controls { display: grid; gap: var(--space-md); margin-bottom: var(--space-md); }
+.griffith-controls label { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; color: var(--text-dim); }
+.griffith-controls input[type="range"] { width: 100%; accent-color: var(--accent); }
+.gd-val { color: var(--accent); font-family: var(--font-mono); }
+.griffith-svg { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto var(--space-md); }
+.griffith-svg g { transition: transform 0.25s var(--ease); }
+.griffith-svg rect { transition: transform 0.25s var(--ease); }
+.griffith-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: var(--space-sm);
+}
+.griffith-readout code { color: var(--text); margin-left: 0.3rem; }
+.gd-verdict { font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 999px; }
+.gd-verdict--ok { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.gd-verdict--warning { color: #FBBF24; background: rgba(251,191,36,0.15); }
+.gd-verdict--critical { color: #F87171; background: rgba(248,113,113,0.15); }
+#gd-reset[hidden] { display: none; }
