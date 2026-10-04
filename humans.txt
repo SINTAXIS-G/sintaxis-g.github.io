@@ -1,0 +1,15 @@
+/* TEAM */
+Arquitecto: Gabriel Adolfo Merino Hernández ("Gabo")
+Contacto: https://www.linkedin.com/company/sintaxis-g/
+Desde: México
+
+/* ECOSISTEMA */
+Sitio: https://sintaxisg.com
+Proyecto insignia: ARCHANGEL — motor de análisis estático
+Más proyectos: KAIROS, EXARKON, ATLAS, EIDOLON
+
+/* SITE */
+Última actualización: 2026/10/04
+Estándares: HTML5, CSS3, WebGL, JS vanilla (sin framework)
+Componentes: fuentes de Google Fonts, sin librerías de terceros
+Software: VS Code

@@ -1,0 +1,9 @@
+# security.txt — sintaxisg.com (RFC 9116)
+# Si encontraste una vulnerabilidad real en este sitio o en alguno de
+# los proyectos de Sintaxis G, avisame por acá antes que por cualquier
+# otro lado — no hay bug bounty formal, pero sí respuesta real.
+
+Contact: https://www.linkedin.com/company/sintaxis-g/
+Expires: 2027-10-04T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://sintaxisg.com/.well-known/security.txt
