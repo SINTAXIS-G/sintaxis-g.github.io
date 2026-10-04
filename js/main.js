@@ -356,12 +356,24 @@ if (heroCanvas) {
   const NODE_COUNT = 36;
   const LINK_DIST = 140;
 
-  // Mismo acento único (cobre) de día y de noche — de noche baja la
-  // energía (opacidad), no cambia de color. Mismo criterio de hora que
-  // el shader de fondo, coordinado por la hora local del visitante.
+  // Mismo acento único de día y de noche — de noche baja la energía
+  // (opacidad), no cambia de color. Mismo criterio de hora que el shader
+  // de fondo, coordinado por la hora local del visitante.
+  //
+  // FIX (quedó hardcodeado en rojo-cobre '216,103,46' cuando el resto del
+  // sitio ya vive en variables.css): leído ahora de --accent en vivo, así
+  // sigue al acento real (incluido --accent2 de bunker-mode) en vez de
+  // quedar desincronizado la próxima vez que cambie la paleta.
   const heroHourNow = new Date().getHours();
   const heroIsNight = heroHourNow < 6 || heroHourNow >= 19;
-  const NODE_RGB = '216, 103, 46';
+  function hexToRgbStr(hex, fallback) {
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec((hex || '').trim());
+    return m ? `${parseInt(m[1], 16)}, ${parseInt(m[2], 16)}, ${parseInt(m[3], 16)}` : fallback;
+  }
+  const NODE_RGB = hexToRgbStr(
+    getComputedStyle(document.documentElement).getPropertyValue('--accent'),
+    '77, 240, 224'
+  );
   const NODE_ENERGY = heroIsNight ? 0.45 : 1.0;
 
   // isAnimating + rafId: antes el bucle corría para siempre vía
@@ -611,15 +623,30 @@ if (heroCanvas) {
   const uColorHigh = gl.getUniformLocation(program, 'uColorHigh');
   const uEnergy = gl.getUniformLocation(program, 'uEnergy');
 
-  // Un solo acento en todo el sitio (cobre) — de noche no cambia de
-  // color, cambia de energía: celdas más lentas y atenuadas, nunca
-  // apagadas del todo. Mismo criterio de hora que la red de partículas
-  // 2D (heroIsNight, más abajo); cada capa calcula la suya porque viven
-  // en closures separados, pero ambas leen la misma hora real.
+  // Un solo acento en todo el sitio — de noche no cambia de color, cambia
+  // de energía: celdas más lentas y atenuadas, nunca apagadas del todo.
+  // Mismo criterio de hora que la red de partículas 2D (heroIsNight, más
+  // abajo); cada capa calcula la suya porque viven en closures separados,
+  // pero ambas leen la misma hora real.
+  //
+  // FIX (quedó hardcodeado en floats de cobre/bg viejos cuando el resto
+  // del sitio ya vive en variables.css): un uniform de WebGL no puede leer
+  // un custom property de CSS directo, así que se lee --bg/--accent en JS
+  // y se convierten a floats acá — sigue al acento real en vez de quedar
+  // una tercera copia desincronizada (ya van dos: esta y NODE_RGB arriba).
+  function cssVarToFloat3(name, fallback) {
+    const hex = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return m
+      ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255]
+      : fallback;
+  }
   const hourNow = new Date().getHours();
   const isNight = hourNow < 6 || hourNow >= 19;
-  gl.uniform3f(uColorLow, 0.0745, 0.0667, 0.0627);
-  gl.uniform3f(uColorHigh, 0.847, 0.404, 0.180);
+  const [lowR, lowG, lowB] = cssVarToFloat3('--bg', [0.0784, 0.0627, 0.1098]);
+  const [hiR, hiG, hiB] = cssVarToFloat3('--accent', [0.302, 0.9412, 0.8784]);
+  gl.uniform3f(uColorLow, lowR, lowG, lowB);
+  gl.uniform3f(uColorHigh, hiR, hiG, hiB);
   gl.uniform1f(uEnergy, isNight ? 0.45 : 1.0);
 
   let mouseX = 0;

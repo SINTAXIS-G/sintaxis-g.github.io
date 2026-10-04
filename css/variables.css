@@ -1,12 +1,17 @@
 :root {
-  /* Color — "Forja + Entropía": grises cálidos casi puros, un único acento cobre */
-  --bg: #131110;
-  --surface: #1F1C19;
-  --line: #322D28;
-  --text: #EDE8E2;
-  --text-dim: #8A8277;
-  --accent: #D8672E;
-  --accent-dim: #A64F23;
+  /* Color — "Sello": violeta-negro y plata del aro metálico del logo real
+     (logo-sintaxis-g(-v2).webp), acento cian — el único color que se repite
+     igual en TODAS las variantes del logo que existen (el coin recortado y
+     el hero con el estallido fractal). El vino queda como --accent2, para
+     uso puntual (chispa/detalle), no como base. */
+  --bg: #14101C;
+  --surface: #1D1827;
+  --line: #322A42;
+  --text: #CBC6BE;
+  --text-dim: #8C8794;
+  --accent: #4DF0E0;
+  --accent-dim: #2E9D94;
+  --accent2: #8C3147;
 
   /* Type */
   --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -31,15 +36,20 @@
   --measure: 38rem;
 }
 
-/* Modo búnker: alto contraste */
+/* Modo búnker: alto contraste.
+   FIX (detectado al implementar "Sello"): el acento normal ahora YA es cian
+   — si el búnker también fuera cian sobre negro, el toggle dejaría de
+   cambiar nada que se note. Se invierten los roles en vez: vino al mando,
+   cian como chispa — la otra mitad del mismo sello, no una redundancia. */
 body.bunker-mode {
   --bg: #000000;
   --surface: #0A0A0A;
   --line: #2A2A2A;
   --text: #FFFFFF;
   --text-dim: #B0B0B0;
-  --accent: #00FFF0;
-  --accent-dim: #00C4B8;
+  --accent: #B23A52;
+  --accent-dim: #7A2638;
+  --accent2: #00FFF0;
 }
 
 /* Easing consistente en todo el sitio */
