@@ -811,9 +811,19 @@
   function startAudio(){
     var audio = document.getElementById('bgAudio');
     if (!audio) return;
-    audio.volume = 0.6;
+    var target = 0.6;
+    audio.volume = 0;
     var p = audio.play();
     if (p && p.catch) p.catch(function(){});
+
+    var steps = 24;
+    var stepDuration = 1600 / steps;
+    var i = 0;
+    var fade = setInterval(function(){
+      i++;
+      audio.volume = Math.min(target, (target * i) / steps);
+      if (i >= steps) clearInterval(fade);
+    }, stepDuration);
   }
 
   function openEnvelope(){
