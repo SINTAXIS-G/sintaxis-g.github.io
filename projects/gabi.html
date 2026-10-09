@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detrás de la bata — Para Gabi</title>
+<meta name="description" content="Un poema para Gabi, en el Día de la Médica.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Gabo">
+<meta name="theme-color" content="#FAF5EC">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Detrás de la bata — Para Gabi">
+<meta property="og:description" content="Feliz Día de la Médica, Gabi.">
+<meta property="og:url" content="https://sintaxisg.com/projects/gabi.html">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #FAF5EC;
+    --paper-deep: #F3EBDA;
+    --line: #E3D8C2;
+    --ink: #3A332B;
+    --ink-soft: #5B5141;
+    --sage: #6E8F70;
+    --sage-deep: #4F6F52;
+    --rose: #C98A96;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: -4px -4px;
+  }
+  body:not(.revealed){
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ---------- hearts flotando ---------- */
+  .hearts{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .hearts span{
+    position: absolute;
+    bottom: -10%;
+    font-size: 1.1rem;
+    color: var(--rose);
+    opacity: 0;
+    animation: float-up 14s linear infinite;
+  }
+  .hearts span:nth-child(1){ left: 6%;  animation-delay: 0s;   font-size: 0.9rem; }
+  .hearts span:nth-child(2){ left: 18%; animation-delay: 2.2s; font-size: 1.3rem; }
+  .hearts span:nth-child(3){ left: 32%; animation-delay: 5.1s; font-size: 0.8rem; }
+  .hearts span:nth-child(4){ left: 48%; animation-delay: 1.3s; font-size: 1.1rem; }
+  .hearts span:nth-child(5){ left: 64%; animation-delay: 7.4s; font-size: 0.9rem; }
+  .hearts span:nth-child(6){ left: 78%; animation-delay: 3.6s; font-size: 1.2rem; }
+  .hearts span:nth-child(7){ left: 90%; animation-delay: 9.8s; font-size: 0.85rem; }
+
+  @keyframes float-up{
+    0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.5; }
+    50%  { transform: translateY(-55vh) translateX(10px) rotate(8deg); opacity: 0.35; }
+    92%  { opacity: 0.15; }
+    100% { transform: translateY(-105vh) translateX(-6px) rotate(-6deg); opacity: 0; }
+  }
+
+  /* ---------- layout ---------- */
+  main{
+    position: relative;
+    z-index: 1;
+    clip-path: circle(0% at 50% 42%);
+    transition: clip-path 1.1s var(--ease);
+  }
+  body.revealed main{
+    clip-path: circle(150% at 50% 42%);
+  }
+
+  .hero{
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .eyebrow{
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    color: var(--sage-deep);
+    margin: 0 0 0.25rem;
+    opacity: 0;
+  }
+  body.revealed .eyebrow{ animation: rise 1s var(--ease) 0.2s forwards; }
+
+  h1{
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.6rem, 8vw, 4.6rem);
+    line-height: 1.05;
+    margin: 0.2rem 0 0.6rem;
+    color: var(--ink);
+    opacity: 0;
+  }
+  body.revealed h1{ animation: rise 1s var(--ease) 0.4s forwards; }
+
+  .subtitle{
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    color: var(--ink-soft);
+    max-width: 30rem;
+    margin: 0 auto;
+    opacity: 0;
+  }
+  body.revealed .subtitle{ animation: rise 1s var(--ease) 0.6s forwards; }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(16px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- latido ---------- */
+  .heartbeat{
+    width: min(90vw, 360px);
+    height: 70px;
+    margin: 2rem auto 0.5rem;
+    opacity: 0;
+  }
+  body.revealed .heartbeat{ animation: rise 1s var(--ease) 0.8s forwards; }
+  .heartbeat path{
+    fill: none;
+    stroke: var(--rose);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 340;
+    stroke-dashoffset: 340;
+  }
+  body.revealed .heartbeat path{
+    animation: draw 2.6s var(--ease) 1.1s forwards, pulse-line 2.4s ease-in-out 3.8s infinite;
+  }
+  @keyframes draw{
+    to{ stroke-dashoffset: 0; }
+  }
+  @keyframes pulse-line{
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+
+  .scroll-cue{
+    margin-top: 1.5rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    opacity: 0;
+  }
+  body.revealed .scroll-cue{
+    animation: rise 1s var(--ease) 1.4s forwards, bob 2.2s ease-in-out 2.4s infinite;
+  }
+  @keyframes bob{
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* ---------- poema ---------- */
+  .poem{
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 6rem;
+  }
+
+  .poem-title{
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: var(--sage-deep);
+    margin-bottom: 3rem;
+  }
+
+  .stanza{
+    font-size: clamp(1.15rem, 2.2vw, 1.35rem);
+    line-height: 1.9;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 2.2rem;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  }
+  .stanza.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stanza:first-of-type::first-letter{
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: normal;
+    font-size: 3.2rem;
+    font-weight: 600;
+    color: var(--sage-deep);
+    float: left;
+    line-height: 0.8;
+    padding: 0.08em 0.1em 0 0;
+  }
+
+  .divider{
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: 0 0 2.4rem;
+    color: var(--rose);
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  }
+  .divider.is-visible{ opacity: 0.7; transform: translateY(0); }
+
+  /* ---------- firma ---------- */
+  .signature{
+    text-align: center;
+    margin-top: 3rem;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  .signature.is-visible{ opacity: 1; transform: translateY(0); }
+
+  .signature .closing{
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+  }
+  .signature .name{
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    color: var(--sage-deep);
+  }
+
+  footer{
+    text-align: center;
+    padding: 2.5rem 1.5rem 3rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: var(--ink-soft);
+    position: relative;
+    z-index: 1;
+  }
+  footer .credit{
+    display: block;
+    margin-top: 0.6rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.75rem;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    color: var(--line);
+  }
+
+  /* ---------- sobre ---------- */
+  :root{
+    --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .envelope-screen{
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--paper);
+    background-image: radial-gradient(var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    transition: opacity 0.7s var(--ease);
+  }
+  .envelope-screen.done{
+    opacity: 0;
+    pointer-events: none;
+  }
+  .envelope-screen::before,
+  .envelope-screen::after{
+    content: '';
+    position: absolute;
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .envelope-screen::before{
+    background: radial-gradient(circle, var(--sage) 0%, transparent 70%);
+    top: -22%; left: -18%;
+    animation: blob-drift-a 17s ease-in-out infinite;
+  }
+  .envelope-screen::after{
+    background: radial-gradient(circle, var(--rose) 0%, transparent 70%);
+    bottom: -22%; right: -18%;
+    animation: blob-drift-b 21s ease-in-out infinite;
+  }
+  @keyframes blob-drift-a{
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(6%, 8%) scale(1.15); }
+  }
+  @keyframes blob-drift-b{
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-8%, -6%) scale(1.1); }
+  }
+
+  .envelope-stage{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    padding: 1rem;
+    animation: stage-float 3.6s ease-in-out infinite;
+  }
+  @keyframes stage-float{
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .envelope-tilt{
+    perspective: 1200px;
+  }
+
+  .envelope{
+    position: relative;
+    width: min(80vw, 300px);
+    aspect-ratio: 300 / 190;
+    cursor: pointer;
+    perspective: 900px;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+  }
+  .envelope:focus-visible{
+    outline: 2px solid var(--sage-deep);
+    outline-offset: 8px;
+    border-radius: 6px;
+  }
+
+  .env-shadow{
+    position: absolute;
+    left: 50%;
+    bottom: -16%;
+    width: 72%;
+    height: 20%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(58,51,43,0.28), transparent 72%);
+    filter: blur(5px);
+    z-index: 0;
+    transition: all 1s var(--ease);
+  }
+  .envelope.opening .env-shadow{
+    width: 86%;
+    height: 15%;
+    bottom: -22%;
+    opacity: 0.55;
+  }
+
+  .env-letter{
+    position: absolute;
+    left: 7%; right: 7%; top: 6%;
+    height: 82%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 6px 18px rgba(58,51,43,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .env-letter::after{
+    content: '';
+    position: absolute;
+    left: 8%; right: 8%; top: 32%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line), transparent);
+    opacity: 0.9;
+  }
+  .env-letter-title{
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: var(--sage-deep);
+    margin: 0;
+  }
+  .env-letter-heart{
+    color: var(--rose);
+    font-size: 1rem;
+  }
+
+  .env-front-pocket{
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(180deg, var(--paper-deep), #ECE0C8),
+      repeating-linear-gradient(135deg, rgba(58,51,43,0.03) 0 2px, transparent 2px 5px);
+    border-radius: 6px;
+    z-index: 2;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .env-front-pocket::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 44%;
+    background: linear-gradient(180deg, transparent, rgba(58,51,43,0.05));
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 42%, 0% 100%);
+  }
+
+  .env-flap{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 3;
+    transform-origin: 50% 0%;
+    transition: transform 0.9s var(--ease-back);
+    filter: drop-shadow(0 2px 4px rgba(58,51,43,0.15));
+  }
+  .envelope.opening .env-flap{
+    transform: rotateX(-172deg);
+  }
+
+  .env-seal{
+    position: absolute;
+    left: 50%; top: 54%;
+    width: 34px; height: 34px;
+    transform: translate(-50%, -50%);
+    background: var(--rose);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(58,51,43,0.25);
+    z-index: 4;
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease-back);
+  }
+  .env-seal::before{
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--rose);
+    opacity: 0;
+  }
+  .envelope.opening .env-seal{
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(30deg);
+  }
+  .envelope.opening .env-seal::before{
+    animation: seal-ring 0.6s var(--ease) forwards;
+  }
+  @keyframes seal-ring{
+    0%   { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2.6); }
+  }
+
+  .env-sparkles{
+    position: absolute;
+    left: 50%; top: 54%;
+    width: 0; height: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .spark{
+    position: absolute;
+    left: 0; top: 0;
+    font-size: 0.85rem;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  .spark.rose{ color: var(--rose); }
+  .spark.sage{ color: var(--sage-deep); }
+  .envelope.opening .spark{
+    animation: spark-fly 900ms var(--ease) forwards;
+    animation-delay: var(--dl, 0ms);
+  }
+  @keyframes spark-fly{
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(0deg); }
+    18%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) rotate(var(--rot)); }
+  }
+
+  @keyframes letter-rise{
+    0%   { transform: translateY(0) scale(0.96) rotate(0deg); }
+    55%  { transform: translateY(-82%) scale(1.07) rotate(2deg); }
+    75%  { transform: translateY(-74%) scale(1.04) rotate(-1deg); }
+    100% { transform: translateY(-78%) scale(1.05) rotate(0.5deg); }
+  }
+  .envelope.rising .env-letter{
+    animation: letter-rise 1s var(--ease) forwards;
+    box-shadow: 0 18px 34px rgba(58,51,43,0.18);
+  }
+
+  .tap-hint{
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin: 0;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+  .envelope-screen.done .tap-hint,
+  .envelope-screen.done .envelope{
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="envelope-screen" id="envelopeScreen">
+  <div class="envelope-stage">
+    <div class="envelope-tilt" id="envelopeTilt">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir la carta">
+        <div class="env-shadow" aria-hidden="true"></div>
+        <div class="env-letter" aria-hidden="true">
+          <p class="env-letter-title">Para Gabi</p>
+          <span class="env-letter-heart">♥</span>
+        </div>
+        <div class="env-front-pocket" aria-hidden="true"></div>
+        <svg class="env-flap" viewBox="0 0 300 190" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="flapGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6E8F70"/>
+              <stop offset="100%" stop-color="#4F6F52"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,0 L300,0 Q220,14 150,118 Q80,14 0,0 Z" fill="url(#flapGrad)"/>
+        </svg>
+        <div class="env-seal" aria-hidden="true">♥</div>
+        <div class="env-sparkles" id="envSparkles" aria-hidden="true"></div>
+      </div>
+    </div>
+    <p class="tap-hint" aria-hidden="true">Toca el sobre para abrirlo</p>
+  </div>
+</div>
+
+<div class="hearts" aria-hidden="true">
+  <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+</div>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">Hoy celebramos a una persona increíble</p>
+    <h1>Detrás de la bata</h1>
+    <p class="subtitle">Para Gabi, en el Día de la Médica.</p>
+
+    <svg class="heartbeat" viewBox="0 0 340 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,35 L70,35 L90,10 L110,60 L130,20 L150,35 L220,35 L240,15 L255,35 L340,35" />
+    </svg>
+
+    <p class="scroll-cue">desliza para leer ↓</p>
+  </section>
+
+  <section class="poem">
+    <p class="poem-title">Para Gabi, en el Día de la Médica.</p>
+
+    <p class="stanza">Hay personas que estudian para entender la vida,<br>
+    que buscan respuestas donde otros ven temor,<br>
+    que aprenden a curar las heridas del cuerpo<br>
+    sin saber cuántas veces también curan con su voz.</p>
+
+    <p class="stanza">Tú elegiste un camino de preguntas y ciencia,<br>
+    de noches de esfuerzo, de entrega y vocación;<br>
+    uno donde el cansancio a veces pesa en los hombros<br>
+    y aun así queda espacio para brindar atención.</p>
+
+    <p class="stanza">Hay médicos que calman la fiebre o el quebranto,<br>
+    y hay quien, como tú, también recibe la vida:<br>
+    tus manos serán de las primeras en sostener el llanto<br>
+    de alguien que apenas comienza su propia partida.</p>
+
+    <p class="stanza">Y aunque hoy celebremos la médica que eres,<br>
+    tu esfuerzo, tus metas y todo lo que vendrá,<br>
+    yo quisiera dedicarte unos versos diferentes,<br>
+    hablar de esa persona que hay detrás de tu bata blanca.</p>
+
+    <p class="stanza">Porque hay algo curioso en la forma de conocerte:<br>
+    uno comienza hablando, sin saber qué encontrará,<br>
+    y entre bromas, historias y conversaciones largas,<br>
+    descubre que hay personas que dan gusto escuchar.</p>
+
+    <p class="stanza">Como aquella vez que, en broma, fui tu paciente,<br>
+    y tú, siguiéndome el juego, me diste un diagnóstico serio;<br>
+    aunque no exista receta para lo que siento,<br>
+    firmo gustoso el tratamiento con tal de seguir siendo tu enfermo.</p>
+
+    <p class="stanza">Me gusta tu manera de mirar hacia las cosas,<br>
+    esa curiosidad que te invita a aprender;<br>
+    la forma en que una charla puede tomar otros rumbos<br>
+    y hacer que un rato cualquiera se disfrute sin querer.</p>
+
+    <p class="stanza">No pretendo describirte con palabras perfectas,<br>
+    ni decir que te conozco de principio a final;<br>
+    apenas voy descubriendo pequeños universos<br>
+    que me dan más motivos para querer conversar.</p>
+
+    <p class="stanza">Sé que no te gusta que apresuren lo que sientes,<br>
+    que lo bueno, como dices, se construye despacio;<br>
+    como esa bolsa que cosiste con tus propias manos pacientes,<br>
+    puntada a puntada, sin prisa, hasta encontrarle su espacio.</p>
+
+    <div class="divider" aria-hidden="true">♥ ♥ ♥</div>
+
+    <p class="stanza">Y quizá esa sea la parte más bonita de todo:<br>
+    que no hay que tener respuestas para poder disfrutar;<br>
+    que a veces basta un mensaje, una risa compartida,<br>
+    o escuchar una voz que te invita a continuar.</p>
+
+    <p class="stanza">No sé qué nuevos caminos nos depara el tiempo,<br>
+    ni qué historias nos queden todavía por contar;<br>
+    pero agradezco la suerte de coincidir contigo<br>
+    y tener tantas pequeñas cosas por descubrir aún más.</p>
+
+    <p class="stanza">No sé qué tanto pueda prometer el destino,<br>
+    pero sí sé que quiero verte sonreír seguido;<br>
+    platicar contigo horas, bromear sin motivo,<br>
+    y hacer, si está en mis manos, todo lo que te he prometido.</p>
+
+    <p class="stanza">Hoy deseo que la vida también cuide de ti,<br>
+    que te devuelva en sonrisas lo que das con el corazón,<br>
+    que nunca falten motivos para perseguir tus sueños<br>
+    ni personas que acompañen tus pasos con ilusión.</p>
+
+    <p class="stanza">Que nunca olvides, Gabi, incluso en los días difíciles,<br>
+    que detrás de cada meta hay alguien que merece descansar;<br>
+    que no tienes que ser fuerte a cada instante,<br>
+    y que también mereces que te sepan cuidar.</p>
+
+    <div class="divider" aria-hidden="true">♥ ♥ ♥</div>
+
+    <p class="stanza">Alguna vez te escribí que eras de azul,<br>
+    un pedazo de cielo escondido en tu risa;<br>
+    hoy, con más versos y la misma luz,<br>
+    sigo pensando lo mismo, solo que ahora sin prisa.</p>
+
+    <p class="stanza">Feliz Día de la Médica, Gabi.<br>
+    Que sigas aprendiendo, creciendo y brillando a tu manera.<br>
+    Y que, entre tantas vidas que algún día ayudarás,<br>
+    nunca dejes de hacer espacio para la tuya.</p>
+
+    <div class="signature">
+      <p class="closing">Con cariño,</p>
+      <p class="name">Gabo.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  🩺 Feliz Día de la Médica 🤍
+  <span class="credit">sintaxisg.com</span>
+</footer>
+
+<script>
+(function(){
+  var screenEl = document.getElementById('envelopeScreen');
+  var envEl = document.getElementById('envelope');
+  var tiltEl = document.getElementById('envelopeTilt');
+  var sparksEl = document.getElementById('envSparkles');
+  if (!screenEl || !envEl) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var opened = false;
+  var pressed = false;
+  var rx = 0, ry = 0;
+
+  var GLYPHS = ['♥', '✦', '•'];
+  var SPARK_COUNT = 14;
+  for (var i = 0; i < SPARK_COUNT; i++){
+    var angle = (360 / SPARK_COUNT) * i + (Math.random() * 18 - 9);
+    var rad = angle * Math.PI / 180;
+    var dist = 46 + Math.random() * 50;
+    var tx = Math.cos(rad) * dist;
+    var ty = Math.sin(rad) * dist;
+    var rot = (Math.random() * 120 - 60);
+    var delay = Math.random() * 140;
+    var span = document.createElement('span');
+    span.className = 'spark ' + (i % 2 === 0 ? 'rose' : 'sage');
+    span.textContent = GLYPHS[i % GLYPHS.length];
+    span.style.setProperty('--tx', tx.toFixed(1) + 'px');
+    span.style.setProperty('--ty', ty.toFixed(1) + 'px');
+    span.style.setProperty('--rot', rot.toFixed(1) + 'deg');
+    span.style.setProperty('--dl', delay.toFixed(0) + 'ms');
+    sparksEl.appendChild(span);
+  }
+
+  function applyTilt(){
+    if (opened) return;
+    envEl.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) scale(' + (pressed ? 0.97 : 1) + ')';
+  }
+
+  if (tiltEl && !reduced){
+    tiltEl.addEventListener('pointermove', function(e){
+      if (opened) return;
+      var rect = tiltEl.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width - 0.5;
+      var py = (e.clientY - rect.top) / rect.height - 0.5;
+      ry = (px * 14).toFixed(2);
+      rx = (-py * 14).toFixed(2);
+      applyTilt();
+    });
+    tiltEl.addEventListener('pointerleave', function(){
+      rx = 0; ry = 0;
+      applyTilt();
+    });
+  }
+  envEl.addEventListener('pointerdown', function(){
+    if (opened) return;
+    pressed = true;
+    applyTilt();
+  });
+  window.addEventListener('pointerup', function(){
+    pressed = false;
+    applyTilt();
+  });
+
+  function openEnvelope(){
+    if (opened) return;
+    opened = true;
+    envEl.style.transform = '';
+    var flapDelay = reduced ? 0 : 500;
+    var revealDelay = reduced ? 0 : 1550;
+
+    envEl.classList.add('opening');
+    setTimeout(function(){ envEl.classList.add('rising'); }, flapDelay);
+    setTimeout(function(){
+      screenEl.classList.add('done');
+      document.body.classList.add('revealed');
+    }, revealDelay);
+
+    screenEl.addEventListener('transitionend', function handler(e){
+      if (e.target === screenEl){
+        screenEl.remove();
+        screenEl.removeEventListener('transitionend', handler);
+      }
+    });
+  }
+
+  envEl.addEventListener('click', openEnvelope);
+  envEl.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openEnvelope();
+    }
+  });
+})();
+
+(function(){
+  var targets = document.querySelectorAll('.stanza, .divider, .signature');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -40px 0px' });
+  targets.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
