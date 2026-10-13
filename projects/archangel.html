@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARCHANGEL Ω: análisis estático de código | SINTAXIS G</title>
-<meta name="description" content="ARCHANGEL Ω es un motor de análisis estático de código con 73 analizadores, taint analysis y predicción de fallos. Servicio por API con acceso licenciado.">
+<meta name="description" content="ARCHANGEL Ω es un motor de análisis estático de código con 77 analizadores, taint analysis y predicción de fallos. Servicio por API con acceso licenciado.">
 
 <meta name="author" content="Gabo">
 <meta name="robots" content="index, follow">
@@ -113,10 +113,10 @@
   <div class="wrap">
     <p class="section-label">¿Qué es ARCHANGEL?</p>
     <h2>Un producto de análisis de código, no un script</h2>
-    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 73 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
+    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 77 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><b>73</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><b>77</b><span>analizadores orquestados vía DAG</span></div>
       <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
       <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
@@ -178,7 +178,7 @@
         <p>Cada análisis corre en un proceso hijo aislado (multiprocessing spawn) con verificación de integridad por checksum antes de aceptar cualquier resultado.</p>
       </div>
       <div class="pillar">
-        <div class="name">73 analizadores con circuit breaker propio</div>
+        <div class="name">77 analizadores con circuit breaker propio</div>
         <p>Cada analizador tiene su propio circuit breaker y monitor de salud — uno que falla repetidamente se aísla solo, sin tumbar el resto del pipeline.</p>
       </div>
       <div class="pillar">
@@ -373,7 +373,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
-        <div class="terminal-line">→ 73 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line">→ 77 sub-analizadores orquestados vía DAG...</div>
         <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
         <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
         <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
@@ -659,12 +659,12 @@
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de 73 analizadores registrados (18 de métricas, 16 de física, 17 de topología, 11 de semántica, 9 de reglas/sistemas, 2 de IR), corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action, ambos clientes de la API, para integrarse al flujo de CI sin distribuir el motor. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 77 analizadores registrados, corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action, ambos clientes de la API, para integrarse al flujo de CI sin distribuir el motor. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
     </div>
 
     <div class="note-box">
       <div class="name">Honestidad sobre "multi-lenguaje"</div>
-      <p>El análisis profundo — el DAG completo de 73 analizadores, el correlator bayesiano, taint analysis cross-file — corre sobre Python, con <code class="hl">ast.parse()</code> real de CPython; las rutas más costosas tienen además una implementación en Rust (ver <a href="#rust" style="color:var(--accent);">Rust donde importa</a>). Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+      <p>El análisis profundo — el DAG completo de 77 analizadores, el correlator bayesiano, taint analysis cross-file — corre sobre Python, con <code class="hl">ast.parse()</code> real de CPython; las rutas más costosas tienen además una implementación en Rust (ver <a href="#rust" style="color:var(--accent);">Rust donde importa</a>). Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
     </div>
 
     <div class="depgraph-block">
@@ -692,7 +692,7 @@
     <p class="lede">Los analizadores más costosos tienen una segunda implementación en Rust (PyO3). No reemplaza al motor Python: lo acelera, y ante cualquier caso que no pueda decidir igual, le devuelve el trabajo. Lo que sigue son las decisiones y las mediciones, no una promesa de velocidad.</p>
 
     <div class="pillars">
-      <div class="pillar"><div class="name">Qué está en Rust</div><p>El motor de taint (W-1), la fuga de información (W-3), el analizador de la Ley de Ashby y el traductor HyDE de la memoria. Se eligieron por su costo medido y porque corren en hilos que compiten por el GIL. El resto de los 73 analizadores sigue en Python.</p></div>
+      <div class="pillar"><div class="name">Qué está en Rust</div><p>El motor de taint (W-1), la fuga de información (W-3), el analizador de la Ley de Ashby y el traductor HyDE de la memoria. Se eligieron por su costo medido y porque corren en hilos que compiten por el GIL. El resto de los 77 analizadores sigue en Python.</p></div>
       <div class="pillar"><div class="name">Dos fases para tener paralelismo real</div><p>Primero se convierte el AST con el GIL retenido; después el cómputo corre en Rust puro con el GIL liberado. Así varios hilos analizan a la vez en vez de competir por el GIL de Python. Lo que necesita el texto de cada hallazgo o la semántica exacta de <code class="hl">ast</code> se sigue obteniendo del <code class="hl">ast</code> real de CPython, no se reimplementa.</p></div>
       <div class="pillar"><div class="name">Rust primero, Python como red</div><p>Cada analizador porta un despachador: intenta Rust y, ante cualquier excepción (extensión no compilada, caso no soportado), cae al motor Python. Lo que Rust no puede decidir igual (por ejemplo, aritmética no lineal en la poda de caminos, que Python resuelve con Z3) lanza a propósito en vez de aproximar. En el corpus, eso ocurre en alrededor de 0.1% de los archivos.</p></div>
       <div class="pillar"><div class="name">Paridad medida contra código real</div><p>Un diferencial completo contra el motor Python sobre 12.919 archivos de 10 proyectos maduros (airflow, pandas, sqlalchemy, yt-dlp, matplotlib, aiohttp, black, flask, urllib3, pyyaml) más un corpus adversarial, con y sin resolución entre archivos. Resultado: cero divergencias reales y cero diferencias en el texto que muestra el correlador. Ashby y HyDE se compararon igual, sobre 6.613 archivos, con coincidencia exacta.</p></div>
@@ -711,7 +711,7 @@
   <div class="wrap">
     <p class="section-label">Catálogo de analizadores</p>
     <h2>Ejemplos reales, no nombres de carpeta</h2>
-    <p class="lede">73 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una. Cada ficha incluye también el límite conocido de ese analizador, porque saber lo que no cubre es parte de saber lo que cubre.</p>
+    <p class="lede">77 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una. Cada ficha incluye también el límite conocido de ese analizador, porque saber lo que no cubre es parte de saber lo que cubre.</p>
 
     <div class="analyzer-filters">
       <button class="analyzer-chip is-active" data-cat="all">Todas</button>
@@ -1255,7 +1255,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5"><span>¿El análisis principal usa IA?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (73 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
+        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (77 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es de código abierto?</span><span class="faq-icon">+</span></button>
@@ -1278,7 +1278,7 @@
       "@id": "https://sintaxisg.com/projects/archangel.html#software",
       "name": "ARCHANGEL Ω",
       "alternateName": "ARCHANGEL",
-      "description": "Motor de análisis estático de código con 73 analizadores y un correlator bayesiano: taint analysis, predicción de fallos y física del software. Se consume como servicio por API con acceso licenciado.",
+      "description": "Motor de análisis estático de código con 77 analizadores y un correlator bayesiano: taint analysis, predicción de fallos y física del software. Se consume como servicio por API con acceso licenciado.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Cross-platform",
       "isAccessibleForFree": false,
@@ -1320,7 +1320,7 @@
     {
       "@type": "Question",
       "name": "¿El análisis principal de ARCHANGEL usa inteligencia artificial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (73 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (77 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
     },
     {
       "@type": "Question",

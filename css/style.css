@@ -233,11 +233,15 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   padding: var(--space-md) var(--space-sm);
   border-bottom: 1px solid var(--line);
   border-radius: 20px 4px 20px 4px;
-  transition: background 0.3s var(--ease), border-radius 0.3s var(--ease);
+  transition: background 0.24s var(--ease), border-radius 0.24s var(--ease),
+    transform 0.24s var(--ease), box-shadow 0.24s var(--ease);
 }
 .eco-item:hover {
   background: var(--surface);
   border-radius: 4px 20px 4px 20px;
+  transform: translateY(-3px);
+  box-shadow: 0 32px 90px -54px color-mix(in srgb, var(--accent) 70%, transparent),
+    0 18px 46px -32px rgba(0, 0, 0, 0.55);
 }
 .eco-item .name { font-weight: 700; font-size: var(--fs-h3); padding-top: 0.15rem; }
 .eco-item .desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
