@@ -226,6 +226,8 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 /* ---------- Ecosystem list ---------- */
 .eco-list { border-top: 1px solid var(--line); }
 .eco-item {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 8rem 1fr auto;
   gap: var(--space-md);
@@ -236,6 +238,18 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   transition: background 0.24s var(--ease), border-radius 0.24s var(--ease),
     transform 0.24s var(--ease), box-shadow 0.24s var(--ease);
 }
+.eco-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 38%),
+    linear-gradient(315deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 44%);
+  opacity: 0;
+  transition: opacity 0.24s var(--ease), border-radius 0.24s var(--ease);
+}
 .eco-item:hover {
   background: var(--surface);
   border-radius: 4px 20px 4px 20px;
@@ -243,6 +257,7 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   box-shadow: 0 32px 90px -54px color-mix(in srgb, var(--accent) 70%, transparent),
     0 18px 46px -32px rgba(0, 0, 0, 0.55);
 }
+.eco-item:hover::before { opacity: 1; }
 .eco-item .name { font-weight: 700; font-size: var(--fs-h3); padding-top: 0.15rem; }
 .eco-item .desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; }
 .eco-item .desc strong { color: var(--text); }
