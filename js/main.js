@@ -116,6 +116,29 @@ if (revealTargets.length) {
   revealTargets.forEach((el) => revealObserver.observe(el));
 }
 
+// ---------- 2b. Scroll reveal lateral (lista de ecosistema) ----------
+// Cada fila de .eco-item entra desde un costado alterno -- impares desde
+// la izquierda, pares desde la derecha -- convergiendo al centro, en vez
+// de aparecer de golpe junto con el resto del bloque. Si el usuario pide
+// menos movimiento, no se agrega la clase: las filas ya están visibles.
+const ecoItems = document.querySelectorAll('.eco-item');
+if (ecoItems.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  ecoItems.forEach((el, i) => {
+    el.classList.add(i % 2 === 0 ? 'reveal-left' : 'reveal-right');
+  });
+
+  const ecoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        ecoObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  ecoItems.forEach((el) => ecoObserver.observe(el));
+}
+
 // ---------- 2.5 Peso tipográfico bajo estrés ----------
 // Los títulos de proyecto (.stress-title) ganan peso de fuente a
 // medida que se acercan al centro del viewport — metáfora de tensión
