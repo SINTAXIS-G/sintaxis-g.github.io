@@ -224,38 +224,80 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 .system-thread strong { color: var(--text); font-weight: 600; }
 
 /* ---------- Ecosystem list ---------- */
+/* Cada fila encaja con la siguiente como piezas de rompecabezas reales
+   -- cuello angosto, cabeza más ancha que el cuello (no una pestaña
+   recta, eso se desliza y se separa). La profundidad de cada "cabeza"
+   no es decorativa: es el tamaño real del proyecto de arriba empujando
+   hacia el de abajo -- EIDOLON (~30.6k líneas) deja una marca más
+   profunda que AETERNA (0 líneas, todavía solo blueprint, nunca se
+   construyó) -- "ningún proyecto pesa lo mismo", literal.
+   --blank/--blank-neck: el hueco que recibe la cabeza del proyecto de
+   arriba. --tab/--tab-neck: la cabeza propia que empuja hacia abajo.
+   Ambos en 0 por default -- primera y última fila no necesitan
+   declararlos, el polígono colapsa solo a un borde recto. */
 .eco-list { border-top: 1px solid var(--line); }
 .eco-item {
   position: relative;
-  overflow: hidden;
+  z-index: var(--z, 1);
   display: grid;
   grid-template-columns: 8rem 1fr auto;
   gap: var(--space-md);
   align-items: start;
-  padding: var(--space-md) var(--space-sm);
-  border-bottom: 1px solid var(--line);
-  border-radius: 20px 4px 20px 4px;
-  transition: background 0.24s var(--ease), border-radius 0.24s var(--ease),
-    transform 0.24s var(--ease), box-shadow 0.24s var(--ease);
+  padding: 56px var(--space-sm);
+  margin-top: calc(-1 * var(--blank, 0px));
+  /* fondo sutil en reposo -- sin esto la silueta del rompecabezas es
+     invisible hasta el :hover, porque antes esta separación la daba el
+     border-bottom que el clip-path reemplazó. */
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  transition: background 0.24s var(--ease),
+    transform 0.24s var(--ease), filter 0.24s var(--ease);
+  clip-path: polygon(
+    0 0,
+    calc(50% - 16px) 0,
+    calc(50% - 16px) var(--blank-neck, 0px),
+    calc(50% - 24px) var(--blank-neck, 0px),
+    calc(50% - 24px) var(--blank, 0px),
+    calc(50% + 24px) var(--blank, 0px),
+    calc(50% + 24px) var(--blank-neck, 0px),
+    calc(50% + 16px) var(--blank-neck, 0px),
+    calc(50% + 16px) 0,
+    100% 0,
+    100% 100%,
+    calc(50% + 16px) 100%,
+    calc(50% + 16px) calc(100% - var(--tab-neck, 0px)),
+    calc(50% + 24px) calc(100% - var(--tab-neck, 0px)),
+    calc(50% + 24px) calc(100% - var(--tab, 0px)),
+    calc(50% - 24px) calc(100% - var(--tab, 0px)),
+    calc(50% - 24px) calc(100% - var(--tab-neck, 0px)),
+    calc(50% - 16px) calc(100% - var(--tab-neck, 0px)),
+    calc(50% - 16px) 100%,
+    0 100%
+  );
 }
+.eco-item:first-child { padding-top: var(--space-md); }
+.eco-item:last-child { padding-bottom: var(--space-md); }
 .eco-item::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  border-radius: inherit;
+  clip-path: inherit;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 38%),
     linear-gradient(315deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 44%);
   opacity: 0;
-  transition: opacity 0.24s var(--ease), border-radius 0.24s var(--ease);
+  transition: opacity 0.24s var(--ease);
 }
 .eco-item:hover {
+  z-index: 20;
   background: var(--surface);
-  border-radius: 4px 20px 4px 20px;
   transform: translateY(-10px);
-  box-shadow: 0 32px 90px -54px color-mix(in srgb, var(--accent) 70%, transparent),
-    0 18px 46px -32px rgba(0, 0, 0, 0.55);
+  /* filter, no box-shadow: box-shadow sigue el rectángulo invisible de
+     abajo, no la silueta recortada -- se vería un halo rectangular
+     asomando por los huecos del rompecabezas. drop-shadow sí sigue la
+     forma real. */
+  filter: drop-shadow(0 32px 60px color-mix(in srgb, var(--accent) 45%, transparent))
+    drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55));
 }
 .eco-item:hover::before { opacity: 1; }
 
@@ -268,8 +310,7 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   opacity: 0;
   translate: -40px 0;
   transition: opacity 0.6s var(--ease), translate 0.6s var(--ease),
-    background 0.24s var(--ease), border-radius 0.24s var(--ease),
-    transform 0.24s var(--ease), box-shadow 0.24s var(--ease);
+    background 0.24s var(--ease), transform 0.24s var(--ease), filter 0.24s var(--ease);
 }
 .eco-item.reveal-right { translate: 40px 0; }
 .eco-item.reveal-left.is-visible,
