@@ -72,6 +72,35 @@
 }
 .bp-caption b { color: var(--accent); font-weight: 500; }
 :has(> .bp-caption) { position: relative; }
+/* El hero tiene su propia ".hero p { font-size:1.15rem; max-width:...;
+   margin-top:... }" en style.css -- misma cuenta de clases que acá
+   (0,1,1) pero ESE selector incluye un tag, así que gana la pelea de
+   especificidad y el caption terminaba renderizando gigante, sin
+   max-width y con un margin-top de sobra -- en mobile eso lo hacía
+   ocupar 2-3 líneas y treparse sobre el contenido de arriba. Esta regla,
+   más específica (.hero > .wrap > .bp-caption), fuerza que gane el
+   tamaño real del componente sin importar en qué sección esté. */
+.hero > .wrap > .bp-caption {
+  font-size: 0.68rem;
+  max-width: none;
+  margin-top: 0;
+  color: var(--accent-dim);
+}
+/* El truco de "esquina vacía abajo a la derecha" asume que hay una
+   esquina vacía -- cierto en desktop, falso en mobile: ahí el último
+   bloque de cada sección (stats apiladas, botones de CTA en columna,
+   lo que sea) suele llegar hasta el borde real del contenedor, y el
+   caption absoluto le cae encima en vez de quedar debajo. En vez de
+   parchear wrap por wrap, en mobile deja de ser absoluto: fluye como
+   una línea más, después de lo que haya, sin superponerse nunca. */
+@media (max-width: 760px) {
+  .bp-caption {
+    position: static;
+    display: block;
+    text-align: right;
+    margin-top: 0.75rem;
+  }
+}
 
 /* Callout + línea de cota: ancladas a un concepto real del copy,
    nunca decorativas sueltas. Posición final (top/left/width/rotate)
@@ -352,6 +381,11 @@ body.bp-boot-locked { overflow: hidden; height: 100vh; }
   align-items: center;
   gap: 0.55rem;
 }
+/* El atributo [hidden] del HTML pierde contra esta regla si no se lo
+   nombra explícitamente acá (misma especificidad, esta carga después) —
+   por eso el loader quedaba siempre visible, tapando contenido real en
+   mobile, incluso con hidden puesto y nunca sacado por JS. */
+.bp-3d-loader[hidden] { display: none; }
 .bp-3d-loader-track {
   width: 70px;
   height: 4px;
@@ -433,6 +467,129 @@ body.bp-boot-locked { overflow: hidden; height: 100vh; }
 .eb-controls input[type="range"] { width: 100%; accent-color: var(--accent); margin-bottom: var(--space-sm); }
 .eb-count { margin-top: var(--space-sm); font-family: var(--font-mono); font-size: var(--fs-small); color: var(--text-dim); }
 .eb-count b { color: var(--accent); }
+
+/* Mini-índice de "Sobre mí" — rail fijo, espejo del minimapa global
+   pero del lado izquierdo y con texto en vez de puntos (es local a
+   una sola sección, puede permitirse ser más explícito). */
+.about-toc {
+  position: fixed;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+.about-toc.is-visible { opacity: 1; pointer-events: auto; }
+.about-toc a {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  border-left: 2px solid var(--line);
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  max-width: 8rem;
+}
+.about-toc a:hover { color: var(--text); }
+.about-toc a.is-active { color: var(--accent); border-color: var(--accent); }
+/* Solo se muestra cuando el margen real entre el borde y la columna de
+   contenido (centrada en --content-width) alcanza para no pisar texto. */
+@media (max-width: 1450px) {
+  .about-toc { display: none; }
+}
+
+/* Chips de stack técnico — término real + tooltip con el "por qué",
+   no una etiqueta genérica de habilidad. */
+.tech-chip {
+  border-bottom: 1px dashed var(--accent-dim);
+  color: var(--accent);
+  cursor: help;
+}
+.tech-chip-tip {
+  position: absolute;
+  z-index: 200;
+  max-width: 22rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.tech-chip-tip.is-visible { opacity: 1; transform: translateY(0); }
+
+/* Shader WebGL sobre la foto real (ripple + aberración cromática que
+   sigue el mouse) — reemplaza visualmente a la <img> solo cuando WebGL
+   está disponible y el visitante no pidió menos movimiento; si falla,
+   la foto plana original sigue ahí sin que nadie note la diferencia. */
+.about-photo-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% 50% 16px 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease);
+}
+.about-photo-canvas.is-ready { opacity: 1; }
+.about-photo-wrap.has-shader .about-photo { opacity: 0; }
+
+/* Red de nodos ambiental detrás de "Sígueme el rastro", el catálogo de
+   analizadores y el veredicto final de ARCHANGEL — eco visual en reposo
+   del grafo de dependencias real / metáfora de red de contacto. */
+#contacto, #analizadores, #veredicto { position: relative; overflow: hidden; }
+#contacto > .wrap, #analizadores > .wrap, #veredicto > .wrap { position: relative; z-index: 1; }
+.bp-nodes-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* Osciloscopio ambiental en el footer — corre en cada página, se agita
+   con la velocidad real de scroll y se calma cuando el visitante deja
+   de moverse. Confirma que "el sistema sigue vivo" hasta el final. */
+footer { position: relative; overflow: hidden; }
+footer > .wrap { position: relative; z-index: 1; }
+.bp-signal-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* La cita destacada gana el mismo eje óptico animado de Fraunces que
+   el H1 del hero -- un golpe visual propio en vez de perderse en el
+   flujo de párrafos. */
+@supports (animation-timeline: view()) {
+  .about-quote {
+    animation: bp-opsz-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @supports (animation-timeline: view()) {
+    .about-quote { animation: none; }
+  }
+}
 
 /* Modo cianotipo — paleta clásica de plano arquitectónico (líneas
    blancas sobre azul). Mismo patrón que bunker-mode: clase en <body>,

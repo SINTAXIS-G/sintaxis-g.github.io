@@ -500,7 +500,10 @@
     <div class="wrap">
       <p class="section-label">Sobre mí</p>
       <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
-      <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo bp-frame" data-parallax-speed="0.08">
+      <div class="about-photo-wrap bp-frame" data-parallax-speed="0.08">
+        <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo" id="about-photo-img">
+        <canvas class="about-photo-canvas" id="about-photo-canvas" aria-hidden="true"></canvas>
+      </div>
       <div class="about-body">
         <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
         <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
@@ -512,7 +515,7 @@
           React/Vite, Flutter, Linux y distintas tecnologías según lo que el problema requiera. La tecnología es una
           herramienta; la arquitectura y el propósito del sistema son lo que realmente importan.</p>
 
-        <h3 class="about-subhead">Construir, no solamente implementar</h3>
+        <h3 class="about-subhead" id="about-construir">Construir, no solamente implementar</h3>
         <p>Con el tiempo dejé de pensar en el software como aplicaciones aisladas. Un proyecto puede comenzar como una
           herramienta pequeña y terminar convirtiéndose en un sistema compuesto por servicios, interfaces, análisis,
           almacenamiento, automatización e infraestructura propia. Esa evolución es parte natural de mi forma de
@@ -526,13 +529,15 @@
           que siga siendo útil cuando las condiciones reales no son perfectas, priorizando disponibilidad, degradación
           controlada y dependencia mínima de servicios externos.</p>
 
-        <h3 class="about-subhead">Debajo de la arquitectura</h3>
-        <p>Python es donde paso la mayor parte del tiempo, y no en el sentido superficial: manipulación real de AST (no
-          regex disfrazado de parser), multiprocessing con aislamiento real de procesos hijo, un solver SMT (Z3) para
-          probar matemáticamente en vez de adivinar con heurísticas, criptografía real (Ed25519, AES-256-GCM) cuando el
-          problema lo exige. El resto del stack lo elijo por el problema, no por costumbre: JavaScript sin framework
-          cuando quiero control fino sobre el navegador — este mismo sitio corre así, Canvas y WebGL incluidos —, React
-          cuando la velocidad de iteración de una interfaz importa más que el control total, Flutter cuando el
+        <h3 class="about-subhead" id="about-arquitectura">Debajo de la arquitectura</h3>
+        <p>Python es donde paso la mayor parte del tiempo, y no en el sentido superficial: manipulación real de
+          <span class="tech-chip" data-tip="No regex disfrazado de parser — un árbol de sintaxis real, navegado y transformado como tal.">AST</span> (no
+          regex disfrazado de parser), <span class="tech-chip" data-tip="Aislamiento real de procesos hijo — no threads compartiendo memoria con todos los problemas de eso.">multiprocessing</span> con aislamiento real de procesos hijo, un
+          <span class="tech-chip" data-tip="Solver SMT real — prueba matemáticamente que algo es cierto, no adivina con heurísticas ni tests de muestra.">solver SMT (Z3)</span> para
+          probar matemáticamente en vez de adivinar con heurísticas, <span class="tech-chip" data-tip="Ed25519 para firmas, AES-256-GCM para cifrado autenticado — criptografía de verdad cuando el problema la exige, no un hash MD5 de relleno.">criptografía real (Ed25519, AES-256-GCM)</span> cuando el
+          problema lo exige. El resto del stack lo elijo por el problema, no por costumbre: <span class="tech-chip" data-tip="Sin React/Vue/etc — control fino sobre el navegador cuando hace falta. Este mismo sitio corre así, Canvas y WebGL incluidos.">JavaScript sin framework</span>
+          cuando quiero control fino sobre el navegador — este mismo sitio corre así, Canvas y WebGL incluidos —, <span class="tech-chip" data-tip="Cuando la velocidad de iteración de una interfaz importa más que el control total sobre el DOM.">React</span>
+          cuando la velocidad de iteración de una interfaz importa más que el control total, <span class="tech-chip" data-tip="Cuando el problema es una app que tiene que funcionar sin conexión y sin backend — un solo codebase, dos plataformas.">Flutter</span> cuando el
           problema es una app que tiene que funcionar sin conexión y sin backend.</p>
         <p>Buena parte de mi trabajo reciente es orquestación de IA local: modelos corriendo en hardware de consumo,
           recuperación híbrida de contexto, y sistemas que necesitan sostener consistencia a lo largo de miles de
@@ -540,12 +545,12 @@
           cada respuesta del modelo contra un canon narrativo establecido — sin embeddings ni modelos de ML, con tres
           capas de reglas lingüísticas (negación, polaridad opuesta, conflicto de atributos) que detectan cuando el
           LLM afirma lo contrario de lo ya establecido, aunque comparta el 85% de las palabras con el hecho original.
-          Si encuentra una contradicción, esa respuesta nunca llega a la pantalla — se regenera antes.</p>
+          Si encuentra una contradicción, esa respuesta nunca llega a la pantalla — se regenera antes. <a href="#memoria" class="eco-link">Probá cómo decae una memoria real ↓</a></p>
         <p>Y en el extremo opuesto: seguridad de sistemas, tanto defensiva (sandboxing real de procesos, análisis de
           flujo de datos contaminados, hardening de superficie) como suficiente criterio del lado ofensivo/forense
           como para diseñar contramedidas con fundamento, no copiando un checklist genérico.</p>
 
-        <h3 class="about-subhead">Una forma particular de trabajar</h3>
+        <h3 class="about-subhead" id="about-trabajo">Una forma particular de trabajar</h3>
         <p>Prefiero tener una visión completa del sistema antes que limitarme a resolver una sola parte. Eso también
           significa que muchas veces termino construyendo herramientas que originalmente ni siquiera estaban
           contempladas en el proyecto. Si una pieza falta y esa pieza es importante para que el sistema funcione
@@ -557,7 +562,7 @@
           estrecha entre arquitectura, implementación y evolución del sistema.</p>
         <p>No busco utilizar más tecnología de la necesaria. Busco que cada pieza tenga una razón para existir.</p>
 
-        <h3 class="about-subhead">SINTAXIS G</h3>
+        <h3 class="about-subhead" id="about-sintaxisg">SINTAXIS G</h3>
         <p>SINTAXIS G es el espacio donde concentro esta forma de construir software. No es solamente un nombre para
           proyectos independientes. Es el punto común entre sistemas que, aunque tengan propósitos completamente
           diferentes, comparten una misma intención: crear herramientas capaces, controlables y diseñadas alrededor del
@@ -567,7 +572,7 @@
           prefiero que una parte crítica del sistema pueda permanecer bajo control directo.</p>
         <blockquote class="about-quote">"La mejor arquitectura no es la que utiliza más tecnología. Es la que conserva el control sobre lo que realmente importa."</blockquote>
 
-        <h3 class="about-subhead">Y detrás del código</h3>
+        <h3 class="about-subhead" id="about-detras">Y detrás del código</h3>
         <p>No concibo esto únicamente como una actividad profesional. Construir software se convirtió en mi manera de
           explorar ideas, resolver problemas y convertir conceptos que existen solamente en mi cabeza en sistemas que
           realmente funcionan.</p>
@@ -581,6 +586,7 @@
   <div class="fracture-seam fracture-seam--mirror" aria-hidden="true"></div>
 
   <section id="contacto" class="contact">
+    <canvas class="bp-nodes-canvas" id="contacto-nodes" aria-hidden="true"></canvas>
     <div class="wrap">
       <p class="section-label">Contacto</p>
       <h2 class="section-title">Sígueme el rastro</h2>
@@ -620,6 +626,7 @@
   </section>
 
   <footer>
+    <canvas class="bp-signal-canvas" id="footer-signal" aria-hidden="true"></canvas>
     <div class="wrap"><span class="footer-mark" aria-hidden="true">⬡</span><span class="footer-brand">SINTAXIS G</span><span class="footer-lema"> — Soberanía en cada ciclo de reloj.</span></div>
   </footer>
 

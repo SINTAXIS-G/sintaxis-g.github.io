@@ -97,6 +97,7 @@
 </nav>
 
 <header class="proj-hero">
+  <canvas id="archangel-hero-shader" class="proj-hero-shader-canvas" aria-hidden="true"></canvas>
   <div class="bp-tilt-wrap">
   <div class="wrap bp-tilt">
     <img src="../assets/img/archangel-logo-640.webp" alt="ARCHANGEL Ω logo" class="proj-logo" width="640" height="349">
@@ -120,9 +121,9 @@
     <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 77 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><b style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
-      <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
-      <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
+      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
+      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
 
     <div class="note-box">
@@ -488,7 +489,7 @@
       <div><span>Severidad</span><span class="critica">CRÍTICA</span></div>
       <div><span>Sink</span><span>db.execute(query)</span></div>
       <div><span>Origen</span><span>request.GET["user"] (línea 1)</span></div>
-      <div><span>Camino</span><span>1 → 5 → 9</span></div>
+      <div><span>Camino</span><span class="taint-path"><b class="taint-hop">1</b> → <b class="taint-hop">5</b> → <b class="taint-hop">9</b></span></div>
       <div><span>Confianza</span><span class="alta">ALTA</span></div>
     </div>
     <div class="proj-split" style="margin-top: var(--space-lg);">
@@ -695,6 +696,30 @@
     <h2>Rust donde importa, Python donde se entiende</h2>
     <p class="lede">Los analizadores más costosos tienen una segunda implementación en Rust (PyO3). No reemplaza al motor Python: lo acelera, y ante cualquier caso que no pueda decidir igual, le devuelve el trabajo. Lo que sigue son las decisiones y las mediciones, no una promesa de velocidad.</p>
 
+    <div class="rust-race" id="rust-race">
+      <div class="rust-race-row">
+        <span class="rust-race-label">Python puro</span>
+        <span class="rust-race-track"><span class="rust-race-fill" data-target="1"></span></span>
+        <span class="rust-race-val"><b class="rust-race-num" data-target="1">0</b>×</span>
+      </div>
+      <div class="rust-race-row">
+        <span class="rust-race-label">Rust — extremo lento del rango medido</span>
+        <span class="rust-race-track"><span class="rust-race-fill" data-target="1.7"></span></span>
+        <span class="rust-race-val"><b class="rust-race-num" data-target="1.7">0</b>×</span>
+      </div>
+      <div class="rust-race-row">
+        <span class="rust-race-label">Rust — extremo rápido del rango medido</span>
+        <span class="rust-race-track"><span class="rust-race-fill" data-target="6.8"></span></span>
+        <span class="rust-race-val"><b class="rust-race-num" data-target="6.8">0</b>×</span>
+      </div>
+      <div class="rust-race-row">
+        <span class="rust-race-label">HyDE, con 6 hilos concurrentes</span>
+        <span class="rust-race-track"><span class="rust-race-fill" data-target="7.9"></span></span>
+        <span class="rust-race-val"><b class="rust-race-num" data-target="7.9">0</b>×</span>
+      </div>
+      <p class="rust-race-note">Python puro = 1.0× (línea base). Barras a escala sobre el máximo medido (7.9×) — los mismos números de arriba, no una cifra nueva.</p>
+    </div>
+
     <div class="pillars">
       <div class="pillar"><div class="name">Qué está en Rust</div><p>El motor de taint (W-1), la fuga de información (W-3), el analizador de la Ley de Ashby y el traductor HyDE de la memoria. Se eligieron por su costo medido y porque corren en hilos que compiten por el GIL. El resto de los 77 analizadores sigue en Python.</p></div>
       <div class="pillar"><div class="name">Dos fases para tener paralelismo real</div><p>Primero se convierte el AST con el GIL retenido; después el cómputo corre en Rust puro con el GIL liberado. Así varios hilos analizan a la vez en vez de competir por el GIL de Python. Lo que necesita el texto de cada hallazgo o la semántica exacta de <code class="hl">ast</code> se sigue obteniendo del <code class="hl">ast</code> real de CPython, no se reimplementa.</p></div>
@@ -712,6 +737,7 @@
 </section>
 
 <section class="proj-block" id="analizadores">
+  <canvas class="bp-nodes-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <p class="section-label">Catálogo de analizadores</p>
     <h2>Ejemplos reales, no nombres de carpeta</h2>
@@ -1438,7 +1464,8 @@
   </div>
 </section>
 
-<section class="proj-block" style="border-bottom: none; text-align: center;">
+<section class="proj-block" id="veredicto" style="border-bottom: none; text-align: center;">
+  <canvas class="bp-nodes-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <p class="section-label" style="justify-content:center;">Veredicto</p>
     <p style="font-family:var(--font-mono); font-size:clamp(1.1rem, 3vw, 1.6rem); color:var(--accent); max-width:30ch; margin:0 auto;">"La Bóveda de la Verdad. El Escudo de la Coherencia."</p>
@@ -1449,6 +1476,7 @@
 </section>
 
 <footer>
+  <canvas class="bp-signal-canvas" id="footer-signal" aria-hidden="true"></canvas>
   <div class="wrap"><span class="footer-mark" aria-hidden="true">⬡</span><span class="footer-brand">SINTAXIS G</span><span class="footer-lema"> — Soberanía en cada ciclo de reloj.</span></div>
 </footer>
 

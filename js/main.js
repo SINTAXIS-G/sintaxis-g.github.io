@@ -800,25 +800,36 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   // paint -- se difiere con requestIdleCallback (con fallback a
   // setTimeout en Safari, que todavía no lo implementa) para no competir
   // con nada que sí importa apenas carga la página.
+  // Los corchetes se calculan una sola vez, al entrar el mouse -- si
+  // después el visitante scrollea sin mover el mouse (rueda, trackpad),
+  // el elemento se corre por debajo pero los corchetes (position:fixed)
+  // se quedan clavados donde estaban: parecen un recuadro "fantasma"
+  // flotando en el margen, sin relación con nada debajo. positionSnap()
+  // recalcula contra el elemento realmente enganchado (snapped), así
+  // que puede volver a llamarse en scroll/resize, no solo en mouseenter.
+  function positionSnap(el) {
+    const r = el.getBoundingClientRect();
+    corners.tl.style.left = `${r.left}px`; corners.tl.style.top = `${r.top}px`;
+    corners.tr.style.left = `${r.right - 14}px`; corners.tr.style.top = `${r.top}px`;
+    corners.bl.style.left = `${r.left}px`; corners.bl.style.top = `${r.bottom - 14}px`;
+    corners.br.style.left = `${r.right - 14}px`; corners.br.style.top = `${r.bottom - 14}px`;
+    if (el.tagName === 'A') {
+      labelEl.style.left = `${r.left}px`;
+      labelEl.style.top = `${r.top - 24}px`;
+    }
+  }
+
   const SNAP_SELECTOR = 'a, button, .mode-btn, .pillar, .forensic-node, .finding, .note-box, .bp-frame';
   const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
   idle(() => {
     document.querySelectorAll(SNAP_SELECTOR).forEach((el) => {
       el.addEventListener('mouseenter', () => {
         snapped = el;
-        const r = el.getBoundingClientRect();
-        corners.tl.style.left = `${r.left}px`; corners.tl.style.top = `${r.top}px`;
-        corners.tr.style.left = `${r.right - 14}px`; corners.tr.style.top = `${r.top}px`;
-        corners.bl.style.left = `${r.left}px`; corners.bl.style.top = `${r.bottom - 14}px`;
-        corners.br.style.left = `${r.right - 14}px`; corners.br.style.top = `${r.bottom - 14}px`;
+        positionSnap(el);
         cursor.style.transform = 'translate(0px, 0px)';
         const isLink = el.tagName === 'A';
         cursor.classList.toggle('has-label', isLink);
-        if (isLink) {
-          labelEl.textContent = '→';
-          labelEl.style.left = `${r.left}px`;
-          labelEl.style.top = `${r.top - 24}px`;
-        }
+        if (isLink) labelEl.textContent = '→';
         cursor.classList.add('is-snapped');
       });
       el.addEventListener('mouseleave', () => {
@@ -829,6 +840,9 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       });
     });
   });
+
+  window.addEventListener('scroll', () => { if (snapped) positionSnap(snapped); }, { passive: true });
+  window.addEventListener('resize', () => { if (snapped) positionSnap(snapped); });
 }
 
 // ---------- 9b. Menú móvil (hamburguesa) ----------

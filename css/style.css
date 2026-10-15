@@ -235,11 +235,33 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 }
 .featured-stats { display: flex; flex-direction: column; gap: var(--space-md); }
 .stat {
+  position: relative;
   border-left: 2px solid var(--accent);
   padding: 0.6rem 0 0.6rem var(--space-sm);
   border-radius: 0 16px 16px 0;
   background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%);
   transition: background 0.22s var(--ease), transform 0.22s var(--ease);
+}
+/* LED de estado — "el sistema está vivo" desde el primer scroll, no
+   solo un número quieto. Puramente decorativo sobre datos reales. */
+.stat-led {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: stat-led-pulse 2.6s ease-in-out infinite;
+}
+.stat:nth-child(2) .stat-led { animation-delay: 0.4s; }
+.stat:nth-child(3) .stat-led { animation-delay: 0.8s; }
+@keyframes stat-led-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); opacity: 1; }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent); opacity: 0.6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stat-led { animation: none; }
 }
 .stat:nth-child(even) { margin-left: var(--space-md); }
 .stat b { display: block; font-size: 1.6rem; font-family: var(--font-mono); transition: transform 0.22s var(--ease); }
@@ -428,12 +450,18 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
 }
 
 /* ---------- About ---------- */
-.about-photo {
-  display: block;
+.about-photo-wrap {
+  position: relative;
   width: 11rem;
   height: 11rem;
-  object-fit: cover;
   margin: 0 0 var(--space-lg);
+}
+.about-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
   border: 2px solid var(--accent-dim);
   border-radius: 50% 50% 16px 50%;
 }
@@ -722,7 +750,14 @@ a:focus-visible, button:focus-visible {
 @media (max-width: 800px) {
   .featured { grid-template-columns: 1fr; }
   .eco-item { grid-template-columns: 1fr; gap: var(--space-xs); }
-  .hero-meta { flex-direction: column; gap: var(--space-sm); }
+  /* Apilado en columna acá hace crecer bastante la altura real del
+     bloque -- sin este espacio, el "SISTEMA: SINTAXIS_G · REV" absoluto
+     del wrap (pensado para la fila única y corta del desktop) termina
+     tapando la última línea ("Local-first…") en vez de quedar debajo.
+     padding-bottom y no margin-bottom a propósito: el margen colapsa a
+     través de .wrap (sin padding/borde propio) y se escapa afuera sin
+     empujar el ancla del bp-caption; el padding sí cuenta en la caja. */
+  .hero-meta { flex-direction: column; gap: var(--space-sm); padding-bottom: 1.75rem; }
 
   .nav-toggle { display: flex; }
   .nav-links {
