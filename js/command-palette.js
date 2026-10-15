@@ -68,6 +68,9 @@
     { title: 'Le puse un LLM local a mi codebase', url: '/articulos/llm-local-documentacion-codebase.html', group: 'Artículos' },
     { title: 'No existe el código perfecto', url: '/articulos/no-existe-codigo-perfecto.html', group: 'Artículos' },
     { title: 'Ponerle nombre a un bug', url: '/articulos/nombrar-bugs.html', group: 'Artículos' },
+
+    // ---------- Sistema ----------
+    { title: 'Repetir secuencia de arranque', subtitle: 'Calibración + escaneo + POST — recarga la página', action: 'replay-boot', group: 'Sistema' },
   ];
 
   let overlay = null;
@@ -167,6 +170,20 @@
     const item = filtered[index];
     if (!item) return;
     close();
+    if (item.action === 'replay-boot') {
+      try { sessionStorage.removeItem('sg_booted'); } catch (e) {}
+      // El arranque es cosa de carga de página (corre su propio script
+      // inline al principio del <body>, y se autodestruye al terminar) --
+      // no hay forma de "re-mostrarlo" sin recargar, así que recargamos.
+      // Si no estás en index.html, primero vamos ahí (es la única página
+      // con el arranque).
+      if (location.pathname !== '/index.html' && location.pathname !== '/') {
+        window.location.href = '/index.html';
+      } else {
+        window.location.reload();
+      }
+      return;
+    }
     const [path, hash] = item.url.split('#');
     if (path === location.pathname) {
       if (hash) {

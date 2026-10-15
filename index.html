@@ -51,6 +51,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/blueprint.css">
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Datos estructurados — Persona + Organización + cada proyecto como SoftwareApplication,
@@ -165,7 +166,66 @@
 
 <body>
 
+  <div class="bp-boot" id="bpBoot" aria-hidden="true">
+    <div class="bp-boot-frame">
+      <span class="bp-boot-corner c-tl"></span><span class="bp-boot-corner c-tr"></span>
+      <span class="bp-boot-corner c-bl"></span><span class="bp-boot-corner c-br"></span>
+    </div>
+    <div class="bp-boot-scanline"></div>
+    <div class="bp-boot-log" id="bpBootLog"></div>
+  </div>
+  <script>
+    (function () {
+      var boot = document.getElementById('bpBoot');
+      if (!boot) return;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var already = false;
+      try { already = sessionStorage.getItem('sg_booted') === '1'; } catch (e) {}
+
+      if (reduced || already) {
+        boot.style.display = 'none';
+        return;
+      }
+
+      document.body.classList.add('bp-boot-locked');
+      boot.classList.add('is-active');
+
+      var log = document.getElementById('bpBootLog');
+      var LINES = [
+        'SINTAXIS_G — INICIALIZANDO',
+        'ANALIZADORES: 77 OK',
+        'MOTOR DAG: OK',
+        'RENDER WEBGL: OK',
+        'DEPENDENCIA DE NUBE: MÍNIMA',
+        'SISTEMA LISTO'
+      ];
+      LINES.forEach(function (text, i) {
+        var line = document.createElement('div');
+        line.textContent = text;
+        if (i === LINES.length - 1) line.className = 'ok';
+        log.appendChild(line);
+        setTimeout(function () { line.classList.add('is-in'); }, 300 + i * 220);
+      });
+
+      var totalDelay = 300 + LINES.length * 220 + 600;
+      setTimeout(function () {
+        boot.classList.add('is-done');
+        document.body.classList.remove('bp-boot-locked');
+        setTimeout(function () { boot.remove(); }, 550);
+      }, totalDelay);
+
+      try { sessionStorage.setItem('sg_booted', '1'); } catch (e) {}
+    })();
+  </script>
+
   <div class="scroll-progress"></div>
+  <div class="bp-glitch-overlay" aria-hidden="true"></div>
+
+  <div class="bp-hud" aria-hidden="true">
+    <div class="bp-hud-row"><span>ALTITUD</span><b id="hud-altitude">0%</b></div>
+    <div class="bp-hud-row"><span>TIEMPO</span><b id="hud-time">00:00</b></div>
+    <div class="bp-hud-row"><span>RED</span><b id="hud-net">ONLINE</b></div>
+  </div>
 
   <nav class="nav">
     <div class="wrap">
@@ -179,6 +239,7 @@
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#contacto">Contacto</a>
       </div>
+      <button class="mode-btn" id="cyanotype-toggle" type="button" aria-pressed="false" title="Modo cianotipo">modo cianotipo</button>
       <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -188,7 +249,8 @@
   <header class="hero">
     <canvas id="hero-shader-canvas" class="hero-shader-canvas"></canvas>
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
-    <div class="wrap">
+    <canvas id="hero-3d-canvas" class="hero-3d-canvas"></canvas>
+    <div class="wrap" data-parallax-speed="0.1">
       <img src="assets/img/logo-sintaxis-g-v2.webp" alt="Sello de SINTAXIS G" width="804" height="813"
         style="display:block;width:7rem;height:7rem;margin:0 0 var(--space-md);border-radius:50%;">
       <p class="hero-greeting" id="hero-greeting"></p>
@@ -201,6 +263,7 @@
         <div><strong>300k+</strong>líneas en ARCHANGEL</div>
         <div><strong>Local-first</strong>mínima dependencia de nube</div>
       </div>
+      <p class="bp-caption">SISTEMA: <b>SINTAXIS_G</b> · REV v2026.10</p>
     </div>
   </header>
 
@@ -210,7 +273,8 @@
     <div class="wrap">
       <p class="section-label">Proyecto insignia</p>
       <h2 class="section-title stress-title" style="view-transition-name: vt-archangel-title;">ARCHANGEL</h2>
-      <div class="featured">
+      <div class="bp-tilt-wrap">
+      <div class="featured bp-tilt">
         <div class="featured-desc">
           <p>Motor de análisis estático que trata el software como un sistema físico: entropía de
             Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine
@@ -221,11 +285,60 @@
           <a class="featured-link" href="projects/archangel-articulos.html">Leer artículos →</a>
         </div>
         <div class="featured-stats">
-          <div class="stat"><b>77</b><span>analizadores orquestados vía DAG</span></div>
+          <div class="stat"><b class="bp-stat-hero" style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
           <div class="stat"><b>26</b><span>archivos en el módulo correlator</span></div>
           <div class="stat"><b>4</b><span>interfaces: API, web, VSCode, CI</span></div>
         </div>
+        <p class="bp-caption">SISTEMA: <b>ARCHANGEL</b> · REV v2026.10</p>
       </div>
+      </div>
+
+      <div class="bp-ticker">
+        <div class="bp-ticker-track" aria-hidden="true">
+          <span>Clone detector</span>
+          <span>Coupling / cohesion (repulsión de Lorentz)</span>
+          <span>Taint formal con verificación de retry</span>
+          <span>Pureza de funciones</span>
+          <span>Dead stores (código zombie)</span>
+          <span>Estructuras disipativas (Prigogine)</span>
+          <span>Ciclo adaptativo (Panarchy)</span>
+          <span>Entropía de Shannon</span>
+          <span>Async hazards</span>
+          <span>Predicción de deadlocks</span>
+          <span>Carreras por estado compartido</span>
+          <span>Fugas de recursos y de scope</span>
+          <span>Turbulencia (Reynolds)</span>
+          <span>Falacias de la red (Ley de Little)</span>
+          <span>Contratos de Hyrum</span>
+          <span>Estabilidad numérica</span>
+          <span>Aislamiento tipo bulkhead</span>
+          <span>Verificación formal donde se puede</span>
+          <span>Seams (costuras de prueba)</span>
+          <span>Invariantes de bucle</span>
+          <!-- Duplicado para el loop sin corte del CSS (translateX -50%) -->
+          <span>Clone detector</span>
+          <span>Coupling / cohesion (repulsión de Lorentz)</span>
+          <span>Taint formal con verificación de retry</span>
+          <span>Pureza de funciones</span>
+          <span>Dead stores (código zombie)</span>
+          <span>Estructuras disipativas (Prigogine)</span>
+          <span>Ciclo adaptativo (Panarchy)</span>
+          <span>Entropía de Shannon</span>
+          <span>Async hazards</span>
+          <span>Predicción de deadlocks</span>
+          <span>Carreras por estado compartido</span>
+          <span>Fugas de recursos y de scope</span>
+          <span>Turbulencia (Reynolds)</span>
+          <span>Falacias de la red (Ley de Little)</span>
+          <span>Contratos de Hyrum</span>
+          <span>Estabilidad numérica</span>
+          <span>Aislamiento tipo bulkhead</span>
+          <span>Verificación formal donde se puede</span>
+          <span>Seams (costuras de prueba)</span>
+          <span>Invariantes de bucle</span>
+        </div>
+      </div>
+      <p style="margin-top:0.6rem; font-family:var(--font-mono); font-size:var(--fs-small); color:var(--text-dim);">Muestra de 20 — <a href="projects/archangel.html" style="color:var(--accent);">ver los 77 →</a></p>
     </div>
   </section>
 
@@ -266,13 +379,15 @@
           </div>
         </article>
       </div>
+      <p class="bp-caption">SISTEMA: <b>MAPA</b> · REV v2026.10</p>
     </div>
   </section>
 
   <div class="fracture-seam fracture-seam--mirror" aria-hidden="true"></div>
 
-  <section id="ecosistema" style="font-family:var(--font-plex);">
-    <div class="wrap">
+  <section id="ecosistema" style="font-family:var(--font-plex); position:relative; overflow:hidden;">
+    <div class="bp-grid-bg bp-parallax-layer" data-parallax-speed="0.15" style="opacity:0.45;" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative;">
       <p class="section-label">El resto del ecosistema</p>
       <h2 class="section-title">Cada sistema resuelve un problema que se negó a delegar</h2>
       <div class="eco-list">
@@ -339,16 +454,53 @@
           <p class="status">En desarrollo</p>
         </div>
       </div>
+      <p class="bp-caption">SISTEMA: <b>ECOSISTEMA</b> · REV v2026.10</p>
     </div>
   </section>
 
   <div class="fracture-seam" aria-hidden="true"></div>
 
+  <section id="memoria">
+    <div class="wrap">
+      <p class="section-label">EIDOLON en acción</p>
+      <h2 class="section-title">Así decae — y se refuerza — una memoria real</h2>
+      <p class="system-intro">La misma fórmula que corre en EIDOLON: <code class="eb-formula">R(t) = e^(−t / S)</code> — retención en función de los días sin mencionarse, con S (estabilidad) creciendo cada vez que la memoria se refuerza. No es una animación simulada: moviendo el slider estás evaluando la fórmula real, en vivo.</p>
+
+      <div class="eb-demo">
+        <div class="eb-memory">
+          <p class="eb-memory-text" id="ebMemoryText">"A Azazel le gusta el té de jazmín, no el verde."</p>
+          <div class="eb-readout">
+            <span>RETENCIÓN</span><b id="ebRetentionVal">100%</b>
+            <span>ESTABILIDAD (S)</span><b id="ebStabilityVal">4.0 días</b>
+          </div>
+        </div>
+        <div class="eb-graph-wrap">
+          <svg class="eb-graph" viewBox="0 0 300 140" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="130" x2="300" y2="130" class="eb-axis"></line>
+            <line x1="0" y1="10" x2="0" y2="130" class="eb-axis"></line>
+            <path id="ebCurvePath" class="eb-curve" fill="none"></path>
+            <circle id="ebMarker" class="eb-marker" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+
+      <div class="eb-controls">
+        <label for="ebSlider">Días desde la última mención: <b id="ebDaysVal">0</b></label>
+        <input type="range" id="ebSlider" min="0" max="30" step="1" value="0">
+        <button type="button" class="cta-btn" id="ebReinforceBtn">Reforzar memoria (simula que se vuelve a mencionar)</button>
+        <p class="eb-count">Reforzada <b id="ebReinforceCount">0</b> veces — cada refuerzo real aumenta S y aplana la curva.</p>
+      </div>
+      <p class="bp-caption">SISTEMA: <b>EIDOLON</b> · REV v2026.10</p>
+    </div>
+  </section>
+
+  <div class="fracture-seam fracture-seam--mirror" aria-hidden="true"></div>
+
   <section id="sobre-mi">
     <div class="wrap">
       <p class="section-label">Sobre mí</p>
       <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
-      <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo">
+      <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo bp-frame" data-parallax-speed="0.08">
       <div class="about-body">
         <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
         <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
@@ -422,6 +574,7 @@
         <p>SINTAXIS G es el resultado de esa evolución: una persona, múltiples sistemas y una arquitectura que continúa
           creciendo.</p>
       </div>
+      <p class="bp-caption">SISTEMA: <b>GABO</b> · REV v2026.10</p>
     </div>
   </section>
 
@@ -462,6 +615,7 @@
           <span class="contact-arrow">→</span>
         </a>
       </div>
+      <p class="bp-caption">SISTEMA: <b>CONTACTO</b> · REV v2026.10</p>
     </div>
   </section>
 
@@ -471,6 +625,69 @@
 
   <script src="js/main.js"></script>
   <script src="js/command-palette.js"></script>
+  <script src="js/blueprint-fx.js"></script>
+  <script src="js/ebbinghaus-demo.js"></script>
+
+  <!-- Escena 3D del hero (Three.js vía CDN, cargado solo si el
+       dispositivo lo justifica: desktop, puntero fino, sin
+       prefers-reduced-motion). Si falla la carga (CDN caído, etc.)
+       el hero queda exactamente como estaba antes de este bloque. -->
+  <div class="bp-3d-loader" id="hero3dLoader" hidden aria-hidden="true">
+    <span>CARGANDO SUBSISTEMA 3D</span>
+    <div class="bp-3d-loader-track"><div class="bp-3d-loader-fill" id="hero3dLoaderFill"></div></div>
+    <span id="hero3dLoaderPct">0%</span>
+  </div>
+  <script>
+    (function () {
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var finePointer = window.matchMedia('(pointer: fine)').matches;
+      var wideEnough = window.matchMedia('(min-width: 760px)').matches;
+      // Modo low-power: si el navegador expone datos de hardware/red
+      // limitados (no todos lo hacen -- son APIs de Chrome, la ausencia
+      // no bloquea nada) y señalan poca capacidad, nos salteamos el
+      // subsistema 3D entero en vez de forzarlo igual.
+      var conn = navigator.connection || navigator.webkitConnection;
+      var lowPower = (conn && (conn.saveData || /^(slow-2g|2g|3g)$/.test(conn.effectiveType || ''))) ||
+        (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory < 4);
+      if (reducedMotion || !finePointer || !wideEnough || lowPower) return;
+
+      var THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+      var loaderEl = document.getElementById('hero3dLoader');
+      var fillEl = document.getElementById('hero3dLoaderFill');
+      var pctEl = document.getElementById('hero3dLoaderPct');
+      function setProgress(p) {
+        if (fillEl) fillEl.style.width = p + '%';
+        if (pctEl) pctEl.textContent = p + '%';
+      }
+
+      window.addEventListener('load', function () {
+        if (loaderEl) loaderEl.hidden = false;
+        // Peso real leído de Content-Length, no una barra simulada —
+        // si el CDN no lo manda, saltamos directo a 100% sin inventar.
+        fetch(THREE_URL).then(function (res) {
+          var total = parseInt(res.headers.get('content-length') || '0', 10);
+          if (!res.body || !total) { setProgress(100); return; }
+          var loaded = 0;
+          var reader = res.body.getReader();
+          function pump() {
+            return reader.read().then(function (result) {
+              if (result.done) return;
+              loaded += result.value.length;
+              setProgress(Math.min(100, Math.round((loaded / total) * 100)));
+              return pump();
+            });
+          }
+          return pump();
+        }).catch(function () {}).then(function () {
+          if (loaderEl) loaderEl.hidden = true;
+          return import('./js/hero-3d.js');
+        }).catch(function (err) {
+          if (loaderEl) loaderEl.hidden = true;
+          console.warn('hero-3d: no se pudo cargar Three.js', err);
+        });
+      });
+    })();
+  </script>
 
   <!-- Control por gestos (opcional) -->
   <button id="gestos-toggle" class="gestos-toggle" aria-pressed="false">

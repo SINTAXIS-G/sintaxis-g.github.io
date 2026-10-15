@@ -447,6 +447,27 @@
 .fn-conv { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
 .fn-diag { color: var(--text-dim); font-size: 0.9rem; margin-bottom: var(--space-sm); }
 
+/* ---------- Spotlight de cursor (sistema blueprint, blueprint-fx.js) ---------
+   Mismo truco que .eco-item/.contact-card en el home: una luz radial seguida
+   al mouse (--mx/--my), en vez de clonar el tilt del hero en cada card. */
+.pillar, .forensic-node, .finding, .note-box {
+  position: relative;
+  overflow: hidden;
+  --mx: 50%;
+  --my: 50%;
+}
+.pillar::after, .forensic-node::after, .finding::after, .note-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(220px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 16%, transparent), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.pillar:hover::after, .forensic-node:hover::after, .finding:hover::after, .note-box:hover::after { opacity: 1; }
+.pillar > *, .forensic-node > *, .note-box > *, .finding > div { position: relative; z-index: 1; }
+
 /* ---------- Clases de limpieza (reemplazan style= repetidos) ---------- */
 .note-box {
   border: 1px solid var(--line);

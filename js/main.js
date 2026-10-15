@@ -147,7 +147,8 @@ if (ecoItems.length && !window.matchMedia('(prefers-reduced-motion: reduce)').ma
 // en el compositor como transform/opacity: se limita a 1-2 títulos
 // por página y se desactiva con prefers-reduced-motion.
 const stressTitles = document.querySelectorAll('.stress-title');
-if (stressTitles.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const hasNativeScrollTimeline = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline', 'view()');
+if (stressTitles.length && !hasNativeScrollTimeline && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const MIN_WEIGHT = 350;
   const MAX_WEIGHT = 700;
   let stressTicking = false;
@@ -533,8 +534,15 @@ if (heroCanvas) {
   // del sitio: orden hexagonal que emerge de un fluido disipando energía.
   // Reemplaza al fbm genérico anterior por algo que es una referencia
   // física real, no una nebulosa decorativa sin significado.
+  // Celdas de Voronoi en vez de la retícula hexagonal perfecta de
+  // antes — mismo espíritu "celular/disipativo", pero con semillas
+  // random en vez de una grilla periódica. Reemplazada a pedido: la
+  // retícula perfecta del hex causaba bandas visibles en algún
+  // hardware real que no pudimos reproducir ni diagnosticar del todo;
+  // Voronoi no tiene ese período regular para que una GPU rara haga
+  // aliasing contra él.
   const FRAGMENT_SRC = `
-    precision mediump float;
+    precision highp float;
     uniform vec2 uResolution;
     uniform vec2 uMouse;
     uniform float uTime;
@@ -542,54 +550,55 @@ if (heroCanvas) {
     uniform vec3 uColorHigh;
     uniform float uEnergy;
 
-    vec4 hexCoords(vec2 uv) {
-      vec2 r = vec2(1.0, 1.7320508);
-      vec2 h = r * 0.5;
-      vec2 a = mod(uv, r) - h;
-      vec2 b = mod(uv - h, r) - h;
-      vec2 gv = dot(a, a) < dot(b, b) ? a : b;
-      vec2 id = uv - gv;
-      return vec4(gv, id);
-    }
-
-    float hexDist(vec2 p) {
-      p = abs(p);
-      float c = dot(p, vec2(0.5, 0.8660254));
-      c = max(c, p.x);
-      return c;
+    vec2 hash2(vec2 p) {
+      p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+      return fract(sin(p) * 43758.5453);
     }
 
     void main() {
       vec2 uv = gl_FragCoord.xy / uResolution.xy;
       vec2 mouseUv = uMouse / uResolution.xy;
 
-      float scale = 11.0;
-      vec2 p = (uv - 0.5) * scale * (uResolution.x / uResolution.y);
+      float scale = 7.0;
+      vec2 p = uv * vec2(scale * (uResolution.x / uResolution.y), scale);
 
-      float t = uTime * 0.08 * uEnergy;
-      p += vec2(t * 0.5, t * 0.3);
+      // Mismo acotamiento de tiempo que ya llevaba el hex -- nunca dejar
+      // que la coordenada se aleje del origen sin límite.
+      float t = mod(uTime, 2000.0) * 0.05 * uEnergy;
+      p += vec2(t * 0.4, t * 0.25);
 
-      vec4 hc = hexCoords(p);
-      float d = hexDist(hc.xy);
+      vec2 pi = floor(p);
+      vec2 pf = fract(p);
+
+      float d1 = 10.0;
+      float d2 = 10.0;
+      vec2 cellId = vec2(0.0);
+      for (int y = -1; y <= 1; y++) {
+        for (int x = -1; x <= 1; x++) {
+          vec2 nb = vec2(float(x), float(y));
+          vec2 pt = hash2(pi + nb);
+          pt = 0.5 + 0.5 * sin(t * 0.6 + 6.2831 * pt);
+          float d = length(nb + pt - pf);
+          if (d < d1) { d2 = d1; d1 = d; cellId = pi + nb; }
+          else if (d < d2) { d2 = d; }
+        }
+      }
+      float edge = d2 - d1;
+      float wall = 1.0 - smoothstep(0.0, 0.05, edge);
 
       // Cada celda respira a su propio ritmo (fase distinta por id) — una
       // convección real no pulsa sincronizada, cada celda es su propio
       // mini-sistema disipando energía.
-      float cellSeed = fract(sin(dot(hc.zw, vec2(12.9898, 78.233))) * 43758.5453);
+      float cellSeed = fract(sin(dot(cellId, vec2(12.9898, 78.233))) * 43758.5453);
       float pulse = 0.5 + 0.5 * sin(uTime * (0.4 + cellSeed * 0.5) * uEnergy + cellSeed * 6.283);
 
       float dist = distance(uv, mouseUv);
       float mouseInfluence = smoothstep(0.4, 0.0, dist) * 0.6;
 
-      float body = 1.0 - smoothstep(0.2, 0.56, d);
-      float wall = smoothstep(0.53, 0.577, d) * (1.0 - smoothstep(0.577, 0.62, d));
-
-      float n = body * (0.45 + pulse * 0.55 + mouseInfluence);
-      n = clamp(n, 0.0, 1.0);
+      float n = clamp(pulse * 0.6 + wall * 0.9 + mouseInfluence, 0.0, 1.0);
       n *= mix(0.45, 1.0, uEnergy);
 
       vec3 color = mix(uColorLow, uColorHigh, n);
-      color = mix(color, uColorLow * 0.4, wall * 0.7);
 
       float vignette = smoothstep(1.1, 0.2, length(uv - 0.5) * 1.3);
       // Fondo ambiental real: tiene que perder contra cualquier texto
@@ -597,7 +606,7 @@ if (heroCanvas) {
       float a = clamp((0.04 + n * 0.22) * vignette, 0.0, 1.0);
       // El canvas usa premultiplied alpha por defecto — sin multiplicar
       // el color acá, el navegador compone mal y bajar el alpha no
-      // cambia nada visualmente (bug que tenía también el shader viejo).
+      // cambia nada visualmente.
       gl_FragColor = vec4(color * a, a);
     }
   `;
@@ -740,21 +749,85 @@ if (heroCanvas) {
   });
 })();
 
-// ---------- 9. Cursor personalizado ----------
+// ---------- 9. Cursor personalizado: punto+anillo en reposo, snap magnético ----------
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  const cursorDot = document.createElement('div');
-  cursorDot.className = 'cursor-dot';
-  document.body.appendChild(cursorDot);
-  document.body.classList.add('has-custom-cursor');
+  const cursor = document.createElement('div');
+  cursor.className = 'bp-cursor';
+  cursor.innerHTML =
+    '<span class="dot"></span><span class="ring"></span>' +
+    '<span class="corner c-tl"></span><span class="corner c-tr"></span>' +
+    '<span class="corner c-bl"></span><span class="corner c-br"></span>' +
+    '<span class="label"></span><span class="shutter"></span>';
+  document.body.appendChild(cursor);
+  const corners = {
+    tl: cursor.querySelector('.c-tl'),
+    tr: cursor.querySelector('.c-tr'),
+    bl: cursor.querySelector('.c-bl'),
+    br: cursor.querySelector('.c-br'),
+  };
+  const labelEl = cursor.querySelector('.label');
+  const shutterEl = cursor.querySelector('.shutter');
 
+  let snapped = null;
+
+  // El cursor nativo (del sistema) recién se oculta DESPUÉS del primer
+  // mousemove real -- si lo ocultáramos de entrada, alguien que entra a
+  // la página sin mover el mouse todavía no vería ningún cursor (ni el
+  // nativo, que ya estaría oculto, ni el custom, que todavía no se
+  // movió a la posición real).
+  let started = false;
   window.addEventListener('mousemove', (e) => {
-    cursorDot.style.left = `${e.clientX}px`;
-    cursorDot.style.top = `${e.clientY}px`;
+    if (!started) {
+      started = true;
+      document.body.classList.add('has-custom-cursor');
+    }
+    if (!snapped) {
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    }
   });
 
-  document.querySelectorAll('a, button, .mode-btn').forEach((el) => {
-    el.addEventListener('mouseenter', () => cursorDot.classList.add('is-hovering'));
-    el.addEventListener('mouseleave', () => cursorDot.classList.remove('is-hovering'));
+  window.addEventListener('mousedown', (e) => {
+    shutterEl.classList.remove('is-firing');
+    void shutterEl.offsetWidth; // reinicia la animación si se hace click rápido varias veces
+    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    shutterEl.classList.add('is-firing');
+  });
+
+  // Corchetes de encuadre, links y tarjetas: todos usan el mismo
+  // mecanismo de snap, solo cambia si llevan etiqueta ("→" únicamente
+  // en <a> reales -- las tarjetas informativas no llevan a ningún lado).
+  // Atar los listeners a cada elemento no es crítico para el primer
+  // paint -- se difiere con requestIdleCallback (con fallback a
+  // setTimeout en Safari, que todavía no lo implementa) para no competir
+  // con nada que sí importa apenas carga la página.
+  const SNAP_SELECTOR = 'a, button, .mode-btn, .pillar, .forensic-node, .finding, .note-box, .bp-frame';
+  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+  idle(() => {
+    document.querySelectorAll(SNAP_SELECTOR).forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        snapped = el;
+        const r = el.getBoundingClientRect();
+        corners.tl.style.left = `${r.left}px`; corners.tl.style.top = `${r.top}px`;
+        corners.tr.style.left = `${r.right - 14}px`; corners.tr.style.top = `${r.top}px`;
+        corners.bl.style.left = `${r.left}px`; corners.bl.style.top = `${r.bottom - 14}px`;
+        corners.br.style.left = `${r.right - 14}px`; corners.br.style.top = `${r.bottom - 14}px`;
+        cursor.style.transform = 'translate(0px, 0px)';
+        const isLink = el.tagName === 'A';
+        cursor.classList.toggle('has-label', isLink);
+        if (isLink) {
+          labelEl.textContent = '→';
+          labelEl.style.left = `${r.left}px`;
+          labelEl.style.top = `${r.top - 24}px`;
+        }
+        cursor.classList.add('is-snapped');
+      });
+      el.addEventListener('mouseleave', () => {
+        if (snapped === el) {
+          snapped = null;
+          cursor.classList.remove('is-snapped', 'has-label');
+        }
+      });
+    });
   });
 }
 

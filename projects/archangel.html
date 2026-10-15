@@ -37,6 +37,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/reset.css">
 <link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/blueprint.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/project.css">
 </head>
@@ -96,7 +97,8 @@
 </nav>
 
 <header class="proj-hero">
-  <div class="wrap">
+  <div class="bp-tilt-wrap">
+  <div class="wrap bp-tilt">
     <img src="../assets/img/archangel-logo-640.webp" alt="ARCHANGEL Ω logo" class="proj-logo" width="640" height="349">
     <p class="eyebrow">Proyecto insignia</p>
     <h1 class="stress-title" style="view-transition-name: vt-archangel-title;">ARCHANGEL Ω</h1>
@@ -106,6 +108,8 @@
       <a class="cta-btn primary" href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener">Hablar sobre tu repositorio →</a>
       <a class="cta-btn" href="#reporte-real">Ver un reporte real →</a>
     </div>
+    <p class="bp-caption">SISTEMA: <b>ARCHANGEL Ω</b> · REV v2026.10</p>
+  </div>
   </div>
 </header>
 
@@ -116,7 +120,7 @@
     <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 77 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><b>77</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><b style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
       <div class="stat"><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
       <div class="stat"><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
@@ -1449,6 +1453,7 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script src="../js/blueprint-fx.js"></script>
 <script src="../js/griffith-demo.js"></script>
 <script src="../js/command-palette.js"></script>
 <script src="../js/dependency-graph.js"></script>

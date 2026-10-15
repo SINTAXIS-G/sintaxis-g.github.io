@@ -155,12 +155,29 @@
       return mesh;
     });
 
+    // Colores por vértice (no un solo material) para poder iluminar
+    // SOLO las aristas reales de un nodo al pasar el mouse -- el mismo
+    // concepto de "circuit trace" que sacamos del home por redundante,
+    // pero acá on-demand y sobre conexiones de verdad (EDGES), no una
+    // línea siempre visible cruzando contenido que no tiene que ver.
+    const DIM_COLOR = new THREE.Color(0x2a3646);
+    const HILITE_COLOR = new THREE.Color(0x4df0e0);
     const edgeGeometry = new THREE.BufferGeometry();
     const edgePositions = new Float32Array(edgeIndices.length * 6);
+    const edgeColors = new Float32Array(edgeIndices.length * 6);
     edgeGeometry.setAttribute('position', new THREE.BufferAttribute(edgePositions, 3));
-    const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x2a3646, transparent: true, opacity: 0.6 });
+    edgeGeometry.setAttribute('color', new THREE.BufferAttribute(edgeColors, 3));
+    const edgeMaterial = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.75 });
     const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
     scene.add(edgeLines);
+
+    function setEdgeColor(k, color) {
+      const arr = edgeGeometry.attributes.color.array;
+      arr[k * 6 + 0] = color.r; arr[k * 6 + 1] = color.g; arr[k * 6 + 2] = color.b;
+      arr[k * 6 + 3] = color.r; arr[k * 6 + 4] = color.g; arr[k * 6 + 5] = color.b;
+    }
+    edgeIndices.forEach((_, k) => setEdgeColor(k, DIM_COLOR));
+    edgeGeometry.attributes.color.needsUpdate = true;
 
     function updateEdgeGeometry() {
       const arr = edgeGeometry.attributes.position.array;
@@ -173,6 +190,28 @@
       edgeGeometry.attributes.position.needsUpdate = true;
     }
     updateEdgeGeometry();
+
+    // Qué aristas tocan cada nodo (una sola vez, no por frame)
+    const edgesByNode = NODES.map(() => []);
+    edgeIndices.forEach(([i, j], k) => {
+      edgesByNode[i].push(k);
+      edgesByNode[j].push(k);
+    });
+    let highlightedNode = -1;
+    function setHighlight(nodeIdx) {
+      if (highlightedNode === nodeIdx) return;
+      highlightedNode = nodeIdx;
+      edgeIndices.forEach((_, k) => setEdgeColor(k, DIM_COLOR));
+      nodeMeshes.forEach((m) => { m.material.opacity = 1; });
+      if (nodeIdx >= 0) {
+        edgesByNode[nodeIdx].forEach((k) => setEdgeColor(k, HILITE_COLOR));
+        const connected = new Set([nodeIdx]);
+        edgesByNode[nodeIdx].forEach((k) => { connected.add(edgeIndices[k][0]); connected.add(edgeIndices[k][1]); });
+        nodeMeshes.forEach((m, i) => { m.material.opacity = connected.has(i) ? 1 : 0.25; });
+      }
+      edgeGeometry.attributes.color.needsUpdate = true;
+    }
+    nodeMeshes.forEach((m) => { m.material.transparent = true; });
 
     // ---- Control manual: arrastrar rota, rueda hace zoom (sin OrbitControls externo) ----
     // FIX: la cámara arrancaba a distancia fija (42) sin importar cuánto se
@@ -246,10 +285,13 @@
         tooltip.style.left = `${e.clientX - rect.left + 12}px`;
         tooltip.style.top = `${e.clientY - rect.top + 12}px`;
         tooltip.classList.add('is-visible');
+        setHighlight(idx);
       } else {
         tooltip.classList.remove('is-visible');
+        setHighlight(-1);
       }
     });
+    dom.addEventListener('pointerleave', () => setHighlight(-1));
 
     // ---- Loop de render ----
     let frame = 0;
