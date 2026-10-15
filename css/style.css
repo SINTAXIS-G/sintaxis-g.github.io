@@ -119,7 +119,10 @@ body.focus-mode .wrap {
   font-size: var(--fs-small);
   color: var(--text-dim);
 }
-.hero-meta strong { color: var(--text); display: block; font-size: 1.1rem; font-family: var(--font-sans); }
+.hero-meta strong { color: var(--text); display: block; font-size: 1.1rem; font-family: var(--font-sans); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
+.hero-meta > div { transition: transform 0.2s var(--ease); }
+.hero-meta > div:hover { transform: translateY(-3px); }
+.hero-meta > div:hover strong { color: var(--accent); transform: scale(1.06); transform-origin: left center; }
 .physics-drag { cursor: grab; touch-action: none; will-change: transform; user-select: none; }
 .physics-drag.is-dragging { cursor: grabbing; }
 
@@ -186,10 +189,16 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   padding: 0.6rem 0 0.6rem var(--space-sm);
   border-radius: 0 16px 16px 0;
   background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%);
+  transition: background 0.22s var(--ease), transform 0.22s var(--ease);
 }
 .stat:nth-child(even) { margin-left: var(--space-md); }
-.stat b { display: block; font-size: 1.6rem; font-family: var(--font-mono); }
+.stat b { display: block; font-size: 1.6rem; font-family: var(--font-mono); transition: transform 0.22s var(--ease); }
 .stat span { color: var(--text-dim); font-size: var(--fs-small); }
+.stat:hover {
+  transform: translateX(4px);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 85%);
+}
+.stat:hover b { transform: scale(1.08); transform-origin: left center; }
 
 /* ---------- Mapa del ecosistema ---------- */
 .system-map { background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 4.5%, transparent), transparent); }
@@ -205,7 +214,9 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   gap: var(--space-md);
   padding: var(--space-md) 0;
   border-bottom: 1px solid var(--line);
+  transition: background 0.22s var(--ease);
 }
+.system-thread:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
 .system-step {
   position: relative;
   display: flex;
@@ -218,8 +229,15 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   font-size: var(--fs-small);
   border: 1px solid var(--accent-dim);
   border-radius: 50% 50% 50% 4px;
+  transition: background 0.22s var(--ease), color 0.22s var(--ease), transform 0.22s var(--ease);
 }
-.system-thread h3 { font-size: 1rem; margin-bottom: 0.3rem; }
+.system-thread:hover .system-step {
+  background: var(--accent);
+  color: var(--bg);
+  transform: scale(1.1);
+}
+.system-thread h3 { font-size: 1rem; margin-bottom: 0.3rem; transition: color 0.22s var(--ease); }
+.system-thread:hover h3 { color: var(--accent); }
 .system-thread p { color: var(--text-dim); max-width: var(--measure); }
 .system-thread strong { color: var(--text); font-weight: 600; }
 

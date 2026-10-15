@@ -13,7 +13,7 @@
     { title: 'KAIROS — página completa', subtitle: 'App de asistencia en emergencias', url: '/projects/kairos.html', group: 'Páginas' },
 
     // ---------- Inicio ----------
-    { title: 'Ecosistema', subtitle: 'EXARKON, EIDOLON, A.R.K., ATLAS, Cazador de Enlaces, AETERNA', url: '/index.html#ecosistema', group: 'Inicio' },
+    { title: 'Ecosistema', subtitle: 'EXARKON, EIDOLON, A.R.K., ATLAS, Cazador de Enlaces', url: '/index.html#ecosistema', group: 'Inicio' },
     { title: 'Sobre mí', subtitle: 'Quién es Gabo', url: '/index.html#sobre-mi', group: 'Inicio' },
     { title: 'Contacto', url: '/index.html#contacto', group: 'Inicio' },
 
