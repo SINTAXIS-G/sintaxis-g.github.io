@@ -33,6 +33,24 @@ const PANELS = [
   { label: 'REYNOLDS', x: 2.4, y: 1.6, z: -2.2, motion: 'drift' },
 ];
 
+// Pool de fórmulas reales verificadas contra el código de archangel
+// (ver notes/archangel-formulas-reales.md) — cada panel va cambiando
+// a una de estas al azar, cada uno con su propio timing, en vez de
+// quedarse con la etiqueta fija de arriba para siempre.
+const FORMULA_POOL = [
+  'K_I=σ·√(π·a)',      // Griffith — fractura
+  'H=-Σp·log₂p',        // Shannon — entropía
+  'p_c=1/⟨k⟩',           // umbral de percolación
+  'L=λ·W',               // Little — colas
+  'E=σ/ε',                // módulo de Young
+  'F=q(v×B)',             // fuerza de Lorentz
+  'R₀=β/γ',                // SIR — inmunidad de rebaño
+  'C=B·log₂(1+S/N)',       // Shannon — capacidad de canal
+  'P=e^(-ΔE/T)',            // Metropolis — recocido simulado
+  'κ(A)=σmax/σmin',         // número de condición
+];
+let labelTimers = [];
+
 function makePanelTexture(label, accentHex, surfaceHex) {
   const c = document.createElement('canvas');
   c.width = 512;
@@ -75,7 +93,58 @@ camera.position.z = 6;
 
 let panelMeshes = [];
 
+const PANEL_OPACITY = 0.88;
+
+// Cada panel se apaga, cambia de texto y vuelve a aparecer solo, en un
+// intervalo propio aleatorio -- si los 3 cambiaran juntos se sentiría
+// mecánico, como un slide, no como 3 lecturas independientes.
+function pickNextLabel(current) {
+  let next = current;
+  while (next === current) {
+    next = FORMULA_POOL[Math.floor(Math.random() * FORMULA_POOL.length)];
+  }
+  return next;
+}
+
+function swapPanelLabel(mesh, accent, surface) {
+  const FADE_MS = 350;
+  const startOut = performance.now();
+  function fadeOut(now) {
+    const p = Math.min((now - startOut) / FADE_MS, 1);
+    mesh.material.opacity = PANEL_OPACITY * (1 - p);
+    if (p < 1) { requestAnimationFrame(fadeOut); return; }
+
+    const next = pickNextLabel(mesh.userData.label);
+    mesh.material.map.dispose();
+    mesh.material.map = makePanelTexture(next, accent, surface);
+    mesh.material.needsUpdate = true;
+    mesh.userData.label = next;
+
+    const startIn = performance.now();
+    function fadeIn(now2) {
+      const p2 = Math.min((now2 - startIn) / FADE_MS, 1);
+      mesh.material.opacity = PANEL_OPACITY * p2;
+      if (p2 < 1) requestAnimationFrame(fadeIn);
+      else scheduleLabelSwap(mesh, accent, surface);
+    }
+    requestAnimationFrame(fadeIn);
+  }
+  requestAnimationFrame(fadeOut);
+}
+
+function scheduleLabelSwap(mesh, accent, surface) {
+  const delay = 4000 + Math.random() * 5000; // 4-9s, distinto por panel
+  const id = setTimeout(() => {
+    if (!isAnimating) { scheduleLabelSwap(mesh, accent, surface); return; }
+    swapPanelLabel(mesh, accent, surface);
+  }, delay);
+  labelTimers.push(id);
+}
+
 function buildPanels() {
+  labelTimers.forEach((id) => clearTimeout(id));
+  labelTimers = [];
+
   panelMeshes.forEach((m) => {
     scene.remove(m);
     m.geometry.dispose();
@@ -93,7 +162,7 @@ function buildPanels() {
     const mat = new THREE.MeshBasicMaterial({
       map: tex,
       transparent: true,
-      opacity: 0.88,
+      opacity: PANEL_OPACITY,
       side: THREE.DoubleSide,
       depthWrite: false,
     });
@@ -101,8 +170,10 @@ function buildPanels() {
     mesh.position.set(p.x, p.y, p.z);
     mesh.userData.base = { x: p.x, y: p.y, z: p.z };
     mesh.userData.motion = p.motion;
+    mesh.userData.label = p.label;
     scene.add(mesh);
     panelMeshes.push(mesh);
+    scheduleLabelSwap(mesh, accent, surface);
   });
 }
 
