@@ -892,3 +892,91 @@ document.querySelectorAll('.rust-race').forEach((race) => {
   }, { threshold: 0.4 });
   observer.observe(race);
 });
+
+// ============================================================
+// Glitch-text del H1 del hero — cada ~5s cambia a otra frase real
+// (ninguna es relleno: cada una ya está dicha en algún lado del sitio),
+// con una transición de scramble en vez de un simple fundido. Pausa
+// fuera de viewport/pestaña inactiva y no corre nada con menos
+// movimiento pedido, mismo criterio que el resto del sitio.
+// ============================================================
+(function () {
+  const h1 = document.querySelector('.hero h1');
+  if (!h1) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const PHRASES = [
+    'Software tratado como un sistema físico.',
+    'Entropía, fractura y propagación de riesgo — aplicadas al código.',
+    '77 analizadores. Un solo veredicto por archivo.',
+    'La honestidad es un requisito de ingeniería, no una virtud.',
+    'Cada simplificación, documentada junto al caso que no cubre.',
+    'Construyo herramientas con una razón real para existir.',
+  ];
+  const GLITCH_CHARS = '01#$%&*+_/<>{}=~^';
+  const INTERVAL_MS = 5000;
+  const SCRAMBLE_MS = 650;
+
+  let index = 0;
+  let isActive = false;
+  let timerId = null;
+  let rafId = null;
+
+  function scrambleTo(target) {
+    if (rafId !== null) cancelAnimationFrame(rafId);
+    h1.classList.add('is-scrambling');
+    const start = performance.now();
+    function frame(now) {
+      const progress = Math.min((now - start) / SCRAMBLE_MS, 1);
+      const revealCount = Math.floor(progress * target.length);
+      let out = '';
+      for (let i = 0; i < target.length; i++) {
+        if (i < revealCount || target[i] === ' ') out += target[i];
+        else out += GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+      }
+      h1.textContent = out;
+      if (progress < 1) {
+        rafId = requestAnimationFrame(frame);
+      } else {
+        h1.textContent = target;
+        h1.classList.remove('is-scrambling');
+        rafId = null;
+      }
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function scheduleNext() {
+    timerId = setTimeout(() => {
+      if (!isActive) return;
+      index = (index + 1) % PHRASES.length;
+      scrambleTo(PHRASES[index]);
+      scheduleNext();
+    }, INTERVAL_MS);
+  }
+
+  function start() {
+    if (isActive) return;
+    isActive = true;
+    scheduleNext();
+  }
+  function stop() {
+    isActive = false;
+    if (timerId !== null) clearTimeout(timerId);
+    timerId = null;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && document.visibilityState === 'visible') start();
+      else stop();
+    });
+  }, { threshold: 0 });
+  observer.observe(h1);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { stop(); return; }
+    const rect = h1.getBoundingClientRect();
+    if (rect.bottom > 0 && rect.top < window.innerHeight) start();
+  });
+})();

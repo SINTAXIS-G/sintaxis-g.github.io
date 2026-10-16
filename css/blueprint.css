@@ -604,3 +604,12 @@ body.cyanotype-mode {
   --accent-dim: #CFE3FF;
   --accent2: #FFD166;
 }
+
+/* Glitch-text del H1 del hero — el color vira al acento mientras hace
+   scramble, para que se note que es una transición real y no un salto
+   seco de texto. font-variant-numeric evita que el ancho salte entre
+   dígitos monoespaciados vs el resto del tipo durante el scramble. */
+.hero h1.is-scrambling {
+  color: var(--accent);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
