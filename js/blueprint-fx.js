@@ -912,6 +912,10 @@ document.querySelectorAll('.rust-race').forEach((race) => {
     'La honestidad es un requisito de ingeniería, no una virtud.',
     'Cada simplificación, documentada junto al caso que no cubre.',
     'Construyo herramientas con una razón real para existir.',
+    'Rust donde importa, Python donde se entiende.',
+    'Prefiero el falso positivo ocasional antes que esconder una vulnerabilidad real.',
+    'Un sistema nervioso para tu código.',
+    'K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.',
   ];
   const GLITCH_CHARS = '01#$%&*+_/<>{}=~^';
   const INTERVAL_MS = 5000;
