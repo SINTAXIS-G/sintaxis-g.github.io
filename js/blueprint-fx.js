@@ -916,6 +916,10 @@ document.querySelectorAll('.rust-race').forEach((race) => {
     'Prefiero el falso positivo ocasional antes que esconder una vulnerabilidad real.',
     'Un sistema nervioso para tu código.',
     'K_I = σ·√(π·a) — si K_I ≥ K_IC, el módulo fractura.',
+    'Griffith, Reynolds, Shannon, Chandrasekhar — física real, no metáfora.',
+    'De Little a Bellman: casi 40 científicos detrás de 69 fórmulas reales.',
+    'Kahneman, Pearl, Metropolis — estadística real, no vibes.',
+    'Prigogine, Holling, Ashby — cibernética real aplicada al código.',
   ];
   const GLITCH_CHARS = '01#$%&*+_/<>{}=~^';
   const INTERVAL_MS = 5000;
