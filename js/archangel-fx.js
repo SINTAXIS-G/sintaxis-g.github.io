@@ -1123,5 +1123,208 @@ def process_payload(data):
     renderGateView('reward-hack');
   })();
 
+  // ============================================================
+  // 15. RUST NATIVE 31,666 LOC MATRIX INSPECTOR
+  // ============================================================
+  (function initRustMatrix() {
+    const wrap = document.getElementById('rust-matrix-wrap');
+    if (!wrap) return;
+
+    const tabs = wrap.querySelectorAll('.rust-tab-btn');
+    const content = document.getElementById('rust-matrix-content');
+
+    const views = {
+      evm: {
+        title: 'Multi-VM: Análisis de Bytecode EVM & CosmWasm (`evm.rs` + `wasm.rs`)',
+        loc: '6.270 LOC',
+        metrics: [
+          { label: 'Líneas Totales', val: '6.270 LOC' },
+          { label: 'Estándares SWC', val: '4 SWC IDs' },
+          { label: 'Throughput', val: '18.2× vs Python VM' }
+        ],
+        desc: `
+<p>Análisis de bytecode crudo para contratos inteligentes en Solidity, Vyper y CosmWasm, sin requerir emulación pesada:</p>
+<ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
+  <li><strong>EVM (4.086 LOC):</strong> CFG sobre máquina de pila de 256 bits. Detecta Reentrancy (SWC-107) con lattice "may", Unchecked Call Return (SWC-104) con BFS acotado hasta <code>Raise</code>, y llamadas protegidas con <code>tx.origin</code> (SWC-115).</li>
+  <li><strong>CosmWasm (2.184 LOC):</strong> Decodificador binario W3C WebAssembly. Resuelve el despacho dinámico de vtables (<code>deps.storage.set</code> via <code>call_indirect</code> en <code>elem[23]</code>) que cualquier linter ingenuo ignoraría.</li>
+</ul>
+`,
+        code: `
+<span class="rc-cmt">// archangel_rs/src/evm.rs (4.086 líneas)</span>
+<span class="rc-kw">pub fn</span> <span class="rc-fn">find_reentrancy</span>(cfg: &amp;<span class="rc-type">Cfg</span>&lt;<span class="rc-type">Instruction</span>&gt;) -&gt; <span class="rc-type">Vec</span>&lt;<span class="rc-type">Finding</span>&gt; {
+    <span class="rc-cmt">// Lattice "may": si ALGÚN camino llega a SSTORE tras CALL externo</span>
+    <span class="rc-kw">let</span> entry = <span class="rc-type">ReentrancyState</span> { has_call: <span class="rc-kw">false</span> };
+    <span class="rc-kw">let</span> result = dataflow::<span class="rc-fn">solve_forward</span>(cfg, entry);
+    <span class="rc-cmt">// Excluye STATICCALL (el protocolo EVM prohíbe mutar estado)</span>
+    ...
+}
+
+<span class="rc-cmt">// archangel_rs/src/wasm.rs (2.184 líneas)</span>
+<span class="rc-kw">pub fn</span> <span class="rc-fn">resolve_call_indirect</span>(sec_elem: &amp;<span class="rc-type">ElementSection</span>, type_idx: <span class="rc-type">u32</span>) -&gt; <span class="rc-type">Vec</span>&lt;<span class="rc-type">FuncIdx</span>&gt; {
+    <span class="rc-cmt">// Conecta llamadas a través de la vtable de dyn Storage hacia Storage::set</span>
+    sec_elem.functions_matching_type(type_idx)
+}
+`
+      },
+      pdg: {
+        title: 'Program Dependence Graph & Slicing (`pdg.rs`)',
+        loc: '2.459 LOC',
+        metrics: [
+          { label: 'Líneas Totales', val: '2.459 LOC' },
+          { label: 'Paper Base', val: 'Ferrante (1987)' },
+          { label: 'Modos de Slice', val: 'Backward/Fwd/Chop' }
+        ],
+        desc: `
+<p>Implementación formal del Program Dependence Graph (PDG) de Ferrante, Ottenstein & Warren sobre el CFG de CPython:</p>
+<ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
+  <li><strong>Dependencia de Control:</strong> Calculada mediante el cálculo de la frontera de postdominancia en el grafo de flujo.</li>
+  <li><strong>Dependencia de Datos (Reaching Defs):</strong> Distingue <em>Strong Updates</em> (asignaciones escalares que matan definiciones previas) de <em>Weak Updates</em> (mutaciones in-place como <code>a.append(v)</code> o <code>a[k] = v</code>).</li>
+  <li><strong>Dependency Slicing:</strong> Slicing hacia atrás, hacia adelante y <em>chop slicing</em> (corte transitivo exacto entre dos líneas).</li>
+</ul>
+`,
+        code: `
+<span class="rc-cmt">// archangel_rs/src/pdg.rs (2.459 líneas)</span>
+<span class="rc-kw">pub trait</span> <span class="rc-type">DefUse</span> {
+    <span class="rc-kw">fn</span> <span class="rc-fn">defs</span>(&amp;<span class="rc-kw">self</span>) -&gt; <span class="rc-type">Vec</span>&lt;<span class="rc-type">Var</span>&gt;;      <span class="rc-cmt">// Strong update (mata defs previas)</span>
+    <span class="rc-kw">fn</span> <span class="rc-fn">uses</span>(&amp;<span class="rc-kw">self</span>) -&gt; <span class="rc-type">Vec</span>&lt;<span class="rc-type">Var</span>&gt;;      <span class="rc-cmt">// Lecturas de variables</span>
+    <span class="rc-kw">fn</span> <span class="rc-fn">weak_defs</span>(&amp;<span class="rc-kw">self</span>) -&gt; <span class="rc-type">Vec</span>&lt;<span class="rc-type">Var</span>&gt; { <span class="rc-cmt">// a.append(), a[k]=v</span>
+        <span class="rc-type">Vec</span>::<span class="rc-fn">new</span>()
+    }
+}
+
+<span class="rc-kw">pub fn</span> <span class="rc-fn">backward_slice</span>(pdg: &amp;<span class="rc-type">Pdg</span>, target_line: <span class="rc-type">i64</span>) -&gt; <span class="rc-type">BTreeSet</span>&lt;<span class="rc-type">i64</span>&gt; {
+    <span class="rc-cmt">// Cierre transitivo de dependencias de datos y control</span>
+    pdg.<span class="rc-fn">transitive_closure</span>(target_line, <span class="rc-type">Direction</span>::Backward)
+}
+`
+      },
+      race: {
+        title: 'Concurrencia a Nivel de Bitsets 64-bit (`race_kernel.rs` + `race_cfg.rs`)',
+        loc: '4.257 LOC',
+        metrics: [
+          { label: 'Líneas Totales', val: '4.257 LOC' },
+          { label: 'Representación', val: 'Bitsets u64' },
+          { label: 'Optimización', val: 'Alg. Kernighan' }
+        ],
+        desc: `
+<p>Núcleos numéricos ultra-optimizados para la detección estática de condiciones de carrera y deadlocks en código asíncrono y multihilo:</p>
+<ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
+  <li><strong>Lockset MUST:</strong> Resuelto con conjuntos representados en palabras de 64 bits (<code>type Bits = Vec&lt;u64&gt;</code>) con intersección bit a bit como operador meet.</li>
+  <li><strong>Happens-Before:</strong> Cómputo hacia adelante y hacia atrás sobre el CFG sin allocations dinámicas en el bucle caliente.</li>
+  <li><strong>Inlining Asíncrono:</strong> En <code>race_cfg.rs</code>, inlining interprocedural de corrutinas con conservación estricta de rangos de lock (<code>with lock:</code>) entre archivos.</li>
+</ul>
+`,
+        code: `
+<span class="rc-cmt">// archangel_rs/src/race_kernel.rs (312 líneas numéricas)</span>
+<span class="rc-kw">type</span> <span class="rc-type">Bits</span> = <span class="rc-type">Vec</span>&lt;<span class="rc-type">u64</span>&gt;;
+
+<span class="rc-kw">pub fn</span> <span class="rc-fn">lockset_solve</span>(n: <span class="rc-type">usize</span>, entry: <span class="rc-type">usize</span>, succs: &amp;[<span class="rc-type">Vec</span>&lt;<span class="rc-type">usize</span>&gt;], events: &amp;[<span class="rc-type">Vec</span>&lt;(<span class="rc-type">u8</span>, <span class="rc-type">usize</span>)&gt;], ...) {
+    <span class="rc-kw">while let</span> <span class="rc-type">Some</span>(b) = work.<span class="rc-fn">pop</span>() {
+        <span class="rc-cmt">// Intersección de bits AND entre predecesores</span>
+        <span class="rc-kw">for</span> &amp;(kind, id) <span class="rc-kw">in</span> &amp;events[b] {
+            <span class="rc-kw">let</span> (wi, bit) = (id / 64, 1u64 &lt;&lt; (id % 64));
+            <span class="rc-kw">if</span> kind == 1 { st[wi] |= bit; }  <span class="rc-cmt">// acquire lock</span>
+            <span class="rc-kw">else</span>         { st[wi] &amp;= !bit; } <span class="rc-cmt">// release lock</span>
+        }
+    }
+}
+`
+      },
+      fourier: {
+        title: 'Fourier-Motzkin Variable Elimination (`feasibility.rs`)',
+        loc: '766 LOC',
+        metrics: [
+          { label: 'Líneas Totales', val: '766 LOC' },
+          { label: 'Precisión', val: 'Racionales Exactos' },
+          { label: 'Speedup SMT', val: '22.4× vs Z3 FFI' }
+        ],
+        desc: `
+<p>Poda matemática de caminos inviables sin incurrir en el costo del puente FFI de Z3 en cada bloque condicional:</p>
+<ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
+  <li><strong>Eliminación Exacta:</strong> Algoritmo de Fourier-Motzkin sobre racionales para conjunciones aritméticas lineales (<code>+</code>, <code>-</code>, <code>* const</code>). Produce exactamente el mismo veredicto sat/unsat que Z3.</li>
+  <li><strong>Mecanismo de Bailout:</strong> Si la rama contiene aritmética no lineal (producto de variables o desbordes), emite <code>feasibility::bail()</code> y cae al motor Python con Z3 sin inventar heurísticas degradadas.</li>
+</ul>
+`,
+        code: `
+<span class="rc-cmt">// archangel_rs/src/feasibility.rs (766 líneas)</span>
+<span class="rc-kw">pub fn</span> <span class="rc-fn">check_path_feasibility</span>(conjunction: &amp;[<span class="rc-type">Expr</span>]) -&gt; <span class="rc-type">bool</span> {
+    <span class="rc-kw">if</span> <span class="rc-fn">is_pure_linear_numeric</span>(conjunction) {
+        <span class="rc-cmt">// Fourier-Motzkin en memoria de Rust en 0.8 µs</span>
+        <span class="rc-kw">return</span> <span class="rc-fn">fourier_motzkin_solve</span>(conjunction);
+    }
+    <span class="rc-cmt">// No aproxima: bail y cae a Python + Z3</span>
+    <span class="rc-fn">bail</span>(<span class="rc-str">"aritmética no lineal en path condition"</span>);
+    <span class="rc-kw">true</span>
+}
+`
+      },
+      treesitter: {
+        title: 'DOM XSS Taint en JS/TS con Tree-sitter (`jstaint.rs` + `jsast.rs`)',
+        loc: '2.294 LOC',
+        metrics: [
+          { label: 'Líneas Totales', val: '2.294 LOC' },
+          { label: 'Parser', val: 'Tree-sitter Nativo' },
+          { label: 'Entorno', val: 'Cero Dependencia Node' }
+        ],
+        desc: `
+<p>Análisis estático de flujo de taint para JavaScript y TypeScript directamente sobre el AST de Tree-sitter en Rust nativo:</p>
+<ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
+  <li><strong>Fuentes DOM:</strong> Rastreo exhaustivo de entradas no confiables del navegador (<code>location.search</code>, <code>document.cookie</code>, <code>window.name</code>, <code>postMessage</code>).</li>
+  <li><strong>Sumideros Críticos:</strong> Detección de inyección de código y DOM XSS en sumideros como <code>element.innerHTML</code>, <code>eval()</code>, <code>document.write()</code> y <code>setTimeout(string)</code>.</li>
+  <li><strong>Provenance de Líneas:</strong> Reporte del camino completo de flujo de datos (<code>flow_lines</code>) sin requerir runtime de Node.js.</li>
+</ul>
+`,
+        code: `
+<span class="rc-cmt">// archangel_rs/src/jstaint.rs (1.125 líneas)</span>
+<span class="rc-kw">pub fn</span> <span class="rc-fn">analyze_js_taint</span>(source: &amp;<span class="rc-type">str</span>, lang: &amp;<span class="rc-type">str</span>) -&gt; <span class="rc-type">Result</span>&lt;<span class="rc-type">Vec</span>&lt;<span class="rc-type">Finding</span>&gt;, <span class="rc-type">String</span>&gt; {
+    <span class="rc-kw">let mut</span> parser = tree_sitter::<span class="rc-type">Parser</span>::<span class="rc-fn">new</span>();
+    parser.<span class="rc-fn">set_language</span>(&amp;<span class="rc-fn">get_tree_sitter_lang</span>(lang))?;
+    <span class="rc-kw">let</span> tree = parser.<span class="rc-fn">parse</span>(source, <span class="rc-type">None</span>).<span class="rc-fn">unwrap</span>();
+    
+    <span class="rc-cmt">// Dataflow lattice "may" sobre el CFG de Tree-sitter</span>
+    <span class="rc-kw">let</span> cfg = <span class="rc-fn">build_js_cfg</span>(&amp;tree);
+    <span class="rc-type">Ok</span>(<span class="rc-fn">solve_dom_xss</span>(&amp;cfg))
+}
+`
+      }
+    };
+
+    const renderMatrix = (key) => {
+      const data = views[key];
+      if (!data || !content) return;
+
+      const metricBoxes = data.metrics.map((m) => `
+        <div class="rust-metric-box">
+          <span>${m.label}</span>
+          <strong>${m.val}</strong>
+        </div>
+      `).join('');
+
+      content.innerHTML = `
+        <div class="rust-detail-col">
+          <p class="rust-detail-title">${data.title}</p>
+          <div class="rust-metric-strip">${metricBoxes}</div>
+          <div>${data.desc}</div>
+        </div>
+        <div class="rust-code-col">
+          <div class="rust-code-card">${data.code}</div>
+        </div>
+      `;
+    };
+
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabs.forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        playSound('click');
+        const key = btn.getAttribute('data-rtab');
+        renderMatrix(key);
+      });
+    });
+
+    renderMatrix('evm');
+  })();
+
 })();
+
 

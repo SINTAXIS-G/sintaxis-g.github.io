@@ -1966,3 +1966,143 @@
   color: #fbbf24;
 }
 
+/* ============================================================
+   11. RUST NATIVE 31,666 LOC MATRIX INSPECTOR
+   ============================================================ */
+.rust-matrix-wrap {
+  margin: var(--space-lg) 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid #ff7b72;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rust-matrix-head {
+  padding: var(--space-md);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.rust-matrix-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.rust-matrix-badge-loc {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  background: rgba(255, 123, 114, 0.15);
+  border: 1px solid rgba(255, 123, 114, 0.4);
+  color: #ff7b72;
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(255, 123, 114, 0.2);
+}
+.rust-tabs-bar {
+  display: flex;
+  background: #08060c;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.rust-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--line);
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.rust-tab-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.03);
+}
+.rust-tab-btn.is-active {
+  color: #ff7b72;
+  border-bottom-color: #ff7b72;
+  background: rgba(255, 123, 114, 0.08);
+  font-weight: 700;
+}
+.rust-matrix-content {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  padding: var(--space-md);
+  gap: var(--space-md);
+}
+@media (max-width: 850px) {
+  .rust-matrix-content {
+    grid-template-columns: 1fr;
+  }
+}
+.rust-detail-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.rust-detail-title {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0;
+}
+.rust-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  margin: 0.25rem 0;
+}
+.rust-metric-box {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.5rem;
+  border-radius: 3px;
+  text-align: center;
+}
+.rust-metric-box span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 0.64rem;
+}
+.rust-metric-box strong {
+  color: #3ddad7;
+  font-size: 0.82rem;
+}
+.rust-code-col {
+  display: flex;
+  flex-direction: column;
+}
+.rust-code-card {
+  background: #08060c;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: #d1d5db;
+  overflow-x: auto;
+  flex: 1;
+}
+.rust-code-card .rc-kw { color: #ff7b72; font-weight: 600; }
+.rust-code-card .rc-fn { color: #d2a8ff; }
+.rust-code-card .rc-type { color: #79c0ff; }
+.rust-code-card .rc-cmt { color: #8b949e; font-style: italic; }
+.rust-code-card .rc-str { color: #a5d6ff; }
+.rust-code-card .rc-hl { color: #3ddad7; font-weight: 600; }
+
+
