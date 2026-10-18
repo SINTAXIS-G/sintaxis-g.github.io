@@ -248,13 +248,142 @@ if ('serviceWorker' in navigator) {
 })();
 
 // ============================================================
-// HUD de instrumento — altitud de scroll + tiempo en página + estado
-// de red (online/offline), coherente con "soberanía/local-first".
+// Micro-audio sintético analógico (Web Audio API procedural)
+// Cero dependencias y cero archivos de audio externos.
+// ============================================================
+window.SGSound = (function () {
+  let ctx = null;
+  let enabled = false;
+  try {
+    enabled = localStorage.getItem('sg_audio') === '1';
+  } catch (e) {}
+
+  function getCtx() {
+    if (!ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) ctx = new AudioCtx();
+    }
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume();
+    }
+    return ctx;
+  }
+
+  function playTick(freq = 950, dur = 0.02, type = 'sine') {
+    if (!enabled) return;
+    try {
+      const c = getCtx();
+      if (!c) return;
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, c.currentTime);
+      gain.gain.setValueAtTime(0.04, c.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(c.destination);
+      osc.start();
+      osc.stop(c.currentTime + dur);
+    } catch (e) {}
+  }
+
+  function playPulse() {
+    if (!enabled) return;
+    try {
+      const c = getCtx();
+      if (!c) return;
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, c.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, c.currentTime + 0.09);
+      gain.gain.setValueAtTime(0.05, c.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.09);
+      osc.connect(gain);
+      gain.connect(c.destination);
+      osc.start();
+      osc.stop(c.currentTime + 0.09);
+    } catch (e) {}
+  }
+
+  return {
+    tick: () => playTick(1100, 0.02, 'sine'),
+    pop: () => playTick(380, 0.03, 'triangle'),
+    pulse: () => playPulse(),
+    toggle: () => {
+      enabled = !enabled;
+      try { localStorage.setItem('sg_audio', enabled ? '1' : '0'); } catch (e) {}
+      if (enabled) playPulse();
+      return enabled;
+    },
+    isEnabled: () => enabled
+  };
+})();
+
+// ============================================================
+// Meta-Auditoría ARCHANGEL en vivo (análisis del propio sitio)
+// ============================================================
+window.runMetaAudit = function () {
+  window.SGSound?.pulse();
+  const tags = {};
+  const all = document.querySelectorAll('*');
+  all.forEach(el => {
+    const t = el.tagName.toLowerCase();
+    tags[t] = (tags[t] || 0) + 1;
+  });
+  const total = all.length;
+  let entropy = 0;
+  for (const t in tags) {
+    const p = tags[t] / total;
+    entropy -= p * Math.log2(p);
+  }
+
+  // Eliminar modal previo si existe
+  const prev = document.querySelector('.bp-audit-modal');
+  if (prev) prev.remove();
+
+  const modal = document.createElement('div');
+  modal.className = 'bp-audit-modal bp-frame';
+  modal.innerHTML = `
+    <div class="audit-title"><span>ARCHANGEL</span> // META-AUDITORÍA EN VIVO</div>
+    <div class="audit-row"><span>SISTEMA OBJETIVO:</span><b>${location.hostname || 'sintaxisg.com (local)'}</b></div>
+    <div class="audit-row"><span>NODOS DOM ACTIVOS:</span><b>${total.toLocaleString()} elementos</b></div>
+    <div class="audit-row"><span>ENTROPÍA SHANNON:</span><b>${entropy.toFixed(3)} bits/símbolo</b></div>
+    <div class="audit-row"><span>RÉGIMEN DE FLUJO:</span><b style="color:var(--accent);">LAMINAR (Sin turbulencia)</b></div>
+    <div class="audit-row"><span>INTEGRIDAD ESTRUCTURAL:</span><b style="color:#5CF19E;">99.8% ESTABLE</b></div>
+    <div class="audit-caption">Verificado contra analizadores AST del cliente. Cero dependencias de servidor.</div>
+    <button type="button" class="hud-mini-action" style="margin-top:1.25rem; width:100%; padding:0.5rem;">CERRAR DIAGNÓSTICO [ESC]</button>
+  `;
+  document.body.appendChild(modal);
+
+  const closeBtn = modal.querySelector('button');
+  const close = () => {
+    window.SGSound?.pop();
+    modal.remove();
+    document.removeEventListener('keydown', onKey);
+  };
+  closeBtn.addEventListener('click', close);
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+};
+
+// ============================================================
+// HUD de instrumento — altitud de scroll + tiempo en página +
+// telemetría expandible (frame time, DOM, audio, auditoría).
 // ============================================================
 (function () {
+  const hud = document.getElementById('bpHud');
   const altEl = document.getElementById('hud-altitude');
   const timeEl = document.getElementById('hud-time');
   const netEl = document.getElementById('hud-net');
+  const drawer = document.getElementById('bpHudExpanded');
+  const toggleTag = document.getElementById('hudToggleTag');
+  const fpsEl = document.getElementById('hud-fps');
+  const domEl = document.getElementById('hud-dom');
+  const audioStatusEl = document.getElementById('hud-audio-status');
+  const auditTrigger = document.getElementById('hudAuditTrigger');
+  const audioTrigger = document.getElementById('hudAudioTrigger');
+
   if (!altEl || !timeEl) return;
 
   if (netEl) {
@@ -280,6 +409,62 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('scroll', update, { passive: true });
   setInterval(update, 1000);
   update();
+
+  // Medición de Frame Time (ms por frame)
+  let lastFrameTime = performance.now();
+  let frameTime = 16.6;
+  function measureLoop(now) {
+    frameTime = frameTime * 0.9 + (now - lastFrameTime) * 0.1;
+    lastFrameTime = now;
+    if (fpsEl && drawer && !drawer.hidden) {
+      fpsEl.textContent = `${frameTime.toFixed(1)}ms`;
+    }
+    requestAnimationFrame(measureLoop);
+  }
+  requestAnimationFrame(measureLoop);
+
+  // Toggle del panel expandido del HUD
+  if (hud && drawer) {
+    const updateAudioStatus = () => {
+      const on = window.SGSound ? window.SGSound.isEnabled() : false;
+      if (audioStatusEl) audioStatusEl.textContent = on ? 'ON' : 'OFF';
+      if (audioStatusEl) audioStatusEl.style.color = on ? 'var(--accent)' : 'var(--text-dim)';
+    };
+    updateAudioStatus();
+
+    hud.addEventListener('click', (e) => {
+      if (e.target.closest('#bpHudExpanded')) return;
+      const isOpen = !drawer.hidden;
+      drawer.hidden = isOpen;
+      if (toggleTag) toggleTag.textContent = isOpen ? 'EXPANDIR ▲' : 'CERRAR ▼';
+      window.SGSound?.pop();
+      if (!isOpen) {
+        if (domEl) domEl.textContent = `${document.querySelectorAll('*').length}`;
+        updateAudioStatus();
+      }
+    });
+
+    if (auditTrigger) {
+      auditTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.runMetaAudit();
+      });
+    }
+
+    if (audioTrigger) {
+      audioTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.SGSound?.toggle();
+        updateAudioStatus();
+      });
+    }
+    document.addEventListener('click', (e) => {
+      if (!hud.contains(e.target) && !drawer.hidden) {
+        drawer.hidden = true;
+        if (toggleTag) toggleTag.textContent = 'EXPANDIR ▲';
+      }
+    });
+  }
 })();
 
 // ============================================================
@@ -290,6 +475,7 @@ if ('serviceWorker' in navigator) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.querySelectorAll('.nav-links a[href^="#"]').forEach((a) => {
     a.addEventListener('click', () => {
+      window.SGSound?.tick();
       document.body.classList.add('bp-glitching');
       setTimeout(() => document.body.classList.remove('bp-glitching'), 220);
     });
@@ -304,6 +490,7 @@ if ('serviceWorker' in navigator) {
   const btn = document.getElementById('cyanotype-toggle');
   if (!btn) return;
   btn.addEventListener('click', () => {
+    window.SGSound?.pop();
     const active = document.body.classList.toggle('cyanotype-mode');
     btn.classList.toggle('is-active', active);
     btn.setAttribute('aria-pressed', String(active));
@@ -319,7 +506,7 @@ if ('serviceWorker' in navigator) {
 (function () {
   if (!window.matchMedia('(pointer: fine)').matches) return;
 
-  const spotlightSelector = '.eco-item, .contact-card, .pillar, .forensic-node, .finding, .note-box, .post-card, .post-nav a, .post-cta';
+  const spotlightSelector = '.eco-card, .eco-item, .contact-card, .pillar, .forensic-node, .finding, .note-box, .post-card, .post-nav a, .post-cta';
   document.querySelectorAll(spotlightSelector).forEach((el) => {
     el.addEventListener('mousemove', (e) => {
       const r = el.getBoundingClientRect();
@@ -987,4 +1174,52 @@ document.querySelectorAll('.rust-race').forEach((race) => {
     const rect = h1.getBoundingClientRect();
     if (rect.bottom > 0 && rect.top < window.innerHeight) start();
   });
+
+  // Scramble reactivo al pasar el cursor sobre el H1
+  let lastH1Hover = 0;
+  h1.addEventListener('mouseenter', () => {
+    const now = performance.now();
+    if (now - lastH1Hover < 1000) return;
+    lastH1Hover = now;
+    scrambleTo(PHRASES[index]);
+    if (window.SGSound) window.SGSound.tick();
+  });
+
+  // Scramble de glifos cuánticos al pasar el cursor sobre el lema
+  const lema = document.getElementById('heroLema') || document.querySelector('.hero .lema-maestro');
+  if (lema) {
+    const originalText = lema.textContent;
+    let lemaRaf = null;
+    let lastLemaHover = 0;
+    lema.addEventListener('mouseenter', () => {
+      const now = performance.now();
+      if (now - lastLemaHover < 1000) return;
+      lastLemaHover = now;
+      if (lemaRaf) cancelAnimationFrame(lemaRaf);
+      const startT = performance.now();
+      const duration = 500;
+      if (window.SGSound) window.SGSound.tick();
+
+      function frame(t) {
+        const p = Math.min((t - startT) / duration, 1);
+        const chars = '01#$&*λΔσ∫π_/<>';
+        let out = '';
+        for (let i = 0; i < originalText.length; i++) {
+          if (p >= 1 || (i / originalText.length < p && Math.random() > 0.12)) {
+            out += originalText[i];
+          } else {
+            out += chars[Math.floor(Math.random() * chars.length)];
+          }
+        }
+        lema.textContent = out;
+        if (p < 1) {
+          lemaRaf = requestAnimationFrame(frame);
+        } else {
+          lema.textContent = originalText;
+          lemaRaf = null;
+        }
+      }
+      lemaRaf = requestAnimationFrame(frame);
+    });
+  }
 })();

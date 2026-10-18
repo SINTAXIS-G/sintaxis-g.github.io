@@ -408,6 +408,14 @@ if (heroCanvas) {
   // viewport Y la pestaña está activa.
   let isAnimating = false;
   let rafId = null;
+  let heroMouseX = -1000;
+  let heroMouseY = -1000;
+  let isOverdriveActive = false;
+
+  window.setHeroOverdrive = function (active) {
+    isOverdriveActive = active;
+    if (window.shaderSetOverdrive) window.shaderSetOverdrive(active);
+  };
 
   function resize() {
     heroCanvas.width = heroCanvas.parentElement.offsetWidth;
@@ -418,21 +426,58 @@ if (heroCanvas) {
     nodes = Array.from({ length: NODE_COUNT }, () => ({
       x: Math.random() * heroCanvas.width,
       y: Math.random() * heroCanvas.height,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: (Math.random() - 0.5) * 0.15,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
     }));
   }
 
+  window.repelHeroParticles = function (cx, cy, strength = 8.5) {
+    const rect = heroCanvas.getBoundingClientRect();
+    const localX = cx - rect.left;
+    const localY = cy - rect.top;
+    nodes.forEach((n) => {
+      const angle = Math.atan2(n.y - localY, n.x - localX);
+      const dist = Math.max(25, Math.hypot(n.x - localX, n.y - localY));
+      const force = (strength * 260) / dist;
+      n.vx += Math.cos(angle) * Math.min(force, 14);
+      n.vy += Math.sin(angle) * Math.min(force, 14);
+    });
+  };
+
   function draw() {
-    if (!isAnimating) return; // cortado por stopAnimation(): no re-encola el siguiente frame
+    if (!isAnimating) return;
 
     ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
 
+    const currentEnergy = isOverdriveActive ? 1.85 : NODE_ENERGY;
+    const speedMult = isOverdriveActive ? 2.2 : 1.0;
+
     nodes.forEach((n) => {
-      n.x += n.vx;
-      n.y += n.vy;
+      n.x += n.vx * speedMult;
+      n.y += n.vy * speedMult;
+      n.vx *= 0.985;
+      n.vy *= 0.985;
+      if (Math.abs(n.vx) < 0.08) n.vx = (Math.random() - 0.5) * 0.22;
+      if (Math.abs(n.vy) < 0.08) n.vy = (Math.random() - 0.5) * 0.22;
+
       if (n.x < 0 || n.x > heroCanvas.width) n.vx *= -1;
       if (n.y < 0 || n.y > heroCanvas.height) n.vy *= -1;
+
+      // Atracción gravitatoria e interconexión con el puntero táctico
+      if (heroMouseX >= 0) {
+        const dMouse = Math.hypot(n.x - heroMouseX, n.y - heroMouseY);
+        if (dMouse < 180 && dMouse > 4) {
+          const pull = (1 - dMouse / 180) * 0.035;
+          n.x += (heroMouseX - n.x) * pull;
+          n.y += (heroMouseY - n.y) * pull;
+          ctx.strokeStyle = `rgba(${NODE_RGB}, ${(1 - dMouse / 180) * 0.38 * currentEnergy})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(heroMouseX, heroMouseY);
+          ctx.stroke();
+        }
+      }
     });
 
     for (let i = 0; i < nodes.length; i++) {
@@ -441,7 +486,7 @@ if (heroCanvas) {
         const dy = nodes[i].y - nodes[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < LINK_DIST) {
-          ctx.strokeStyle = `rgba(${NODE_RGB}, ${0.12 * NODE_ENERGY * (1 - dist / LINK_DIST)})`;
+          ctx.strokeStyle = `rgba(${NODE_RGB}, ${0.14 * currentEnergy * (1 - dist / LINK_DIST)})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -452,9 +497,9 @@ if (heroCanvas) {
     }
 
     nodes.forEach((n) => {
-      ctx.fillStyle = `rgba(${NODE_RGB}, ${0.5 * NODE_ENERGY})`;
+      ctx.fillStyle = `rgba(${NODE_RGB}, ${0.65 * currentEnergy})`;
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 1.6, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, isOverdriveActive ? 2.2 : 1.6, 0, Math.PI * 2);
       ctx.fill();
     });
 
@@ -462,7 +507,7 @@ if (heroCanvas) {
   }
 
   function startAnimation() {
-    if (isAnimating) return; // ya corriendo — evita encolar un segundo loop en paralelo
+    if (isAnimating) return;
     isAnimating = true;
     rafId = requestAnimationFrame(draw);
   }
@@ -478,6 +523,16 @@ if (heroCanvas) {
     resize();
     initNodes();
     window.addEventListener('resize', () => { resize(); initNodes(); });
+
+    heroCanvas.parentElement.addEventListener('mousemove', (e) => {
+      const rect = heroCanvas.getBoundingClientRect();
+      heroMouseX = e.clientX - rect.left;
+      heroMouseY = e.clientY - rect.top;
+    });
+    heroCanvas.parentElement.addEventListener('mouseleave', () => {
+      heroMouseX = -1000;
+      heroMouseY = -1000;
+    });
 
     // Pausa/reanuda según si el canvas está dentro del viewport —
     // scrollear a #ecosistema, #sobre-mi, etc. detiene el gasto de
@@ -681,6 +736,12 @@ if (heroCanvas) {
   gl.uniform3f(uColorHigh, hiR, hiG, hiB);
   gl.uniform1f(uEnergy, isNight ? 0.45 : 1.0);
 
+  window.shaderSetOverdrive = function (active) {
+    if (!gl || !uEnergy) return;
+    const energyVal = active ? 2.4 : (isNight ? 0.45 : 1.0);
+    gl.uniform1f(uEnergy, energyVal);
+  };
+
   let mouseX = 0;
   let mouseY = 0;
   let shaderAnimating = false;
@@ -749,100 +810,279 @@ if (heroCanvas) {
   });
 })();
 
-// ---------- 9. Cursor personalizado: punto+anillo en reposo, snap magnético ----------
+// ---------- 8.5. Hero Kinetic Engine: Reactor, Sobrecarga, Tickers y Frecuencia ----------
+(function () {
+  const overdriveBtn = document.getElementById('heroOverdriveBtn');
+  const greetingEl = document.getElementById('hero-greeting');
+  const reactorEl = document.getElementById('heroReactor');
+  const reactorFreqEl = document.getElementById('reactorFreq');
+  const heroMeta = document.getElementById('heroMeta');
+
+  // Jitter realista de frecuencia de reloj en el reactor (59.7Hz - 60.3Hz)
+  if (reactorFreqEl) {
+    setInterval(() => {
+      const freq = (59.7 + Math.random() * 0.6).toFixed(1);
+      reactorFreqEl.textContent = `${freq}Hz`;
+    }, 1200);
+  }
+
+  // Click en el Reactor del Logo: Pulso Gravitatorio + Onda Expansiva
+  if (reactorEl) {
+    reactorEl.addEventListener('click', () => {
+      const rect = reactorEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      // Repele partículas del canvas 2D violentamente hacia afuera
+      if (window.repelHeroParticles) {
+        window.repelHeroParticles(cx, cy, 14);
+      }
+      if (window.SGSound) {
+        window.SGSound.pulse();
+      }
+
+      reactorEl.style.transform = 'scale(0.92)';
+      setTimeout(() => { reactorEl.style.transform = ''; }, 180);
+    });
+  }
+
+  // Botón de Sobrecarga de Energía (Overdrive ⚡)
+  let isOverdrive = false;
+  if (overdriveBtn) {
+    overdriveBtn.addEventListener('click', () => {
+      isOverdrive = !isOverdrive;
+      overdriveBtn.classList.toggle('is-active', isOverdrive);
+
+      if (window.setHeroOverdrive) {
+        window.setHeroOverdrive(isOverdrive);
+      }
+      if (window.SGSound) {
+        window.SGSound.pulse();
+      }
+
+      const spark = overdriveBtn.querySelector('.btn-spark');
+      const label = overdriveBtn.querySelector('.btn-label');
+
+      if (isOverdrive) {
+        if (label) label.textContent = 'SOBRECARGA ACTIVA';
+        if (greetingEl) {
+          greetingEl.dataset.original = greetingEl.textContent;
+          greetingEl.textContent = '⚡ RÉGIMEN FORZADO — MÁXIMA DISIPACIÓN CUÁNTICA ACTIVA';
+          greetingEl.style.borderColor = 'var(--accent)';
+          greetingEl.style.color = '#FFFFFF';
+          greetingEl.style.boxShadow = '0 0 16px var(--accent)';
+        }
+      } else {
+        if (label) label.textContent = 'SOBRECARGA';
+        if (greetingEl) {
+          greetingEl.textContent = greetingEl.dataset.original || greetingEl.textContent;
+          greetingEl.style.borderColor = '';
+          greetingEl.style.color = '';
+          greetingEl.style.boxShadow = '';
+        }
+      }
+    });
+  }
+
+  // Calibración animada de tickers (Rolling Numbers)
+  function runHeroTickers() {
+    const tickers = document.querySelectorAll('.hero-ticker');
+    tickers.forEach((t) => {
+      const target = parseFloat(t.dataset.val || t.textContent);
+      const suffix = t.dataset.suffix || '';
+      const duration = 750;
+      const startTime = performance.now();
+
+      function update(now) {
+        const p = Math.min((now - startTime) / duration, 1);
+        const ease = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        const cur = Math.round(target * ease);
+        t.textContent = `${cur}${suffix}`;
+        if (p < 1) requestAnimationFrame(update);
+        else t.textContent = `${target}${suffix}`;
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  if (heroMeta) {
+    heroMeta.addEventListener('mouseenter', runHeroTickers);
+    setTimeout(runHeroTickers, 400);
+  }
+})();
+
+// ---------- 9. Puntero táctico HUD 2.0 (Lerp + High-Contrast Reticle + Inspector) ----------
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const cursor = document.createElement('div');
   cursor.className = 'bp-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
   cursor.innerHTML =
-    '<span class="dot"></span><span class="ring"></span>' +
-    '<span class="corner c-tl"></span><span class="corner c-tr"></span>' +
-    '<span class="corner c-bl"></span><span class="corner c-br"></span>' +
-    '<span class="label"></span><span class="shutter"></span>';
+    '<div class="bp-cursor-dot"></div>' +
+    '<div class="bp-cursor-reticle">' +
+      '<span class="reticle-tick t-top"></span>' +
+      '<span class="reticle-tick t-right"></span>' +
+      '<span class="reticle-tick t-bottom"></span>' +
+      '<span class="reticle-tick t-left"></span>' +
+      '<span class="reticle-corner c-tl"></span>' +
+      '<span class="reticle-corner c-tr"></span>' +
+      '<span class="reticle-corner c-bl"></span>' +
+      '<span class="reticle-corner c-br"></span>' +
+      '<span class="shutter"></span>' +
+    '</div>' +
+    '<div class="bp-cursor-hud">' +
+      '<span class="hud-tag"></span>' +
+    '</div>';
   document.body.appendChild(cursor);
-  const corners = {
-    tl: cursor.querySelector('.c-tl'),
-    tr: cursor.querySelector('.c-tr'),
-    bl: cursor.querySelector('.c-bl'),
-    br: cursor.querySelector('.c-br'),
-  };
-  const labelEl = cursor.querySelector('.label');
+
+  const dotEl = cursor.querySelector('.bp-cursor-dot');
+  const reticleEl = cursor.querySelector('.bp-cursor-reticle');
+  const hudEl = cursor.querySelector('.bp-cursor-hud');
+  const tagEl = cursor.querySelector('.hud-tag');
   const shutterEl = cursor.querySelector('.shutter');
 
-  let snapped = null;
-
-  // El cursor nativo (del sistema) recién se oculta DESPUÉS del primer
-  // mousemove real -- si lo ocultáramos de entrada, alguien que entra a
-  // la página sin mover el mouse todavía no vería ningún cursor (ni el
-  // nativo, que ya estaría oculto, ni el custom, que todavía no se
-  // movió a la posición real).
+  let mouseX = -100, mouseY = -100;
+  let reticleX = -100, reticleY = -100;
   let started = false;
+  let currentMode = 'default';
+
   window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
     if (!started) {
       started = true;
+      reticleX = mouseX;
+      reticleY = mouseY;
       document.body.classList.add('has-custom-cursor');
     }
-    if (!snapped) {
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+    // El punto central responde al instante (0ms lag) con máxima precisión
+    dotEl.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+  }, { passive: true });
+
+  // Bucle de física suave (lerp) para el retículo seguidor y micro-HUD
+  function renderLoop() {
+    if (started) {
+      const ease = currentMode === 'action' ? 0.32 : 0.20;
+      reticleX += (mouseX - reticleX) * ease;
+      reticleY += (mouseY - reticleY) * ease;
+
+      reticleEl.style.transform = `translate3d(${reticleX}px, ${reticleY}px, 0)`;
+      hudEl.style.transform = `translate3d(${reticleX + 18}px, ${reticleY + 14}px, 0)`;
     }
-  });
+    requestAnimationFrame(renderLoop);
+  }
+  requestAnimationFrame(renderLoop);
 
-  window.addEventListener('mousedown', (e) => {
+  // Micro-obturador táctico de click
+  window.addEventListener('mousedown', () => {
     shutterEl.classList.remove('is-firing');
-    void shutterEl.offsetWidth; // reinicia la animación si se hace click rápido varias veces
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    void shutterEl.offsetWidth;
     shutterEl.classList.add('is-firing');
+    if (window.SGSound) window.SGSound.pop();
   });
 
-  // Corchetes de encuadre, links y tarjetas: todos usan el mismo
-  // mecanismo de snap, solo cambia si llevan etiqueta ("→" únicamente
-  // en <a> reales -- las tarjetas informativas no llevan a ningún lado).
-  // Atar los listeners a cada elemento no es crítico para el primer
-  // paint -- se difiere con requestIdleCallback (con fallback a
-  // setTimeout en Safari, que todavía no lo implementa) para no competir
-  // con nada que sí importa apenas carga la página.
-  // Los corchetes se calculan una sola vez, al entrar el mouse -- si
-  // después el visitante scrollea sin mover el mouse (rueda, trackpad),
-  // el elemento se corre por debajo pero los corchetes (position:fixed)
-  // se quedan clavados donde estaban: parecen un recuadro "fantasma"
-  // flotando en el margen, sin relación con nada debajo. positionSnap()
-  // recalcula contra el elemento realmente enganchado (snapped), así
-  // que puede volver a llamarse en scroll/resize, no solo en mouseenter.
-  function positionSnap(el) {
-    const r = el.getBoundingClientRect();
-    corners.tl.style.left = `${r.left}px`; corners.tl.style.top = `${r.top}px`;
-    corners.tr.style.left = `${r.right - 14}px`; corners.tr.style.top = `${r.top}px`;
-    corners.bl.style.left = `${r.left}px`; corners.bl.style.top = `${r.bottom - 14}px`;
-    corners.br.style.left = `${r.right - 14}px`; corners.br.style.top = `${r.bottom - 14}px`;
-    if (el.tagName === 'A') {
-      labelEl.style.left = `${r.left}px`;
-      labelEl.style.top = `${r.top - 24}px`;
+  // Gestor inteligente de modos del puntero
+  function setCursorMode(mode, tagText) {
+    currentMode = mode;
+    cursor.classList.remove('mode-inspect', 'mode-action', 'mode-drag');
+    if (mode !== 'default') {
+      cursor.classList.add(`mode-${mode}`);
+    }
+    if (tagText) {
+      tagEl.textContent = tagText;
+      hudEl.classList.add('is-visible');
+    } else {
+      hudEl.classList.remove('is-visible');
     }
   }
+  window.setCursorMode = setCursorMode;
 
-  const SNAP_SELECTOR = 'a, button, .mode-btn, .pillar, .forensic-node, .finding, .note-box, .bp-frame';
+  // Interacción asombrosa al entrar y moverse por tarjetas de sistema (.eco-card)
   const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
   idle(() => {
-    document.querySelectorAll(SNAP_SELECTOR).forEach((el) => {
+    document.querySelectorAll('.eco-card').forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        const sysId = card.querySelector('.eco-sys-id')?.textContent.trim() || 'SYS';
+        const sysName = card.querySelector('.name')?.textContent.trim() || 'SISTEMA';
+
+        setCursorMode('inspect', `${sysId} // ${sysName}`);
+
+        // Gatillar barrido láser radar en la tarjeta
+        card.classList.remove('card-scanned');
+        void card.offsetWidth;
+        card.classList.add('card-scanned');
+
+        // Audio táctico de adquisición de objetivo
+        if (window.SGSound) window.SGSound.tick();
+      });
+
+      card.addEventListener('mouseleave', (e) => {
+        // Si el puntero se mueve inmediatamente a otra tarjeta adyacente,
+        // el mouseenter de la siguiente tarjeta tomará el control sin parpadeo.
+        const nextCard = e.relatedTarget?.closest?.('.eco-card');
+        if (!nextCard) {
+          setCursorMode('default');
+        }
+        card.classList.remove('card-scanned');
+      });
+    });
+
+    // Interacción con los badges de fundamentos físicos (Shannon, Griffith, Reynolds, etc.)
+    document.querySelectorAll('.archangel-badge').forEach((badge) => {
+      badge.addEventListener('mouseenter', () => {
+        const sym = badge.querySelector('.badge-sym')?.textContent.trim() || '';
+        const title = badge.querySelector('.badge-title')?.textContent.trim() || 'FÍSICA';
+        setCursorMode('inspect', `${sym} // ${title}`);
+        if (window.SGSound) window.SGSound.tick();
+      });
+      badge.addEventListener('mouseleave', () => setCursorMode('default'));
+    });
+
+    // Interacción con el osciloscopio interactivo de Ebbinghaus
+    const ebBox = document.querySelector('.eb-demo');
+    if (ebBox) {
+      ebBox.addEventListener('mouseenter', () => {
+        setCursorMode('inspect', 'OSC // R(t) = e^(-t/S)');
+      });
+      ebBox.addEventListener('mouseleave', () => setCursorMode('default'));
+    }
+
+    // Interacción con el reactor central del hero
+    const reactor = document.getElementById('heroReactor');
+    if (reactor) {
+      reactor.addEventListener('mouseenter', () => {
+        setCursorMode('inspect', 'REACTOR // PULSO CUÁNTICO');
+        if (window.SGSound) window.SGSound.tick();
+      });
+      reactor.addEventListener('mouseleave', () => setCursorMode('default'));
+    }
+
+    // Interacción con controles interactivos (enlaces, botones, sliders)
+    document.querySelectorAll('a, button, .mode-btn, input[type="range"]').forEach((el) => {
       el.addEventListener('mouseenter', () => {
-        snapped = el;
-        positionSnap(el);
-        cursor.style.transform = 'translate(0px, 0px)';
-        const isLink = el.tagName === 'A';
-        cursor.classList.toggle('has-label', isLink);
-        if (isLink) labelEl.textContent = '→';
-        cursor.classList.add('is-snapped');
+        if (el.tagName === 'INPUT') {
+          setCursorMode('drag', 'SLIDER ◄►');
+        } else if (el.tagName === 'A') {
+          const text = el.textContent.trim().slice(0, 16);
+          setCursorMode('action', text ? `IR → ${text}` : 'ENLACE →');
+        } else {
+          const text = el.textContent.trim().slice(0, 16);
+          setCursorMode('action', text ? `[ ${text} ]` : 'EJECUTAR');
+        }
       });
       el.addEventListener('mouseleave', () => {
-        if (snapped === el) {
-          snapped = null;
-          cursor.classList.remove('is-snapped', 'has-label');
+        const parentCard = el.closest('.eco-card');
+        if (parentCard) {
+          const sysId = parentCard.querySelector('.eco-sys-id')?.textContent.trim() || 'SYS';
+          const sysName = parentCard.querySelector('.name')?.textContent.trim() || 'SISTEMA';
+          setCursorMode('inspect', `${sysId} // ${sysName}`);
+        } else {
+          setCursorMode('default');
         }
       });
     });
   });
-
-  window.addEventListener('scroll', () => { if (snapped) positionSnap(snapped); }, { passive: true });
-  window.addEventListener('resize', () => { if (snapped) positionSnap(snapped); });
 }
 
 // ---------- 9b. Menú móvil (hamburguesa) ----------

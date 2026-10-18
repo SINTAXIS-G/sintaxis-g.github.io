@@ -12,10 +12,17 @@
     { title: 'Artículos técnicos', subtitle: 'Bitácora de desarrollo de ARCHANGEL', url: '/projects/archangel-articulos.html', group: 'Páginas' },
     { title: 'KAIROS — página completa', subtitle: 'App de asistencia en emergencias', url: '/projects/kairos.html', group: 'Páginas' },
 
-    // ---------- Inicio ----------
-    { title: 'Ecosistema', subtitle: 'EXARKON, EIDOLON, A.R.K., ATLAS, Cazador de Enlaces', url: '/index.html#ecosistema', group: 'Inicio' },
-    { title: 'Sobre mí', subtitle: 'Quién es Gabo', url: '/index.html#sobre-mi', group: 'Inicio' },
-    { title: 'Contacto', url: '/index.html#contacto', group: 'Inicio' },
+    // ---------- Ecosistema Sintaxis G ----------
+    { title: 'SYS-01: EXARKON', subtitle: 'Sandbox 7 capas & razonamiento adaptativo a GPU', url: '/index.html#sys-exarkon', group: 'Ecosistema' },
+    { title: 'SYS-02: EIDOLON', subtitle: 'Simulación cognitiva de entidades & memoria persistente', url: '/index.html#sys-eidolon', group: 'Ecosistema' },
+    { title: 'Laboratorio: Curva de Ebbinghaus', subtitle: 'Osciloscopio interactivo R(t) = e^(-t/S)', url: '/index.html#memoria', group: 'Ecosistema' },
+    { title: 'SYS-03: A.R.K.', subtitle: 'Navegador de privacidad estricta & congelación de RAM', url: '/index.html#sys-ark', group: 'Ecosistema' },
+    { title: 'SYS-04: ATLAS', subtitle: 'Perfilado holístico de repositorios en stdlib puro', url: '/index.html#sys-atlas', group: 'Ecosistema' },
+    { title: 'SYS-05: KAIROS (Sistema)', subtitle: 'Asistencia en emergencias con Dead Man\'s Switch offline', url: '/index.html#sys-kairos', group: 'Ecosistema' },
+    { title: 'SYS-06: Cazador de Enlaces', subtitle: 'Agente táctico para detección de inconsistencias cruzadas', url: '/index.html#sys-cazador', group: 'Ecosistema' },
+    { title: 'Ecosistema (Visión general)', subtitle: 'Bento Grid de sistemas técnicos integrados', url: '/index.html#ecosistema', group: 'Ecosistema' },
+    { title: 'Dossier // 01 — Sobre mí', subtitle: 'Manifiesto de ingeniería, stack y filosofía', url: '/index.html#sobre-mi', group: 'Sobre mí' },
+    { title: 'Contacto directo', subtitle: 'Telegram, GitHub, email y canales seguros', url: '/index.html#contacto', group: 'Contacto' },
 
     // ---------- ARCHANGEL ----------
     { title: '¿Qué es ARCHANGEL?', url: '/projects/archangel.html#resumen', group: 'ARCHANGEL' },
@@ -69,8 +76,12 @@
     { title: 'No existe el código perfecto', url: '/articulos/no-existe-codigo-perfecto.html', group: 'Artículos' },
     { title: 'Ponerle nombre a un bug', url: '/articulos/nombrar-bugs.html', group: 'Artículos' },
 
-    // ---------- Sistema ----------
-    { title: 'Repetir secuencia de arranque', subtitle: 'Calibración + escaneo + POST — recarga la página', action: 'replay-boot', group: 'Sistema' },
+    // ---------- Comandos y Telemetría ----------
+    { title: 'Auditoría de Entropía de Shannon', subtitle: 'Calcula en vivo H = -Σ p log2(p) sobre el DOM actual', action: 'meta-audit', group: 'Comandos' },
+    { title: 'Alternar Sonido Táctil', subtitle: 'Activa o silencia el sintetizador Web Audio procedural', action: 'toggle-audio', group: 'Comandos' },
+    { title: 'Alternar Modo Cianotipo', subtitle: 'Estilo Blueprint de plano arquitectónico en alta fidelidad', action: 'toggle-cyanotype', group: 'Comandos' },
+    { title: 'Alternar Modo Bunker', subtitle: 'Paleta táctica fósforo ámbar monocromática', action: 'toggle-bunker', group: 'Comandos' },
+    { title: 'Repetir secuencia de arranque', subtitle: 'Calibración + escaneo + POST — recarga la página', action: 'replay-boot', group: 'Comandos' },
   ];
 
   let overlay = null;
@@ -170,13 +181,10 @@
     const item = filtered[index];
     if (!item) return;
     close();
+    if (window.SGSound) window.SGSound.pop();
+
     if (item.action === 'replay-boot') {
       try { sessionStorage.removeItem('sg_booted'); } catch (e) {}
-      // El arranque es cosa de carga de página (corre su propio script
-      // inline al principio del <body>, y se autodestruye al terminar) --
-      // no hay forma de "re-mostrarlo" sin recargar, así que recargamos.
-      // Si no estás en index.html, primero vamos ahí (es la única página
-      // con el arranque).
       if (location.pathname !== '/index.html' && location.pathname !== '/') {
         window.location.href = '/index.html';
       } else {
@@ -184,11 +192,54 @@
       }
       return;
     }
+
+    if (item.action === 'meta-audit') {
+      if (typeof window.runMetaAudit === 'function') {
+        window.runMetaAudit();
+      } else {
+        window.location.href = '/index.html#audit';
+      }
+      return;
+    }
+
+    if (item.action === 'toggle-audio') {
+      if (window.SGSound) {
+        const state = window.SGSound.toggle();
+        const audStatus = document.getElementById('hud-audio-status');
+        if (audStatus) audStatus.textContent = state ? 'ON' : 'OFF';
+      }
+      return;
+    }
+
+    if (item.action === 'toggle-cyanotype') {
+      const cyBtn = document.getElementById('cyanotype-toggle');
+      if (cyBtn) cyBtn.click();
+      else document.body.classList.toggle('cyanotype-mode');
+      return;
+    }
+
+    if (item.action === 'toggle-bunker') {
+      const bunkerBtn = document.getElementById('bunker-toggle');
+      if (bunkerBtn) bunkerBtn.click();
+      else document.body.classList.toggle('bunker-mode');
+      return;
+    }
+
+    if (!item.url) return;
+
     const [path, hash] = item.url.split('#');
-    if (path === location.pathname) {
+    const curPath = (location.pathname || '').replace(/\/index\.html$/, '/');
+    const targetPath = (path || '/index.html').replace(/\/index\.html$/, '/');
+    const isSamePage = !path || path === location.pathname || targetPath === curPath;
+
+    if (isSamePage) {
       if (hash) {
         const el = document.getElementById(hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.classList.add('pulse-highlight');
+          setTimeout(() => el.classList.remove('pulse-highlight'), 1800);
+        }
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -201,10 +252,12 @@
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       selectedIndex = Math.min(selectedIndex + 1, filtered.length - 1);
+      if (window.SGSound) window.SGSound.tick();
       updateSelection();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       selectedIndex = Math.max(selectedIndex - 1, 0);
+      if (window.SGSound) window.SGSound.tick();
       updateSelection();
     } else if (e.key === 'Enter') {
       e.preventDefault();
@@ -223,6 +276,7 @@
     input.value = '';
     input.focus();
     document.body.classList.add('cmdk-locked');
+    if (window.SGSound) window.SGSound.tick();
   }
 
   function close() {

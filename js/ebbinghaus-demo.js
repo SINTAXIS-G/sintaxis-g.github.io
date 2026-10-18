@@ -45,10 +45,18 @@
     return points.join(' ');
   }
 
+  let lastTickVal = -1;
+
   function render() {
     const t = parseFloat(slider.value);
     const r = retention(t, S);
     const pct = Math.round(r * 100);
+
+    const intT = Math.round(t);
+    if (intT !== lastTickVal && window.SGSound) {
+      window.SGSound.tick();
+      lastTickVal = intT;
+    }
 
     daysVal.textContent = t.toFixed(0);
     retentionVal.textContent = `${pct}%`;
@@ -77,6 +85,7 @@
       reinforcements += 1;
       reinforceCount.textContent = String(reinforcements);
       slider.value = '0';
+      if (window.SGSound) window.SGSound.pulse();
       render();
     });
   }

@@ -221,17 +221,31 @@
   <div class="scroll-progress"></div>
   <div class="bp-glitch-overlay" aria-hidden="true"></div>
 
-  <div class="bp-hud" aria-hidden="true">
+  <div class="bp-hud bp-frame" id="bpHud" role="region" aria-label="Telemetría táctica" title="Click para expandir telemetría">
+    <div class="bp-hud-header">
+      <span>TELEMETRÍA</span>
+      <b class="hud-toggle-tag" id="hudToggleTag">EXPANDIR ▲</b>
+    </div>
     <div class="bp-hud-row"><span>ALTITUD</span><b id="hud-altitude">0%</b></div>
     <div class="bp-hud-row"><span>TIEMPO</span><b id="hud-time">00:00</b></div>
     <div class="bp-hud-row"><span>RED</span><b id="hud-net">ONLINE</b></div>
+
+    <!-- Panel expandido -->
+    <div class="bp-hud-expanded" id="bpHudExpanded" hidden>
+      <div class="hud-stat-grid">
+        <div class="hud-sub-row"><span>FRAME</span><b id="hud-fps">16.6ms</b></div>
+        <div class="hud-sub-row"><span>DOM</span><b id="hud-dom">--</b></div>
+        <div class="hud-sub-row"><span>AUDIO</span><b id="hud-audio-status">OFF</b></div>
+      </div>
+      <button type="button" class="hud-mini-action" id="hudAuditTrigger">AUDITAR EN VIVO</button>
+      <button type="button" class="hud-mini-action" id="hudAudioTrigger">SONIDO: TOGGLE</button>
+    </div>
   </div>
 
   <nav class="nav">
     <div class="wrap">
       <span class="nav-mark"><img src="assets/img/logo-sintaxis-g-v2.webp" alt="SINTAXIS G"
-          style="height:2.75rem;width:2.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="804" height="813">SINTAXIS
-        G</span>
+          style="height:2.75rem;width:2.75rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="804" height="813"><span class="nav-brand-text">SINTAXIS G</span></span>
       <div class="nav-links">
         <a href="#archangel">ARCHANGEL</a>
         <a href="projects/archangel-articulos.html">Artículos</a>
@@ -251,19 +265,41 @@
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <canvas id="hero-3d-canvas" class="hero-3d-canvas"></canvas>
     <div class="wrap" data-parallax-speed="0.1">
-      <img src="assets/img/logo-sintaxis-g-v2.webp" alt="Sello de SINTAXIS G" width="804" height="813"
-        style="display:block;width:7rem;height:7rem;margin:0 0 var(--space-md);border-radius:50%;">
-      <p class="hero-greeting" id="hero-greeting"></p>
-      <h1 style="font-family:var(--font-voice);font-weight:600;">Software tratado como un sistema físico.</h1>
-      <p class="lema-maestro" style="font-family:var(--font-voice);font-style:italic;">"No instalo sistemas. Forjo arquitecturas."</p>
+      <div class="hero-reactor-dock" id="heroReactorDock">
+        <div class="reactor-wrapper" id="heroReactor" role="button" tabindex="0" title="Núcleo del Ecosistema — Click para pulso gravitatorio">
+          <div class="reactor-orbit orbit-1"></div>
+          <div class="reactor-orbit orbit-2"></div>
+          <div class="reactor-core">
+            <img src="assets/img/logo-sintaxis-g-v2.webp" alt="Sello de SINTAXIS G" width="804" height="813" class="reactor-img">
+            <span class="reactor-pulse-beacon"></span>
+          </div>
+        </div>
+        <div class="reactor-telemetry-chip">
+          <span class="reactor-led"></span>
+          <span class="reactor-freq-label">KERNEL: <b id="reactorFreq">60.0Hz</b></span>
+          <span class="reactor-sep">//</span>
+          <span class="reactor-mode-label">SISTEMA ACTIVO</span>
+        </div>
+      </div>
+
+      <div class="hero-greeting-row">
+        <p class="hero-greeting" id="hero-greeting"></p>
+        <button type="button" class="hero-overdrive-btn" id="heroOverdriveBtn" title="Forzar máxima disipación de energía y acelerar convección cuántica">
+          <span class="btn-spark">⚡</span>
+          <span class="btn-label">SOBRECARGA</span>
+        </button>
+      </div>
+
+      <h1 style="font-family:var(--font-voice);font-weight:600;" id="heroMainTitle">Software tratado como un sistema físico.</h1>
+      <p class="lema-maestro" style="font-family:var(--font-voice);font-style:italic;" id="heroLema">"No instalo sistemas. Forjo arquitecturas."</p>
       <p>SINTAXIS G es el ecosistema de herramientas de Gabo: análisis estático, entornos de IA soberana y tooling de
         desarrollo, construidos desde cero por un solo arquitecto.</p>
-      <div class="hero-meta">
-        <div><strong>6</strong>proyectos activos</div>
-        <div><strong>300k+</strong>líneas en ARCHANGEL</div>
-        <div><strong>Local-first</strong>mínima dependencia de nube</div>
+      <div class="hero-meta" id="heroMeta">
+        <div class="meta-item"><strong class="hero-ticker" data-val="6">6</strong><span>proyectos activos</span></div>
+        <div class="meta-item"><strong class="hero-ticker" data-val="300" data-suffix="k+">300k+</strong><span>líneas en ARCHANGEL</span></div>
+        <div class="meta-item"><strong class="hero-ticker-tag">Local-first</strong><span>mínima dependencia de nube</span></div>
       </div>
-      <p class="bp-caption">SISTEMA: <b>SINTAXIS_G</b> · REV v2026.10</p>
+      <div class="bp-caption">SISTEMA: <b>SINTAXIS_G</b> · REV v2026.10</div>
     </div>
   </header>
 
@@ -274,20 +310,40 @@
       <p class="section-label">Proyecto insignia</p>
       <h2 class="section-title stress-title" style="view-transition-name: vt-archangel-title;">ARCHANGEL</h2>
       <div class="bp-tilt-wrap">
-      <div class="featured bp-tilt">
+      <div class="featured bp-tilt bp-frame">
         <div class="featured-desc">
+          <div class="archangel-physics-chips">
+            <span class="physics-chip"><span class="chip-sym">ΔS</span> Entropía de Shannon</span>
+            <span class="physics-chip"><span class="chip-sym">σf</span> Fractura de Griffith</span>
+            <span class="physics-chip"><span class="chip-sym">Re</span> Flujo de Reynolds</span>
+            <span class="physics-chip"><span class="chip-sym">dE</span> Estructuras de Prigogine</span>
+          </div>
           <p>Motor de análisis estático que trata el software como un sistema físico: entropía de
             Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine
             aplicadas al código. Corre como producto SaaS con planes por volumen — no es solo una herramienta interna.</p>
           <p>Backend en FastAPI, frontend en React/Vite, extensión de VSCode y GitHub Action como clientes de su API — orquestado por un motor
             DAG con caché reactiva y detección de inconsistencias entre archivos.</p>
-          <a class="featured-link" href="projects/archangel.html">Ver arquitectura completa →</a>
-          <a class="featured-link" href="projects/archangel-articulos.html">Leer artículos →</a>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a class="featured-link" href="projects/archangel.html">Ver arquitectura completa →</a>
+            <a class="featured-link" href="projects/archangel-articulos.html">Leer artículos →</a>
+          </div>
         </div>
         <div class="featured-stats">
-          <div class="stat"><b class="bp-stat-hero" style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
-          <div class="stat"><b>26</b><span>archivos en el módulo correlator</span></div>
-          <div class="stat"><b>4</b><span>interfaces: API, web, VSCode, CI</span></div>
+          <div class="stat"><span class="stat-led"></span><b class="bp-stat-hero" style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
+          <div class="stat"><span class="stat-led"></span><b>26</b><span>archivos en el módulo correlator</span></div>
+          <div class="stat"><span class="stat-led"></span><b>4</b><span>interfaces clientes simultáneas</span></div>
+          <div class="archangel-interfaces-bus">
+            <div class="bus-header">Pipeline de Interfaces</div>
+            <div class="bus-nodes">
+              <span class="bus-node core">FastAPI Core</span>
+              <span class="bus-conn">⇄</span>
+              <span class="bus-node">React Web</span>
+              <span class="bus-conn">·</span>
+              <span class="bus-node">VSCode</span>
+              <span class="bus-conn">·</span>
+              <span class="bus-node">GitHub Action</span>
+            </div>
+          </div>
         </div>
         <p class="bp-caption">SISTEMA: <b>ARCHANGEL</b> · REV v2026.10</p>
       </div>
@@ -390,69 +446,224 @@
     <div class="wrap" style="position:relative;">
       <p class="section-label">El resto del ecosistema</p>
       <h2 class="section-title">Cada sistema resuelve un problema que se negó a delegar</h2>
-      <div class="eco-list">
-        <div class="eco-item" style="--z:7; --tab:42px; --tab-neck:15px;">
-          <h3 class="name">EXARKON</h3>
-          <span class="desc"><strong>El cerebro del ecosistema:</strong> un entorno de IA soberano ejecutado íntegramente en local. Su
-            lema resume la apuesta — "Razón sobre Proceso. Conciencia sobre Código." — no basta con que ejecute líneas,
-            tiene que entender la intención detrás de ellas. Todo código generado por IA corre primero dentro de un
-            sandbox de 7 capas (proceso efímero con privilegios mínimos, sistema de archivos señuelo, red bloqueada,
-            fuzzing determinístico) que le pone un puntaje de peligrosidad de 0 a 100 antes de confiar en el
-            resultado. Por debajo, un traductor de hardware ajusta en vivo cuántas capas de un modelo caben en la GPU
-            y frena la carga ante sobrecalentamiento — diseñado para correr en una GPU de consumo modesta, no en un
-            datacenter.</span>
-          <p class="status">En desarrollo</p>
-        </div>
-        <div class="eco-item" style="--z:6; --blank:42px; --blank-neck:15px; --tab:46px; --tab-neck:16px;">
-          <h3 class="name">EIDOLON</h3>
-          <span class="desc"><strong>Motor de simulación cognitiva para entidades sintéticas persistentes</strong> (Azazel Ameri), 100%
-            local — construido en ~120 horas. No es un chatbot con memoria: la memoria decae con la curva de Ebbinghaus,
-            las emociones tienen inercia real (no saltan de furia a euforia en un turno), y un "cortafuegos psicológico"
-            descarta respuestas del LLM que rompan el canon del personaje antes de que lleguen al usuario. Por debajo,
-            un orquestador de VRAM hace bin-packing y preemption cooperativo para correr LLM, difusión de imagen y voz a
-            la vez en una GPU de consumo sin reventar por OOM.</span>
-          <p class="status">Beta avanzada</p>
-        </div>
-        <div class="eco-item" style="--z:5; --blank:46px; --blank-neck:16px; --tab:28px; --tab-neck:10px;">
-          <h3 class="name">A.R.K.</h3>
-          <span class="desc"><strong>Navegador de privacidad estricta,</strong> pensado como una capa de aislamiento entre el operador y
-            la red. Bloquea telemetría y trackers en capa de red antes de que salga el primer byte, introduce
-            variaciones controladas en Canvas/AudioContext para dificultar el rastreo por huella digital, y mantiene
-            un log de auditoría inmutable de cada solicitud que hace — opacidad cero para quien lo usa. Su gestor de
-            memoria congela pestañas inactivas a disco y libera el proceso por completo: 100+ pestañas abiertas,
-            menos de 500MB de RAM, con restauración instantánea al volver a ellas. Cada arranque verifica su propia
-            integridad con firma criptográfica Ed25519 — si el binario fue alterado, se niega a iniciar.</span>
-          <p class="status">En desarrollo</p>
-        </div>
-        <div class="eco-item" style="--z:4; --blank:28px; --blank-neck:10px; --tab:20px; --tab-neck:7px;">
-          <h3 class="name">ATLAS</h3>
-          <span class="desc"><strong>Motor de descubrimiento de proyectos,</strong> en stdlib puro sin una sola dependencia externa.
-            Antes de auditar un repo con ARCHANGEL, ATLAS lo perfila: ADN por tamaño, Índices de
-            densidad/modularidad/fragmentación, huellas de 23 frameworks y 10 herramientas de infraestructura,
-            arquitectura por patrones de carpetas, y un Explorability Index de 8 dimensiones. Termina en un veredicto de
-            una sola tarjeta: tipo de proyecto, stack completo, salud y riesgos — validado con 57 aserciones
-            automatizadas en 4 niveles, todas en verde.</span>
-          <p class="status">v0.4.0</p>
-        </div>
-        <div class="eco-item" style="--z:3; --blank:20px; --blank-neck:7px; --tab:38px; --tab-neck:13px;">
-          <h3 class="name stress-title" style="view-transition-name: vt-kairos-title;">KAIROS</h3>
-          <span class="desc"><strong>App de asistencia en emergencias en Flutter</strong> — 117 archivos, ~23.200 líneas, sin backend ni
-            cuentas. Su corazón es un Dead Man's Switch: si la persona deja de responder, dispara el aviso a su red de
-            confianza y una alarma física, sin que nadie tenga que tocar nada. Cada decisión de diseño está documentada
-            donde parece "de más": la alarma nunca se enciende sola al pedir ayuda (podría delatar a alguien
-            escondiéndose), y el SMS de alerta siempre es un borrador — la decisión final de avisar es humana, nunca de
-            la app (con una sola excepción opt-in: la ubicación en vivo).
-            <a class="eco-link" href="projects/kairos.html">Ver página completa →</a>
-          </span>
-          <p class="status">Primeras etapas</p>
-        </div>
-        <div class="eco-item" style="--z:2; --blank:38px; --blank-neck:13px; --tab:44px; --tab-neck:15px;">
-          <h3 class="name">Cazador de Enlaces</h3>
-          <span class="desc"><strong>El agente táctico del ecosistema:</strong> análisis estático enfocado en encontrar inconsistencias
-            de comunicación entre archivos — el cable roto que nadie más ve. "Cazando incoherencias en el ruido
-            digital."</span>
-          <p class="status">En desarrollo</p>
-        </div>
+      <div class="eco-grid">
+        <!-- SYS-01: EXARKON -->
+        <article class="eco-card bp-frame" data-system="EXARKON" id="sys-exarkon">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-01</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name">EXARKON</h3>
+            </div>
+            <div class="eco-status-badge status-dev">
+              <span class="status-dot"></span>
+              <span>En desarrollo</span>
+            </div>
+          </div>
+          <p class="eco-role">El cerebro del ecosistema: entorno de IA soberano 100% en local</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">Aislamiento</span>
+              <strong class="chip-val">7 capas</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Peligro</span>
+              <strong class="chip-val">0 - 100</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Hardware</span>
+              <strong class="chip-val">GPU Modesta</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            Su lema resume la apuesta: <em>«Razón sobre Proceso. Conciencia sobre Código.»</em> Todo código generado por IA corre primero dentro de un sandbox de 7 capas (proceso efímero con privilegios mínimos, sistema de archivos señuelo, red bloqueada, fuzzing determinístico). Por debajo, un traductor de hardware ajusta en vivo cuántas capas de un modelo caben en la GPU y frena la carga ante sobrecalentamiento.
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Proceso efímero · Red bloqueada</span>
+          </div>
+        </article>
+
+        <!-- SYS-02: EIDOLON -->
+        <article class="eco-card bp-frame" data-system="EIDOLON" id="sys-eidolon">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-02</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name">EIDOLON</h3>
+            </div>
+            <div class="eco-status-badge status-beta">
+              <span class="status-dot"></span>
+              <span>Beta avanzada</span>
+            </div>
+          </div>
+          <p class="eco-role">Motor de simulación cognitiva para entidades sintéticas persistentes</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">Memoria</span>
+              <strong class="chip-val">Ebbinghaus</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Canon</span>
+              <strong class="chip-val">Firewall 3 capas</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">VRAM</span>
+              <strong class="chip-val">Bin-Packing</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            100% local — construido en ~120 horas para la entidad <em>Azazel Ameri</em>. No es un chatbot con memoria: la memoria decae matemáticamente con el tiempo, las emociones tienen inercia real, y un cortafuegos psicológico descarta respuestas del LLM que rompan el canon antes de llegar a la pantalla. Orquestador de VRAM cooperativo para LLM, difusión y voz simultáneos.
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Inercia emocional real</span>
+            <a class="eco-link" href="#memoria" style="margin-top:0;">Probar fórmula ↓</a>
+          </div>
+        </article>
+
+        <!-- SYS-03: A.R.K. -->
+        <article class="eco-card bp-frame" data-system="ARK" id="sys-ark">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-03</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name">A.R.K.</h3>
+            </div>
+            <div class="eco-status-badge status-dev">
+              <span class="status-dot"></span>
+              <span>En desarrollo</span>
+            </div>
+          </div>
+          <p class="eco-role">Navegador de privacidad estricta y aislamiento entre operador y red</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">100+ pestañas</span>
+              <strong class="chip-val">&lt; 500MB RAM</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Firma</span>
+              <strong class="chip-val">Ed25519</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Auditoría</span>
+              <strong class="chip-val">Log Inmutable</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            Bloquea telemetría y trackers en capa de red antes de que salga el primer byte. Introduce variaciones controladas en Canvas/AudioContext para dificultar el rastreo por huella digital. Su gestor de memoria congela pestañas inactivas a disco y libera el proceso por completo: 100+ pestañas abiertas, menos de 500MB de RAM real con restauración instantánea.
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Cero opacidad · RAM liberada</span>
+          </div>
+        </article>
+
+        <!-- SYS-04: ATLAS -->
+        <article class="eco-card bp-frame" data-system="ATLAS" id="sys-atlas">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-04</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name">ATLAS</h3>
+            </div>
+            <div class="eco-status-badge status-stable">
+              <span class="status-dot"></span>
+              <span>v0.4.0 Estable</span>
+            </div>
+          </div>
+          <p class="eco-role">Motor de descubrimiento y perfilado holístico de repositorios</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">Dependencias</span>
+              <strong class="chip-val">0 (Stdlib puro)</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Aserciones</span>
+              <strong class="chip-val">57 en verde</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Huellas</span>
+              <strong class="chip-val">23 frameworks</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            En stdlib puro sin dependencias externas. Antes de auditar un repo con ARCHANGEL, ATLAS lo perfila: ADN por tamaño, densidad, modularidad, fragmentación, huellas de frameworks y un Explorability Index de 8 dimensiones. Termina en un veredicto de una sola tarjeta: tipo de proyecto, stack completo, salud y riesgos.
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Diagnóstico holístico previo</span>
+          </div>
+        </article>
+
+        <!-- SYS-05: KAIROS -->
+        <article class="eco-card bp-frame" data-system="KAIROS" id="sys-kairos">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-05</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name stress-title" style="view-transition-name: vt-kairos-title;">KAIROS</h3>
+            </div>
+            <div class="eco-status-badge status-init">
+              <span class="status-dot"></span>
+              <span>Etapa inicial</span>
+            </div>
+          </div>
+          <p class="eco-role">App de asistencia en emergencias bajo degradación controlada</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">Codebase</span>
+              <strong class="chip-val">~23.2k líneas</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Backend</span>
+              <strong class="chip-val">Zero / 0 cuentas</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Garantía</span>
+              <strong class="chip-val">Dead Man's Switch</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            App en Flutter de 117 archivos. Su corazón es un Dead Man's Switch: si la persona deja de responder, dispara el aviso a su red de confianza y una alarma física. Cada decisión técnica prioriza no depender de infraestructura externa: funciona sin señal celular, sin backend y sin cuentas.
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Resiliencia sin infraestructura</span>
+            <a class="eco-link" href="projects/kairos.html" style="margin-top:0;">Página completa →</a>
+          </div>
+        </article>
+
+        <!-- SYS-06: Cazador de Enlaces -->
+        <article class="eco-card bp-frame" data-system="CAZADOR" id="sys-cazador">
+          <div class="eco-card-header">
+            <div class="eco-sys-tag">
+              <span class="eco-sys-id">SYS-06</span>
+              <span class="eco-sys-sep">//</span>
+              <h3 class="name">Cazador de Enlaces</h3>
+            </div>
+            <div class="eco-status-badge status-dev">
+              <span class="status-dot"></span>
+              <span>En desarrollo</span>
+            </div>
+          </div>
+          <p class="eco-role">Agente táctico para detección de inconsistencias de comunicación cruzada</p>
+          <div class="eco-metrics-row">
+            <div class="eco-metric-chip">
+              <span class="chip-label">Objetivo</span>
+              <strong class="chip-val">Cross-File AST</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Enfoque</span>
+              <strong class="chip-val">Cables Rotos</strong>
+            </div>
+            <div class="eco-metric-chip">
+              <span class="chip-label">Modo</span>
+              <strong class="chip-val">Heurística pura</strong>
+            </div>
+          </div>
+          <p class="eco-desc">
+            El agente táctico del ecosistema: análisis estático enfocado en encontrar inconsistencias de comunicación entre archivos y módulos — el cable roto que nadie más ve. <em>«Cazando incoherencias en el ruido digital.»</em>
+          </p>
+          <div class="eco-card-footer">
+            <span class="eco-tagline">Detección de incoherencias silenciosas</span>
+          </div>
+        </article>
       </div>
       <p class="bp-caption">SISTEMA: <b>ECOSISTEMA</b> · REV v2026.10</p>
     </div>
@@ -467,15 +678,35 @@
       <p class="system-intro">La misma fórmula que corre en EIDOLON: <code class="eb-formula">R(t) = e^(−t / S)</code> — retención en función de los días sin mencionarse, con S (estabilidad) creciendo cada vez que la memoria se refuerza. No es una animación simulada: moviendo el slider estás evaluando la fórmula real, en vivo.</p>
 
       <div class="eb-demo">
-        <div class="eb-memory">
+        <div class="eb-memory bp-frame">
+          <div class="eb-terminal-tag">PARÁMETRO DE CANON IDENTIFICADO</div>
           <p class="eb-memory-text" id="ebMemoryText">"A Azazel le gusta el té de jazmín, no el verde."</p>
           <div class="eb-readout">
-            <span>RETENCIÓN</span><b id="ebRetentionVal">100%</b>
-            <span>ESTABILIDAD (S)</span><b id="ebStabilityVal">4.0 días</b>
+            <div class="eb-readout-item">
+              <span>RETENCIÓN R(t)</span>
+              <b id="ebRetentionVal">100%</b>
+            </div>
+            <div class="eb-readout-item">
+              <span>ESTABILIDAD (S)</span>
+              <b id="ebStabilityVal">4.0 días</b>
+            </div>
+            <div class="eb-readout-item">
+              <span>ESTADO</span>
+              <b style="color:var(--accent);">CANON ACTIVO</b>
+            </div>
           </div>
         </div>
-        <div class="eb-graph-wrap">
+        <div class="eb-graph-wrap bp-frame">
+          <div class="eb-oscillo-header">
+            <span>OSCILOSCOPIO EIDOLON // CH-01</span>
+            <span class="eb-live-tag">● EN VIVO</span>
+          </div>
           <svg class="eb-graph" viewBox="0 0 300 140" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="40" x2="300" y2="40" stroke="rgba(77,240,224,0.08)" stroke-dasharray="2,2"></line>
+            <line x1="0" y1="85" x2="300" y2="85" stroke="rgba(77,240,224,0.08)" stroke-dasharray="2,2"></line>
+            <line x1="75" y1="10" x2="75" y2="130" stroke="rgba(77,240,224,0.08)" stroke-dasharray="2,2"></line>
+            <line x1="150" y1="10" x2="150" y2="130" stroke="rgba(77,240,224,0.08)" stroke-dasharray="2,2"></line>
+            <line x1="225" y1="10" x2="225" y2="130" stroke="rgba(77,240,224,0.08)" stroke-dasharray="2,2"></line>
             <line x1="0" y1="130" x2="300" y2="130" class="eb-axis"></line>
             <line x1="0" y1="10" x2="0" y2="130" class="eb-axis"></line>
             <path id="ebCurvePath" class="eb-curve" fill="none"></path>
@@ -487,7 +718,7 @@
       <div class="eb-controls">
         <label for="ebSlider">Días desde la última mención: <b id="ebDaysVal">0</b></label>
         <input type="range" id="ebSlider" min="0" max="30" step="1" value="0">
-        <button type="button" class="cta-btn" id="ebReinforceBtn">Reforzar memoria (simula que se vuelve a mencionar)</button>
+        <button type="button" class="cta-btn" id="ebReinforceBtn">⚡ Reforzar memoria (simula que se vuelve a mencionar)</button>
         <p class="eb-count">Reforzada <b id="ebReinforceCount">0</b> veces — cada refuerzo real aumenta S y aplana la curva.</p>
       </div>
       <p class="bp-caption">SISTEMA: <b>EIDOLON</b> · REV v2026.10</p>
@@ -500,84 +731,124 @@
     <div class="wrap">
       <p class="section-label">Sobre mí</p>
       <h2 class="section-title">Un arquitecto detrás de varios sistemas</h2>
-      <div class="about-photo-wrap bp-frame" data-parallax-speed="0.08">
-        <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo" id="about-photo-img">
-        <canvas class="about-photo-canvas" id="about-photo-canvas" aria-hidden="true"></canvas>
-      </div>
-      <div class="about-body">
-        <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
-        <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
-          diseño la arquitectura, desarrollo los sistemas que la componen, construyo sus interfaces y, cuando es
-          necesario, también desarrollo las herramientas e infraestructura que los mantienen funcionando.</p>
-        <p>SINTAXIS G nació de una idea sencilla: si voy a construir un sistema, quiero entenderlo lo suficiente como
-          para poder controlar sus piezas fundamentales.</p>
-        <p>Por eso mis proyectos no siguen necesariamente un único stack ni una única categoría. Trabajo con Python,
-          React/Vite, Flutter, Linux y distintas tecnologías según lo que el problema requiera. La tecnología es una
-          herramienta; la arquitectura y el propósito del sistema son lo que realmente importan.</p>
+      <div class="about-dossier">
+        <!-- Sidebar Sticky Profile -->
+        <aside class="about-sidebar">
+          <div class="about-card bp-frame">
+            <div class="about-photo-wrap">
+              <img src="assets/img/gabo-foto.jpg" alt="Gabriel Adolfo Merino Hernández (Gabo)" width="486" height="483" class="about-photo" id="about-photo-img">
+              <canvas class="about-photo-canvas" id="about-photo-canvas" aria-hidden="true"></canvas>
+            </div>
+            <div class="about-identity">
+              <span class="dossier-id">DOSSIER // 01</span>
+              <h3 class="about-name">Gabriel Adolfo Merino Hernández</h3>
+              <p class="about-alias">«Gabo»</p>
+              <p class="about-role-tag">Arquitecto de Software Independiente</p>
+            </div>
+            <div class="about-spec-list">
+              <div class="about-spec-row">
+                <span>EDAD</span>
+                <b>28 años</b>
+              </div>
+              <div class="about-spec-row">
+                <span>UBICACIÓN</span>
+                <b>México</b>
+              </div>
+              <div class="about-spec-row">
+                <span>ENFOQUE</span>
+                <b class="accent">Soberanía Local</b>
+              </div>
+              <div class="about-spec-row">
+                <span>FILOSOFÍA</span>
+                <b>Cero dependencias ciegas</b>
+              </div>
+              <div class="about-spec-row">
+                <span>SISTEMA</span>
+                <b>SINTAXIS G</b>
+              </div>
+            </div>
+            <div class="about-sidebar-cta">
+              <a href="#contacto" class="featured-link" style="width:100%; justify-content:center; margin-top:0.5rem;">Contactar directamente →</a>
+            </div>
+          </div>
+        </aside>
 
-        <h3 class="about-subhead" id="about-construir">Construir, no solamente implementar</h3>
-        <p>Con el tiempo dejé de pensar en el software como aplicaciones aisladas. Un proyecto puede comenzar como una
-          herramienta pequeña y terminar convirtiéndose en un sistema compuesto por servicios, interfaces, análisis,
-          almacenamiento, automatización e infraestructura propia. Esa evolución es parte natural de mi forma de
-          trabajar.</p>
-        <p>He construido sistemas para problemas muy distintos: desde herramientas de asistencia y aplicaciones móviles
-          hasta plataformas de análisis y sistemas capaces de trabajar sobre bases de código de gran tamaño.</p>
-        <p>Uno de mis proyectos actuales, <strong>ARCHANGEL</strong>, representa especialmente esa evolución: un sistema
-          construido alrededor del análisis y comprensión de software, acompañado por sus propias herramientas de
-          control, monitoreo e interfaz.</p>
-        <p>Otros proyectos, como <strong>KAIROS</strong>, parten de una preocupación diferente: cómo diseñar software
-          que siga siendo útil cuando las condiciones reales no son perfectas, priorizando disponibilidad, degradación
-          controlada y dependencia mínima de servicios externos.</p>
+        <!-- Right: The Architectural Manifesto & Deep Stack -->
+        <div class="about-body">
+          <p>Soy <strong>Gabriel Adolfo Merino Hernández</strong> — para el resto del mundo, simplemente <strong>Gabo</strong> — arquitecto de software independiente de 28 años y creador de SINTAXIS G.</p>
+          <p>Construyo software de principio a fin. No trabajo únicamente sobre una capa concreta de una aplicación:
+            diseño la arquitectura, desarrollo los sistemas que la componen, construyo sus interfaces y, cuando es
+            necesario, también desarrollo las herramientas e infraestructura que los mantienen funcionando.</p>
+          <p>SINTAXIS G nació de una idea sencilla: si voy a construir un sistema, quiero entenderlo lo suficiente como
+            para poder controlar sus piezas fundamentales.</p>
+          <p>Por eso mis proyectos no siguen necesariamente un único stack ni una única categoría. Trabajo con Python,
+            React/Vite, Flutter, Linux y distintas tecnologías según lo que el problema requiera. La tecnología es una
+            herramienta; la arquitectura y el propósito del sistema son lo que realmente importan.</p>
 
-        <h3 class="about-subhead" id="about-arquitectura">Debajo de la arquitectura</h3>
-        <p>Python es donde paso la mayor parte del tiempo, y no en el sentido superficial: manipulación real de
-          <span class="tech-chip" data-tip="No regex disfrazado de parser — un árbol de sintaxis real, navegado y transformado como tal.">AST</span> (no
-          regex disfrazado de parser), <span class="tech-chip" data-tip="Aislamiento real de procesos hijo — no threads compartiendo memoria con todos los problemas de eso.">multiprocessing</span> con aislamiento real de procesos hijo, un
-          <span class="tech-chip" data-tip="Solver SMT real — prueba matemáticamente que algo es cierto, no adivina con heurísticas ni tests de muestra.">solver SMT (Z3)</span> para
-          probar matemáticamente en vez de adivinar con heurísticas, <span class="tech-chip" data-tip="Ed25519 para firmas, AES-256-GCM para cifrado autenticado — criptografía de verdad cuando el problema la exige, no un hash MD5 de relleno.">criptografía real (Ed25519, AES-256-GCM)</span> cuando el
-          problema lo exige. El resto del stack lo elijo por el problema, no por costumbre: <span class="tech-chip" data-tip="Sin React/Vue/etc — control fino sobre el navegador cuando hace falta. Este mismo sitio corre así, Canvas y WebGL incluidos.">JavaScript sin framework</span>
-          cuando quiero control fino sobre el navegador — este mismo sitio corre así, Canvas y WebGL incluidos —, <span class="tech-chip" data-tip="Cuando la velocidad de iteración de una interfaz importa más que el control total sobre el DOM.">React</span>
-          cuando la velocidad de iteración de una interfaz importa más que el control total, <span class="tech-chip" data-tip="Cuando el problema es una app que tiene que funcionar sin conexión y sin backend — un solo codebase, dos plataformas.">Flutter</span> cuando el
-          problema es una app que tiene que funcionar sin conexión y sin backend.</p>
-        <p>Buena parte de mi trabajo reciente es orquestación de IA local: modelos corriendo en hardware de consumo,
-          recuperación híbrida de contexto, y sistemas que necesitan sostener consistencia a lo largo de miles de
-          turnos sin que un humano revise cada respuesta. <strong>EIDOLON</strong> es el ejemplo más concreto: audita
-          cada respuesta del modelo contra un canon narrativo establecido — sin embeddings ni modelos de ML, con tres
-          capas de reglas lingüísticas (negación, polaridad opuesta, conflicto de atributos) que detectan cuando el
-          LLM afirma lo contrario de lo ya establecido, aunque comparta el 85% de las palabras con el hecho original.
-          Si encuentra una contradicción, esa respuesta nunca llega a la pantalla — se regenera antes. <a href="#memoria" class="eco-link">Probá cómo decae una memoria real ↓</a></p>
-        <p>Y en el extremo opuesto: seguridad de sistemas, tanto defensiva (sandboxing real de procesos, análisis de
-          flujo de datos contaminados, hardening de superficie) como suficiente criterio del lado ofensivo/forense
-          como para diseñar contramedidas con fundamento, no copiando un checklist genérico.</p>
+          <h3 class="about-subhead" id="about-construir">// 01. Construir, no solamente implementar</h3>
+          <p>Con el tiempo dejé de pensar en el software como aplicaciones aisladas. Un proyecto puede comenzar como una
+            herramienta pequeña y terminar convirtiéndose en un sistema compuesto por servicios, interfaces, análisis,
+            almacenamiento, automatización e infraestructura propia. Esa evolución es parte natural de mi forma de
+            trabajar.</p>
+          <p>He construido sistemas para problemas muy distintos: desde herramientas de asistencia y aplicaciones móviles
+            hasta plataformas de análisis y sistemas capaces de trabajar sobre bases de código de gran tamaño.</p>
+          <p>Uno de mis proyectos actuales, <strong>ARCHANGEL</strong>, representa especialmente esa evolución: un sistema
+            construido alrededor del análisis y comprensión de software, acompañado por sus propias herramientas de
+            control, monitoreo e interfaz.</p>
+          <p>Otros proyectos, como <strong>KAIROS</strong>, parten de una preocupación diferente: cómo diseñar software
+            que siga siendo útil cuando las condiciones reales no son perfectas, priorizando disponibilidad, degradación
+            controlada y dependencia mínima de servicios externos.</p>
 
-        <h3 class="about-subhead" id="about-trabajo">Una forma particular de trabajar</h3>
-        <p>Prefiero tener una visión completa del sistema antes que limitarme a resolver una sola parte. Eso también
-          significa que muchas veces termino construyendo herramientas que originalmente ni siquiera estaban
-          contempladas en el proyecto. Si una pieza falta y esa pieza es importante para que el sistema funcione
-          correctamente, prefiero construirla antes que simplemente asumir que alguien más la proporcionará.</p>
-        <p>Esa misma visión completa también sirve para descartar: cuando diseño un módulo nuevo, es común que termine
-          tirando tantas ideas como las que implemento, si no aportan una señal real y solo inflarían el sistema sin
-          motivo.</p>
-        <p>Trabajo directamente sobre el código y las decisiones técnicas de mis proyectos, manteniendo una relación
-          estrecha entre arquitectura, implementación y evolución del sistema.</p>
-        <p>No busco utilizar más tecnología de la necesaria. Busco que cada pieza tenga una razón para existir.</p>
+          <h3 class="about-subhead" id="about-arquitectura">// 02. Debajo de la arquitectura (Stack profundo)</h3>
+          <p>Python es donde paso la mayor parte del tiempo, y no en el sentido superficial: manipulación real de
+            <span class="tech-chip" data-tip="No regex disfrazado de parser — un árbol de sintaxis real, navegado y transformado como tal.">AST</span> (no
+            regex disfrazado de parser), <span class="tech-chip" data-tip="Aislamiento real de procesos hijo — no threads compartiendo memoria con todos los problemas de eso.">multiprocessing</span> con aislamiento real de procesos hijo, un
+            <span class="tech-chip" data-tip="Solver SMT real — prueba matemáticamente que algo es cierto, no adivina con heurísticas ni tests de muestra.">solver SMT (Z3)</span> para
+            probar matemáticamente en vez de adivinar con heurísticas, <span class="tech-chip" data-tip="Ed25519 para firmas, AES-256-GCM para cifrado autenticado — criptografía de verdad cuando el problema la exige, no un hash MD5 de relleno.">criptografía real (Ed25519, AES-256-GCM)</span> cuando el
+            problema lo exige. El resto del stack lo elijo por el problema, no por costumbre: <span class="tech-chip" data-tip="Sin React/Vue/etc — control fino sobre el navegador cuando hace falta. Este mismo sitio corre así, Canvas y WebGL incluidos.">JavaScript sin framework</span>
+            cuando quiero control fino sobre el navegador — este mismo sitio corre así, Canvas y WebGL incluidos —, <span class="tech-chip" data-tip="Cuando la velocidad de iteración de una interfaz importa más que el control total sobre el DOM.">React</span>
+            cuando la velocidad de iteración de una interfaz importa más que el control total, <span class="tech-chip" data-tip="Cuando el problema es una app que tiene que funcionar sin conexión y sin backend — un solo codebase, dos plataformas.">Flutter</span> cuando el
+            problema es una app que tiene que funcionar sin conexión y sin backend.</p>
+          <p>Buena parte de mi trabajo reciente es orquestación de IA local: modelos corriendo en hardware de consumo,
+            recuperación híbrida de contexto, y sistemas que necesitan sostener consistencia a lo largo de miles de
+            turnos sin que un humano revise cada respuesta. <strong>EIDOLON</strong> es el ejemplo más concreto: audita
+            cada respuesta del modelo contra un canon narrativo establecido — sin embeddings ni modelos de ML, con tres
+            capas de reglas lingüísticas (negación, polaridad opuesta, conflicto de atributos) que detectan cuando el
+            LLM afirma lo contrario de lo ya establecido, aunque comparta el 85% de las palabras con el hecho original.
+            Si encuentra una contradicción, esa respuesta nunca llega a la pantalla — se regenera antes. <a href="#memoria" class="eco-link">Probá cómo decae una memoria real ↓</a></p>
+          <p>Y en el extremo opuesto: seguridad de sistemas, tanto defensiva (sandboxing real de procesos, análisis de
+            flujo de datos contaminados, hardening de superficie) como suficiente criterio del lado ofensivo/forense
+            como para diseñar contramedidas con fundamento, no copiando un checklist genérico.</p>
 
-        <h3 class="about-subhead" id="about-sintaxisg">SINTAXIS G</h3>
-        <p>SINTAXIS G es el espacio donde concentro esta forma de construir software. No es solamente un nombre para
-          proyectos independientes. Es el punto común entre sistemas que, aunque tengan propósitos completamente
-          diferentes, comparten una misma intención: crear herramientas capaces, controlables y diseñadas alrededor del
-          problema que necesitan resolver.</p>
-        <p>La nube, las APIs externas y los servicios de terceros pueden ser herramientas útiles. Pero no considero que
-          deban convertirse automáticamente en dependencias fundamentales. Cuando existe una alternativa razonable,
-          prefiero que una parte crítica del sistema pueda permanecer bajo control directo.</p>
-        <blockquote class="about-quote">"La mejor arquitectura no es la que utiliza más tecnología. Es la que conserva el control sobre lo que realmente importa."</blockquote>
+          <h3 class="about-subhead" id="about-trabajo">// 03. Una forma particular de trabajar</h3>
+          <p>Prefiero tener una visión completa del sistema antes que limitarme a resolver una sola parte. Eso también
+            significa que muchas veces termino construyendo herramientas que originalmente ni siquiera estaban
+            contempladas en el proyecto. Si una pieza falta y esa pieza es importante para que el sistema funcione
+            correctamente, prefiero construirla antes que simplemente asumir que alguien más la proporcionará.</p>
+          <p>Esa misma visión completa también sirve para descartar: cuando diseño un módulo nuevo, es común que termine
+            tirando tantas ideas como las que implemento, si no aportan una señal real y solo inflarían el sistema sin
+            motivo.</p>
+          <p>Trabajo directamente sobre el código y las decisiones técnicas de mis proyectos, manteniendo una relación
+            estrecha entre arquitectura, implementación y evolución del sistema.</p>
+          <p>No busco utilizar más tecnología de la necesaria. Busco que cada pieza tenga una razón para existir.</p>
 
-        <h3 class="about-subhead" id="about-detras">Y detrás del código</h3>
-        <p>No concibo esto únicamente como una actividad profesional. Construir software se convirtió en mi manera de
-          explorar ideas, resolver problemas y convertir conceptos que existen solamente en mi cabeza en sistemas que
-          realmente funcionan.</p>
-        <p>SINTAXIS G es el resultado de esa evolución: una persona, múltiples sistemas y una arquitectura que continúa
-          creciendo.</p>
+          <h3 class="about-subhead" id="about-sintaxisg">// 04. SINTAXIS G</h3>
+          <p>SINTAXIS G es el espacio donde concentro esta forma de construir software. No es solamente un nombre para
+            proyectos independientes. Es el punto común entre sistemas que, aunque tengan propósitos completamente
+            diferentes, comparten una misma intención: crear herramientas capaces, controlables y diseñadas alrededor del
+            problema que necesitan resolver.</p>
+          <p>La nube, las APIs externas y los servicios de terceros pueden ser herramientas útiles. Pero no considero que
+            deban convertirse automáticamente en dependencias fundamentales. Cuando existe una alternativa razonable,
+            prefiero que una parte crítica del sistema pueda permanecer bajo control directo.</p>
+          <blockquote class="about-quote bp-frame">"La mejor arquitectura no es la que utiliza más tecnología. Es la que conserva el control sobre lo que realmente importa."</blockquote>
+
+          <h3 class="about-subhead" id="about-detras">// 05. Y detrás del código</h3>
+          <p>No concibo esto únicamente como una actividad profesional. Construir software se convirtió en mi manera de
+            explorar ideas, resolver problemas y convertir conceptos que existen solamente en mi cabeza en sistemas que
+            realmente funcionan.</p>
+          <p>SINTAXIS G es el resultado de esa evolución: una persona, múltiples sistemas y una arquitectura que continúa
+            creciendo.</p>
+        </div>
       </div>
       <p class="bp-caption">SISTEMA: <b>GABO</b> · REV v2026.10</p>
     </div>
@@ -631,8 +902,8 @@
   </footer>
 
   <script src="js/main.js"></script>
-  <script src="js/command-palette.js"></script>
   <script src="js/blueprint-fx.js"></script>
+  <script src="js/command-palette.js"></script>
   <script src="js/ebbinghaus-demo.js"></script>
 
   <!-- Escena 3D del hero (Three.js vía CDN, cargado solo si el

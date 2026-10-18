@@ -117,10 +117,12 @@ body.focus-mode .wrap {
 .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
 .nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero (Kinetic & Living Systems Engine) ---------- */
 .hero {
   padding: var(--space-xl) 0 var(--space-lg);
   border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
 }
 .hero h1 {
   font-size: var(--fs-hero);
@@ -128,18 +130,155 @@ body.focus-mode .wrap {
   line-height: 1.02;
   letter-spacing: -0.02em;
   max-width: 18ch;
+  position: relative;
+  z-index: 2;
+  cursor: default;
 }
-.hero p {
+.hero p:not(.bp-caption) {
   margin-top: var(--space-md);
   max-width: var(--measure);
   color: var(--text-dim);
   font-size: 1.15rem;
+  position: relative;
+  z-index: 2;
 }
 .hero .lema-maestro {
   margin-top: var(--space-sm);
   color: var(--accent);
   font-family: var(--font-mono);
   font-size: 1.05rem;
+  cursor: default;
+  transition: text-shadow 0.25s ease;
+}
+.hero .lema-maestro:hover {
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* Reactor central del logo */
+.hero-reactor-dock {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: var(--space-md);
+  position: relative;
+  z-index: 2;
+}
+.reactor-wrapper {
+  position: relative;
+  width: 7.5rem;
+  height: 7.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.reactor-orbit {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.reactor-orbit.orbit-1 {
+  inset: -8px;
+  border: 1.5px dashed var(--accent);
+  opacity: 0.55;
+  animation: reactor-spin 24s linear infinite;
+}
+.reactor-orbit.orbit-2 {
+  inset: -16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-top-color: var(--accent);
+  border-bottom-color: var(--accent);
+  opacity: 0.65;
+  animation: reactor-spin-rev 16s linear infinite;
+}
+.reactor-wrapper:hover .reactor-orbit.orbit-1 {
+  animation-duration: 6s;
+  opacity: 0.95;
+  border-color: #FFFFFF;
+}
+.reactor-wrapper:hover .reactor-orbit.orbit-2 {
+  animation-duration: 4s;
+  opacity: 1;
+}
+@keyframes reactor-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes reactor-spin-rev {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+.reactor-core {
+  position: relative;
+  width: 6.8rem;
+  height: 6.8rem;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.reactor-wrapper:hover .reactor-core {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px color-mix(in srgb, var(--accent) 70%, transparent), 0 0 60px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.reactor-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.reactor-pulse-beacon {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  animation: beacon-pulse 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+@keyframes beacon-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.reactor-telemetry-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.75rem;
+  border-radius: 2px;
+  backdrop-filter: blur(6px);
+}
+.reactor-led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: led-flicker 2s ease-in-out infinite;
+}
+@keyframes led-flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+.reactor-telemetry-chip b { color: var(--accent); }
+.reactor-sep { color: var(--line); }
+
+/* Fila de saludo e interruptor de Sobrecarga */
+.hero-greeting-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  position: relative;
+  z-index: 2;
 }
 .hero p#hero-greeting {
   position: relative;
@@ -147,7 +286,7 @@ body.focus-mode .wrap {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  margin-top: 0;
+  margin: 0;
   max-width: none;
   font-family: var(--font-mono);
   font-size: var(--fs-small);
@@ -158,20 +297,125 @@ body.focus-mode .wrap {
   border: 1px solid var(--line);
   padding: 0.35rem 0.75rem;
   border-radius: 2px;
+  transition: all 0.25s var(--ease);
 }
 .hero p#hero-greeting::before { content: '▸'; color: var(--accent-dim); }
+
+.hero-overdrive-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.hero-overdrive-btn:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent2) 25%, transparent);
+}
+.hero-overdrive-btn.is-active {
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+  border-color: var(--accent);
+  color: #FFFFFF;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.hero-overdrive-btn.is-active .btn-spark {
+  color: #FFFFFF;
+  text-shadow: 0 0 8px var(--accent);
+  animation: spark-spin 1s linear infinite;
+}
+@keyframes spark-spin {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Métricas en el hero */
 .hero-meta {
   margin-top: var(--space-lg);
+  padding-bottom: 2.5rem;
   display: flex;
   gap: var(--space-lg);
   font-family: var(--font-mono);
   font-size: var(--fs-small);
   color: var(--text-dim);
+  position: relative;
+  z-index: 2;
 }
-.hero-meta strong { color: var(--text); display: block; font-size: 1.1rem; font-family: var(--font-sans); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
-.hero-meta > div { transition: transform 0.2s var(--ease); }
-.hero-meta > div:hover { transform: translateY(-3px); }
-.hero-meta > div:hover strong { color: var(--accent); transform: scale(1.06); transform-origin: left center; }
+.hero-meta .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transition: transform 0.2s var(--ease);
+}
+.hero-meta .meta-item strong {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-family: var(--font-sans);
+  transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.hero-meta .meta-item:hover {
+  transform: translateY(-3px);
+}
+.hero-meta .meta-item:hover strong {
+  color: var(--accent);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+  transform: scale(1.06);
+  transform-origin: left center;
+}
+
+/* Blueprint caption del Hero — anclado a la esquina inferior derecha sin colisiones */
+.hero .bp-caption {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent-dim);
+  z-index: 2;
+  margin: 0;
+  max-width: none;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.hero .bp-caption b {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .hero-meta {
+    padding-bottom: 0;
+  }
+  .hero .bp-caption {
+    position: static !important;
+    display: block;
+    text-align: right;
+    margin-top: 1.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-reactor-dock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .hero-meta {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+}
 .physics-drag { cursor: grab; touch-action: none; will-change: transform; user-select: none; }
 .physics-drag.is-dragging { cursor: grabbing; }
 
@@ -271,6 +515,82 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 85%);
 }
 .stat:hover b { transform: scale(1.08); transform-origin: left center; }
+
+/* Chips de fundamentos físicos para ARCHANGEL */
+.archangel-physics-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: var(--space-sm) 0;
+}
+.physics-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  padding: 0.3rem 0.65rem;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 3px;
+  color: var(--text);
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), background 0.2s var(--ease);
+}
+.physics-chip:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  transform: translateY(-2px);
+}
+.chip-sym {
+  color: var(--accent);
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* Bus de interfaces de ARCHANGEL */
+.archangel-interfaces-bus {
+  margin-top: var(--space-md);
+  padding: 0.75rem 1rem;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.bus-header {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.45rem;
+}
+.bus-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.bus-node {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.bus-node.core {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  font-weight: 600;
+}
+.bus-conn {
+  color: var(--accent);
+  opacity: 0.6;
+}
 
 /* ---------- Mapa del ecosistema ---------- */
 .system-map { background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 4.5%, transparent), transparent); }
@@ -449,47 +769,443 @@ section { padding: var(--space-xl) 0; border-bottom: 1px solid var(--line); }
   padding-top: 0.2rem;
 }
 
-/* ---------- About ---------- */
+/* ============================================================
+   BENTO GRID — Ecosistema de Sistemas de Ingeniería
+   Tarjetas modulares tácticas con LED de estado, métricas
+   físicas/arquitectónicas y spotlight interactivo.
+   ============================================================ */
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: var(--space-md);
+}
+
+@media (max-width: 900px) {
+  .eco-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.eco-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.15rem;
+  padding: 1.85rem 1.85rem 1.6rem;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+  overflow: hidden;
+}
+
+.eco-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* Spotlight radial que sigue al cursor */
+.eco-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.eco-card:hover::after {
+  opacity: 1;
+}
+
+/* Header de la tarjeta */
+.eco-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  padding-bottom: 0.75rem;
+}
+
+.eco-sys-tag {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.eco-sys-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.eco-sys-sep {
+  color: var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.eco-card .name {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* LED de estado */
+.eco-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.eco-status-badge.status-dev {
+  color: #E5B567;
+  border-color: color-mix(in srgb, #E5B567 30%, transparent);
+}
+.eco-status-badge.status-dev .status-dot {
+  box-shadow: 0 0 8px #E5B567;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+.eco-status-badge.status-beta {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.eco-status-badge.status-beta .status-dot {
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse-dot 2.4s infinite ease-in-out;
+}
+
+.eco-status-badge.status-stable {
+  color: #5CF19E;
+  border-color: color-mix(in srgb, #5CF19E 30%, transparent);
+}
+.eco-status-badge.status-stable .status-dot {
+  box-shadow: 0 0 8px #5CF19E;
+}
+
+.eco-status-badge.status-init {
+  color: #B598E8;
+  border-color: color-mix(in srgb, #B598E8 30%, transparent);
+}
+.eco-status-badge.status-init .status-dot {
+  box-shadow: 0 0 8px #B598E8;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Subtítulo / Rol del sistema */
+.eco-role {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Fila de chips de especificación técnica / telemetría */
+.eco-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem;
+}
+
+.eco-metric-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.chip-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.chip-val {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Descripción */
+.eco-desc {
+  font-family: var(--font-plex);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  margin: 0;
+  flex-grow: 1;
+}
+.eco-desc em {
+  font-family: var(--font-voice);
+  color: var(--accent-dim);
+}
+.eco-desc strong {
+  color: var(--text);
+}
+
+/* Footer de la tarjeta */
+.eco-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed color-mix(in srgb, var(--line) 70%, transparent);
+  padding-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.eco-tagline {
+  color: var(--accent-dim);
+}
+
+/* ---------- About / Dossier de Arquitecto ---------- */
+.about-dossier {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 3.5rem;
+  align-items: start;
+  margin-top: var(--space-md);
+}
+
+@media (max-width: 950px) {
+  .about-dossier {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.about-sidebar {
+  position: sticky;
+  top: 5rem;
+}
+
+.about-card {
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 .about-photo-wrap {
   position: relative;
-  width: 11rem;
-  height: 11rem;
-  margin: 0 0 var(--space-lg);
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 240px;
+  margin: 0 auto;
 }
+
 .about-photo {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   margin: 0;
-  border: 2px solid var(--accent-dim);
-  border-radius: 50% 50% 16px 50%;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
 }
-.about-body { max-width: var(--measure); color: var(--text-dim); }
+
+.about-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.85rem;
+}
+
+.dossier-id {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.about-name {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  margin: 0.2rem 0 0;
+}
+
+.about-alias {
+  font-family: var(--font-voice);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--accent-dim);
+  margin: 0;
+}
+
+.about-role-tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 0.2rem;
+}
+
+.about-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.about-spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  border-bottom: 1px dashed color-mix(in srgb, var(--line) 50%, transparent);
+  padding-bottom: 0.35rem;
+}
+
+.about-spec-row span {
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.about-spec-row b {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+}
+.about-spec-row b.accent {
+  color: var(--accent);
+}
+
+.about-body {
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.7;
+}
 .about-subhead {
   margin-top: var(--space-lg);
   padding-top: var(--space-md);
   border-top: 1px solid var(--line);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 .about-quote {
-  margin: var(--space-md) 0 0;
+  margin: var(--space-md) 0;
   padding: var(--space-md) var(--space-md);
-  border-left: 2px solid var(--accent);
-  border-radius: 0 14px 14px 0;
-  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   color: var(--text);
   font-family: var(--font-voice);
   font-style: italic;
   font-size: 1.25rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 .about-body p + p { margin-top: var(--space-sm); }
 .about-body strong { color: var(--text); font-weight: 600; }
+
+/* Osciloscopio y Demo EIDOLON */
+.eb-terminal-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent-dim);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+.eb-readout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  padding-top: 0.75rem;
+  margin-top: 1rem;
+}
+.eb-readout-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.eb-readout-item span {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.eb-readout-item b {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.eb-oscillo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  padding-bottom: 0.5rem;
+}
+.eb-live-tag {
+  color: var(--accent);
+  font-weight: 600;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
 
 /* ---------- Contact ---------- */
 .contact { border-bottom: none; }
@@ -777,102 +1493,234 @@ a:focus-visible, button:focus-visible {
   .nav-links a { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--line); }
 }
 
-/* ---------- Custom cursor: punto+anillo en reposo, snap magnético ---------- */
-/* body.has-custom-cursor la agrega JS solo si logró crear el punto —
-   así el cursor del sistema nunca desaparece si el script falla (y
-   recién se agrega después del primer mousemove real, no de entrada:
-   si no, el nativo ya estaría oculto y el custom todavía sin
-   posicionar). */
-body.has-custom-cursor { cursor: none; }
+@media (max-width: 600px) {
+  .nav .wrap {
+    gap: 0.5rem;
+  }
+  .nav-mark {
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav-mark img {
+    height: 2.1rem !important;
+    width: 2.1rem !important;
+    margin-right: 0.35rem !important;
+  }
+  .nav-brand-text {
+    font-size: 0.95rem;
+  }
+  .mode-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-brand-text {
+    display: none;
+  }
+}
+
+/* ---------- Puntero Táctico HUD 2.0 (High-Contrast Reticle & Fluid Follower) ---------- */
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor input[type="range"],
+body.has-custom-cursor .mode-btn {
+  cursor: none !important;
+}
+
 .bp-cursor {
   position: fixed;
   top: 0; left: 0;
   width: 0; height: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999;
 }
-.bp-cursor .dot {
+
+/* Punto central de mira (0ms lag) — Alto contraste garantizado:
+   Centro blanco puro + anillo barrera oscuro + corona de neón cian.
+   NUNCA desaparece ni se pierde contra textos cian o fondos complejos. */
+.bp-cursor-dot {
   position: absolute;
-  top: -3px; left: -3px;
-  width: 6px; height: 6px;
+  top: -3.5px; left: -3.5px;
+  width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--accent);
-  transition: opacity 0.2s ease;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1.5px #070B12, 0 0 10px var(--accent), 0 0 20px var(--accent);
+  transition: transform 0.15s var(--ease), background 0.15s ease;
+  will-change: transform;
 }
-/* Anillo hexagonal girando en reposo — se apaga apenas se engancha a
-   algo (los dos estados no se acumulan, uno reemplaza al otro). */
-.bp-cursor .ring {
-  position: absolute;
-  top: -15px; left: -15px;
-  width: 30px; height: 30px;
-  border: 1.5px solid var(--accent-dim);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  animation: bp-cursor-spin 5s linear infinite;
-  transition: opacity 0.2s ease;
-}
-@keyframes bp-cursor-spin { to { transform: rotate(360deg); } }
 
-/* Corchetes de snap magnético — se reposicionan al contorno real del
-   elemento bajo el mouse (tarjetas, links, paneles con .bp-frame),
-   con rebote, en vez de tener un tamaño fijo. */
-.bp-cursor .corner {
+/* Retículo seguidor fluido (Lerp con amortiguación inercial aeronáutica) */
+.bp-cursor-reticle {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--accent);
-  opacity: 0;
-  transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.2s ease;
+  top: -16px; left: -16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              top 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              left 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s var(--ease);
+  will-change: transform;
 }
-.bp-cursor .c-tl { border-right: none; border-bottom: none; }
-.bp-cursor .c-tr { border-left: none; border-bottom: none; }
-.bp-cursor .c-bl { border-right: none; border-top: none; }
-.bp-cursor .c-br { border-left: none; border-top: none; }
 
-/* Etiqueta — solo para links reales (<a>), nunca en tarjetas
-   informativas que no llevan a ningún lado. */
-.bp-cursor .label {
+/* Ticks ortogonales de precisión */
+.reticle-tick {
   position: absolute;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--bg);
-  background: var(--accent);
-  padding: 2px 6px;
-  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 0 4px var(--accent);
+  transition: all 0.2s ease;
+}
+.reticle-tick.t-top { top: 0; left: 50%; width: 1.5px; height: 4px; transform: translateX(-50%); }
+.reticle-tick.t-bottom { bottom: 0; left: 50%; width: 1.5px; height: 4px; transform: translateX(-50%); }
+.reticle-tick.t-left { left: 0; top: 50%; width: 4px; height: 1.5px; transform: translateY(-50%); }
+.reticle-tick.t-right { right: 0; top: 50%; width: 4px; height: 1.5px; transform: translateY(-50%); }
+
+/* Corchetes CAD del retículo */
+.reticle-corner {
+  position: absolute;
+  width: 6px; height: 6px;
+  border: 1.5px solid var(--accent);
+  opacity: 0.65;
+  transition: all 0.25s var(--ease);
+}
+.reticle-corner.c-tl { top: 3px; left: 3px; border-right: none; border-bottom: none; }
+.reticle-corner.c-tr { top: 3px; right: 3px; border-left: none; border-bottom: none; }
+.reticle-corner.c-bl { bottom: 3px; left: 3px; border-right: none; border-top: none; }
+.reticle-corner.c-br { bottom: 3px; right: 3px; border-left: none; border-top: none; }
+
+/* Micro-HUD contextual (etiqueta y telemetría flotante) */
+.bp-cursor-hud {
+  position: absolute;
+  top: 0; left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.2s ease, transform 0.2s var(--ease);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.bp-cursor-hud.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.bp-cursor-hud .hud-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  background: color-mix(in srgb, #070B12 92%, var(--surface));
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.75), 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
-.bp-cursor.is-snapped .dot,
-.bp-cursor.is-snapped .ring { opacity: 0; }
-.bp-cursor.is-snapped .corner { opacity: 1; }
-.bp-cursor.is-snapped.has-label .label { opacity: 1; transform: translateY(0); }
+/* Modo INSPECT: activo al entrar en tarjetas de sistema o laboratorio */
+.bp-cursor.mode-inspect .bp-cursor-reticle {
+  top: -20px; left: -20px;
+  width: 40px; height: 40px;
+  transform: rotate(45deg);
+}
+.bp-cursor.mode-inspect .reticle-corner {
+  opacity: 1;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 6px var(--accent);
+}
+.bp-cursor.mode-inspect .reticle-tick {
+  background: #FFFFFF;
+  box-shadow: 0 0 6px var(--accent);
+}
 
-/* Obturador — micro-feedback de click, coherente con la metáfora de
-   visor/cámara del resto del cursor. */
+/* Modo ACTION: activo al sobrevolar botones, enlaces y toggles */
+.bp-cursor.mode-action .bp-cursor-reticle {
+  top: -14px; left: -14px;
+  width: 28px; height: 28px;
+  border-radius: 4px;
+  border: 1px dashed var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.bp-cursor.mode-action .reticle-corner {
+  opacity: 1;
+  width: 8px; height: 8px;
+  border-color: #FFFFFF;
+}
+.bp-cursor.mode-action .reticle-tick { opacity: 0; }
+.bp-cursor.mode-action .bp-cursor-dot {
+  transform: scale(1.35);
+  background: var(--accent);
+}
+
+/* Modo DRAG: activo en sliders de simulación */
+.bp-cursor.mode-drag .bp-cursor-reticle {
+  top: -12px; left: -24px;
+  width: 48px; height: 24px;
+  border-radius: 12px;
+  border: 1.5px solid var(--accent);
+}
+
+/* Micro-obturador táctico de click */
 .bp-cursor .shutter {
   position: absolute;
-  top: -2px; left: -2px;
+  top: 50%; left: 50%;
   width: 4px; height: 4px;
-  border: 2px solid var(--accent);
+  transform: translate(-50%, -50%);
+  border: 1.5px solid #FFFFFF;
   border-radius: 50%;
   opacity: 0;
+  pointer-events: none;
 }
 .bp-cursor .shutter.is-firing {
-  animation: bp-cursor-shutter 0.4s ease-out forwards;
+  animation: bp-hud-shutter 0.38s ease-out forwards;
 }
-@keyframes bp-cursor-shutter {
-  0% { width: 4px; height: 4px; top: -2px; left: -2px; opacity: 0.9; }
-  100% { width: 48px; height: 48px; top: -24px; left: -24px; opacity: 0; }
+@keyframes bp-hud-shutter {
+  0% { width: 4px; height: 4px; opacity: 1; border-color: #FFFFFF; }
+  50% { opacity: 0.7; border-color: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  100% { width: 56px; height: 56px; opacity: 0; border-color: var(--accent); }
+}
+
+/* Barrido láser radar sobre tarjetas de sistema (.eco-card) */
+.eco-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--accent) 12%, transparent) 60%, color-mix(in srgb, var(--accent) 55%, transparent) 100%);
+  border-bottom: 2px solid var(--accent);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+}
+.eco-card.card-scanned::before {
+  animation: bp-card-sweep 0.58s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes bp-card-sweep {
+  0% { top: -60px; opacity: 0.95; }
+  85% { opacity: 0.8; }
+  100% { top: 110%; opacity: 0; }
+}
+
+/* Realce de corchetes e ID al entrar en una tarjeta */
+.eco-card.card-scanned {
+  border-color: var(--accent) !important;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 30px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+}
+.eco-card.card-scanned .eco-sys-id {
+  color: #FFFFFF !important;
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bp-cursor .ring { animation: none; }
-  .bp-cursor .corner { transition: opacity 0.2s ease; }
+  .eco-card.card-scanned::before { animation: none; }
+  .bp-cursor .bp-cursor-reticle { transition: none; }
 }
 
 /* ---------- Mode toggles (nav) ---------- */

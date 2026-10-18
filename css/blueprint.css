@@ -177,30 +177,158 @@
   .bp-parallax-layer { display: none; }
 }
 
-/* HUD fijo de instrumento — altitud de scroll + tiempo en página.
+/* HUD fijo de instrumento — altitud de scroll + tiempo en página + diagnóstico.
    Solo desktop: en mobile compite con el pulgar y el espacio es poco. */
 .bp-hud {
   position: fixed;
   left: 1rem;
   bottom: 1rem;
   z-index: 40;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--line);
-  border-radius: 2px;
-  padding: 0.5rem 0.7rem;
+  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   color: var(--text-dim);
   display: none;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0.82;
+  transition: opacity 0.2s ease, border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 @media (min-width: 900px) {
   .bp-hud { display: block; }
+}
+.bp-hud:hover,
+.bp-hud:focus-within {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.bp-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.hud-toggle-tag {
+  color: var(--accent);
+  font-size: 0.58rem;
 }
 .bp-hud-row { display: flex; justify-content: space-between; gap: 0.9rem; }
 .bp-hud-row + .bp-hud-row { margin-top: 0.2rem; }
 .bp-hud b { color: var(--accent); font-weight: 500; }
 .bp-hud b.is-offline { color: var(--accent2); }
+
+.bp-hud-expanded {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.hud-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  padding: 0.35rem 0.45rem;
+  border-radius: 2px;
+}
+.hud-sub-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.hud-sub-row span {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+}
+.hud-sub-row b {
+  color: var(--accent);
+  font-size: 0.72rem;
+}
+.hud-mini-action {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  text-align: center;
+}
+.hud-mini-action:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+
+/* Modal de Auditoría ARCHANGEL */
+.bp-audit-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  width: 90%;
+  max-width: 480px;
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 1.75rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px color-mix(in srgb, var(--accent) 25%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  animation: modal-pop 0.25s var(--ease);
+}
+@keyframes modal-pop {
+  0% { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+.audit-title {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.15rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.audit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+}
+.audit-row span {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+.audit-row b {
+  color: var(--text);
+  font-weight: 500;
+}
+.audit-caption {
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  border-top: 1px dashed var(--line);
+  padding-top: 0.65rem;
+  line-height: 1.4;
+}
 
 /* Flash de "señal estabilizándose" al navegar por anclas del nav —
    puro feedback, nunca retrasa la navegación real. */
@@ -539,7 +667,7 @@ body.bp-boot-locked { overflow: hidden; height: 100vh; }
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50% 50% 16px 50%;
+  border-radius: 4px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s var(--ease);
@@ -612,4 +740,14 @@ body.cyanotype-mode {
 .hero h1.is-scrambling {
   color: var(--accent);
   text-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Realce táctico de navegación para Command Palette */
+@keyframes bp-pulse-highlight {
+  0% { box-shadow: 0 0 0 0 var(--accent); outline: 2px solid var(--accent); }
+  50% { box-shadow: 0 0 24px 4px color-mix(in srgb, var(--accent) 60%, transparent); outline: 2px solid var(--accent); }
+  100% { box-shadow: 0 0 0 0 transparent; outline: 2px solid transparent; }
+}
+.pulse-highlight {
+  animation: bp-pulse-highlight 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }

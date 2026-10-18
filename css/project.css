@@ -63,6 +63,31 @@
   font-size: 1.3rem;
   line-height: 1.4;
 }
+.proj-hero .bp-caption {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent-dim);
+  z-index: 2;
+  margin: 0;
+  max-width: none;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+.proj-hero .bp-caption b {
+  color: var(--accent);
+  font-weight: 500;
+}
+@media (max-width: 760px) {
+  .proj-hero .bp-caption {
+    position: static !important;
+    display: block;
+    text-align: right;
+    margin-top: 1.25rem !important;
+  }
+}
 
 /* ---------- Video ---------- */
 .proj-video {
@@ -1146,3 +1171,304 @@
 .gd-verdict--warning { color: #FBBF24; background: rgba(251,191,36,0.15); }
 .gd-verdict--critical { color: #F87171; background: rgba(248,113,113,0.15); }
 #gd-reset[hidden] { display: none; }
+
+/* ============================================================
+   ARCHANGEL Ω — Tactical Interactive Engineering Suite Styles
+   ============================================================ */
+
+/* 1. Hero Command Dock & Overdrive */
+.archangel-hero-dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: var(--space-md);
+  padding: 0.5rem 0.85rem;
+  background: rgba(14, 18, 26, 0.65);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+.archangel-telemetry-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.archangel-telemetry-chip .arch-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: led-pulse 1.8s infinite;
+}
+.archangel-telemetry-chip b { color: var(--accent); }
+.archangel-dock-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.archangel-overdrive-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid var(--accent-dim);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.archangel-overdrive-btn:hover {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.archangel-overdrive-btn.is-active {
+  background: #f87171;
+  color: #070B12;
+  border-color: #f87171;
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.6);
+  font-weight: 700;
+}
+
+/* Retículo táctico en el emblema */
+.proj-logo-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-md);
+}
+.proj-logo-wrap .proj-logo {
+  margin-bottom: 0;
+  display: block;
+  transition: transform 0.3s var(--ease), filter 0.3s var(--ease);
+  cursor: pointer;
+}
+.proj-logo-wrap:hover .proj-logo {
+  transform: scale(1.025);
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 45%, transparent));
+}
+.emblem-burst {
+  animation: emblem-shock 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes emblem-shock {
+  0% { transform: scale(1); filter: brightness(1); }
+  30% { transform: scale(1.08); filter: brightness(2) drop-shadow(0 0 25px var(--accent)); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* 2. Griffith Stress Field Canvas */
+.griffith-svg-dock {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto var(--space-md);
+}
+.griffith-stress-canvas {
+  position: absolute;
+  inset: -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  pointer-events: none;
+  z-index: 0;
+}
+.griffith-demo .griffith-svg {
+  position: relative;
+  z-index: 1;
+}
+.probe-fractured {
+  animation: probe-glitch 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  border-color: rgba(248, 113, 113, 0.6) !important;
+  box-shadow: 0 0 24px rgba(248, 113, 113, 0.25);
+}
+@keyframes probe-glitch {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, -1px); }
+  80% { transform: translate(2px, 1px); }
+}
+
+/* 3. Cascade Blast Waves */
+.cascade-active-blast {
+  animation: cascade-pulse 0.8s ease-out;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+@keyframes cascade-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.006); }
+  100% { transform: scale(1); }
+}
+
+/* 4. AQL Live Terminal Query Chips */
+.aql-query-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: var(--space-md);
+  margin-bottom: 0.5rem;
+}
+.aql-chips-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-right: 0.25rem;
+}
+.aql-chip {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.3rem 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.aql-chip:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.aql-chip.is-active {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.terminal-line-fade {
+  animation: term-fade 0.25s ease-out;
+}
+@keyframes term-fade {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 5. Health Recalibrator & Interactive Bars */
+.health-bars .health-bar {
+  transition: transform 0.15s ease, background 0.15s ease;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+.health-bars .health-bar:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  transform: translateX(4px);
+}
+.health-bars .health-bar:hover .hb-label {
+  color: var(--accent);
+}
+
+/* 6. Rust Race Re-runner */
+.rust-rerun-btn {
+  margin-top: var(--space-sm);
+  align-self: flex-start;
+  font-size: 0.78rem;
+}
+
+/* 7. Taint Path Interactive Stepper Card */
+.taint-hop {
+  cursor: pointer;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+.taint-hop.is-active {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--accent) !important;
+  border: 1px solid var(--accent);
+  text-shadow: 0 0 8px var(--accent);
+}
+.taint-forensic-card {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(15, 11, 20, 0.9);
+  border: 1px solid var(--line);
+  border-left: 3px solid #f87171;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.tfc-highlight {
+  border-left-color: var(--accent) !important;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.tfc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+}
+.tfc-step { color: var(--text-dim); }
+.tfc-step b { color: #f87171; }
+.tfc-tag {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  font-size: 0.68rem;
+}
+.tfc-code {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.8rem;
+  border-radius: 3px;
+  color: var(--text);
+  overflow-x: auto;
+  margin: 0.4rem 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.tfc-expl {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+
+/* 8. Tactical Card Scan Sweeps */
+.card-scanned {
+  position: relative;
+  overflow: hidden;
+}
+.card-scanned::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 18%, transparent) 50%,
+    transparent 100%
+  );
+  animation: card-laser-sweep 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes card-laser-sweep {
+  0% { left: -100%; opacity: 0; }
+  30% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
