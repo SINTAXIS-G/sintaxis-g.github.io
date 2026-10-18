@@ -570,6 +570,8 @@
       <div class="pillar"><div class="name">Decisión óptima vía Bellman</div><p>V(x) = max_u [ r(x,u) + γ·V(x') ] — en modo frío, resuelve qué refactorización aplicar como un MDP finito por value iteration, penalizando la perturbación real medida como tamaño del patch generado <span class="dev-only"> (Bellman, 1957)</span>.</p></div>
       <div class="pillar"><div class="name">Presupuesto de cambio: MCKP</div><p>Qué archivos curar bajo un límite de perturbación se resuelve como Multiple-Choice Knapsack: un grupo por archivo, una estrategia candidata por ítem, presupuesto en líneas de patch tolerables por ciclo <span class="dev-only"> (Kellerer, Pferschy &amp; Pisinger, 2004)</span>.</p></div>
       <div class="pillar"><div class="name">Selección clonal (sistema inmune)</div><p>Cada rama Git generada es un "anticuerpo" — una población de candidatos por combinación (extensión de archivo + estrategia), con una élite que sobrevive en cada generación. Si mergeas la rama, se refuerza; si la borras sin usar, se castiga con más peso. El sistema evoluciona su criterio de qué proponer con el tiempo, en vez de repetir siempre lo mismo <span class="dev-only"> (de Castro &amp; Von Zuben, 2002)</span>.</p></div>
+      <div class="pillar"><div class="name">Inferencia causal (Backdoor de Pearl)</div><p>ATE = E[Y|do(X=1)] − E[Y|do(X=0)]. El ANS no confunde correlación con causa: ajusta por confusores (edad del archivo, CC previa, churn de commits) para estimar si la cura realmente causa estabilidad o si el archivo ya era de bajo riesgo <span class="dev-only"> (Pearl, 2009)</span>.</p></div>
+      <div class="pillar"><div class="name">Teoría de juegos (Stackelberg + Prospect Theory)</div><p>Juego Líder (ANS) - Seguidor (Desarrollador) con aversión a la pérdida de Kahneman-Tversky (&lambda; &approx; 2.25). Un falso positivo o un diff roto cuesta 2.25&times; más que el beneficio de una sugerencia menor, guiando el presupuesto de intervención hacia parches de perturbación mínima <span class="dev-only"> (Kahneman &amp; Tversky, 1979)</span>.</p></div>
     </div>
 
     <div class="percolation-playground">
@@ -582,6 +584,28 @@
       <div class="percolation-status" id="percolation-status">FRAGMENTADA — 30 nodos, sin componente dominante</div>
       <p class="mckp-disclaimer">Grafo aleatorio real (Erdős–Rényi, 30 nodos) recalculado en tu navegador en cada movimiento del slider — no una animación pre-armada. El salto de fase ocurre justo donde predice la teoría: alrededor de grado medio ≈ 1.</p>
     </div>
+
+    <!-- CLONALG Artificial Immune System Interactive Playground -->
+    <div class="clonal-playground" id="clonal-playground">
+      <div class="clonal-header">
+        <div>
+          <span class="badge badge-new" style="font-size:0.68rem;">SISTEMA INMUNE ARTIFICIAL (CLONALG)</span>
+          <p class="clonal-label">Maduración por afinidad de anticuerpos Git — simulá el ciclo evolutivo</p>
+        </div>
+        <div class="clonal-metrics">
+          <span>Gen: <b id="clonal-gen">1</b></span>
+          <span>Afinidad media: <b id="clonal-avg-aff">0.68</b></span>
+          <span>Élite: <b id="clonal-elite">heal/god-object</b></span>
+        </div>
+      </div>
+      <div class="clonal-pool" id="clonal-pool">
+        <!-- Renderizado y gestionado interactivamente por archangel-fx.js -->
+      </div>
+      <div class="clonal-console" id="clonal-console">
+        <span class="prompt">CLONALG:</span> <span id="clonal-log">Anticuerpos generados en git worktree aislado. Click en [Merge] para maduración por afinidad o [Descartar] para hipermutación.</span>
+      </div>
+    </div>
+
     <p style="margin-top: var(--space-md); color: var(--text-dim); font-size: 0.9rem;">Incluso las alertas al HUD siguen un principio con nombre: usan un canal de baja entropía —señal silenciosa, no interrupción— para no contaminar el flujo cognitivo del desarrollador <span class="dev-only"> (Shannon, 1948)</span>.</p>
 
     <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Lo que hay debajo: un daemon que aprende de tu repositorio</p>
@@ -1155,6 +1179,13 @@
     <h2>Cuando la corrección falla, el sistema se corrige a sí mismo</h2>
     <p class="lede">"Un sistema que no puede corregirse mediante retroalimentación no es un sistema — es una catástrofe en cámara lenta." — Norbert Wiener, 1948. Este es el traductor de fricción: convierte violaciones físicas (las mismas de Griffith, Shannon, Prigogine) en instrucciones que un LLM local puede seguir para reparar código, y aprende de cada intento fallido en vez de repetirlo.</p>
 
+    <div class="status-row">
+      <span class="badge badge-stable">CIBERNÉTICA EN BUCLE CERRADO</span>
+      <span class="badge badge-stable">RECOCIDO STAT-MECH (KIRKPATRICK 1983)</span>
+      <span class="badge badge-new">AST HALLUCINATION GATE</span>
+      <span class="badge badge-new">KV-PREFIX CACHING</span>
+    </div>
+
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
         <img src="../assets/img/archangel-prompt-thermodynamics.webp" alt="Diagrama de Prompt Thermodynamics: recocido simulado y control PID sobre la generación de prompts" loading="lazy" width="1536" height="1024">
@@ -1166,18 +1197,122 @@
       </div>
     </div>
 
+    <!-- 1. LIVE THERMODYNAMIC WORKBENCH & PID CONTROLLER -->
+    <div class="thermo-workbench" id="thermo-workbench">
+      <div class="thermo-workbench-head">
+        <div>
+          <span class="badge badge-new" style="font-size:0.68rem;">SIMULADOR DE FASES & PID EN VIVO</span>
+          <p class="thermo-workbench-title">Control térmico de búsqueda, presión PID y PromptDNA</p>
+        </div>
+        <div id="thermo-phase-badge" class="thermo-phase-badge thermo-phase-gas">🔥 GAS / EXPLORACIÓN</div>
+      </div>
+      <div class="thermo-grid">
+        <div class="thermo-control-col">
+          <div class="thermo-slider-box">
+            <div class="thermo-slider-label">
+              <span>Temperatura de Recocido (T):</span>
+              <b id="thermo-temp-val">0.8500</b>
+            </div>
+            <input type="range" id="thermo-temp-slider" class="thermo-slider" min="0.01" max="1.00" step="0.01" value="0.85">
+            <div class="thermo-telemetry-row">
+              <div class="thermo-telemetry-item">
+                <span>P(Aceptar Peor)</span>
+                <strong id="thermo-metropolis">84.2%</strong>
+              </div>
+              <div class="thermo-telemetry-item">
+                <span>Score Violación</span>
+                <strong id="thermo-score-val">3.42</strong>
+              </div>
+              <div class="thermo-telemetry-item">
+                <span>Régimen Schedule</span>
+                <strong id="thermo-cooling-mode">ADAPTIVE</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="thermo-pid-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text); font-weight:600;">Controlador PID de Presión</span>
+              <span id="thermo-urgency-tag" class="thermo-urgency-tag" style="background:rgba(248,113,113,0.2); color:#f87171;">URGENCIA CRÍTICA</span>
+            </div>
+            <div class="pid-bar-row">
+              <span class="pid-bar-name">P</span>
+              <div class="pid-bar-track"><div id="pid-p-fill" class="pid-bar-fill" style="width:78%; background:#f87171;"></div></div>
+              <span id="pid-p-val" class="pid-bar-val">0.78</span>
+            </div>
+            <div class="pid-bar-row">
+              <span class="pid-bar-name">I</span>
+              <div class="pid-bar-track"><div id="pid-i-fill" class="pid-bar-fill" style="width:45%; background:#fbbf24;"></div></div>
+              <span id="pid-i-val" class="pid-bar-val">0.45</span>
+            </div>
+            <div class="pid-bar-row">
+              <span class="pid-bar-name">D</span>
+              <div class="pid-bar-track"><div id="pid-d-fill" class="pid-bar-fill" style="width:20%; background:#3ddad7;"></div></div>
+              <span id="pid-d-val" class="pid-bar-val">0.20</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thermo-preview-col">
+          <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim); margin-bottom:0.35rem; display:flex; justify-content:space-between;">
+            <span>GENOMA DEL PROMPT (PromptDNA):</span>
+            <span id="thermo-dna-meta" style="color:var(--accent);">Gen: 1 | Anti-windup: ACTIVO</span>
+          </div>
+          <div class="thermo-dna-box" id="thermo-dna-box">
+            <!-- Actualizado dinámicamente por JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. LIVE VIOLATION-TO-INSTRUCTION TRANSLATOR -->
+    <div class="violation-inspector-wrap" id="violation-inspector">
+      <div style="padding:0.75rem 1rem 0; font-family:var(--font-mono); font-size:0.8rem; color:var(--text); font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+        <span>El Traductor Físico-Semántico: 21 clases físicas → 15 estrategias LLM</span>
+        <span style="font-size:0.7rem; color:var(--accent);">Click en una violación</span>
+      </div>
+      <div class="violation-tabs-bar">
+        <button class="violation-tab-btn is-active" data-vkey="chandra">1. CHANDRASEKHAR (Masa Crítica)</button>
+        <button class="violation-tab-btn" data-vkey="ashby">2. CYBERNETIC BLINDNESS (Ashby)</button>
+        <button class="violation-tab-btn" data-vkey="lorentz">3. LAYER VIOLATION (Lorentz)</button>
+      </div>
+      <div class="violation-content-grid" id="violation-grid">
+        <!-- Contenido generado por archangel-fx.js -->
+      </div>
+    </div>
+
+    <!-- 3. HALLUCINATION GATE & KV PREFIX CACHE INSPECTOR -->
+    <div class="gate-visualizer-box" id="gate-visualizer">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem;">
+        <div>
+          <span class="badge badge-new" style="font-size:0.68rem;">SEGURIDAD DETERMINISTA & RENDIMIENTO GPU</span>
+          <p style="font-size:0.92rem; font-weight:600; color:var(--text); margin:0.25rem 0 0;">Hallucination Gate (Anti-Reward Hacking) & KV-Prefix Cache Alignment</p>
+        </div>
+      </div>
+      <div class="gate-nav-bar">
+        <button class="gate-pill-btn is-active" data-gate-tab="reward-hack">⚠ LLM 7B Sin Gate (Reward Hacking)</button>
+        <button class="gate-pill-btn" data-gate-tab="gate-active">✓ Con Hallucination Gate (AST)</button>
+        <button class="gate-pill-btn" data-gate-tab="kv-cache">⚡ KV Prefix Cache Alignment</button>
+      </div>
+      <div class="gate-display-card" id="gate-display-card">
+        <!-- Contenido reactivo generado por archangel-fx.js -->
+      </div>
+    </div>
+
     <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Lo que hay debajo: diez subsistemas, un solo bucle</p>
-    <p class="lede" style="margin-top:0;">Lo anterior es el resumen. El módulo son 10 subsistemas coordinados por un ciclo cerrado: el LLM nunca decide si el resultado es correcto — lo decide el mismo validador físico que detectó el problema.</p>
+    <p class="lede" style="margin-top:0;">El motor son 10 subsistemas coordinados por un ciclo cibernético cerrado: el LLM nunca decide si el resultado es correcto — lo decide el mismo validador físico determinista que detectó el problema.</p>
 
     <div class="pillars">
-      <div class="pillar"><div class="name">Traductor: 21 clases de violación → 15 estrategias</div><p>Cubre las violaciones de los tres motores (física computacional, Ashby y Lorentz): Chandrasekhar, black holes, acoplamiento fantasma, asimetría de errores, explosión de espacio de estados, capas violadas, God Objects y más. Cada clase tiene una estrategia óptima (descomponer, extraer clase, inyectar dependencia, añadir circuit breaker…). Ocho de ellas tienen un manejador dedicado que también le dice al LLM <em>qué no hacer</em>, con ejemplos de código incorrecto; el resto usa uno genérico.</p></div>
-      <div class="pillar"><div class="name">Prioridad por severidad × exceso</div><p>Las violaciones se ordenan por <code class="hl">severidad × cuánto superan su límite</code>, y se evita duplicar estrategias idénticas entre violaciones distintas. Si la estrategia óptima ya se probó sin éxito en un intento previo, el traductor pasa a la siguiente en vez de insistir.</p></div>
-      <div class="pillar"><div class="name">Un prompt hecho de genes</div><p>Cada prompt se arma con genes tipados: rol, contexto, directivas, restricciones y formato. Rol y formato son inmutables. El código y las violaciones reales se reconstruyen frescos en cada iteración; lo único que evoluciona es la <em>forma</em> (framing de rol entre tres variantes, cuántas directivas incluir, cuándo pedir un refactor radical, si mostrar anti-patrones), para no perder nunca la referencia de qué hay que arreglar.</p></div>
-      <div class="pillar"><div class="name">Aceptación tipo Metropolis</div><p>Un intento peor se acepta con probabilidad <code class="hl">exp(−ΔE/T)</code>: a temperatura alta el sistema puede retroceder para salir de un mínimo local; al enfriarse, solo acepta mejoras. La población de estrategias (con elitismo y crossover) se selecciona con pesos de Boltzmann sobre su fitness medido.</p></div>
-      <div class="pillar"><div class="name">Memoria de lo que ya falló</div><p>Guarda cada intento, detecta si el LLM devolvió exactamente el mismo código (checksum) y extrae los patrones que causan rechazos — <code class="hl">except:</code>, <code class="hl">pass</code>, <code class="hl">**kwargs</code>, <code class="hl">Any</code>, retornos <code class="hl">None/True/False</code> — para inyectarlos en el siguiente prompt como "no los repitas".</p></div>
-      <div class="pillar"><div class="name">Cinco desenlaces, no un contador de reintentos</div><p>Convergencia (score bajo el umbral), agotamiento (tope de iteraciones), <strong style="color:var(--text)">oscilación</strong> (mejora/empeora alternado: reinicia el integral del PID y recalienta el sistema), estancamiento (varios intentos sin mejora, con el mismo tratamiento) y <strong style="color:var(--text)">divergencia</strong> (estancado y con el score por encima del primer intento: se aborta porque el LLM está empeorando el código).</p></div>
-      <div class="pillar"><div class="name">Presión PID traducida a urgencia</div><p>El controlador PID produce una presión de 0 a 1 que entra al prompt como nivel de urgencia (media, alta o crítica), y baja a medida que el score baja: integra de forma condicional (no acumula mientras la salida ya está saturada), descarga el integral al alcanzar el objetivo y no da patada derivativa en la primera muestra. En el demo del propio módulo, con scores de 3.2 a 0.1, la presión pasa de 1.00 a 0.24. Pasadas las primeras iteraciones (umbral que también evoluciona), el prompt autoriza explícitamente cambiar firma y estructura si hace falta.</p></div>
-      <div class="pillar"><div class="name">LLM local, con o sin streaming</div><p>El puente habla con Ollama o con cualquier servidor compatible con OpenAI (LM Studio, llama.cpp) y tiene modo mock para probar el ciclo sin modelo. La API es síncrona, asíncrona con flujo de eventos en vivo, o en segundo plano con trabajos cancelables.</p></div>
+      <div class="pillar"><div class="name">[T1] ViolationTranslator</div><p>21 clases de violación física → 15 estrategias de reparación. Prioriza por <code class="hl">severidad × exceso</code>, rota a alternativas si una falla, y formula directivas con restricciones, patrones obligatorios y anti-patrones prohibidos.</p></div>
+      <div class="pillar"><div class="name">[T2] PromptDNA &amp; PromptStrategy</div><p>Separa la FORMA (framing de rol, conteo de directivas, flag de ejemplos negativos) del CONTENIDO (código y violaciones reales). Solo la forma evoluciona genéticamente; el contenido fáctico se preserva intacto en cada vuelta.</p></div>
+      <div class="pillar"><div class="name">[T3] ThermodynamicAnnealer</div><p>Control de temperatura con criterio de aceptación Metropolis <code class="hl">P = exp(−ΔE/T)</code> y 4 cooling schedules (exponencial, logarítmico, lineal y adaptativo según la tasa de mejora reciente).</p></div>
+      <div class="pillar"><div class="name">[T4] FeedbackController (PID)</div><p>Controlador PID adaptativo sobre el error de violación. Con integración condicional anti-windup, descarga inmediata al llegar a error &le; 0 y supresión de patada derivativa inicial.</p></div>
+      <div class="pillar"><div class="name">[T5] PromptMutationEngine</div><p>Selección Boltzmann sobre la población de estrategias con crossover y elitismo, evitando que el generador quede atrapado en mínimos locales de refactorización.</p></div>
+      <div class="pillar"><div class="name">[T6] GenerationMemory</div><p>Memoria episódica que deduplica por checksum, detecta oscilaciones y estancamientos, e inyecta dinámicamente los anti-patrones que causaron rechazos previos en el siguiente prompt.</p></div>
+      <div class="pillar"><div class="name">[T7] ConvergenceDetector</div><p>Cinco desenlaces formales: Convergencia (&le; umbral), Agotamiento (max iter), Oscilación (recalienta T y reinicia PID), Estancamiento y Divergencia (aborta si empeora).</p></div>
+      <div class="pillar"><div class="name">[T8] LocalLLMBridge</div><p>Puente síncrono/asíncrono hacia Ollama o cualquier API OpenAI-compatible local (LM Studio, llama.cpp). Cero fuga de código hacia nubes externas.</p></div>
+      <div class="pillar"><div class="name">[T9] RegenerationCycle &amp; Gate</div><p>Bucle principal orquestado. Intercepta alucinaciones en 0.4 ms con <code class="hl">ast.parse</code> e <code class="hl">importlib.util.find_spec</code> antes de invocar a los validadores físicos.</p></div>
+      <div class="pillar"><div class="name">[T10] PromptThermodynamics</div><p>Orquestador público con soporte síncrono, asíncrono con stream en vivo de eventos (<code class="hl">CycleEvent</code>) y cola de background jobs cancelables.</p></div>
     </div>
 
     <p style="color:var(--text); font-weight:600; margin: var(--space-lg) 0 var(--space-sm);">Anatomía de una iteración</p>
@@ -1185,14 +1320,14 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">01</span> CYCLE_START · ALREADY_VALID → si el código ya pasa el umbral, no se llama al LLM</div>
-        <div class="terminal-line"><span class="prompt">02</span> DIRECTIVES_BUILT → violaciones traducidas a directivas de reparación</div>
+        <div class="terminal-line"><span class="prompt">02</span> DIRECTIVES_BUILT → violaciones traducidas a directivas de reparación con restricciones</div>
         <div class="terminal-line"><span class="prompt">03</span> STRATEGY_SELECTED → se elige una estrategia de la población (Boltzmann)</div>
-        <div class="terminal-line"><span class="prompt">04</span> LLM_CALL_START → con la temperatura y la presión PID actuales</div>
-        <div class="terminal-line"><span class="prompt">05</span> DUPLICATE_DETECTED · EMPTY_RESPONSE · LLM_ERROR → el candidato se descarta antes de validarlo</div>
+        <div class="terminal-line"><span class="prompt">04</span> LLM_CALL_START → con la temperatura y la presión PID actuales (KV cache optimizado)</div>
+        <div class="terminal-line"><span class="prompt">05</span> HALLUCINATION_GATE · DUPLICATE_DETECTED → el candidato se descarta si inventa APIs</div>
         <div class="terminal-line"><span class="prompt">06</span> ATTEMPT_RESULT → el validador físico mide el score nuevo contra el anterior</div>
         <div class="terminal-line"><span class="prompt">07</span> STRATEGY_EVOLVED → la estrategia recibe un fitness real, medido sobre este resultado</div>
         <div class="terminal-line"><span class="prompt">08</span> CONTROLLERS_UPDATED → el annealer enfría, el PID actualiza la presión</div>
-        <div class="terminal-line"><span class="prompt">09</span> OSCILLATION_DETECTED · DIVERGENCE_DETECTED · CYCLE_END → decide si continuar<span class="terminal-cursor"></span></div>
+        <div class="terminal-line"><span class="prompt">09</span> OSCILLATION_DETECTED · DIVERGENCE_DETECTED · CYCLE_END → decide si continuar o recalentar<span class="terminal-cursor"></span></div>
       </div>
     </div>
     <p style="margin-top:var(--space-xs); color:var(--text-dim); font-size:0.8rem; font-family:var(--font-mono);">Secuencia de eventos tal como los emite el ciclo (nombres reales del código), no una ejecución grabada. Cada evento se puede consumir en vivo por el flujo asíncrono.</p>

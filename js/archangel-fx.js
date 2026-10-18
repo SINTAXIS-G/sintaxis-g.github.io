@@ -617,9 +617,511 @@
     setContextualMode('.cascade-block', 'action', 'SIM // CASCADA ONDAS');
     setContextualMode('.chandra-playground', 'action', 'FÍSICA // CHANDRASEKHAR');
     setContextualMode('.percolation-playground', 'action', 'RED // PERCOLACIÓN');
+    setContextualMode('.clonal-playground', 'action', 'INMUNE // CLONALG');
+    setContextualMode('.thermo-workbench', 'action', 'TERMODINÁMICA // RECOCIDO');
+    setContextualMode('.violation-inspector-wrap', 'inspect', 'TRADUCTOR // SEMÁNTICO');
+    setContextualMode('.gate-visualizer-box', 'inspect', 'GATE // AST DETERMINISTA');
     setContextualMode('.mckp-playground', 'action', 'ALGO // MOCHILA MCKP');
     setContextualMode('.terminal', 'action', 'CONSOLA // AQL ENGINE');
     setContextualMode('.health-gauge-row', 'inspect', 'GAUGE // HEALTH SCORE');
   })();
 
+  // ============================================================
+  // 11. ANS CLONALG ARTIFICIAL IMMUNE SYSTEM SIMULATOR
+  // ============================================================
+  (function initClonalImmuneSystem() {
+    const root = document.getElementById('clonal-playground');
+    if (!root) return;
+
+    const poolEl = document.getElementById('clonal-pool');
+    const genEl = document.getElementById('clonal-gen');
+    const avgAffEl = document.getElementById('clonal-avg-aff');
+    const eliteEl = document.getElementById('clonal-elite');
+    const logEl = document.getElementById('clonal-log');
+
+    let generation = 1;
+    let antibodies = [
+      {
+        id: 'ab1',
+        branch: 'archangel/heal-god-object-fiedler',
+        strategy: 'SPLIT_CLASS',
+        target: 'core/billing.py',
+        affinity: 0.84,
+        patchLines: 38
+      },
+      {
+        id: 'ab2',
+        branch: 'archangel/tighten-ashby-handlers',
+        strategy: 'ADD_ERROR_HANDLING',
+        target: 'api/gateway.py',
+        affinity: 0.68,
+        patchLines: 24
+      },
+      {
+        id: 'ab3',
+        branch: 'archangel/type-strict-protocols',
+        strategy: 'ADD_INTERFACE',
+        target: 'services/auth.py',
+        affinity: 0.52,
+        patchLines: 19
+      }
+    ];
+
+    const fallbackStrategies = [
+      'INJECT_DEPENDENCY',
+      'DECOMPOSE',
+      'ADD_VALIDATION',
+      'ENCAPSULATE',
+      'ADD_CIRCUIT_BREAKER'
+    ];
+
+    const renderPool = () => {
+      antibodies.sort((a, b) => b.affinity - a.affinity);
+      const top = antibodies[0];
+
+      if (genEl) genEl.textContent = generation;
+      if (avgAffEl) {
+        const avg = antibodies.reduce((acc, a) => acc + a.affinity, 0) / antibodies.length;
+        avgAffEl.textContent = avg.toFixed(2);
+      }
+      if (eliteEl) eliteEl.textContent = top.branch.replace('archangel/', '');
+
+      if (!poolEl) return;
+      poolEl.innerHTML = '';
+
+      antibodies.forEach((ab, idx) => {
+        const isElite = idx === 0;
+        const card = document.createElement('div');
+        card.className = `clonal-card ${isElite ? 'is-elite' : ''}`;
+        card.innerHTML = `
+          <div class="clonal-card-head">
+            <span class="clonal-branch-name">${ab.branch}</span>
+            <span class="badge ${isElite ? 'badge-stable' : 'badge-new'}" style="font-size:0.65rem;">
+              ${isElite ? '★ ÉLITE' : 'CANDIDATO'}
+            </span>
+          </div>
+          <div class="clonal-card-meta">
+            <span>Objetivo: <code>${ab.target}</code></span>
+            <span>Estrategia: <code>${ab.strategy}</code></span>
+          </div>
+          <div class="clonal-aff-bar">
+            <div class="clonal-aff-fill" style="width: ${(ab.affinity * 100).toFixed(0)}%; background: ${isElite ? '#3ddad7' : '#fbbf24'};"></div>
+          </div>
+          <div class="clonal-card-meta">
+            <span>Afinidad &Acal;: <b>${ab.affinity.toFixed(2)}</b></span>
+            <span>Presupuesto: <b>${ab.patchLines} líneas</b></span>
+          </div>
+          <div class="clonal-card-actions">
+            <button class="clonal-btn clonal-btn-merge" data-id="${ab.id}">✓ Merge (Reforzar)</button>
+            <button class="clonal-btn clonal-btn-reject" data-id="${ab.id}">✗ Descartar (Castigar)</button>
+          </div>
+        `;
+        poolEl.appendChild(card);
+      });
+
+      // Listeners
+      poolEl.querySelectorAll('.clonal-btn-merge').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-id');
+          handleMerge(id);
+        });
+      });
+
+      poolEl.querySelectorAll('.clonal-btn-reject').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.getAttribute('data-id');
+          handleReject(id);
+        });
+      });
+    };
+
+    const handleMerge = (id) => {
+      playSound('laser');
+      generation++;
+      const target = antibodies.find((a) => a.id === id);
+      if (target) {
+        target.affinity = Math.min(0.98, target.affinity + 0.12);
+        // Genera clon madurado
+        const cloneStrategy = target.strategy;
+        antibodies = antibodies.map((a) => {
+          if (a.id === id) return a;
+          return {
+            ...a,
+            affinity: Math.max(0.2, a.affinity + 0.03)
+          };
+        });
+      }
+
+      if (logEl) {
+        logEl.innerHTML = `[Gen ${generation}] <strong>Rama mergeada en producción</strong>. Afinidad reforzada (+0.12). Maduración clonal completada sin conflicto en worktree aislado.`;
+      }
+      renderPool();
+    };
+
+    const handleReject = (id) => {
+      playSound('click');
+      generation++;
+      const target = antibodies.find((a) => a.id === id);
+      if (target) {
+        target.affinity = Math.max(0.15, target.affinity - 0.25);
+        // Hipermutación: muta a una estrategia alternativa
+        const nextStrat = fallbackStrategies[Math.floor(Math.random() * fallbackStrategies.length)];
+        target.strategy = nextStrat;
+        target.branch = `archangel/heal-${nextStrat.toLowerCase().replace(/_/g, '-')}`;
+      }
+
+      if (logEl) {
+        logEl.innerHTML = `[Gen ${generation}] <strong>Rama descartada por el dev</strong>. Penalización negativa (-0.25). Hipermutación activada: explorando estrategia <code>${target ? target.strategy : ''}</code>.`;
+      }
+      renderPool();
+    };
+
+    renderPool();
+  })();
+
+  // ============================================================
+  // 12. PROMPT THERMODYNAMICS SUITE: LIVE WORKBENCH & PID
+  // ============================================================
+  (function initThermoWorkbench() {
+    const slider = document.getElementById('thermo-temp-slider');
+    if (!slider) return;
+
+    const tempValEl = document.getElementById('thermo-temp-val');
+    const phaseBadgeEl = document.getElementById('thermo-phase-badge');
+    const metropolisEl = document.getElementById('thermo-metropolis');
+    const scoreValEl = document.getElementById('thermo-score-val');
+    const urgencyTagEl = document.getElementById('thermo-urgency-tag');
+    const pFill = document.getElementById('pid-p-fill');
+    const pVal = document.getElementById('pid-p-val');
+    const iFill = document.getElementById('pid-i-fill');
+    const iVal = document.getElementById('pid-i-val');
+    const dFill = document.getElementById('pid-d-fill');
+    const dVal = document.getElementById('pid-d-val');
+    const dnaBox = document.getElementById('thermo-dna-box');
+    const dnaMeta = document.getElementById('thermo-dna-meta');
+
+    const updateThermo = () => {
+      const T = parseFloat(slider.value);
+      if (tempValEl) tempValEl.textContent = T.toFixed(4);
+
+      // Metrópolis P(accept) = exp(-deltaE / T) con deltaE = 0.25
+      const deltaE = 0.25;
+      const pAccept = Math.min(99.9, Math.exp(-deltaE / Math.max(T, 0.001)) * 100);
+      if (metropolisEl) metropolisEl.textContent = `${pAccept.toFixed(1)}%`;
+
+      // Score simulado que decrece con T baja
+      const simulatedScore = (0.2 + T * 3.4).toFixed(2);
+      if (scoreValEl) scoreValEl.textContent = simulatedScore;
+
+      // PID dynamics
+      const p = Math.min(1.0, 0.25 + (1.0 - T) * 0.72);
+      const i = Math.min(1.0, 0.10 + (1.0 - T) * 0.55);
+      const d = Math.min(1.0, 0.05 + (1.0 - T) * 0.35);
+
+      if (pFill) pFill.style.width = `${(p * 100).toFixed(0)}%`;
+      if (pVal) pVal.textContent = p.toFixed(2);
+      if (iFill) iFill.style.width = `${(i * 100).toFixed(0)}%`;
+      if (iVal) iVal.textContent = i.toFixed(2);
+      if (dFill) dFill.style.width = `${(d * 100).toFixed(0)}%`;
+      if (dVal) dVal.textContent = d.toFixed(2);
+
+      const pressure = (p * 0.5 + i * 0.3 + d * 0.2);
+
+      let phaseText = '';
+      let phaseClass = '';
+      let urgencyText = '';
+      let urgencyColor = '';
+      let urgencyBg = '';
+      let roleVariant = '';
+      let directiveMode = '';
+      let negativeBlock = '';
+
+      if (T >= 0.70) {
+        phaseText = '🔥 GAS / EXPLORACIÓN';
+        phaseClass = 'thermo-phase-gas';
+        urgencyText = 'URGENCIA MEDIA';
+        urgencyColor = '#fbbf24';
+        urgencyBg = 'rgba(251, 191, 36, 0.2)';
+        roleVariant = 'Arquitecto Explorador (Soluciones Amplias)';
+        directiveMode = '1 directiva general. Autorizado cambio de firma.';
+        negativeBlock = '# Sin anti-patrones inyectados en alta temperatura (máxima libertad creativa)';
+      } else if (T >= 0.30) {
+        phaseText = '🌡 FLUIDO / TRANSICIÓN';
+        phaseClass = 'thermo-phase-fluid';
+        urgencyText = 'URGENCIA ALTA';
+        urgencyColor = '#38bdf8';
+        urgencyBg = 'rgba(56, 189, 248, 0.2)';
+        roleVariant = 'Ingeniero de Refactorización Estricta';
+        directiveMode = '2 directivas de reducción de acoplamiento. Mantener interfaces públicas.';
+        negativeBlock = '# Anti-patrones advertidos: no tragar excepciones con `except Exception: pass`';
+      } else {
+        phaseText = '❄️ CRISTAL / EXPLOTACIÓN';
+        phaseClass = 'thermo-phase-crystal';
+        urgencyText = 'URGENCIA CRÍTICA';
+        urgencyColor = '#f87171';
+        urgencyBg = 'rgba(248, 113, 113, 0.2)';
+        roleVariant = 'Verificador Quirúrgico Anti-Alucinación';
+        directiveMode = 'Directivas quirúrgicas: CC ≤ 5 estricto, funciones puras, tipos deterministas.';
+        negativeBlock = '## ⚠️ PATRONES QUE CAUSARON RECHAZO PREVIO (PROHIBIDOS):\n- except Exception: pass  # SWALLOWING DETECTADO\n- return None  # RETORNO ASIMÉTRICO PROHIBIDO\n- ir_plan()  # FUNCIÓN ALUCINADA RECHAZADA POR GATE';
+      }
+
+      if (phaseBadgeEl) {
+        phaseBadgeEl.textContent = phaseText;
+        phaseBadgeEl.className = `thermo-phase-badge ${phaseClass}`;
+      }
+
+      if (urgencyTagEl) {
+        urgencyTagEl.textContent = urgencyText;
+        urgencyTagEl.style.color = urgencyColor;
+        urgencyTagEl.style.background = urgencyBg;
+      }
+
+      if (dnaMeta) {
+        const hash = Math.floor(Math.sin(T * 100) * 1000000).toString(16).slice(-6);
+        dnaMeta.textContent = `Hash: ${hash} | Presión PID: ${pressure.toFixed(2)} | Anti-windup: ACTIVO`;
+      }
+
+      if (dnaBox) {
+        dnaBox.innerHTML = `
+<span class="dna-hl">## GEN 1: SYSTEM ROLE</span>
+Role: ${roleVariant}
+
+<span class="dna-hl">## GEN 2: CONTEXTO (PREFIJO ESTABLE KV-CACHE)</span>
+Código base bajo análisis [hash: 9f8a3d].
+Telemetría mutable: Presión PID = <strong>${pressure.toFixed(2)}</strong> | T = <strong>${T.toFixed(4)}</strong> | Fase: <strong>${phaseText}</strong>
+
+<span class="dna-hl">## GEN 3: DIRECTIVAS DE REPARACIÓN</span>
+${directiveMode}
+
+<span class="dna-warn">${negativeBlock}</span>
+`;
+      }
+    };
+
+    slider.addEventListener('input', updateThermo);
+    updateThermo();
+  })();
+
+  // ============================================================
+  // 13. VIOLATION-TO-INSTRUCTION TRANSLATOR TABS
+  // ============================================================
+  (function initViolationTranslator() {
+    const wrap = document.getElementById('violation-inspector');
+    if (!wrap) return;
+
+    const tabs = wrap.querySelectorAll('.violation-tab-btn');
+    const grid = document.getElementById('violation-grid');
+
+    const violationData = {
+      chandra: {
+        raw: `
+<div class="violation-raw-title">
+  <span>CHANDRASEKHAR_EXCEEDED</span>
+  <span style="color:#f87171;">CRITICAL</span>
+</div>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Ubicación: <code>core/billing.py:142 [process_invoice]</code></p>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Métrica: <code>cyclomatic_complexity</code></p>
+<p style="margin:0.25rem 0; color:var(--text);">Valor medido: <b>42.5</b> (Límite: <b>10.0</b>)</p>
+<p style="margin:0.25rem 0; color:#f87171;">Ratio de exceso: <b>&times;4.25 sobre el colapso gravitacional</b></p>
+<p style="margin-top:0.4rem; color:var(--text-dim); font-size:0.7rem;">El nodo ha superado la masa cognitiva tolerable. Riesgo inminente de implosión por deuda técnica.</p>
+`,
+        directive: `
+<h4>DIRECTIVA DE REPARACIÓN [DECOMPOSE]</h4>
+<p><strong>INSTRUCCIÓN AL LLM:</strong> Descompón la función madre en subfunciones puras independientes con CC ≤ 5. Cada subfunción debe poder describirse en una sola frase sin usar la palabra "y".</p>
+<p style="margin:0.4rem 0 0.2rem; color:var(--text);"><strong>RESTRICCIONES OBLIGATORIAS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem;">
+  <li>Cada subfunción resultante debe tener CC ≤ 5</li>
+  <li>Las subfunciones no deben compartir estado mutable</li>
+  <li>Nombres de subfunciones deben ser verbos específicos del dominio</li>
+</ul>
+<p style="margin:0.4rem 0 0.2rem; color:#f87171;"><strong>ANTI-PATRONES PROHIBIDOS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem; color:#f87171;">
+  <li>No uses flags booleanos de control de flujo</li>
+  <li>No extraigas métodos privados que solo se llamen una vez (pseudo-decomposición)</li>
+</ul>
+`
+      },
+      ashby: {
+        raw: `
+<div class="violation-raw-title">
+  <span>CYBERNETIC_BLINDNESS (ASHBY)</span>
+  <span style="color:#f87171;">CRITICAL</span>
+</div>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Ubicación: <code>services/payment.py:88 [charge_token]</code></p>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Métrica: <code>unhandled_error_routes</code></p>
+<p style="margin:0.25rem 0; color:var(--text);">Rutas de fallo: <b>6 posibles</b> (Handlers específicos: <b>1</b>)</p>
+<p style="margin:0.25rem 0; color:#f87171;">Variedad requerida: <b>Asimetría de control 6:1 (Ceguera)</b></p>
+<p style="margin-top:0.4rem; color:var(--text-dim); font-size:0.7rem;">Viola la Ley de Ashby: la variedad del controlador de errores no iguala la variedad de los estados de error del entorno.</p>
+`,
+        directive: `
+<h4>DIRECTIVA DE REPARACIÓN [ADD_ERROR_HANDLING]</h4>
+<p><strong>INSTRUCCIÓN AL LLM:</strong> Implementa una jerarquía de excepciones de dominio con un handler semántico específico para cada clase de fallo (Validación vs Red vs Fondos Insuficientes).</p>
+<p style="margin:0.4rem 0 0.2rem; color:var(--text);"><strong>RESTRICCIONES OBLIGATORIAS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem;">
+  <li>Cada handler debe ejecutar una política diferente (log estructurado + Result/Failure)</li>
+  <li>Preservar el contexto original con <code>raise X from e</code></li>
+  <li>Distinguir errores transitorios de errores fatales</li>
+</ul>
+<p style="margin:0.4rem 0 0.2rem; color:#f87171;"><strong>ANTI-PATRONES PROHIBIDOS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem; color:#f87171;">
+  <li><code>except Exception: pass</code> (swallowing catastrófico)</li>
+  <li><code>except Exception as e: logger.error(str(e))</code> (mega-handler genérico ciego)</li>
+</ul>
+`
+      },
+      lorentz: {
+        raw: `
+<div class="violation-raw-title">
+  <span>LAYER_VIOLATION (LORENTZ GUARD)</span>
+  <span style="color:#fbbf24;">WARNING</span>
+</div>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Ubicación: <code>domain/entities/order.py:12</code></p>
+<p style="margin:0.25rem 0; color:var(--text-dim);">Métrica: <code>layer_distance</code></p>
+<p style="margin:0.25rem 0; color:var(--text);">Import ilegal: <code>infrastructure.db.postgres_pool</code></p>
+<p style="margin:0.25rem 0; color:#fbbf24;">Violación: <b>Capa pura de Dominio acoplada a Infraestructura</b></p>
+<p style="margin-top:0.4rem; color:var(--text-dim); font-size:0.7rem;">Inversión de dependencias rota. El modelo de negocio no puede compilar sin el driver de persistencia.</p>
+`,
+        directive: `
+<h4>DIRECTIVA DE REPARACIÓN [ADD_INTERFACE]</h4>
+<p><strong>INSTRUCCIÓN AL LLM:</strong> Introduce un <code>Protocol</code> o clase abstracta en el dominio para la persistencia. La implementación concreta debe inyectarse en el Composition Root.</p>
+<p style="margin:0.4rem 0 0.2rem; color:var(--text);"><strong>RESTRICCIONES OBLIGATORIAS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem;">
+  <li>Usar <code>typing.Protocol</code> con métodos abstractos puros</li>
+  <li>Eliminar todo import directo a SQLAlchemy / Postgres en domain/</li>
+  <li>Inyectar el repositorio en el constructor del servicio</li>
+</ul>
+<p style="margin:0.4rem 0 0.2rem; color:#f87171;"><strong>ANTI-PATRONES PROHIBIDOS:</strong></p>
+<ul style="margin:0; padding-left:1.1rem; color:#f87171;">
+  <li>No uses imports dinámicos dentro de métodos para ocultar el acoplamiento</li>
+  <li>No instancies clases de infraestructura dentro de entidades de dominio</li>
+</ul>
+`
+      }
+    };
+
+    const renderViolation = (key) => {
+      const data = violationData[key];
+      if (!data || !grid) return;
+      grid.innerHTML = `
+        <div class="violation-raw-card">${data.raw}</div>
+        <div class="violation-directive-card">${data.directive}</div>
+      `;
+    };
+
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabs.forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        playSound('click');
+        const key = btn.getAttribute('data-vkey');
+        renderViolation(key);
+      });
+    });
+
+    renderViolation('chandra');
+  })();
+
+  // ============================================================
+  // 14. HALLUCINATION GATE & KV PREFIX CACHE SHOWCASE
+  // ============================================================
+  (function initHallucinationGate() {
+    const wrap = document.getElementById('gate-visualizer');
+    if (!wrap) return;
+
+    const pills = wrap.querySelectorAll('.gate-pill-btn');
+    const displayCard = document.getElementById('gate-display-card');
+
+    const views = {
+      'reward-hack': `
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+  <span style="color:#f87171; font-weight:700;">[REWARD HACKING DETECTADO] Modelo 7B sin Gate</span>
+  <span class="badge badge-new" style="background:rgba(248,113,113,0.15); color:#f87171; border-color:#f87171;">Ashby Score: 100% (Falso Éxito)</span>
+</div>
+<p style="color:var(--text-dim); margin-bottom:0.5rem;">
+  Hallazgo real documentado el 16-oct-2026: Ashby mide estructura y complejidad ciclomática. El modelo generó un código que redujo la CC a 3 y añadió logging, por lo que el validador físico creyó que el código era perfecto.
+</p>
+<pre style="background:var(--bg); border:1px solid var(--line); padding:0.6rem; border-radius:3px; color:#f87171; overflow-x:auto;">
+# Código alucinado por el modelo 7B:
+import opentracing  # ✗ ERROR: librería ni siquiera está instalada en el venv!
+from uninstalled_sdk import metrics
+
+def process_payload(data):
+    plan = ir_plan(data)        # ✗ ERROR: ir_plan() no existe en ningún lado
+    return optimize_plan(plan)  # ✗ ERROR: función inventada de la nada
+</pre>
+<p style="color:#f87171; font-size:0.75rem; margin-top:0.4rem;">
+  El código ni siquiera importa, mucho menos ejecuta. El LLM satisfizo la letra del validador físico sin cumplir el espíritu.
+</p>
+`,
+      'gate-active': `
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+  <span style="color:#3ddad7; font-weight:700;">[HALLUCINATION GATE ACTIVADO] ast.parse + importlib.util.find_spec</span>
+  <span class="badge badge-stable">Tiempo de intercepción: 0.42 ms</span>
+</div>
+<p style="color:var(--text-dim); margin-bottom:0.5rem;">
+  El Gate semántico intercepta el parche <strong>antes</strong> de enviarlo al validador físico. Realiza una verificación determinista sin invocar a otro LLM y sin ejecutar código:
+</p>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin:0.5rem 0;">
+  <div style="background:var(--bg); border:1px solid var(--line); padding:0.5rem; border-radius:3px;">
+    <strong style="color:var(--text); font-size:0.75rem;">A. Imports no resolubles:</strong>
+    <p style="color:#f87171; font-size:0.72rem; margin:0.25rem 0;"><code>find_spec('opentracing') &rarr; None</code></p>
+    <span style="color:var(--text-dim); font-size:0.68rem;">Rechaza paquetes ficticios sin instalarlos.</span>
+  </div>
+  <div style="background:var(--bg); border:1px solid var(--line); padding:0.5rem; border-radius:3px;">
+    <strong style="color:var(--text); font-size:0.75rem;">B. Llamadas a nombres pelados:</strong>
+    <p style="color:#f87171; font-size:0.72rem; margin:0.25rem 0;"><code>ir_plan() &notin; builtins &cup; defined &cup; imported</code></p>
+    <span style="color:var(--text-dim); font-size:0.68rem;">Rechaza APIs inventadas de la nada.</span>
+  </div>
+</div>
+<p style="color:#3ddad7; font-size:0.75rem; margin-top:0.4rem;">
+  &rarr; Emite <code>HALLUCINATION_REJECTED</code>. El ciclo penaliza el fitness del modelo, reinicia el integral del PID y muta la estrategia sin gastar recursos en la validación física.
+</p>
+`,
+      'kv-cache': `
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+  <span style="color:#4ade80; font-weight:700;">[SISTEMAS LLM] Alineación de Prefijo para KV Cache</span>
+  <span class="badge badge-stable" style="background:rgba(74,222,128,0.15); color:#4ade80; border-color:#4ade80;">Reutilización KV: ~85%</span>
+</div>
+<p style="color:var(--text-dim); margin-bottom:0.5rem;">
+  Motores locales como llama.cpp y Ollama cachean tensores de claves y valores (KV Cache) por <strong>prefijo literal compartido</strong> entre peticiones consecutivas al mismo modelo.
+</p>
+<div class="kv-cache-diagram">
+  <div class="kv-cache-segment kv-hit">
+    <span>✓ [PREFIJO ESTABLE - KV CACHE HIT 85%]: System Role + Original Source Code (Idéntico en cada vuelta)</span>
+  </div>
+  <div class="kv-cache-segment kv-miss">
+    <span>⚡ [SUFIJO MUTABLE - ÚNICA GENERACIÓN NUEVA 15%]: Iteración actual, Presión PID, Temperatura T, Anti-patrones</span>
+  </div>
+</div>
+<p style="color:var(--text-dim); font-size:0.75rem; margin-top:0.5rem;">
+  Al colocar el código original estático al inicio y la telemetría mutable al final en <code>_prompt_builder.py</code>, la latencia de inferencia entre iteraciones cae de <strong>4.2s</strong> a <strong>0.8s</strong> en Ollama sobre GPUs locales.
+</p>
+`
+    };
+
+    const renderGateView = (tabKey) => {
+      if (!displayCard) return;
+      displayCard.innerHTML = views[tabKey] || '';
+    };
+
+    pills.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pills.forEach((p) => {
+          p.classList.remove('is-active', 'is-active-safe');
+        });
+        const key = btn.getAttribute('data-gate-tab');
+        if (key === 'gate-active' || key === 'kv-cache') {
+          btn.classList.add('is-active-safe');
+        } else {
+          btn.classList.add('is-active');
+        }
+        playSound('click');
+        renderGateView(key);
+      });
+    });
+
+    renderGateView('reward-hack');
+  })();
+
 })();
+
