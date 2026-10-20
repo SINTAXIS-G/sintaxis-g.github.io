@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SINTAXIS_G // ARCHANGEL — Griffith Continuum Fracture Simulator</title>
+  <style>
+    :root {
+      --bg-void: #050811;
+      --cyan: #00f0ff;
+      --amber: #ffaa00;
+      --violet: #a78bfa;
+      --crimson: #ff3355;
+      --emerald: #00ff9d;
+      --panel-bg: rgba(5, 8, 17, 0.86);
+      --border-cyan: rgba(0, 240, 255, 0.24);
+      --text-main: #e2f1ff;
+      --text-muted: rgba(175, 208, 240, 0.58);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+      overflow: hidden;
+    }
+
+    #sim-viewport {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-void);
+    }
+
+    #gl-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    /* Capa Táctica HUD Sintaxis_G */
+    .hud-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(0.75rem, 1.8vw, 1.5rem);
+    }
+
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hud-row.bottom {
+      align-items: flex-end;
+    }
+
+    .hud-card {
+      pointer-events: auto;
+      background: var(--panel-bg);
+      border: 1px solid var(--border-cyan);
+      border-left: 3px solid var(--cyan);
+      padding: 0.85rem 1.05rem;
+      backdrop-filter: blur(8px);
+      font-size: 0.7rem;
+      line-height: 1.5;
+      letter-spacing: 0.06em;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+    }
+
+    .hud-card.amber-card {
+      border-left-color: var(--amber);
+    }
+
+    .hud-card.violet-card {
+      border-left-color: var(--violet);
+    }
+
+    .card-header {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(145px, 1fr));
+      gap: 0.45rem 0.9rem;
+    }
+
+    .metric-item {
+      border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+      padding-bottom: 0.25rem;
+    }
+
+    .metric-lbl {
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .metric-val {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .val-cyan { color: var(--cyan); }
+    .val-amber { color: var(--amber); }
+    .val-crimson { color: var(--crimson); }
+    .val-violet { color: var(--violet); }
+    .val-emerald { color: var(--emerald); }
+
+    /* Indicador de Estado Termodinámico */
+    .state-banner {
+      margin-top: 0.55rem;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.08);
+      transition: all 0.2s ease;
+    }
+
+    .state-banner.yield {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: rgba(255, 170, 0, 0.12);
+    }
+
+    .state-banner.critical {
+      border-color: var(--crimson);
+      color: var(--crimson);
+      background: rgba(255, 51, 85, 0.18);
+      box-shadow: 0 0 18px rgba(255, 51, 85, 0.35);
+    }
+
+    .state-banner.healing {
+      border-color: var(--violet);
+      color: var(--violet);
+      background: rgba(167, 139, 250, 0.16);
+      box-shadow: 0 0 18px rgba(167, 139, 250, 0.32);
+    }
+
+    /* Controles Interactivos */
+    .controls-panel {
+      width: min(94vw, 440px);
+    }
+
+    .slider-group {
+      margin-bottom: 0.7rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.66rem;
+      margin-bottom: 0.25rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: rgba(0, 240, 255, 0.18);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--cyan);
+      border: 2px solid #050811;
+      box-shadow: 0 0 10px var(--cyan);
+      cursor: pointer;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .tactical-btn {
+      flex: 1;
+      min-width: 140px;
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid var(--violet);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.55rem 0.75rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.18s ease;
+    }
+
+    .tactical-btn:hover {
+      background: rgba(167, 139, 250, 0.26);
+      box-shadow: 0 0 16px rgba(167, 139, 250, 0.4);
+    }
+
+    .tactical-btn.audio-btn {
+      flex: 0 0 auto;
+      min-width: 120px;
+      border-color: var(--border-cyan);
+      background: rgba(0, 240, 255, 0.06);
+      color: var(--cyan);
+    }
+
+    .tactical-btn.audio-btn.active {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+    }
+
+    /* Leyenda Térmica de Von Mises */
+    .legend-bar {
+      height: 8px;
+      width: 100%;
+      margin: 0.35rem 0;
+      background: linear-gradient(90deg, #060911 0%, #00f0ff 38%, #ffaa00 74%, #ffffff 100%);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .legend-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.56rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 720px) {
+      .telemetry-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .controls-panel {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="sim-viewport">
+    <canvas id="gl-canvas"></canvas>
+
+    <div class="hud-overlay">
+      <!-- Fila Superior: Telemetría Físico-Matemática y Leyenda Tensorial -->
+      <div class="hud-row">
+        <section class="hud-card">
+          <div class="card-header">
+            <span>[SYS-00] ARCHANGEL // GRIFFITH FRACTURE TELEMETRY</span>
+            <div style="display: flex; gap: 0.65rem; align-items: center;">
+              <a href="archangel.html" style="color: var(--cyan); text-decoration: none; border: 1px solid var(--border-cyan); padding: 2px 7px; font-size: 0.6rem; letter-spacing: 0.08em; background: rgba(0, 240, 255, 0.06); transition: all 0.2s ease;">← RETORNAR A ARCHANGEL</a>
+              <span class="val-cyan" id="ui-fps">60 FPS</span>
+            </div>
+          </div>
+
+          <div class="telemetry-grid">
+            <div class="metric-item">
+              <span class="metric-lbl">σ_∞ (TENSIÓN DE CHURN)</span>
+              <span class="metric-val val-cyan" id="ui-sigma-inf">75.0 MPa</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">a (SEMIEJE DE FISURA)</span>
+              <span class="metric-val val-cyan" id="ui-crack-a">40.0 mm</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">K_I vs K_Ic (33.97 MPa√m)</span>
+              <span class="metric-val" id="ui-ki-ratio">26.59 MPa√m (78%)</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">G (ENERGÍA LIBERADA vs G_c=5.0)</span>
+              <span class="metric-val val-amber" id="ui-energy-g">3.06 kJ/m²</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">σ_max (PICO INGLIS ρ=2mm)</span>
+              <span class="metric-val" id="ui-sigma-max">745.9 MPa</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">r_p (ZONA PLÁSTICA IRWIN)</span>
+              <span class="metric-val val-amber" id="ui-plastic-rp">1.80 mm</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">v_tip (VELOCIDAD RAYLEIGH)</span>
+              <span class="metric-val" id="ui-crack-vel">0.0 m/s (0.00 c_R)</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-lbl">FOCO TENSIONAL CURSOR</span>
+              <span class="metric-val val-violet" id="ui-cursor-load">STANDBY</span>
+            </div>
+          </div>
+
+          <div class="state-banner" id="ui-material-state">NOMINAL_ELASTIC</div>
+        </section>
+
+        <section class="hud-card amber-card" style="width: min(94vw, 310px);">
+          <div class="card-header">
+            <span>MAPA TÉRMICO VON MISES (σ_vM)</span>
+          </div>
+          <div class="legend-bar"></div>
+          <div class="legend-labels">
+            <span>0 MPa (VACÍO)</span>
+            <span>125 MPa (CIAN)</span>
+            <span>250 MPa (σ_y)</span>
+            <span>≥600 MPa (PLASMA)</span>
+          </div>
+          <div style="margin-top: 0.55rem; font-size: 0.62rem; color: var(--text-muted);">
+            • [CLIC / ARRASTRAR EN LIENZO]: Inyecta concentrador puntual de tensiones Boussinesq acoplado a K_I.<br/>
+            • [BIFURCACIÓN YOFFE]: Si K_I ≥ K_Ic, la fisura ramifica a ±30° emitiendo ondas Rayleigh.
+          </div>
+        </section>
+      </div>
+
+      <!-- Fila Inferior: Controles de Deuda Técnica y Reparación Bayesiana -->
+      <div class="hud-row bottom">
+        <section class="hud-card violet-card controls-panel">
+          <div class="card-header">
+            <span>PARÁMETROS DE FRONTERA DEL AST</span>
+            <span style="font-size: 0.62rem; color: var(--violet);">E'=230.8 GPa | ν=0.30</span>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>GIT CHURN / TENSIÓN EXTERNA (σ_∞)</span>
+              <span class="val-cyan" id="lbl-slider-sigma">75 MPa</span>
+            </div>
+            <input type="range" id="slider-sigma" min="0" max="220" step="1" value="75" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>DEFECTO INICIAL / DEUDA TÉCNICA (a_0)</span>
+              <span class="val-amber" id="lbl-slider-a0">40 mm</span>
+            </div>
+            <input type="range" id="slider-a0" min="12" max="95" step="1" value="40" />
+          </div>
+
+          <div class="btn-row">
+            <button class="tactical-btn" id="btn-bayesian-heal">
+              [REPARACIÓN BAYESIANA (T → 0)]
+            </button>
+            <button class="tactical-btn audio-btn" id="btn-audio-toggle">
+              AUDIO DSP: OFF
+            </button>
+          </div>
+        </section>
+
+        <section class="hud-card">
+          <div style="font-size: 0.64rem; color: var(--text-muted);">
+            PIPELINE: <span class="val-cyan">1 FULLSCREEN QUAD (2 TRIS)</span> | COMPLEJIDAD CPU: <span class="val-cyan">O(1)</span><br/>
+             ECUACIÓN: <span class="val-amber">σ_max = σ_∞(1 + 2√(a/ρ))</span> | <span class="val-violet">r_p = (1/2π)(K_I/σ_y)²</span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      // ============================================================================
+      // 1. MOTOR ACÚSTICO PROCEDURAL INTEGRADO (window.SGSound)
+      //    Si window.SGSound ya existe en el entorno, se respeta; si no, se provee.
+      // ============================================================================
+      if (!window.SGSound) {
+        class SGSoundEngine {
+          constructor() {
+            this._ctx = null;
+            this._masterGain = null;
+            this._geigerBuffer = null;
+            this._distortionCurve = null;
+            this._isEnabled = false;
+            this._lastTickTime = 0;
+          }
+
+          _init() {
+            if (this._ctx) return;
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this._ctx = new AudioCtx({ latencyHint: 'interactive' });
+            this._masterGain = this._ctx.createGain();
+            this._masterGain.gain.setValueAtTime(0.0, this._ctx.currentTime);
+            this._masterGain.connect(this._ctx.destination);
+
+            // Buffer Geiger de 4ms con ventana de Hann y media cero exacta
+            const sr = this._ctx.sampleRate;
+            const n = Math.max(16, Math.round(0.004 * sr));
+            this._geigerBuffer = this._ctx.createBuffer(1, n, sr);
+            const data = this._geigerBuffer.getChannelData(0);
+            let sum = 0;
+            for (let i = 0; i < n; i++) {
+              const w = 0.5 * (1 - Math.cos((2 * Math.PI * i) / (n - 1)));
+              data[i] = (Math.random() * 2 - 1) * w;
+              sum += data[i];
+            }
+            const mean = sum / n;
+            for (let i = 0; i < n; i++) data[i] -= mean;
+
+            // Curva de distorsión impar (4097 muestras)
+            const samples = 4097;
+            this._distortionCurve = new Float32Array(samples);
+            const mid = (samples - 1) / 2;
+            const norm = Math.tanh(3.2);
+            for (let i = 0; i < samples; i++) {
+              this._distortionCurve[i] = i === mid ? 0.0 : Math.tanh(3.2 * ((i - mid) / mid)) / norm;
+            }
+
+            // Dron cuántico de 55Hz con LPF a 120Hz
+            const now = this._ctx.currentTime;
+            const lpf = this._ctx.createBiquadFilter();
+            lpf.type = 'lowpass';
+            lpf.frequency.setValueAtTime(120, now);
+            lpf.Q.setValueAtTime(2.2, now);
+
+            const droneGain = this._ctx.createGain();
+            droneGain.gain.setValueAtTime(0.26, now);
+
+            const osc = this._ctx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(55, now);
+
+            const lfo = this._ctx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(0.16, now);
+            const lfoGain = this._ctx.createGain();
+            lfoGain.gain.setValueAtTime(2.4, now);
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(osc.frequency);
+            osc.connect(lpf);
+            lpf.connect(droneGain);
+            droneGain.connect(this._masterGain);
+
+            osc.start(now);
+            lfo.start(now);
+          }
+
+          async toggleAudio(forceState) {
+            if (!this._ctx) this._init();
+            this._isEnabled = typeof forceState === 'boolean' ? forceState : !this._isEnabled;
+            if (this._ctx.state === 'suspended' && this._isEnabled) {
+              await this._ctx.resume();
+            }
+            const now = this._ctx.currentTime;
+            this._masterGain.gain.cancelScheduledValues(now);
+            this._masterGain.gain.setValueAtTime(this._masterGain.gain.value, now);
+            this._masterGain.gain.linearRampToValueAtTime(this._isEnabled ? 0.65 : 0.0, now + 0.065);
+            return this._isEnabled;
+          }
+
+          tick() {
+            if (!this._isEnabled || !this._ctx || this._ctx.state !== 'running') return false;
+            const now = this._ctx.currentTime;
+            if (now - this._lastTickTime < 0.022) return false;
+            this._lastTickTime = now;
+
+            const src = this._ctx.createBufferSource();
+            src.buffer = this._geigerBuffer;
+            const flt = this._ctx.createBiquadFilter();
+            flt.type = 'lowpass';
+            flt.frequency.setValueAtTime(3500, now);
+            flt.Q.setValueAtTime(3.2, now);
+            const g = this._ctx.createGain();
+            g.gain.setValueAtTime(0.42, now);
+
+            src.connect(flt);
+            flt.connect(g);
+            g.connect(this._masterGain);
+            src.onended = () => { src.disconnect(); flt.disconnect(); g.disconnect(); };
+            src.start(now);
+            return true;
+          }
+
+          pulse() {
+            if (!this._isEnabled || !this._ctx || this._ctx.state !== 'running') return false;
+            const t0 = this._ctx.currentTime;
+            const osc1 = this._ctx.createOscillator();
+            const osc2 = this._ctx.createOscillator();
+            osc1.type = 'sawtooth';
+            osc2.type = 'triangle';
+            osc1.detune.setValueAtTime(-10, t0);
+            osc2.detune.setValueAtTime(10, t0);
+            osc1.frequency.setValueAtTime(110, t0);
+            osc1.frequency.exponentialRampToValueAtTime(28, t0 + 1.2);
+            osc2.frequency.setValueAtTime(110, t0);
+            osc2.frequency.exponentialRampToValueAtTime(28, t0 + 1.2);
+
+            const shaper = this._ctx.createWaveShaper();
+            shaper.curve = this._distortionCurve;
+            const lpf = this._ctx.createBiquadFilter();
+            lpf.type = 'lowpass';
+            lpf.frequency.setValueAtTime(420, t0);
+            lpf.frequency.exponentialRampToValueAtTime(65, t0 + 1.2);
+
+            const vca = this._ctx.createGain();
+            vca.gain.setValueAtTime(0.001, t0);
+            vca.gain.linearRampToValueAtTime(0.65, t0 + 0.008);
+            vca.gain.exponentialRampToValueAtTime(0.0008, t0 + 1.2);
+            vca.gain.linearRampToValueAtTime(0.0, t0 + 1.215);
+
+            osc1.connect(shaper);
+            osc2.connect(shaper);
+            shaper.connect(lpf);
+            lpf.connect(vca);
+            vca.connect(this._masterGain);
+            osc1.onended = () => { osc1.disconnect(); osc2.disconnect(); shaper.disconnect(); lpf.disconnect(); vca.disconnect(); };
+            osc1.start(t0);
+            osc2.start(t0);
+            osc1.stop(t0 + 1.22);
+            osc2.stop(t0 + 1.22);
+            return true;
+          }
+
+          glide() {
+            if (!this._isEnabled || !this._ctx || this._ctx.state !== 'running') return false;
+            const t0 = this._ctx.currentTime;
+            const osc1 = this._ctx.createOscillator();
+            const osc2 = this._ctx.createOscillator();
+            osc1.type = 'sine';
+            osc2.type = 'triangle';
+            osc1.frequency.setValueAtTime(220, t0);
+            osc1.frequency.exponentialRampToValueAtTime(440, t0 + 0.45);
+            osc1.frequency.exponentialRampToValueAtTime(329.63, t0 + 0.75);
+            osc2.frequency.setValueAtTime(329.63, t0);
+            osc2.frequency.exponentialRampToValueAtTime(659.25, t0 + 0.45);
+            osc2.frequency.exponentialRampToValueAtTime(493.88, t0 + 0.75);
+
+            const vca = this._ctx.createGain();
+            vca.gain.setValueAtTime(0.0, t0);
+            vca.gain.linearRampToValueAtTime(0.24, t0 + 0.08);
+            vca.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.73);
+            vca.gain.linearRampToValueAtTime(0.0, t0 + 0.75);
+
+            osc1.connect(vca);
+            osc2.connect(vca);
+            vca.connect(this._masterGain);
+            osc1.onended = () => { osc1.disconnect(); osc2.disconnect(); vca.disconnect(); };
+            osc1.start(t0);
+            osc2.start(t0);
+            osc1.stop(t0 + 0.76);
+            osc2.stop(t0 + 0.76);
+            return true;
+          }
+        }
+        const inst = new SGSoundEngine();
+        window.SGSound = {
+          toggleAudio: (f) => inst.toggleAudio(f),
+          tick: () => inst.tick(),
+          pulse: () => inst.pulse(),
+          glide: () => inst.glide()
+        };
+      }
+
+      // ============================================================================
+      // 2. CONSTANTES FÍSICAS Y PARÁMETROS MATERIALES DEL CRISTAL AST
+      // ============================================================================
+      const PHYS = {
+        E_GPa: 210.0,                        // Módulo de Young del sustrato AST (GPa)
+        nu: 0.30,                            // Coeficiente de Poisson
+        get E_prime_GPa() { return this.E_GPa / (1.0 - this.nu * this.nu); }, // 230.77 GPa (Deformación Plana)
+        gamma_s: 2.5,                        // Energía superficial específica (kJ/m²)
+        get G_c() { return 2.0 * this.gamma_s; }, // Tasa crítica de liberación de energía: 5.0 kJ/m²
+        get K_Ic() { return Math.sqrt(this.E_prime_GPa * this.G_c); }, // 33.97 MPa√m
+        sigma_y: 250.0,                      // Esfuerzo de fluencia del nodo AST (MPa)
+        rho_tip: 0.002,                      // Radio de curvatura de Inglis en la punta: 2.0 mm (0.002 m)
+        c_R: 2950.0,                         // Velocidad de onda superficial de Rayleigh (m/s)
+        get v_branch_max() { return 0.38 * this.c_R; } // 1121.0 m/s (Límite de bifurcación de Yoffe)
+      };
+
+      // ============================================================================
+      // 3. INICIALIZACIÓN DEL PIPELINE WEBGL (1 FULLSCREEN QUAD = 2 TRIÁNGULOS)
+      // ============================================================================
+      const viewport = document.getElementById('sim-viewport');
+      const canvas = document.getElementById('gl-canvas');
+      const gl = canvas.getContext('webgl2', { antialias: false, depth: false, stencil: false }) ||
+                 canvas.getContext('webgl', { antialias: false, depth: false, stencil: false });
+
+      const vsSource = `
+        attribute vec2 aPosition;
+        varying vec2 vUv;
+        void main() {
+          vUv = aPosition * 0.5 + 0.5;
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+      `;
+
+      // Fragment Shader Analítico O(1): Tensor de Westergaard-Williams, Von Mises,
+      // Bifurcación Fractal a ±30°, Retícula Geodésica y Glifos de AST.
+      const fsSource = `
+        precision highp float;
+        varying vec2 vUv;
+
+        uniform vec2 uResolution;
+        uniform float uTime;
+        uniform float uSigmaInf;        // Tensión remota de Git Churn (MPa)
+        uniform float uCrackHalfLen;    // Semieje base normalizado en coordenadas de mundo
+        uniform float uGrowthProgress;  // Progreso de propagación y ramificación fractal [0, 1]
+        uniform float uKI;              // Factor de intensidad de tensiones efectivo (MPa√m)
+        uniform float uPlasticRadius;   // Radio plástico de Irwin normalizado
+        uniform vec2 uCursorWorld;      // Coordenada (x,y) del concentrador puntual
+        uniform float uCursorStrength;  // Intensidad del concentrador puntual [0, 1]
+        uniform float uShockwavePhase;  // Fase de la onda acústica de fractura Rayleigh [0, 1]
+        uniform float uHealWave;        // Fase de recocido térmico Bayesiano [0, 1]
+
+        #define PI 3.14159265359
+
+        // Hash determinista y ruido cristalino para micro-facetas intergranulares del AST
+        float hash21(vec2 p) {
+          p = fract(p * vec2(234.34, 435.345));
+          p += dot(p, p + 34.23);
+          return fract(p.x * p.y);
+        }
+
+        float noise1D(float x) {
+          float i = floor(x);
+          float f = fract(x);
+          float u = f * f * (3.0 - 2.0 * f);
+          return mix(fract(sin(i * 127.1) * 43758.5453),
+                     fract(sin((i + 1.0) * 127.1) * 43758.5453), u) * 2.0 - 1.0;
+        }
+
+        // Distancia con signo y proyección sobre un segmento de fisura con rugosidad de red AST
+        vec2 sdRoughSegment(vec2 p, vec2 a, vec2 b, float seed, float serrationAmp) {
+          vec2 pa = p - a;
+          vec2 ba = b - a;
+          float len = length(ba);
+          if (len < 1e-5) return vec2(length(pa), 0.0);
+          float h = clamp(dot(pa, ba) / (len * len), 0.0, 1.0);
+          vec2 normal = vec2(-ba.y, ba.x) / len;
+          // Desviación cristalográfica nula en los extremos (sin(pi*h)) para preservar unión exacta de ramas
+          float micro = (noise1D(h * 18.0 + seed) * 0.65 + noise1D(h * 43.0 - seed * 2.0) * 0.35)
+                        * serrationAmp * sin(h * PI);
+          vec2 proj = a + ba * h + normal * micro;
+          return vec2(length(p - proj), h);
+        }
+
+        // Acumula el Tensor de Tensiones de Modo I (Westergaard-Williams regularizado por Inglis)
+        // rotado desde el marco local de la punta (tipPos, tipAngle) hacia coordenadas globales (x,y)
+        void addTipModeI(
+          vec2 p,
+          vec2 tipPos,
+          float tipAngle,
+          float localKI,
+          float rCore,
+          inout vec3 sigmaGlobal
+        ) {
+          vec2 d = p - tipPos;
+          float ca = cos(tipAngle);
+          float sa = sin(tipAngle);
+          // Coordenadas locales (xi, eta) alineadas con el eje de propagación de la punta
+          float xi  =  ca * d.x + sa * d.y;
+          float eta = -sa * d.x + ca * d.y;
+
+          float rEff = sqrt(xi * xi + eta * eta + rCore * rCore);
+          float theta = atan(eta, xi);
+
+          float c2  = cos(0.5 * theta);
+          float s2  = sin(0.5 * theta);
+          float s32 = sin(1.5 * theta);
+          float c32 = cos(1.5 * theta);
+
+          // Atenuación de campo lejano para que la singularidad domine cerca de la punta
+          // y recupere limpiamente sigma_inf lejos del defecto
+          float decay = exp(-rEff * 1.15);
+          float pref = (localKI / sqrt(2.0 * PI * rEff)) * decay * 4.2;
+
+          float s_xx_loc = pref * c2 * (1.0 - s2 * s32);
+          float s_yy_loc = pref * c2 * (1.0 + s2 * s32);
+          float t_xy_loc = pref * c2 * s2 * c32;
+
+          // Transformación tensorial de Mohr al sistema global: R(alpha) * Sigma_loc * R^T(alpha)
+          float sm = 0.5 * (s_xx_loc + s_yy_loc);
+          float sd = 0.5 * (s_xx_loc - s_yy_loc);
+          float c2a = cos(2.0 * tipAngle);
+          float s2a = sin(2.0 * tipAngle);
+
+          sigmaGlobal.x += sm + sd * c2a - t_xy_loc * s2a;
+          sigmaGlobal.y += sm - sd * c2a + t_xy_loc * s2a;
+          sigmaGlobal.z += sd * s2a + t_xy_loc * c2a;
+        }
+
+        // Glifos sintéticos de AST (nodos de sintaxis y registros binarios en las celdas del Blueprint)
+        float renderAstGlyph(vec2 cellId, vec2 cellUv) {
+          float rnd = hash21(cellId);
+          if (rnd < 0.42) return 0.0; // Celda vacía para respiro visual
+          vec2 q = abs(cellUv - 0.5);
+          float border = step(0.46, max(q.x, q.y));
+
+          // Trazo interno tipo árbol binario / nodo AST
+          vec2 g = cellUv * 4.0 - 2.0;
+          float d1 = abs(g.y - 0.6) - 0.08;
+          float d2 = abs(abs(g.x) - (0.6 - g.y) * 0.75) - 0.08;
+          float treeMask = step(min(max(d1, abs(g.x) - 0.8), max(d2, abs(g.y + 0.1) - 0.7)), 0.0);
+
+          // Puntos de conexión de registro
+          float nodes = step(length(abs(g) - vec2(0.55, 0.55)), 0.22);
+          return clamp(border * 0.35 + (treeMask + nodes) * 0.65, 0.0, 1.0);
+        }
+
+        // Mapa térmico científico: Azul Vacío -> Cian Cianotipo -> Ámbar Incandescente -> Blanco Plasma
+        vec3 evaluateThermalPalette(float normStress) {
+          float t = clamp(normStress, 0.0, 1.0);
+          vec3 cVoid   = vec3(0.020, 0.031, 0.067); // #050811
+          vec3 cBlue   = vec3(0.035, 0.145, 0.340);
+          vec3 cCyan   = vec3(0.000, 0.941, 1.000); // #00f0ff
+          vec3 cAmber  = vec3(1.000, 0.667, 0.000); // #ffaa00
+          vec3 cWhite  = vec3(1.000, 0.990, 0.970); // Plasma en singularidad
+
+          if (t < 0.22) {
+            return mix(cVoid, cBlue, t / 0.22);
+          } else if (t < 0.52) {
+            return mix(cBlue, cCyan, (t - 0.22) / 0.30);
+          } else if (t < 0.82) {
+            return mix(cCyan, cAmber, (t - 0.52) / 0.30);
+          } else {
+            return mix(cAmber, cWhite, (t - 0.82) / 0.18);
+          }
+        }
+
+        void main() {
+          float aspect = uResolution.x / max(uResolution.y, 1.0);
+          vec2 p = (vUv - 0.5) * 2.0;
+          p.x *= aspect;
+
+          // =========================================================================
+          // 1. CINEMÁTICA DEL ÁRBOL DE FRACTURA FRACTAL (CRITERIO YOFFE ±30°)
+          // =========================================================================
+          float aMain = uCrackHalfLen + min(uGrowthProgress, 0.35) * 0.52;
+          float pGen1 = clamp((uGrowthProgress - 0.35) / 0.35, 0.0, 1.0);
+          float pGen2 = clamp((uGrowthProgress - 0.70) / 0.30, 0.0, 1.0);
+
+          float len1 = pGen1 * 0.29;
+          float len2 = pGen2 * 0.18;
+
+          // Distancia mínima acumulada al árbol de fisuras
+          float minCrackDist = 1e5;
+          float crackOpeningWidth = 0.0045 + 0.0065 * clamp(uSigmaInf / 180.0, 0.0, 1.5);
+
+          // Segmento 0: Grieta horizontal principal de Griffith (-aMain, 0) -> (+aMain, 0)
+          vec2 seg0 = sdRoughSegment(p, vec2(-aMain, 0.0), vec2(aMain, 0.0), 1.1, 0.012);
+          // Perfil elíptico de apertura de desplazamientos COD: u_y(x) = u_0 * sqrt(1 - (x/a)^2)
+          float codProfile = sqrt(max(0.0, 1.0 - pow((seg0.y * 2.0 - 1.0), 2.0)));
+          minCrackDist = min(minCrackDist, seg0.x - crackOpeningWidth * codProfile);
+
+          // Tensor de tensiones global [sigma_xx, sigma_yy, tau_xy]
+          // Condición de frontera remota: Tracción uniaxial Modo I sigma_yy = sigma_inf
+          // + Tensión T de compresión paralela moderada
+          vec3 sigma = vec3(0.12 * uSigmaInf, uSigmaInf, 0.0);
+
+          // Radio de regularización en la punta (Inglis rho/2)
+          float rCore = 0.018;
+
+          // Pesos de intensidad de tensión repartidos entre la punta madre y las ramas hijas
+          float wMain = 1.0 - 0.65 * pGen1;
+          float wGen1 = pGen1 * (1.0 - 0.55 * pGen2) * 0.72;
+          float wGen2 = pGen2 * 0.58;
+
+          // Evaluamos simétricamente el árbol derecho (+1) y el árbol izquierdo (-1)
+          for (int sideIdx = 0; sideIdx < 2; sideIdx++) {
+            float side = (sideIdx == 0) ? 1.0 : -1.0;
+            float baseAng = (sideIdx == 0) ? 0.0 : PI;
+            vec2 rootTip = vec2(side * aMain, 0.0);
+
+            if (wMain > 0.01) {
+              addTipModeI(p, rootTip, baseAng, uKI * wMain, rCore, sigma);
+            }
+
+            if (pGen1 > 0.001) {
+              // Bifurcación primaria a ángulos característicos +30° y -30° (PI / 6)
+              for (int b1 = 0; b1 < 2; b1++) {
+                float s1 = (b1 == 0) ? 1.0 : -1.0;
+                float ang1 = baseAng + s1 * (PI / 6.0);
+                vec2 tip1 = rootTip + len1 * vec2(cos(ang1), sin(ang1));
+
+                vec2 dSeg1 = sdRoughSegment(p, rootTip, tip1, 3.7 + float(sideIdx * 2 + b1), 0.008 * pGen1);
+                minCrackDist = min(minCrackDist, dSeg1.x - crackOpeningWidth * 0.55 * (1.0 - 0.4 * dSeg1.y));
+
+                if (wGen1 > 0.01) {
+                  addTipModeI(p, tip1, ang1, uKI * wGen1, rCore * 0.85, sigma);
+                }
+
+                // Bifurcación fractal secundaria a ±30° respecto a la rama primaria
+                if (pGen2 > 0.001) {
+                  for (int b2 = 0; b2 < 2; b2++) {
+                    float s2 = (b2 == 0) ? 1.0 : -1.0;
+                    float ang2 = ang1 + s2 * (PI / 6.0);
+                    vec2 tip2 = tip1 + len2 * vec2(cos(ang2), sin(ang2));
+
+                    vec2 dSeg2 = sdRoughSegment(p, tip1, tip2, 9.1 + float(sideIdx * 4 + b1 * 2 + b2), 0.005 * pGen2);
+                    minCrackDist = min(minCrackDist, dSeg2.x - crackOpeningWidth * 0.35 * (1.0 - 0.5 * dSeg2.y));
+
+                    addTipModeI(p, tip2, ang2, uKI * wGen2, rCore * 0.7, sigma);
+                  }
+                }
+              }
+            }
+          }
+
+          // =========================================================================
+          // 2. CONCENTRADOR PUNTUAL DE BOUSSINESQ-KELVIN (INTERACCIÓN RATÓN)
+          // =========================================================================
+          if (uCursorStrength > 0.001) {
+            vec2 dp = p - uCursorWorld;
+            float r2 = dot(dp, dp) + 0.0045;
+            float r = sqrt(r2);
+            float thetaC = atan(dp.y, dp.x);
+            float loadMag = uCursorStrength * 165.0 * exp(-r * 2.6) / sqrt(r);
+
+            sigma.x += loadMag * (0.65 + 0.35 * cos(2.0 * thetaC));
+            sigma.y += loadMag * (1.15 - 0.35 * cos(2.0 * thetaC));
+            sigma.z += loadMag * 0.45 * sin(2.0 * thetaC);
+          }
+
+          // Alivio de tracción normal (Stress Shielding) en las sombras inmediata de los labios abiertos
+          float crackShadow = 1.0 - 0.82 * exp(-max(minCrackDist, 0.0) * 32.0);
+          sigma *= crackShadow;
+
+          // =========================================================================
+          // 3. INVARIANTE J2 DE VON MISES EN DEFORMACIÓN PLANA (nu = 0.30)
+          // =========================================================================
+          float nu = 0.30;
+          float s_xx = sigma.x;
+          float s_yy = sigma.y;
+          float t_xy = sigma.z;
+          float s_zz = nu * (s_xx + s_yy);
+
+          float dxy = s_xx - s_yy;
+          float dyz = s_yy - s_zz;
+          float dzx = s_zz - s_xx;
+          float sigma_vM = sqrt(0.5 * (dxy * dxy + dyz * dyz + dzx * dzx) + 3.0 * t_xy * t_xy);
+
+          // Normalización sobre escala térmica [0 MPa -> 520 MPa]
+          float normVM = sigma_vM / 520.0;
+          vec3 col = evaluateThermalPalette(normVM);
+
+          // =========================================================================
+          // 4. SUSTRATO BLUEPRINT / RETÍCULA GEODÉSICA Y GLIFOS DE AST
+          // =========================================================================
+          // Deformación elástica visual de las coordenadas de retícula bajo el campo de tensiones
+          vec2 displacedP = p + vec2(s_xx, s_yy) * 0.00014;
+          vec2 gridScale = displacedP * 11.0;
+          vec2 cellId = floor(gridScale);
+          vec2 cellUv = fract(gridScale);
+
+          vec2 gridDist = abs(cellUv - 0.5);
+          float majorGrid = smoothstep(0.47, 0.495, max(gridDist.x, gridDist.y));
+          float glyphMask = renderAstGlyph(cellId, cellUv);
+
+          // Geodésicas polares centradas en el defecto
+          float polarR = length(displacedP);
+          float geodesicCircles = smoothstep(0.96, 0.99, abs(sin(polarR * 18.0)));
+
+          vec3 blueprintTint = mix(vec3(0.0, 0.94, 1.0), vec3(0.65, 0.54, 0.98), clamp(normVM * 1.4, 0.0, 1.0));
+          col += blueprintTint * (majorGrid * 0.08 + glyphMask * 0.075 + geodesicCircles * 0.04);
+
+          // Franjas isocromáticas de esfuerzo constante (Fotoelasticidad de Von Mises)
+          float isoFringe = smoothstep(0.84, 0.96, abs(sin(sigma_vM * 0.095 - uTime * 1.8)));
+          col += mix(vec3(0.0, 0.94, 1.0), vec3(1.0, 0.67, 0.0), clamp(normVM, 0.0, 1.0))
+                 * isoFringe * smoothstep(45.0, 260.0, sigma_vM) * 0.24;
+
+          // Contorno punteado de la Zona Plástica de Irwin (sigma_vM == sigma_y = 250 MPa)
+          float yieldBoundary = smoothstep(14.0, 2.0, abs(sigma_vM - 250.0));
+          float dashPattern = step(0.0, sin((atan(p.y, p.x) * 24.0) + uTime * 4.0));
+          col = mix(col, vec3(1.0, 0.72, 0.05), yieldBoundary * dashPattern * 0.85);
+
+          // =========================================================================
+          // 5. RENDERIZADO DEL INTERIOR DE LA FISURA Y ONDAS DE CHOQUE RAYLEIGH
+          // =========================================================================
+          // Labio incandescente de ruptura de enlaces AST y vacío interior abisal
+          float crackRim = smoothstep(0.014, 0.001, abs(minCrackDist));
+          float crackCore = smoothstep(0.002, -0.003, minCrackDist);
+
+          vec3 rimColor = mix(vec3(0.0, 0.94, 1.0), vec3(1.0, 0.78, 0.25), clamp(uGrowthProgress + normVM * 0.5, 0.0, 1.0));
+          col += rimColor * crackRim * 1.35;
+          col = mix(col, vec3(0.01, 0.015, 0.03), crackCore);
+
+          // Onda de choque elástica superficial (Acústica de Fractura Rayleigh)
+          if (uShockwavePhase > 0.001 && uShockwavePhase < 0.999) {
+            float waveR = uShockwavePhase * 2.2;
+            float dWaveR = abs(length(p - vec2(aMain, 0.0)) - waveR);
+            float dWaveL = abs(length(p - vec2(-aMain, 0.0)) - waveR);
+            float ring = (exp(-dWaveR * 45.0) + exp(-dWaveL * 45.0)) * (1.0 - uShockwavePhase);
+            col += vec3(0.0, 0.94, 1.0) * ring * 0.9;
+          }
+
+          // Onda de Recocido Térmico Bayesiano (Coalescencia Molecular T -> 0)
+          if (uHealWave > 0.001) {
+            float healRadius = (1.0 - uHealWave) * 2.1;
+            float healBand = exp(-abs(length(p) - healRadius) * 22.0) * sin(uHealWave * PI);
+            col += vec3(0.65, 0.54, 0.98) * healBand * 1.35;
+          }
+
+          // Anillo marcador del concentrador puntual de usuario
+          if (uCursorStrength > 0.01) {
+            float dCur = length(p - uCursorWorld);
+            float curRing = smoothstep(0.008, 0.001, abs(dCur - 0.065));
+            col += vec3(0.65, 0.54, 0.98) * curRing * uCursorStrength;
+          }
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `;
+
+      const compileShader = (type, src) => {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, src);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(shader));
+        }
+        return shader;
+      };
+
+      const program = gl.createProgram();
+      gl.attachShader(program, compileShader(gl.VERTEX_SHADER, vsSource));
+      gl.attachShader(program, compileShader(gl.FRAGMENT_SHADER, fsSource));
+      gl.linkProgram(program);
+      gl.useProgram(program);
+
+      // Único quad de pantalla completa (2 triángulos = 6 vértices)
+      const quadVerts = new Float32Array([
+        -1, -1,  1, -1, -1,  1,
+        -1,  1,  1, -1,  1,  1
+      ]);
+      const vbo = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+      gl.bufferData(gl.ARRAY_BUFFER, quadVerts, gl.STATIC_DRAW);
+
+      const aPosLoc = gl.getAttribLocation(program, 'aPosition');
+      gl.enableVertexAttribArray(aPosLoc);
+      gl.vertexAttribPointer(aPosLoc, 2, gl.FLOAT, false, 0, 0);
+
+      // Localización de Uniforms
+      const uniforms = {
+        uResolution: gl.getUniformLocation(program, 'uResolution'),
+        uTime: gl.getUniformLocation(program, 'uTime'),
+        uSigmaInf: gl.getUniformLocation(program, 'uSigmaInf'),
+        uCrackHalfLen: gl.getUniformLocation(program, 'uCrackHalfLen'),
+        uGrowthProgress: gl.getUniformLocation(program, 'uGrowthProgress'),
+        uKI: gl.getUniformLocation(program, 'uKI'),
+        uPlasticRadius: gl.getUniformLocation(program, 'uPlasticRadius'),
+        uCursorWorld: gl.getUniformLocation(program, 'uCursorWorld'),
+        uCursorStrength: gl.getUniformLocation(program, 'uCursorStrength'),
+        uShockwavePhase: gl.getUniformLocation(program, 'uShockwavePhase'),
+        uHealWave: gl.getUniformLocation(program, 'uHealWave')
+      };
+
+      // ============================================================================
+      // 4. ESTADO DEL SOLUCIONADOR CONTINUO Y CONTROLES DE USUARIO
+      // ============================================================================
+      const sliderSigma = document.getElementById('slider-sigma');
+      const sliderA0 = document.getElementById('slider-a0');
+      const lblSliderSigma = document.getElementById('lbl-slider-sigma');
+      const lblSliderA0 = document.getElementById('lbl-slider-a0');
+      const btnHeal = document.getElementById('btn-bayesian-heal');
+      const btnAudio = document.getElementById('btn-audio-toggle');
+
+      const uiFps = document.getElementById('ui-fps');
+      const uiSigmaInf = document.getElementById('ui-sigma-inf');
+      const uiCrackA = document.getElementById('ui-crack-a');
+      const uiKiRatio = document.getElementById('ui-ki-ratio');
+      const uiEnergyG = document.getElementById('ui-energy-g');
+      const uiSigmaMax = document.getElementById('ui-sigma-max');
+      const uiPlasticRp = document.getElementById('ui-plastic-rp');
+      const uiCrackVel = document.getElementById('ui-crack-vel');
+      const uiCursorLoad = document.getElementById('ui-cursor-load');
+      const uiMaterialState = document.getElementById('ui-material-state');
+
+      let sigmaInf = parseFloat(sliderSigma.value);  // MPa
+      let a0_mm = parseFloat(sliderA0.value);        // mm
+      let growthProgress = 0.0;                      // [0, 1] propagación autónoma + ramificación
+      let lastNotifiedStage = 0;
+
+      let isPointerDown = false;
+      const cursorWorld = { x: 0.0, y: 0.0 };
+      let cursorStrength = 0.0;
+
+      let shockwavePhase = 0.0;
+      let isHealing = false;
+      let healProgress = 0.0;
+
+      sliderSigma.addEventListener('input', () => {
+        sigmaInf = parseFloat(sliderSigma.value);
+        lblSliderSigma.textContent = `${sigmaInf.toFixed(0)} MPa`;
+        if (window.SGSound) window.SGSound.tick();
+      });
+
+      sliderA0.addEventListener('input', () => {
+        a0_mm = parseFloat(sliderA0.value);
+        lblSliderA0.textContent = `${a0_mm.toFixed(0)} mm`;
+        if (window.SGSound) window.SGSound.tick();
+      });
+
+      // Reparación Bayesiana (Simulated Annealing T -> 0)
+      btnHeal.addEventListener('click', () => {
+        isHealing = true;
+        healProgress = 1.0;
+        if (window.SGSound) window.SGSound.glide();
+      });
+
+      btnAudio.addEventListener('click', async () => {
+        if (!window.SGSound) return;
+        const active = await window.SGSound.toggleAudio();
+        btnAudio.classList.toggle('active', active);
+        btnAudio.textContent = `AUDIO DSP: ${active ? 'ON' : 'OFF'}`;
+      });
+
+      // Conversión de coordenadas de ratón al espacio físico del shader
+      const updateCursorWorld = (clientX, clientY) => {
+        const rect = canvas.getBoundingClientRect();
+        const aspect = rect.width / Math.max(rect.height, 1.0);
+        const ndcX = ((clientX - rect.left) / rect.width) * 2.0 - 1.0;
+        const ndcY = -(((clientY - rect.top) / rect.height) * 2.0 - 1.0);
+        cursorWorld.x = ndcX * aspect;
+        cursorWorld.y = ndcY;
+      };
+
+      canvas.addEventListener('pointerdown', (e) => {
+        isPointerDown = true;
+        updateCursorWorld(e.clientX, e.clientY);
+        if (window.SGSound) window.SGSound.tick();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!isPointerDown) return;
+        updateCursorWorld(e.clientX, e.clientY);
+      }, { passive: true });
+
+      const releasePointer = () => { isPointerDown = false; };
+      window.addEventListener('pointerup', releasePointer, { passive: true });
+      window.addEventListener('pointercancel', releasePointer, { passive: true });
+
+      // ============================================================================
+      // 5. INTEGRACIÓN EN TIEMPO REAL DE LA MECÁNICA DE FRACTURA DE GRIFFITH-IRWIN
+      // ============================================================================
+      let elapsedTime = 0.0;
+      let lastTime = performance.now();
+      let frameCount = 0;
+      let fpsAccum = 0.0;
+      let rafId = null;
+
+      const tick = (now) => {
+        rafId = requestAnimationFrame(tick);
+
+        const rawDt = (now - lastTime) * 0.001;
+        const dt = Math.min(Math.max(rawDt, 0.0001), 0.1);
+        lastTime = now;
+        elapsedTime += dt;
+
+        // Medición de FPS
+        frameCount++;
+        fpsAccum += rawDt;
+        if (fpsAccum >= 0.5) {
+          uiFps.textContent = `${Math.round(frameCount / fpsAccum)} FPS`;
+          frameCount = 0;
+          fpsAccum = 0.0;
+        }
+
+        // 1. Suavizado del concentrador puntual de tensiones (Clic / Arrastre)
+        const targetCursor = isPointerDown ? 1.0 : 0.0;
+        cursorStrength += (targetCursor - cursorStrength) * (1.0 - Math.pow(1.0 - 0.16, dt * 60.0));
+
+        // 2. Dinámica de Reparación Bayesiana (Recocido Simulado T -> 0)
+        if (isHealing) {
+          healProgress = Math.max(0.0, healProgress - dt * 0.95);
+          // Coalescencia molecular: cierra fisuras y reduce la tensión externa hacia régimen nominal
+          growthProgress = Math.max(0.0, growthProgress - dt * 1.45);
+          sigmaInf += (55.0 - sigmaInf) * (1.0 - Math.pow(1.0 - 0.08, dt * 60.0));
+          a0_mm += (32.0 - a0_mm) * (1.0 - Math.pow(1.0 - 0.08, dt * 60.0));
+
+          sliderSigma.value = Math.round(sigmaInf);
+          sliderA0.value = Math.round(a0_mm);
+          lblSliderSigma.textContent = `${Math.round(sigmaInf)} MPa`;
+          lblSliderA0.textContent = `${Math.round(a0_mm)} mm`;
+
+          if (healProgress <= 0.001 && growthProgress <= 0.001) {
+            isHealing = false;
+            healProgress = 0.0;
+            lastNotifiedStage = 0;
+          }
+        }
+
+        // 3. Evaluación Formal de Magnitudes de Griffith-Inglis-Irwin
+        // Semieje efectivo actual (metros): a(t) = a_0 + delta_a_propagación
+        const a_current_mm = a0_mm + growthProgress * 85.0;
+        const a_m = a_current_mm * 0.001; // en metros
+
+        // Acoplamiento de Green del concentrador puntual sobre las puntas de la grieta
+        const aNormWorld = (a0_mm / 220.0) + Math.min(growthProgress, 0.35) * 0.52;
+        const distRightTip = Math.hypot(cursorWorld.x - aNormWorld, cursorWorld.y);
+        const distLeftTip = Math.hypot(cursorWorld.x + aNormWorld, cursorWorld.y);
+        const minTipDist = Math.min(distRightTip, distLeftTip);
+        const cursorEffectiveSigma = cursorStrength * 95.0 * Math.exp(-minTipDist * minTipDist * 3.8);
+
+        const sigmaEffective = sigmaInf + cursorEffectiveSigma;
+
+        // Factor de Intensidad de Tensiones Modo I: K_I = sigma_eff * sqrt(pi * a)
+        const K_I = sigmaEffective * Math.sqrt(Math.PI * a_m);
+
+        // Esfuerzo máximo en la punta (Inglis): sigma_max = sigma_eff * (1 + 2 * sqrt(a / rho))
+        const sigmaMax = sigmaEffective * (1.0 + 2.0 * Math.sqrt(a_m / PHYS.rho_tip));
+
+        // Tasa de liberación de energía de deformación elástica: G = K_I^2 / E' (kJ/m²)
+        const G_energy = (K_I * K_I) / PHYS.E_prime_GPa;
+
+        // Radio de la zona de flujo plástico (Irwin): r_p = (1 / 2pi) * (K_I / sigma_y)^2
+        const r_p_m = (1.0 / (2.0 * Math.PI)) * Math.pow(K_I / PHYS.sigma_y, 2);
+        const r_p_mm = r_p_m * 1000.0;
+
+        // 4. Criterio de Propagación Crítica de Griffith-Irwin (K_I >= K_Ic)
+        let crackVelocity = 0.0;
+        let stateName = 'NOMINAL_ELASTIC';
+        let stateClass = 'state-banner';
+
+        if (isHealing) {
+          stateName = 'METABOLIC_HEALING';
+          stateClass = 'state-banner healing';
+        } else if (K_I >= PHYS.K_Ic) {
+          stateName = 'CRITICAL_PROPAGATION';
+          stateClass = 'state-banner critical';
+
+          // Ecuación elastodinámica de Mott-Freund: v = 0.38 * c_R * (1 - (K_Ic / K_I)^2)
+          const ratioSq = Math.pow(PHYS.K_Ic / K_I, 2);
+          crackVelocity = PHYS.v_branch_max * (1.0 - ratioSq);
+
+          if (growthProgress < 1.0) {
+            const normVel = crackVelocity / PHYS.v_branch_max;
+            growthProgress = Math.min(1.0, growthProgress + dt * (0.28 + 0.65 * normVel));
+
+            // Disparo acústico y de onda Rayleigh al cruzar umbrales de bifurcación fractal
+            const currentStage = growthProgress < 0.35 ? 1 : (growthProgress < 0.70 ? 2 : 3);
+            if (currentStage > lastNotifiedStage) {
+              lastNotifiedStage = currentStage;
+              shockwavePhase = 0.005;
+              if (window.SGSound) {
+                if (currentStage === 1) window.SGSound.pulse();
+                else window.SGSound.tick();
+              }
+            }
+          }
+        } else if (sigmaMax >= PHYS.sigma_y) {
+          stateName = 'PLASTIC_YIELD';
+          stateClass = 'state-banner yield';
+        }
+
+        if (shockwavePhase > 0.0) {
+          shockwavePhase += dt * 0.95;
+          if (shockwavePhase >= 1.0) shockwavePhase = 0.0;
+        }
+
+        // 5. Actualización de Uniforms y Renderizado O(1)
+        gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
+        gl.uniform1f(uniforms.uTime, elapsedTime);
+        gl.uniform1f(uniforms.uSigmaInf, sigmaInf);
+        gl.uniform1f(uniforms.uCrackHalfLen, a0_mm / 220.0);
+        gl.uniform1f(uniforms.uGrowthProgress, growthProgress);
+        gl.uniform1f(uniforms.uKI, K_I);
+        gl.uniform1f(uniforms.uPlasticRadius, r_p_mm * 0.01);
+        gl.uniform2f(uniforms.uCursorWorld, cursorWorld.x, cursorWorld.y);
+        gl.uniform1f(uniforms.uCursorStrength, cursorStrength);
+        gl.uniform1f(uniforms.uShockwavePhase, shockwavePhase);
+        gl.uniform1f(uniforms.uHealWave, healProgress);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+        // 6. Telemetría Táctica HUD (actualizada cada 4 frames)
+        if ((frameCount % 4) === 0) {
+          const safetyPct = (K_I / PHYS.K_Ic) * 100.0;
+          uiSigmaInf.textContent = `${sigmaEffective.toFixed(1)} MPa`;
+          uiCrackA.textContent = `${a_current_mm.toFixed(1)} mm`;
+          uiKiRatio.textContent = `${K_I.toFixed(2)} MPa√m (${safetyPct.toFixed(0)}%)`;
+          uiKiRatio.className = `metric-val ${K_I >= PHYS.K_Ic ? 'val-crimson' : (safetyPct > 75 ? 'val-amber' : 'val-emerald')}`;
+
+          uiEnergyG.textContent = `${G_energy.toFixed(2)} kJ/m²`;
+          uiSigmaMax.textContent = `${sigmaMax.toFixed(0)} MPa`;
+          uiPlasticRp.textContent = `${r_p_mm.toFixed(2)} mm`;
+
+          const cR_frac = crackVelocity / PHYS.c_R;
+          uiCrackVel.textContent = `${crackVelocity.toFixed(0)} m/s (${cR_frac.toFixed(2)} c_R)`;
+          uiCrackVel.className = `metric-val ${crackVelocity > 0 ? 'val-crimson' : 'val-cyan'}`;
+
+          uiCursorLoad.textContent = cursorStrength > 0.05
+            ? `(${cursorWorld.x.toFixed(2)}, ${cursorWorld.y.toFixed(2)}) +${cursorEffectiveSigma.toFixed(0)}MPa`
+            : 'STANDBY';
+
+          if (uiMaterialState.textContent !== stateName) {
+            uiMaterialState.textContent = stateName;
+            uiMaterialState.className = stateClass;
+          }
+        }
+      };
+
+      // ============================================================================
+      // 6. GESTIÓN DE RESIZE (DPR <= 2.0) Y PAUSA LIMPIA DE CICLO DE VIDA
+      // ============================================================================
+      const handleResize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1.0, 2.0);
+        const w = Math.floor(viewport.clientWidth * dpr);
+        const h = Math.floor(viewport.clientHeight * dpr);
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+      };
+
+      const resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(viewport);
+      handleResize();
+
+      let isIntersecting = true;
+      let isPageVisible = !document.hidden;
+
+      const evaluateLoopState = () => {
+        if (isIntersecting && isPageVisible) {
+          if (rafId === null) {
+            lastTime = performance.now();
+            rafId = requestAnimationFrame(tick);
+          }
+        } else if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      };
+
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        isIntersecting = entries[0]?.isIntersecting ?? true;
+        evaluateLoopState();
+      }, { threshold: 0.01 });
+      intersectionObserver.observe(viewport);
+
+      document.addEventListener('visibilitychange', () => {
+        isPageVisible = !document.hidden;
+        evaluateLoopState();
+      });
+
+      evaluateLoopState();
+    })();
+  </script>
+</body>
+</html>
