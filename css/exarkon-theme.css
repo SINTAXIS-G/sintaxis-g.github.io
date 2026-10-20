@@ -181,8 +181,21 @@ body.page-exarkon {
 
 @media (max-width: 900px) {
   .ex-layers-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1rem;
+    gap: 1rem;
   }
+}
+
+.ex-layers-container > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ex-layer-code-view {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .ex-layers-list {

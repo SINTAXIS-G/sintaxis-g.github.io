@@ -289,6 +289,16 @@
 .compare-table td:first-child { color: var(--text-dim); width: 30%; }
 .compare-table .archangel-col { color: var(--accent); }
 
+@media (max-width: 800px) {
+  table, .compare-table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 .finding {
   font-family: var(--font-mono);
   font-size: 0.85rem;

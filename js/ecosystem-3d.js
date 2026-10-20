@@ -917,6 +917,17 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     if (w === 0 || h === 0) return;
 
     camera.aspect = w / h;
+    if (w < 640) {
+      HOME_CAM_POS.set(0.0, 2.5, 12.8);
+      if (cameraState === FSM.FREE_ORBIT) {
+        camera.position.set(0.0, 2.5, 12.8);
+      }
+    } else {
+      HOME_CAM_POS.set(0.0, 2.2, 9.6);
+      if (cameraState === FSM.FREE_ORBIT && camera.position.z > 11.5) {
+        camera.position.set(0.0, 2.2, 9.6);
+      }
+    }
     camera.updateProjectionMatrix();
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);

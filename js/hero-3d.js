@@ -59,22 +59,34 @@ import * as THREE from 'three';
 
   const updateReactorPosition = () => {
     const w = heroEl.clientWidth;
+    const h = heroEl.clientHeight;
+    if (w === 0 || h === 0) return;
+    const aspect = w / h;
+
+    // Altura visible del mundo en z=0 según FOV vertical de la cámara
+    const vWorldHeight = 2.0 * Math.tan((camera.fov * Math.PI) / 360) * BASE_CAM_Z;
+    // Anillo exterior tiene radio ~2.65, requiere ~5.8 unidades para margen seguro
+    const maxSafeScale = Math.min(1.0, vWorldHeight / 6.0);
+
     if (w > 1300) {
-      // Amplio margen a la derecha en pantallas grandes
-      reactorRoot.position.set(2.85, 0.15, 0.0);
-      reactorRoot.scale.setScalar(0.95);
-    } else if (w > 1024) {
-      // Desktop estándar: ligero desplazamiento y escala armónica
-      reactorRoot.position.set(2.55, 0.2, -0.2);
-      reactorRoot.scale.setScalar(0.85);
-    } else if (w > 768) {
-      // Tablet: fondo superior derecho sin colisión tipográfica
-      reactorRoot.position.set(1.8, 0.45, -0.8);
-      reactorRoot.scale.setScalar(0.75);
+      // Pantallas ultra-anchas y zoom-out: escala adaptativa para que nunca se recorte arriba ni abajo
+      const fitScale = Math.min(0.92, maxSafeScale * 0.95);
+      const posX = Math.min(3.4, Math.max(2.6, aspect * 1.45));
+      reactorRoot.position.set(posX, 0.08, 0.0);
+      reactorRoot.scale.setScalar(fitScale);
+    } else if (w > 992) {
+      const fitScale = Math.min(0.84, maxSafeScale * 0.92);
+      reactorRoot.position.set(2.3, 0.12, -0.2);
+      reactorRoot.scale.setScalar(fitScale);
+    } else if (w > 640) {
+      const fitScale = Math.min(0.72, maxSafeScale * 0.88);
+      reactorRoot.position.set(1.4, 0.35, -0.8);
+      reactorRoot.scale.setScalar(fitScale);
     } else {
-      // Mobile: centrado en fondo con escala compacta
-      reactorRoot.position.set(0.0, 0.35, -1.6);
-      reactorRoot.scale.setScalar(0.68);
+      // Móvil: centrado en fondo con escala compacta a mayor profundidad Z
+      const fitScale = Math.min(0.50, maxSafeScale * 0.82);
+      reactorRoot.position.set(0.0, 0.12, -2.5);
+      reactorRoot.scale.setScalar(fitScale);
     }
   };
   updateReactorPosition();

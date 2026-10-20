@@ -173,6 +173,11 @@
   z-index: 0;
   pointer-events: none;
 }
+@media (max-width: 800px) {
+  .bp-parallax-layer {
+    inset: 0;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .bp-parallax-layer { display: none; }
 }
@@ -397,6 +402,7 @@ body.bp-glitching .bp-glitch-overlay {
    documentados en projects/archangel.html, no inventados acá. */
 .bp-ticker {
   overflow: hidden;
+  max-width: 100%;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   padding: 0.7rem 0;
