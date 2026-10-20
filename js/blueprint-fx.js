@@ -1252,10 +1252,13 @@ window.runMetaAudit = function () {
     let mouseY = 0;
 
     function resize() {
+      if (!canvas.parentElement) return;
       const rect = canvas.parentElement.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      const dpr = Math.max(0.5, Math.min(window.devicePixelRatio || 1, 1.5));
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
       gl.viewport(0, 0, canvas.width, canvas.height);
       mouseX = canvas.width / 2;
       mouseY = canvas.height / 2;
