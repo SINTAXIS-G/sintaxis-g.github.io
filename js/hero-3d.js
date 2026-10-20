@@ -1,280 +1,603 @@
-// ============================================================
-// Hero 3D — paneles técnicos flotantes (Three.js, vía CDN como
-// módulo ES — sin bundler, igual que el resto del sitio). Cargado
-// solo de forma diferida por index.html cuando el dispositivo lo
-// justifica (ver loader al final de index.html).
-//
-// Cada panel es un concepto físico real que ARCHANGEL ya usa
-// (Griffith, entropía, Reynolds) — no son formas decorativas
-// sueltas, son la versión 3D del mismo callout que ya aparece en
-// el texto del hero.
-// ============================================================
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+// ============================================================================
+// SINTAXIS_G // Hero 3D Engine: CERN Gyroscopic Dark-Core Reactor
+// Mathematical Invariants:
+// - SO(3) clearance: R_{i+1} - r_{i+1} > R_i + r_i + eps_safety
+// - Budget: 320 (Core) + 2592 (6 Torus rings) + 950 (billboards) = 3862 tris (< 4000)
+// - Frame-rate independent lerp: alpha(dt) = 1 - (1 - 0.05)^(60 * dt)
+// - O(1) analytical ray-sphere click interaction + hardware VRAM disposal
+// ============================================================================
+import * as THREE from 'three';
 
-const canvas = document.getElementById('hero-3d-canvas');
-const heroEl = document.querySelector('.hero');
-if (!canvas || !heroEl) {
-  throw new Error('hero-3d: faltan #hero-3d-canvas o .hero en el DOM');
-}
+(() => {
+  'use strict';
 
-function readVar(name, fallback) {
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  return v || fallback;
-}
+  const canvas = document.getElementById('hero-3d-canvas');
+  const heroEl = document.querySelector('.hero');
+  const overdriveBtn = document.getElementById('heroOverdriveBtn');
+  const reactorEl = document.getElementById('heroReactor');
+  const reactorFreqEl = document.getElementById('reactorFreq');
 
-// Posiciones elegidas para no tapar nunca el bloque de texto (greeting,
-// h1, párrafo, lema) — todas quedan arriba del título o bien a la derecha,
-// donde el hero no tiene contenido. Cada una con un tipo de movimiento
-// distinto (spin/bob/drift) para que no se sientan como el mismo objeto
-// clonado tres veces.
-const PANELS = [
-  { label: 'GRIFFITH K=0.42', x: -0.3, y: 1.3, z: 0.2, motion: 'spin' },
-  { label: 'ENTROPÍA', x: 2.0, y: -0.4, z: -1.1, motion: 'bob' },
-  { label: 'REYNOLDS', x: 2.4, y: 1.6, z: -2.2, motion: 'drift' },
-];
-
-// Pool de fórmulas reales verificadas contra el código de archangel
-// (ver notes/archangel-formulas-reales.md) — cada panel va cambiando
-// a una de estas al azar, cada uno con su propio timing, en vez de
-// quedarse con la etiqueta fija de arriba para siempre.
-const FORMULA_POOL = [
-  'K_I=σ·√(π·a)',      // Griffith — fractura
-  'H=-Σp·log₂p',        // Shannon — entropía
-  'p_c=1/⟨k⟩',           // umbral de percolación
-  'L=λ·W',               // Little — colas
-  'E=σ/ε',                // módulo de Young
-  'F=q(v×B)',             // fuerza de Lorentz
-  'R₀=β/γ',                // SIR — inmunidad de rebaño
-  'C=B·log₂(1+S/N)',       // Shannon — capacidad de canal
-  'P=e^(-ΔE/T)',            // Metropolis — recocido simulado
-  'κ(A)=σmax/σmin',         // número de condición
-];
-let labelTimers = [];
-
-function makePanelTexture(label, accentHex, surfaceHex) {
-  const c = document.createElement('canvas');
-  c.width = 512;
-  c.height = 160;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = surfaceHex;
-  ctx.globalAlpha = 0.72;
-  ctx.fillRect(0, 0, c.width, c.height);
-  ctx.globalAlpha = 1;
-  ctx.strokeStyle = accentHex;
-  ctx.lineWidth = 3;
-  ctx.strokeRect(6, 6, c.width - 12, c.height - 12);
-  // corchetes de esquina, mismo lenguaje visual que .bp-frame en CSS
-  const cl = 26;
-  ctx.lineWidth = 5;
-  [[0, 0, 1, 1], [c.width, 0, -1, 1], [0, c.height, 1, -1], [c.width, c.height, -1, -1]].forEach(([x, y, dx, dy]) => {
-    ctx.beginPath();
-    ctx.moveTo(x + dx * cl, y);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x, y + dy * cl);
-    ctx.stroke();
-  });
-  ctx.fillStyle = accentHex;
-  ctx.font = '600 44px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, c.width / 2, c.height / 2);
-
-  const tex = new THREE.CanvasTexture(c);
-  tex.needsUpdate = true;
-  return tex;
-}
-
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 20);
-camera.position.z = 6;
-
-let panelMeshes = [];
-
-const PANEL_OPACITY = 0.88;
-
-// Cada panel se apaga, cambia de texto y vuelve a aparecer solo, en un
-// intervalo propio aleatorio -- si los 3 cambiaran juntos se sentiría
-// mecánico, como un slide, no como 3 lecturas independientes.
-function pickNextLabel(current) {
-  let next = current;
-  while (next === current) {
-    next = FORMULA_POOL[Math.floor(Math.random() * FORMULA_POOL.length)];
-  }
-  return next;
-}
-
-function swapPanelLabel(mesh, accent, surface) {
-  const FADE_MS = 350;
-  const startOut = performance.now();
-  function fadeOut(now) {
-    const p = Math.min((now - startOut) / FADE_MS, 1);
-    mesh.material.opacity = PANEL_OPACITY * (1 - p);
-    if (p < 1) { requestAnimationFrame(fadeOut); return; }
-
-    const next = pickNextLabel(mesh.userData.label);
-    mesh.material.map.dispose();
-    mesh.material.map = makePanelTexture(next, accent, surface);
-    mesh.material.needsUpdate = true;
-    mesh.userData.label = next;
-
-    const startIn = performance.now();
-    function fadeIn(now2) {
-      const p2 = Math.min((now2 - startIn) / FADE_MS, 1);
-      mesh.material.opacity = PANEL_OPACITY * p2;
-      if (p2 < 1) requestAnimationFrame(fadeIn);
-      else scheduleLabelSwap(mesh, accent, surface);
-    }
-    requestAnimationFrame(fadeIn);
-  }
-  requestAnimationFrame(fadeOut);
-}
-
-function scheduleLabelSwap(mesh, accent, surface) {
-  const delay = 4000 + Math.random() * 5000; // 4-9s, distinto por panel
-  const id = setTimeout(() => {
-    if (!isAnimating) { scheduleLabelSwap(mesh, accent, surface); return; }
-    swapPanelLabel(mesh, accent, surface);
-  }, delay);
-  labelTimers.push(id);
-}
-
-function buildPanels() {
-  labelTimers.forEach((id) => clearTimeout(id));
-  labelTimers = [];
-
-  panelMeshes.forEach((m) => {
-    scene.remove(m);
-    m.geometry.dispose();
-    m.material.map.dispose();
-    m.material.dispose();
-  });
-  panelMeshes = [];
-
-  const accent = readVar('--accent', '#4DF0E0');
-  const surface = readVar('--surface', '#1D1827');
-
-  PANELS.forEach((p) => {
-    const tex = makePanelTexture(p.label, accent, surface);
-    const geo = new THREE.PlaneGeometry(2.4, 0.75);
-    const mat = new THREE.MeshBasicMaterial({
-      map: tex,
-      transparent: true,
-      opacity: PANEL_OPACITY,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(p.x, p.y, p.z);
-    mesh.userData.base = { x: p.x, y: p.y, z: p.z };
-    mesh.userData.motion = p.motion;
-    mesh.userData.label = p.label;
-    scene.add(mesh);
-    panelMeshes.push(mesh);
-    scheduleLabelSwap(mesh, accent, surface);
-  });
-}
-
-buildPanels();
-
-const bunkerBtn = document.getElementById('bunker-toggle');
-if (bunkerBtn) {
-  bunkerBtn.addEventListener('click', () => {
-    // Esperar al frame siguiente: el toggle de clase en <body> tiene
-    // que aplicarse antes de releer las variables CSS, o se lee el
-    // color viejo.
-    requestAnimationFrame(buildPanels);
-  });
-}
-
-function resize() {
-  const w = heroEl.clientWidth;
-  const h = heroEl.clientHeight;
-  renderer.setSize(w, h, false);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-}
-resize();
-window.addEventListener('resize', resize);
-
-let targetRotX = 0;
-let targetRotY = 0;
-heroEl.addEventListener('mousemove', (e) => {
-  const r = heroEl.getBoundingClientRect();
-  const nx = (e.clientX - r.left) / r.width - 0.5;
-  const ny = (e.clientY - r.top) / r.height - 0.5;
-  targetRotY = nx * 0.35;
-  targetRotX = -ny * 0.25;
-});
-heroEl.addEventListener('mouseleave', () => {
-  targetRotX = 0;
-  targetRotY = 0;
-});
-
-let isAnimating = false;
-let rafId = null;
-let t = 0;
-
-function draw() {
-  if (!isAnimating) return;
-  t += 0.01;
-
-  scene.rotation.x += (targetRotX - scene.rotation.x) * 0.06;
-  scene.rotation.y += (targetRotY - scene.rotation.y) * 0.06;
-
-  panelMeshes.forEach((m, i) => {
-    const b = m.userData.base;
-    switch (m.userData.motion) {
-      case 'spin':
-        m.rotation.y = Math.sin(t * 0.3) * 0.5;
-        m.position.y = b.y + Math.cos(t * 0.4) * 0.08;
-        break;
-      case 'drift':
-        m.position.x = b.x + Math.sin(t * 0.5 + i) * 0.18;
-        m.rotation.z = Math.cos(t * 0.4 + i) * 0.03;
-        break;
-      default: // 'bob'
-        m.position.y = b.y + Math.sin(t + i * 2.1) * 0.12;
-        m.rotation.z = Math.sin(t * 0.6 + i) * 0.04;
-    }
-  });
-
-  renderer.render(scene, camera);
-  rafId = requestAnimationFrame(draw);
-}
-
-function startAnimation() {
-  if (isAnimating) return;
-  isAnimating = true;
-  rafId = requestAnimationFrame(draw);
-}
-function stopAnimation() {
-  isAnimating = false;
-  if (rafId !== null) cancelAnimationFrame(rafId);
-  rafId = null;
-}
-
-// Mismo criterio de ahorro que la red de partículas 2D del hero:
-// pausar fuera de viewport o con la pestaña en background.
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting && document.visibilityState === 'visible') {
-      startAnimation();
-    } else {
-      stopAnimation();
-    }
-  });
-}, { threshold: 0 });
-observer.observe(canvas);
-
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-    stopAnimation();
+  if (!canvas || !heroEl) {
     return;
   }
-  const rect = canvas.getBoundingClientRect();
-  const inViewport = rect.bottom > 0 && rect.top < window.innerHeight;
-  if (inViewport) startAnimation();
-});
+
+  // Allow interaction with 3D canvas
+  canvas.style.pointerEvents = 'auto';
+
+  // 1. RENDERER & PERFORMANCE SETUP
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance',
+    stencil: false,
+    depth: true
+  });
+
+  const cappedDPR = Math.min(window.devicePixelRatio || 1, 2);
+  renderer.setPixelRatio(cappedDPR);
+  renderer.setSize(heroEl.clientWidth, heroEl.clientHeight, false);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    heroEl.clientWidth / heroEl.clientHeight,
+    0.1,
+    50
+  );
+  const BASE_CAM_Z = 7.0;
+  camera.position.set(0, 0, BASE_CAM_Z);
+
+  const disposableGeometries = [];
+  const disposableMaterials = [];
+
+  // Group root to position reactor responsive to viewport
+  const reactorRoot = new THREE.Group();
+  scene.add(reactorRoot);
+
+  const updateReactorPosition = () => {
+    const w = heroEl.clientWidth;
+    if (w > 1300) {
+      // Amplio margen a la derecha en pantallas grandes
+      reactorRoot.position.set(2.85, 0.15, 0.0);
+      reactorRoot.scale.setScalar(0.95);
+    } else if (w > 1024) {
+      // Desktop estándar: ligero desplazamiento y escala armónica
+      reactorRoot.position.set(2.55, 0.2, -0.2);
+      reactorRoot.scale.setScalar(0.85);
+    } else if (w > 768) {
+      // Tablet: fondo superior derecho sin colisión tipográfica
+      reactorRoot.position.set(1.8, 0.45, -0.8);
+      reactorRoot.scale.setScalar(0.75);
+    } else {
+      // Mobile: centrado en fondo con escala compacta
+      reactorRoot.position.set(0.0, 0.35, -1.6);
+      reactorRoot.scale.setScalar(0.68);
+    }
+  };
+  updateReactorPosition();
+
+  // ============================================================================
+  // 2. NÚCLEO DE ENERGÍA OSCURA (320 TRIÁNGULOS)
+  // ============================================================================
+  const coreGeometry = new THREE.IcosahedronGeometry(1.0, 2);
+  disposableGeometries.push(coreGeometry);
+
+  const coreUniforms = {
+    uTime: { value: 0 },
+    uOverdrive: { value: 0 },
+    uShockwave: { value: 0 },
+    uColorCyan: { value: new THREE.Color(0x4DF0E0) }, // Sintaxis_G Accent
+    uColorAmber: { value: new THREE.Color(0xffaa00) },
+    uColorVoid: { value: new THREE.Color(0x0a0a14) }
+  };
+
+  const coreMaterial = new THREE.ShaderMaterial({
+    uniforms: coreUniforms,
+    vertexShader: /* glsl */`
+      uniform float uTime;
+      uniform float uOverdrive;
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
+      varying float vDisplacement;
+
+      float trigNoise(vec3 p, float t) {
+        float n = sin(p.x * 4.0 + t * 2.2) * cos(p.y * 4.0 - t * 1.8) * sin(p.z * 4.0 + t * 2.5);
+        n += 0.5 * cos(p.x * 8.0 - t * 3.5) * sin(p.y * 8.0 + t * 3.1) * cos(p.z * 8.0 - t * 2.9);
+        return n * 0.666;
+      }
+
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        float pulseFreq = 2.0 + uOverdrive * 4.0;
+        float baseBreath = sin(uTime * pulseFreq) * 0.04;
+        float plasma = trigNoise(position, uTime * (1.0 + uOverdrive * 1.2));
+        float disp = clamp(baseBreath + plasma * (0.08 + uOverdrive * 0.08), -0.16, 0.18);
+        vDisplacement = disp;
+
+        vec3 displacedPos = position + normal * disp;
+        vec4 mvPosition = modelViewMatrix * vec4(displacedPos, 1.0);
+        vViewPosition = -mvPosition.xyz;
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform float uTime;
+      uniform float uOverdrive;
+      uniform float uShockwave;
+      uniform vec3 uColorCyan;
+      uniform vec3 uColorAmber;
+      uniform vec3 uColorVoid;
+      varying vec3 vNormal;
+      varying vec3 vViewPosition;
+      varying float vDisplacement;
+
+      void main() {
+        vec3 normal = normalize(vNormal);
+        vec3 viewDir = normalize(vViewPosition);
+
+        float fresnel = pow(1.0 - abs(dot(normal, viewDir)), 2.6);
+        float fissure = smoothstep(0.01, 0.12, vDisplacement + 0.04);
+        float scanline = smoothstep(0.92, 0.98, abs(sin(vViewPosition.y * 18.0 - uTime * 4.0)));
+
+        vec3 col = uColorVoid;
+        col = mix(col, uColorAmber, fissure * (0.65 + uOverdrive * 0.6));
+        col += uColorCyan * fresnel * (0.9 + uOverdrive * 0.8);
+        col += mix(uColorCyan, uColorAmber, uOverdrive) * scanline * 0.25;
+
+        float flash = exp(-uShockwave * 4.5) * step(0.001, uShockwave);
+        col += mix(uColorAmber, uColorCyan, 0.5) * flash * 0.9;
+
+        gl_FragColor = vec4(col, 0.95);
+      }
+    `
+  });
+  disposableMaterials.push(coreMaterial);
+
+  const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+  reactorRoot.add(coreMesh);
+
+  // Esfera analítica para Raycasting O(1)
+  const coreHitSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 1.25);
+
+  // ============================================================================
+  // 3. 6 ANILLOS GIROSCÓPICOS CONCÉNTRICOS (2,592 TRIÁNGULOS TOTAL)
+  // ============================================================================
+  const ringRadii = [1.45, 1.61, 1.77, 1.93, 2.09, 2.25];
+  const eulerOrders = ['XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX'];
+  const ringsGroup = new THREE.Group();
+  reactorRoot.add(ringsGroup);
+
+  const ringUniforms = {
+    uTime: { value: 0 },
+    uOverdrive: { value: 0 },
+    uColorCyan: { value: new THREE.Color(0x4DF0E0) },
+    uColorAmber: { value: new THREE.Color(0xffaa00) }
+  };
+
+  const ringMaterial = new THREE.ShaderMaterial({
+    uniforms: ringUniforms,
+    vertexShader: /* glsl */`
+      attribute float aRingIndex;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vViewPos;
+      varying float vRingId;
+
+      void main() {
+        vUv = uv;
+        vRingId = aRingIndex;
+        vNormal = normalize(normalMatrix * normal);
+        vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+        vViewPos = -mvPos.xyz;
+        gl_Position = projectionMatrix * mvPos;
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform float uTime;
+      uniform float uOverdrive;
+      uniform vec3 uColorCyan;
+      uniform vec3 uColorAmber;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vViewPos;
+      varying float vRingId;
+
+      void main() {
+        vec3 n = normalize(vNormal);
+        vec3 v = normalize(vViewPos);
+        vec3 l1 = normalize(vec3(1.0, 1.2, 1.5));
+        vec3 l2 = normalize(vec3(-1.2, -0.8, 0.8));
+
+        vec3 h1 = normalize(l1 + v);
+        vec3 h2 = normalize(l2 + v);
+        float spec1 = pow(max(dot(n, h1), 0.0), 42.0);
+        float spec2 = pow(max(dot(n, h2), 0.0), 24.0);
+        float diff = max(dot(n, l1), 0.0) * 0.5 + 0.5;
+
+        vec3 baseMetal = vec3(0.06, 0.08, 0.12) * diff;
+        baseMetal += vec3(0.28, 0.36, 0.45) * spec1 * 0.7;
+        baseMetal += uColorCyan * spec2 * 0.18;
+
+        float ticksMajor = smoothstep(0.92, 0.97, abs(sin(vUv.x * 3.14159265 * 36.0)));
+        float ticksBand  = step(0.32, vUv.y) * step(vUv.y, 0.68);
+        float centerLine = smoothstep(0.035, 0.008, abs(vUv.y - 0.5));
+        float dualRail   = smoothstep(0.025, 0.006, abs(abs(vUv.y - 0.5) - 0.24));
+        float dataPulse = smoothstep(0.65, 0.99, sin(vUv.x * 6.2831853 * 3.0 - uTime * (1.8 + vRingId * 0.35) * (1.0 + uOverdrive)));
+
+        float laserMask = max(centerLine * 0.75, max(dualRail * 0.5, ticksMajor * ticksBand * 0.85));
+        float parity = mod(vRingId, 2.0);
+        vec3 laserColor = mix(uColorCyan, uColorAmber, clamp(parity * 0.65 + uOverdrive * 0.5, 0.0, 1.0));
+
+        vec3 finalColor = baseMetal + laserColor * laserMask * (0.45 + 0.85 * dataPulse + uOverdrive * 0.6);
+        gl_FragColor = vec4(finalColor, 0.95);
+      }
+    `
+  });
+  disposableMaterials.push(ringMaterial);
+
+  const ringsData = [];
+  ringRadii.forEach((radius, idx) => {
+    const ringGeo = new THREE.TorusGeometry(radius, 0.04, 6, 36);
+    const vertexCount = ringGeo.attributes.position.count;
+    const ringIndexAttr = new Float32Array(vertexCount).fill(idx);
+    ringGeo.setAttribute('aRingIndex', new THREE.BufferAttribute(ringIndexAttr, 1));
+    disposableGeometries.push(ringGeo);
+
+    const mesh = new THREE.Mesh(ringGeo, ringMaterial);
+    mesh.rotation.order = eulerOrders[idx];
+    mesh.rotation.set(
+      (idx * 0.52) % Math.PI,
+      (idx * 1.05) % Math.PI,
+      (idx * 0.78) % Math.PI
+    );
+
+    const sign = idx % 2 === 0 ? 1 : -1;
+    const angularVel = new THREE.Vector3(
+      sign * (0.18 + idx * 0.031),
+      -sign * (0.24 - idx * 0.019),
+      sign * (0.11 + (5 - idx) * 0.023)
+    );
+
+    ringsGroup.add(mesh);
+    ringsData.push({ mesh, angularVel });
+  });
+
+  // ============================================================================
+  // 4. CORONA Y ONDA DE CHOQUE (950 INSTANCIAS DE 1 TRIÁNGULO)
+  // ============================================================================
+  const PARTICLE_COUNT = 950;
+  const singleTriGeo = new THREE.BufferGeometry();
+  const triVertices = new Float32Array([
+     0.0,    0.056, 0.0,
+    -0.0485, -0.028, 0.0,
+     0.0485, -0.028, 0.0
+  ]);
+  const triUvs = new Float32Array([
+    0.5, 1.0,
+    0.0, 0.0,
+    1.0, 0.0
+  ]);
+  singleTriGeo.setAttribute('position', new THREE.BufferAttribute(triVertices, 3));
+  singleTriGeo.setAttribute('uv', new THREE.BufferAttribute(triUvs, 2));
+  disposableGeometries.push(singleTriGeo);
+
+  const instancedParticlesGeo = new THREE.InstancedBufferGeometry();
+  instancedParticlesGeo.instanceCount = PARTICLE_COUNT;
+  instancedParticlesGeo.setAttribute('position', singleTriGeo.attributes.position);
+  instancedParticlesGeo.setAttribute('uv', singleTriGeo.attributes.uv);
+  disposableGeometries.push(instancedParticlesGeo);
+
+  const aSeedRadius = new Float32Array(PARTICLE_COUNT);
+  const aSeedTheta = new Float32Array(PARTICLE_COUNT);
+  const aSeedPhi = new Float32Array(PARTICLE_COUNT);
+  const aSpeedPhase = new Float32Array(PARTICLE_COUNT * 2);
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    aSeedRadius[i] = 1.35 + Math.pow(Math.random(), 1.7) * 2.8;
+    aSeedTheta[i] = Math.random() * Math.PI * 2.0;
+    aSeedPhi[i] = Math.acos(2.0 * Math.random() - 1.0);
+    aSpeedPhase[i * 2 + 0] = 0.25 + Math.random() * 0.75;
+    aSpeedPhase[i * 2 + 1] = Math.random() * Math.PI * 2.0;
+  }
+
+  instancedParticlesGeo.setAttribute('aSeedRadius', new THREE.InstancedBufferAttribute(aSeedRadius, 1));
+  instancedParticlesGeo.setAttribute('aSeedTheta', new THREE.InstancedBufferAttribute(aSeedTheta, 1));
+  instancedParticlesGeo.setAttribute('aSeedPhi', new THREE.InstancedBufferAttribute(aSeedPhi, 1));
+  instancedParticlesGeo.setAttribute('aSpeedPhase', new THREE.InstancedBufferAttribute(aSpeedPhase, 2));
+
+  const particleUniforms = {
+    uTime: { value: 0 },
+    uOverdrive: { value: 0 },
+    uShockwave: { value: 0 },
+    uShockwaveFront: { value: -1.0 },
+    uColorCyan: { value: new THREE.Color(0x4DF0E0) },
+    uColorAmber: { value: new THREE.Color(0xffaa00) }
+  };
+
+  const particleMaterial = new THREE.ShaderMaterial({
+    uniforms: particleUniforms,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexShader: /* glsl */`
+      attribute float aSeedRadius;
+      attribute float aSeedTheta;
+      attribute float aSeedPhi;
+      attribute vec2 aSpeedPhase;
+
+      uniform float uTime;
+      uniform float uOverdrive;
+      uniform float uShockwave;
+      uniform float uShockwaveFront;
+
+      varying vec2 vUv;
+      varying float vEnergy;
+      varying float vDistRatio;
+
+      void main() {
+        vUv = uv;
+
+        float speed = aSpeedPhase.x * (1.0 + uOverdrive * 1.8);
+        float phase = aSpeedPhase.y;
+
+        float theta = aSeedTheta + uTime * 0.25 * speed;
+        float phi = aSeedPhi + sin(uTime * 0.4 * speed + phase) * 0.2;
+        float r = aSeedRadius;
+
+        float distToFront = abs(r - uShockwaveFront);
+        float waveHit = smoothstep(0.45, 0.0, distToFront) * step(0.0, uShockwaveFront);
+        r += waveHit * 0.45 * exp(-uShockwave * 2.0);
+
+        vec3 orbitalPos = vec3(
+          r * sin(phi) * cos(theta),
+          r * cos(phi),
+          r * sin(phi) * sin(theta)
+        );
+
+        vec4 centerView = modelViewMatrix * vec4(orbitalPos, 1.0);
+        float pScale = 0.045 + waveHit * 0.065 + uOverdrive * 0.035;
+        vec3 billboardPos = centerView.xyz + position * pScale * (12.0 / -centerView.z);
+
+        vEnergy = waveHit * 2.0 + uOverdrive;
+        vDistRatio = clamp((r - 1.35) / 2.8, 0.0, 1.0);
+
+        gl_Position = projectionMatrix * vec4(billboardPos, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform vec3 uColorCyan;
+      uniform vec3 uColorAmber;
+      varying vec2 vUv;
+      varying float vEnergy;
+      varying float vDistRatio;
+
+      void main() {
+        vec2 p = vUv - vec2(0.5, 0.333);
+        float distSq = dot(p, p);
+        if (distSq > 0.22) discard;
+
+        float alpha = smoothstep(0.22, 0.0, distSq);
+        vec3 col = mix(uColorCyan, uColorAmber, clamp(vDistRatio + vEnergy * 0.4, 0.0, 1.0));
+        col += vec3(1.0) * smoothstep(0.06, 0.0, distSq) * 0.85;
+
+        gl_FragColor = vec4(col, alpha * (0.65 + vEnergy * 0.35));
+      }
+    `
+  });
+  disposableMaterials.push(particleMaterial);
+
+  const particlesMesh = new THREE.Mesh(instancedParticlesGeo, particleMaterial);
+  particlesMesh.frustumCulled = false;
+  reactorRoot.add(particlesMesh);
+
+  // ============================================================================
+  // 5. CINEMÁTICA Y SINCRONIZACIÓN DE INTERACCIÓN
+  // ============================================================================
+  let isPointerDown = false;
+  let overdriveParam = 0.0;
+  let shockwaveTimer = 0.0;
+  let shockwaveFront = -1.0;
+  let angularGain = 1.0;
+
+  const targetRotation = new THREE.Vector2(0, 0);
+  const currentRotation = new THREE.Vector2(0, 0);
+
+  const raycaster = new THREE.Raycaster();
+  const pointerNDC = new THREE.Vector2();
+
+  const triggerGravitationalPulse = () => {
+    shockwaveTimer = 0.001;
+    shockwaveFront = 1.0;
+    angularGain = 3.2;
+
+    if (window.repelHeroParticles) {
+      const rect = canvas.getBoundingClientRect();
+      window.repelHeroParticles(rect.left + rect.width * 0.7, rect.top + rect.height * 0.5, 16);
+    }
+    if (window.SGSound) {
+      window.SGSound.pulse();
+    }
+  };
+
+  // Expose global hook for external buttons
+  window.triggerReactorShockwave = triggerGravitationalPulse;
+
+  // Interacción pointermove sobre el hero
+  const onPointerMove = (e) => {
+    const rect = heroEl.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    pointerNDC.set(nx, ny);
+
+    targetRotation.x = ny * 0.28;
+    targetRotation.y = nx * 0.42;
+  };
+
+  // Clic en el canvas del hero (analítico ray-sphere contra el reactor)
+  const onPointerDown = (e) => {
+    isPointerDown = true;
+    raycaster.setFromCamera(pointerNDC, camera);
+
+    // Transformar ray al espacio local del reactor
+    const localRay = raycaster.ray.clone();
+    reactorRoot.worldToLocal(localRay.origin);
+    const m = new THREE.Matrix4().extractRotation(reactorRoot.matrixWorld).invert();
+    localRay.direction.applyMatrix4(m);
+
+    if (localRay.intersectsSphere(coreHitSphere)) {
+      triggerGravitationalPulse();
+    }
+  };
+
+  const onPointerUp = () => {
+    isPointerDown = false;
+  };
+
+  window.addEventListener('pointermove', onPointerMove, { passive: true });
+  canvas.addEventListener('pointerdown', onPointerDown, { passive: true });
+  window.addEventListener('pointerup', onPointerUp, { passive: true });
+
+  // Sincronización con #heroOverdriveBtn y #heroReactor existentes
+  if (overdriveBtn) {
+    overdriveBtn.addEventListener('click', () => {
+      triggerGravitationalPulse();
+    });
+  }
+  if (reactorEl) {
+    reactorEl.addEventListener('click', () => {
+      triggerGravitationalPulse();
+    });
+  }
+
+  // ============================================================================
+  // 6. BUCLE DE RENDER CON PAUSA POR VISIBILIDAD (IntersectionObserver)
+  // ============================================================================
+  let isVisibleInViewport = true;
+  let isTabActive = !document.hidden;
+  let rafId = null;
+  let lastTime = performance.now();
+  let totalTime = 0.0;
+
+  const tick = (now) => {
+    rafId = requestAnimationFrame(tick);
+
+    const rawDelta = (now - lastTime) * 0.001;
+    const dt = Math.min(Math.max(rawDelta, 0.0001), 0.1);
+    lastTime = now;
+    totalTime += dt;
+
+    // Decay exponencial desacoplado de framerate
+    const lerpAlpha = 1.0 - Math.pow(1.0 - 0.05, dt * 60.0);
+    currentRotation.x += (targetRotation.x - currentRotation.x) * lerpAlpha;
+    currentRotation.y += (targetRotation.y - currentRotation.y) * lerpAlpha;
+
+    reactorRoot.rotation.x = currentRotation.x;
+    reactorRoot.rotation.y = currentRotation.y;
+
+    // Control de Sobrecarga (Overdrive)
+    const isGlobalOverdrive = overdriveBtn && overdriveBtn.classList.contains('is-active');
+    const targetOverdrive = (isPointerDown || isGlobalOverdrive) ? 1.0 : 0.0;
+    overdriveParam += (targetOverdrive - overdriveParam) * (1.0 - Math.pow(1.0 - 0.08, dt * 60.0));
+
+    // Descompresión de ganancia angular hacia 1.0x
+    angularGain += (1.0 - angularGain) * (1.0 - Math.pow(1.0 - 0.04, dt * 60.0));
+
+    // Propagación de onda de choque
+    if (shockwaveTimer > 0.0) {
+      shockwaveTimer += dt;
+      shockwaveFront += dt * 4.8;
+      if (shockwaveTimer > 1.4) {
+        shockwaveTimer = 0.0;
+        shockwaveFront = -1.0;
+      }
+    }
+
+    // Actualización de uniforms
+    coreUniforms.uTime.value = totalTime;
+    coreUniforms.uOverdrive.value = overdriveParam;
+    coreUniforms.uShockwave.value = shockwaveTimer;
+
+    ringUniforms.uTime.value = totalTime;
+    ringUniforms.uOverdrive.value = overdriveParam;
+
+    particleUniforms.uTime.value = totalTime;
+    particleUniforms.uOverdrive.value = overdriveParam;
+    particleUniforms.uShockwave.value = shockwaveTimer;
+    particleUniforms.uShockwaveFront.value = shockwaveFront;
+
+    // Cinemática de Euler de los 6 anillos giroscópicos
+    const speedMultiplier = (1.0 + overdriveParam * 2.2) * angularGain;
+    ringsData.forEach(({ mesh, angularVel }) => {
+      mesh.rotation.x += angularVel.x * dt * speedMultiplier;
+      mesh.rotation.y += angularVel.y * dt * speedMultiplier;
+      mesh.rotation.z += angularVel.z * dt * speedMultiplier;
+    });
+
+    coreMesh.rotation.y += 0.35 * dt * speedMultiplier;
+
+    renderer.render(scene, camera);
+  };
+
+  const startLoop = () => {
+    if (rafId === null && isVisibleInViewport && isTabActive) {
+      lastTime = performance.now();
+      rafId = requestAnimationFrame(tick);
+    }
+  };
+
+  const stopLoop = () => {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  };
+
+  // Resize handling
+  const handleResize = () => {
+    const w = heroEl.clientWidth;
+    const h = heroEl.clientHeight;
+    if (w === 0 || h === 0) return;
+
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(w, h, false);
+    updateReactorPosition();
+  };
+
+  const resizeObserver = new ResizeObserver(handleResize);
+  resizeObserver.observe(heroEl);
+
+  // IntersectionObserver: apaga el loop cuando el usuario scrollea hacia abajo
+  const intersectionObserver = new IntersectionObserver((entries) => {
+    isVisibleInViewport = entries[0]?.isIntersecting ?? true;
+    if (isVisibleInViewport) startLoop();
+    else stopLoop();
+  }, { threshold: 0.02 });
+  intersectionObserver.observe(heroEl);
+
+  document.addEventListener('visibilitychange', () => {
+    isTabActive = !document.hidden;
+    if (isTabActive) startLoop();
+    else stopLoop();
+  });
+
+  window.addEventListener('pagehide', () => {
+    stopLoop();
+    resizeObserver.disconnect();
+    intersectionObserver.disconnect();
+    window.removeEventListener('pointermove', onPointerMove);
+    canvas.removeEventListener('pointerdown', onPointerDown);
+    window.removeEventListener('pointerup', onPointerUp);
+    disposableGeometries.forEach((g) => g.dispose());
+    disposableMaterials.forEach((m) => m.dispose());
+    renderer.dispose();
+  }, { once: true });
+
+  startLoop();
+})();

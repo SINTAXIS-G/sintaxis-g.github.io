@@ -54,6 +54,16 @@
   <link rel="stylesheet" href="css/blueprint.css">
   <link rel="stylesheet" href="css/style.css">
 
+  <!-- Importmap estático para subsistemas WebGL 3D (Three.js + Addons) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <!-- Datos estructurados — Persona + Organización + cada proyecto como SoftwareApplication,
      enlazados por @id en vez de duplicar datos (patrón @graph estándar de schema.org) -->
   <script type="application/ld+json">
@@ -182,7 +192,7 @@
       var already = false;
       try { already = sessionStorage.getItem('sg_booted') === '1'; } catch (e) {}
 
-      if (reduced || already) {
+      if (reduced || already || window.location.search.includes('noboot')) {
         boot.style.display = 'none';
         return;
       }
@@ -310,7 +320,7 @@
       <p class="section-label">Proyecto insignia</p>
       <h2 class="section-title stress-title" style="view-transition-name: vt-archangel-title;">ARCHANGEL</h2>
       <div class="bp-tilt-wrap">
-      <div class="featured bp-tilt bp-frame">
+      <div class="featured bp-tilt bp-frame" id="sys-archangel">
         <div class="featured-desc">
           <div class="archangel-physics-chips">
             <span class="physics-chip"><span class="chip-sym">ΔS</span> Entropía de Shannon</span>
@@ -447,6 +457,43 @@
     <div class="wrap" style="position:relative;">
       <p class="section-label">El resto del ecosistema</p>
       <h2 class="section-title">Cada sistema resuelve un problema que se negó a delegar</h2>
+
+      <!-- Constelación 3D del Ecosistema Soberano (Argon WebGL Engine) -->
+      <div class="eco-blueprint-container bp-frame" id="ecoBlueprintContainer">
+        <div class="eco-blueprint-viewport" id="ecoBlueprintViewport">
+          <canvas id="eco-blueprint-canvas"></canvas>
+          <div id="eco-labels-layer"></div>
+
+          <div class="eco-blueprint-hud-overlay">
+            <div class="eco-hud-badge">
+              <span class="hud-led"></span>
+              <span>TOPOLOGÍA SINTAXIS_G // 6 NODOS R³</span>
+            </div>
+            <div class="eco-hud-controls-hint">
+              <span>[ARRASTRAR]: ROTAR ÓRBITA · [CLICK NODO]: INSPECCIONAR FOCAL</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta HUD Flotante de Inspección de Nodo -->
+          <aside id="eco-hud-card" aria-live="polite">
+            <div class="card-top">
+              <div>
+                <div class="card-id">[SYS-00]</div>
+                <div class="card-title">ARCHANGEL</div>
+                <span class="card-badge">Insignia: Física de Software</span>
+              </div>
+              <button class="btn-close" id="eco-btn-reset" title="Volver a órbita global (ESC)">[ESC] CERRAR</button>
+            </div>
+            <p class="card-desc"></p>
+            <div class="metrics-grid"></div>
+            <div class="links-section-title">ENLACES DE SUBSISTEMA ACTIVOS:</div>
+            <div class="connected-list"></div>
+          </aside>
+        </div>
+
+        <div class="eco-quick-nav" id="ecoQuickNav"></div>
+      </div>
+
       <div class="eco-grid">
         <!-- SYS-01: EXARKON -->
         <article class="eco-card bp-frame" data-system="EXARKON" id="sys-exarkon">
@@ -919,53 +966,23 @@
   </div>
   <script>
     (function () {
-      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var finePointer = window.matchMedia('(pointer: fine)').matches;
-      var wideEnough = window.matchMedia('(min-width: 760px)').matches;
-      // Modo low-power: si el navegador expone datos de hardware/red
-      // limitados (no todos lo hacen -- son APIs de Chrome, la ausencia
-      // no bloquea nada) y señalan poca capacidad, nos salteamos el
-      // subsistema 3D entero en vez de forzarlo igual.
-      var conn = navigator.connection || navigator.webkitConnection;
-      var lowPower = (conn && (conn.saveData || /^(slow-2g|2g|3g)$/.test(conn.effectiveType || ''))) ||
-        (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory < 4);
-      if (reducedMotion || !finePointer || !wideEnough || lowPower) return;
+      function init3D() {
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducedMotion) return;
 
-      var THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-      var loaderEl = document.getElementById('hero3dLoader');
-      var fillEl = document.getElementById('hero3dLoaderFill');
-      var pctEl = document.getElementById('hero3dLoaderPct');
-      function setProgress(p) {
-        if (fillEl) fillEl.style.width = p + '%';
-        if (pctEl) pctEl.textContent = p + '%';
+        Promise.all([
+          import('./js/hero-3d.js'),
+          import('./js/ecosystem-3d.js')
+        ]).catch(function (err) {
+          console.warn('3D subsystems: no se pudo inicializar', err);
+        });
       }
 
-      window.addEventListener('load', function () {
-        if (loaderEl) loaderEl.hidden = false;
-        // Peso real leído de Content-Length, no una barra simulada —
-        // si el CDN no lo manda, saltamos directo a 100% sin inventar.
-        fetch(THREE_URL).then(function (res) {
-          var total = parseInt(res.headers.get('content-length') || '0', 10);
-          if (!res.body || !total) { setProgress(100); return; }
-          var loaded = 0;
-          var reader = res.body.getReader();
-          function pump() {
-            return reader.read().then(function (result) {
-              if (result.done) return;
-              loaded += result.value.length;
-              setProgress(Math.min(100, Math.round((loaded / total) * 100)));
-              return pump();
-            });
-          }
-          return pump();
-        }).catch(function () {}).then(function () {
-          if (loaderEl) loaderEl.hidden = true;
-          return import('./js/hero-3d.js');
-        }).catch(function (err) {
-          if (loaderEl) loaderEl.hidden = true;
-          console.warn('hero-3d: no se pudo cargar Three.js', err);
-        });
-      });
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        init3D();
+      } else {
+        window.addEventListener('DOMContentLoaded', init3D);
+      }
     })();
   </script>
 

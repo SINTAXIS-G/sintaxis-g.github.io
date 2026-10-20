@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SINTAXIS_G // CERN Gyroscopic Dark-Core Telemetry</title>
+  <style>
+    :root {
+      --bg-void: #0a0f18;
+      --neon-amber: #ffaa00;
+      --neon-cyan: #00f0ff;
+      --hud-muted: rgba(0, 240, 255, 0.42);
+      --hud-border: rgba(0, 240, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-void);
+      color: #e2f1ff;
+      font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+      overflow-x: hidden;
+    }
+
+    .hero-viewport {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.05) 0%, rgba(10, 15, 24, 0) 65%),
+        linear-gradient(180deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 48px 48px, 48px 48px;
+      background-color: var(--bg-void);
+      overflow: hidden;
+    }
+
+    #webgl-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    /* HUD Industrial / Sintaxis_G Overlay */
+    .hud-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(1rem, 2.5vw, 2.25rem);
+    }
+
+    .hud-top, .hud-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hud-bottom {
+      align-items: flex-end;
+    }
+
+    .hud-panel {
+      background: rgba(10, 15, 24, 0.68);
+      border: 1px solid var(--hud-border);
+      border-left: 2px solid var(--neon-cyan);
+      padding: 0.75rem 1rem;
+      backdrop-filter: blur(4px);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      line-height: 1.55;
+      text-transform: uppercase;
+    }
+
+    .hud-panel.amber-accent {
+      border-left-color: var(--neon-amber);
+    }
+
+    .hud-title {
+      color: var(--neon-cyan);
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .hud-value {
+      color: var(--neon-amber);
+      font-weight: 600;
+    }
+
+    .hud-muted {
+      color: var(--hud-muted);
+    }
+
+    .hero-center-caption {
+      position: absolute;
+      bottom: clamp(4.5rem, 9vh, 7rem);
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      pointer-events: none;
+      z-index: 2;
+      width: min(92vw, 680px);
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      color: var(--neon-amber);
+      border: 1px solid rgba(255, 170, 0, 0.35);
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 0.6rem;
+      background: rgba(10, 15, 24, 0.75);
+    }
+
+    .hero-heading {
+      font-size: clamp(1.35rem, 3vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+    }
+
+    .hero-sub {
+      font-size: 0.75rem;
+      color: rgba(226, 241, 255, 0.65);
+      letter-spacing: 0.06em;
+      margin-top: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero-viewport" id="hero-container">
+    <canvas id="webgl-canvas"></canvas>
+
+    <div class="hud-layer">
+      <div class="hud-top">
+        <div class="hud-panel">
+          <div class="hud-title">SINTAXIS_G // LHC-RING-06</div>
+          <div>CORE_STATE: <span class="hud-value" id="hud-state">NOMINAL_CONFINEMENT</span></div>
+          <div>SO(3)_CLEARANCE: <span class="hud-muted">0.0800 UNITS [VERIFIED]</span></div>
+        </div>
+        <div class="hud-panel amber-accent">
+          <div class="hud-title">RENDER_TELEMETRY</div>
+          <div>TRIANGLES: <span class="hud-value" id="hud-tris">0</span> <span class="hud-muted">/ 4000 MAX</span></div>
+          <div>DRAW_CALLS: <span class="hud-value" id="hud-draws">0</span> | DPR: <span class="hud-value" id="hud-dpr">1.0</span></div>
+        </div>
+      </div>
+
+      <div class="hud-bottom">
+        <div class="hud-panel">
+          <div>ANGULAR_GAIN: <span class="hud-value" id="hud-omega">1.00x</span></div>
+          <div>GRAV_SHOCKWAVE: <span class="hud-value" id="hud-pulse">STANDBY</span></div>
+        </div>
+        <div class="hud-panel amber-accent">
+          <div class="hud-muted">[INTERACCIÓN] MOVER CURSOR: INCLINACIÓN LERP(0.05)</div>
+          <div class="hud-muted">[CLICK / MANTENER EN NÚCLEO]: PULSO GRAVITATORIO</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-center-caption">
+      <span class="hero-tag">CERN // HIGH-LUMINOSITY SINGULARITY</span>
+      <h1 class="hero-heading">REACTOR GIROSCÓPICO DE ENERGÍA OSCURA</h1>
+      <p class="hero-sub">Mantén presionado el núcleo esférico para inyectar sobrecarga angular y emitir ondas de choque.</p>
+    </div>
+  </section>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+    (() => {
+      'use strict';
+
+      // ============================================================================
+      // 1. INICIALIZACIÓN DE CONTEXTO Y PRESUPUESTO DE HARDWARE
+      // ============================================================================
+      const container = document.getElementById('hero-container');
+      const canvas = document.getElementById('webgl-canvas');
+
+      const uiState = document.getElementById('hud-state');
+      const uiTris = document.getElementById('hud-tris');
+      const uiDraws = document.getElementById('hud-draws');
+      const uiDpr = document.getElementById('hud-dpr');
+      const uiOmega = document.getElementById('hud-omega');
+      const uiPulse = document.getElementById('hud-pulse');
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,           // Fondo 100% transparente sobre #0a0f18
+        antialias: true,
+        powerPreference: 'high-performance',
+        stencil: false,
+        depth: true
+      });
+
+      const cappedDPR = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(cappedDPR);
+      renderer.setSize(container.clientWidth, container.clientHeight, false);
+      renderer.setClearColor(0x000000, 0);
+      uiDpr.textContent = cappedDPR.toFixed(2);
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        container.clientWidth / container.clientHeight,
+        0.1,
+        50
+      );
+      const BASE_CAM_Z = 6.8;
+      camera.position.set(0, 0, BASE_CAM_Z);
+
+      // Recursos rastreados para liberación determinista de VRAM
+      const disposableGeometries = [];
+      const disposableMaterials = [];
+
+      // ============================================================================
+      // 2. NÚCLEO DE ENERGÍA OSCURA (320 TRIÁNGULOS)
+      // ============================================================================
+      // IcosahedronGeometry(1.0, 2) -> Exactamente 20 * 4^2 = 320 triángulos
+      const coreGeometry = new THREE.IcosahedronGeometry(1.0, 2);
+      disposableGeometries.push(coreGeometry);
+
+      const coreUniforms = {
+        uTime: { value: 0 },
+        uOverdrive: { value: 0 },
+        uShockwave: { value: 0 },
+        uColorCyan: { value: new THREE.Color(0x00f0ff) },
+        uColorAmber: { value: new THREE.Color(0xffaa00) },
+        uColorVoid: { value: new THREE.Color(0x05080f) }
+      };
+
+      const coreMaterial = new THREE.ShaderMaterial({
+        uniforms: coreUniforms,
+        vertexShader: /* glsl */`
+          uniform float uTime;
+          uniform float uOverdrive;
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
+          varying float vDisplacement;
+
+          // Ruido trigonométrico 3D sin texturas (O(1) ALU)
+          float trigNoise(vec3 p, float t) {
+            float n = sin(p.x * 4.0 + t * 2.2) * cos(p.y * 4.0 - t * 1.8) * sin(p.z * 4.0 + t * 2.5);
+            n += 0.5 * cos(p.x * 8.0 - t * 3.5) * sin(p.y * 8.0 + t * 3.1) * cos(p.z * 8.0 - t * 2.9);
+            return n * 0.666;
+          }
+
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+
+            float pulseFreq = 2.0 + uOverdrive * 4.0;
+            float baseBreath = sin(uTime * pulseFreq) * 0.04;
+            float plasma = trigNoise(position, uTime * (1.0 + uOverdrive * 1.2));
+
+            // Acotado estrictamente a <= 0.18 para preservar invariante de no-colisión con Anillo 0 (R=1.45)
+            float disp = clamp(baseBreath + plasma * (0.08 + uOverdrive * 0.08), -0.16, 0.18);
+            vDisplacement = disp;
+
+            vec3 displacedPos = position + normal * disp;
+            vec4 mvPosition = modelViewMatrix * vec4(displacedPos, 1.0);
+            vViewPosition = -mvPosition.xyz;
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: /* glsl */`
+          uniform float uTime;
+          uniform float uOverdrive;
+          uniform float uShockwave;
+          uniform vec3 uColorCyan;
+          uniform vec3 uColorAmber;
+          uniform vec3 uColorVoid;
+          varying vec3 vNormal;
+          varying vec3 vViewPosition;
+          varying float vDisplacement;
+
+          void main() {
+            vec3 normal = normalize(vNormal);
+            vec3 viewDir = normalize(vViewPosition);
+
+            // Efecto Fresnel para corona de confinamiento magnético
+            float fresnel = pow(1.0 - abs(dot(normal, viewDir)), 2.6);
+
+            // Fisuras energéticas basadas en el desplazamiento de vértices
+            float fissure = smoothstep(0.01, 0.12, vDisplacement + 0.04);
+
+            // Rejilla geodésica de contención
+            float scanline = smoothstep(0.92, 0.98, abs(sin(vViewPosition.y * 18.0 - uTime * 4.0)));
+
+            vec3 col = uColorVoid;
+            col = mix(col, uColorAmber, fissure * (0.65 + uOverdrive * 0.6));
+            col += uColorCyan * fresnel * (0.9 + uOverdrive * 0.8);
+            col += mix(uColorCyan, uColorAmber, uOverdrive) * scanline * 0.25;
+
+            // Destello de ignición al emitir pulso gravitatorio
+            float flash = exp(-uShockwave * 4.5) * step(0.001, uShockwave);
+            col += mix(uColorAmber, uColorCyan, 0.5) * flash * 0.9;
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `
+      });
+      disposableMaterials.push(coreMaterial);
+
+      const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+      scene.add(coreMesh);
+
+      // Esfera matemática para Raycasting analítico en O(1)
+      const coreHitSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 1.22);
+
+      // ============================================================================
+      // 3. 6 ANILLOS GIROSCÓPICOS CONCÉNTRICOS (2,592 TRIÁNGULOS TOTAL)
+      // ============================================================================
+      // Cada anillo: TorusGeometry(R_i, 0.04, 6, 36) -> 6 * 36 * 2 = 432 triángulos
+      // 6 * 432 = 2,592 triángulos. Grabado láser procedural en el Fragment Shader.
+      const ringRadii = [1.45, 1.61, 1.77, 1.93, 2.09, 2.25];
+      const eulerOrders = ['XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX'];
+      const ringsGroup = new THREE.Group();
+      scene.add(ringsGroup);
+
+      const ringUniforms = {
+        uTime: { value: 0 },
+        uOverdrive: { value: 0 },
+        uColorCyan: { value: new THREE.Color(0x00f0ff) },
+        uColorAmber: { value: new THREE.Color(0xffaa00) }
+      };
+
+      const ringMaterial = new THREE.ShaderMaterial({
+        uniforms: ringUniforms,
+        vertexShader: /* glsl */`
+          attribute float aRingIndex;
+          varying vec2 vUv;
+          varying vec3 vNormal;
+          varying vec3 vViewPos;
+          varying float vRingId;
+
+          void main() {
+            vUv = uv;
+            vRingId = aRingIndex;
+            vNormal = normalize(normalMatrix * normal);
+            vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+            vViewPos = -mvPos.xyz;
+            gl_Position = projectionMatrix * mvPos;
+          }
+        `,
+        fragmentShader: /* glsl */`
+          uniform float uTime;
+          uniform float uOverdrive;
+          uniform vec3 uColorCyan;
+          uniform vec3 uColorAmber;
+          varying vec2 vUv;
+          varying vec3 vNormal;
+          varying vec3 vViewPos;
+          varying float vRingId;
+
+          void main() {
+            vec3 n = normalize(vNormal);
+            vec3 v = normalize(vViewPos);
+            vec3 l1 = normalize(vec3(1.0, 1.2, 1.5));
+            vec3 l2 = normalize(vec3(-1.2, -0.8, 0.8));
+
+            // Sombreado metálico anisotrópico industrial (Titanio Oscuro CERN)
+            vec3 h1 = normalize(l1 + v);
+            vec3 h2 = normalize(l2 + v);
+            float spec1 = pow(max(dot(n, h1), 0.0), 42.0);
+            float spec2 = pow(max(dot(n, h2), 0.0), 24.0);
+            float diff = max(dot(n, l1), 0.0) * 0.5 + 0.5;
+
+            vec3 baseMetal = vec3(0.06, 0.09, 0.14) * diff;
+            baseMetal += vec3(0.28, 0.36, 0.45) * spec1 * 0.7;
+            baseMetal += uColorCyan * spec2 * 0.18;
+
+            // Grabado láser procedural de alta precisión sobre coordenadas UV
+            // u: ángulo longitudinal alrededor del anillo, v: sección transversal
+            float ticksMajor = smoothstep(0.92, 0.97, abs(sin(vUv.x * 3.14159265 * 36.0)));
+            float ticksBand  = step(0.32, vUv.y) * step(vUv.y, 0.68);
+            float centerLine = smoothstep(0.035, 0.008, abs(vUv.y - 0.5));
+            float dualRail   = smoothstep(0.025, 0.006, abs(abs(vUv.y - 0.5) - 0.24));
+
+            // Telemetría láser viajando por el anillo
+            float dataPulse = smoothstep(0.65, 0.99, sin(vUv.x * 6.2831853 * 3.0 - uTime * (1.8 + vRingId * 0.35) * (1.0 + uOverdrive)));
+
+            float laserMask = max(centerLine * 0.75, max(dualRail * 0.5, ticksMajor * ticksBand * 0.85));
+
+            // Alternancia cromática Ámbar / Cian según índice de anillo y sobrecarga
+            float parity = mod(vRingId, 2.0);
+            vec3 laserColor = mix(uColorCyan, uColorAmber, clamp(parity * 0.65 + uOverdrive * 0.5, 0.0, 1.0));
+
+            vec3 finalColor = baseMetal + laserColor * laserMask * (0.45 + 0.85 * dataPulse + uOverdrive * 0.6);
+
+            gl_FragColor = vec4(finalColor, 1.0);
+          }
+        `
+      });
+      disposableMaterials.push(ringMaterial);
+
+      const ringsData = [];
+
+      ringRadii.forEach((radius, idx) => {
+        const ringGeo = new THREE.TorusGeometry(radius, 0.04, 6, 36);
+        const vertexCount = ringGeo.attributes.position.count;
+        const ringIndexAttr = new Float32Array(vertexCount).fill(idx);
+        ringGeo.setAttribute('aRingIndex', new THREE.BufferAttribute(ringIndexAttr, 1));
+        disposableGeometries.push(ringGeo);
+
+        const mesh = new THREE.Mesh(ringGeo, ringMaterial);
+        mesh.rotation.order = eulerOrders[idx];
+        mesh.rotation.set(
+          (idx * 0.52) % Math.PI,
+          (idx * 1.05) % Math.PI,
+          (idx * 0.78) % Math.PI
+        );
+
+        // Velocidades de Euler sutilmente distintas y desacopladas
+        const sign = idx % 2 === 0 ? 1 : -1;
+        const angularVel = new THREE.Vector3(
+          sign * (0.18 + idx * 0.031),
+          -sign * (0.24 - idx * 0.019),
+          sign * (0.11 + (5 - idx) * 0.023)
+        );
+
+        ringsGroup.add(mesh);
+        ringsData.push({ mesh, angularVel });
+      });
+
+      // ============================================================================
+      // 4. CORONA Y ONDA DE CHOQUE CON INSTANCEDMESH (950 TRIÁNGULOS)
+      // ============================================================================
+      // 950 instancias * 1 triángulo por instancia = 950 triángulos exactos.
+      // Cero actualizaciones de Matrix4 en CPU por frame: cinemática 100% en Vertex Shader.
+      const PARTICLE_COUNT = 950;
+
+      const singleTriGeo = new THREE.BufferGeometry();
+      // Triángulo equilátero circunscrito al círculo unitario
+      const triVertices = new Float32Array([
+         0.0,    0.056, 0.0,
+        -0.0485, -0.028, 0.0,
+         0.0485, -0.028, 0.0
+      ]);
+      const triUvs = new Float32Array([
+         0.0,    2.0,
+        -1.732, -1.0,
+         1.732, -1.0
+      ]);
+      singleTriGeo.setAttribute('position', new THREE.BufferAttribute(triVertices, 3));
+      singleTriGeo.setAttribute('uv', new THREE.BufferAttribute(triUvs, 2));
+
+      // Atributos por instancia: [radioBase, theta0, phi0, velocidadOrbital]
+      const aOrbit = new Float32Array(PARTICLE_COUNT * 4);
+      // [semillaColor, escalaTamaño, capaShockwave]
+      const aMeta = new Float32Array(PARTICLE_COUNT * 3);
+
+      // PRNG determinista (Mulberry32) para reproducibilidad formal
+      let seed = 0x517cc1b7;
+      const rand = () => {
+        seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const i4 = i * 4;
+        const i3 = i * 3;
+        // 65% en la corona interna/media, 35% en el halo exterior
+        const isInnerCorona = i < PARTICLE_COUNT * 0.65;
+        const baseRadius = isInnerCorona
+          ? 1.16 + rand() * 0.24
+          : 1.48 + rand() * 1.45;
+
+        const theta = rand() * Math.PI * 2;
+        const phi = Math.acos(2 * rand() - 1);
+        const speed = (0.35 + rand() * 0.85) * (rand() > 0.5 ? 1 : -1);
+
+        aOrbit[i4 + 0] = baseRadius;
+        aOrbit[i4 + 1] = theta;
+        aOrbit[i4 + 2] = phi;
+        aOrbit[i4 + 3] = speed;
+
+        aMeta[i3 + 0] = rand();                 // Mezcla Ámbar (#ffaa00) vs Cian (#00f0ff)
+        aMeta[i3 + 1] = 0.65 + rand() * 0.95;   // Escala de partícula
+        aMeta[i3 + 2] = rand();                 // Fase de respuesta a onda gravitatoria
+      }
+
+      singleTriGeo.setAttribute('aOrbit', new THREE.InstancedBufferAttribute(aOrbit, 4));
+      singleTriGeo.setAttribute('aMeta', new THREE.InstancedBufferAttribute(aMeta, 3));
+      disposableGeometries.push(singleTriGeo);
+
+      const particleUniforms = {
+        uTime: { value: 0 },
+        uOverdrive: { value: 0 },
+        uShockwave: { value: 0 },
+        uColorAmber: { value: new THREE.Color(0xffaa00) },
+        uColorCyan: { value: new THREE.Color(0x00f0ff) }
+      };
+
+      const particleMaterial = new THREE.ShaderMaterial({
+        uniforms: particleUniforms,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        vertexShader: /* glsl */`
+          attribute vec4 aOrbit;
+          attribute vec3 aMeta;
+
+          uniform float uTime;
+          uniform float uOverdrive;
+          uniform float uShockwave;
+
+          varying vec2 vUv;
+          varying float vColorMix;
+          varying float vEnergy;
+
+          void main() {
+            vUv = uv;
+            vColorMix = aMeta.x;
+
+            float baseR = aOrbit.x;
+            float theta0 = aOrbit.y;
+            float phi0 = aOrbit.z;
+            float speed = aOrbit.w;
+
+            // Integración angular en GPU
+            float t = uTime * speed * (1.0 + uOverdrive * 1.4);
+            float theta = theta0 + t;
+            float phi = phi0 + sin(t * 0.7 + theta0) * 0.35;
+
+            // Onda de choque gravitatoria expansiva
+            // Cuando uShockwave avanza en [0, 1], un frente de onda radial empuja las partículas
+            float waveFront = uShockwave * 3.8;
+            float distToWave = abs((baseR + aMeta.z * 0.4) - (1.0 + waveFront));
+            float waveEnvelope = exp(-distToWave * distToWave * 6.5) * sin(uShockwave * 3.14159265);
+            float radialBoost = waveEnvelope * (1.15 + aMeta.z * 0.85) + uOverdrive * 0.18 * sin(uTime * 6.0 + theta0);
+
+            float r = baseR + radialBoost;
+
+            vec3 worldCenter = vec3(
+              r * sin(phi) * cos(theta),
+              r * cos(phi),
+              r * sin(phi) * sin(theta)
+            );
+
+            // Transformación al espacio de vista y Billboarding esférico en O(1)
+            vec4 mvCenter = modelViewMatrix * vec4(worldCenter, 1.0);
+            float scale = aMeta.y * (1.0 + waveEnvelope * 1.6 + uOverdrive * 0.45);
+            mvCenter.xy += position.xy * scale;
+
+            vEnergy = clamp(0.55 + waveEnvelope * 1.4 + uOverdrive * 0.6, 0.0, 2.0);
+            gl_Position = projectionMatrix * mvCenter;
+          }
+        `,
+        fragmentShader: /* glsl */`
+          uniform vec3 uColorAmber;
+          uniform vec3 uColorCyan;
+          varying vec2 vUv;
+          varying float vColorMix;
+          varying float vEnergy;
+
+          void main() {
+            // Recorte circular dentro del triángulo equilátero circunscrito (r <= 1.0)
+            float distSq = dot(vUv, vUv);
+            if (distSq > 1.0) discard;
+
+            float radialGlow = exp(-distSq * 3.2);
+            vec3 col = mix(uColorAmber, uColorCyan, step(0.48, vColorMix));
+            col *= radialGlow * vEnergy * 1.6;
+
+            gl_FragColor = vec4(col, radialGlow * clamp(vEnergy, 0.2, 1.0));
+          }
+        `
+      });
+      disposableMaterials.push(particleMaterial);
+
+      const particleInstancedMesh = new THREE.InstancedMesh(
+        singleTriGeo,
+        particleMaterial,
+        PARTICLE_COUNT
+      );
+      particleInstancedMesh.frustumCulled = false; // Bounding dinámico en Vertex Shader
+      scene.add(particleInstancedMesh);
+
+      // ============================================================================
+      // 5. INTERACTIVIDAD, RAYCASTING ANALÍTICO O(1) Y PULSO GRAVITATORIO
+      // ============================================================================
+      const pointerNDC = new THREE.Vector2(0, 0);
+      const targetCamOffset = new THREE.Vector2(0, 0);
+      const currentCamOffset = new THREE.Vector2(0, 0);
+      const raycaster = new THREE.Raycaster();
+
+      let isHoveringCore = false;
+      let isHoldingCore = false;
+      let overdriveLevel = 0.0;   // [0.0 -> 1.8]
+      let shockwaveProgress = 0.0; // [0.0 -> 1.0]
+      let shockwaveActive = false;
+
+      const evaluateCoreIntersection = () => {
+        raycaster.setFromCamera(pointerNDC, camera);
+        // Intersección analítica Rayo-Esfera en O(1), cero recorrido de malla
+        return raycaster.ray.intersectsSphere(coreHitSphere);
+      };
+
+      const triggerShockwave = () => {
+        shockwaveActive = true;
+        shockwaveProgress = 0.001;
+        uiPulse.textContent = 'EMITTING_WAVE';
+      };
+
+      const onPointerMove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        pointerNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // Amplitud máxima de inclinación orbital de cámara
+        targetCamOffset.x = pointerNDC.x * 1.35;
+        targetCamOffset.y = pointerNDC.y * 0.95;
+
+        isHoveringCore = evaluateCoreIntersection();
+        canvas.style.cursor = isHoveringCore ? 'pointer' : 'crosshair';
+      };
+
+      const onPointerDown = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        pointerNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+        if (evaluateCoreIntersection()) {
+          isHoldingCore = true;
+          triggerShockwave();
+          uiState.textContent = 'GRAV_OVERDRIVE_ACTIVE';
+        }
+      };
+
+      const onPointerUp = () => {
+        if (isHoldingCore) {
+          isHoldingCore = false;
+          uiState.textContent = 'NOMINAL_CONFINEMENT';
+        }
+      };
+
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      canvas.addEventListener('pointerdown', onPointerDown, { passive: true });
+      window.addEventListener('pointerup', onPointerUp, { passive: true });
+      window.addEventListener('pointercancel', onPointerUp, { passive: true });
+
+      // ============================================================================
+      // 6. BUCLE DE SIMULACIÓN INVARIANTE AL FRAME-RATE Y CICLO DE VIDA LIMPIO
+      // ============================================================================
+      let rafId = null;
+      let isVisibleInViewport = true;
+      let isTabActive = !document.hidden;
+      let elapsedTime = 0;
+      let lastTimestamp = performance.now();
+      let telemetryFrameCounter = 0;
+
+      const tick = (now) => {
+        rafId = requestAnimationFrame(tick);
+
+        // Acotación estricta de dt <= 0.1s para evitar explosiones de integración tras pausas
+        const rawDt = (now - lastTimestamp) * 0.001;
+        const dt = Math.min(Math.max(rawDt, 0.0001), 0.1);
+        lastTimestamp = now;
+
+        // 1. Lerp de cámara invariante al frame-rate (Factor nominal 0.05 a 60Hz)
+        const lerpAlpha = 1.0 - Math.pow(1.0 - 0.05, dt * 60.0);
+        currentCamOffset.x += (targetCamOffset.x - currentCamOffset.x) * lerpAlpha;
+        currentCamOffset.y += (targetCamOffset.y - currentCamOffset.y) * lerpAlpha;
+
+        camera.position.x = currentCamOffset.x;
+        camera.position.y = currentCamOffset.y;
+        camera.position.z = BASE_CAM_Z - Math.hypot(currentCamOffset.x, currentCamOffset.y) * 0.18;
+        camera.lookAt(0, 0, 0);
+
+        // 2. Dinámica de sobrecarga (Click / Mantener presionado sobre el núcleo)
+        const targetOverdrive = isHoldingCore ? 1.85 : (isHoveringCore ? 0.25 : 0.0);
+        const overdriveAlpha = 1.0 - Math.pow(1.0 - 0.08, dt * 60.0);
+        overdriveLevel += (targetOverdrive - overdriveLevel) * overdriveAlpha;
+
+        // Si mantiene presionado el núcleo, re-emite pulsos gravitatorios periódicos
+        if (isHoldingCore && (!shockwaveActive || shockwaveProgress > 0.78)) {
+          triggerShockwave();
+        }
+
+        if (shockwaveActive) {
+          shockwaveProgress += dt * 0.85;
+          if (shockwaveProgress >= 1.0) {
+            shockwaveProgress = 0.0;
+            shockwaveActive = false;
+            uiPulse.textContent = 'STANDBY';
+          }
+        }
+
+        const speedMultiplier = 1.0 + overdriveLevel * 2.4;
+        elapsedTime += dt;
+
+        // 3. Rotación Euler independiente de los 6 anillos giroscópicos
+        for (let i = 0; i < ringsData.length; i++) {
+          const { mesh, angularVel } = ringsData[i];
+          const ringGain = speedMultiplier * (1.0 + i * 0.06);
+          mesh.rotation.x += angularVel.x * dt * ringGain;
+          mesh.rotation.y += angularVel.y * dt * ringGain;
+          mesh.rotation.z += angularVel.z * dt * ringGain;
+        }
+
+        // Rotación lenta del núcleo
+        coreMesh.rotation.y += dt * 0.25 * speedMultiplier;
+        coreMesh.rotation.x += dt * 0.12 * speedMultiplier;
+
+        // 4. Actualización de Uniforms en O(1)
+        coreUniforms.uTime.value = elapsedTime;
+        coreUniforms.uOverdrive.value = overdriveLevel;
+        coreUniforms.uShockwave.value = shockwaveProgress;
+
+        ringUniforms.uTime.value = elapsedTime;
+        ringUniforms.uOverdrive.value = overdriveLevel;
+
+        particleUniforms.uTime.value = elapsedTime;
+        particleUniforms.uOverdrive.value = overdriveLevel;
+        particleUniforms.uShockwave.value = shockwaveProgress;
+
+        // 5. Renderizado
+        renderer.render(scene, camera);
+
+        // 6. Telemetría HUD (actualizada cada 10 frames para evitar mutaciones DOM innecesarias)
+        if ((telemetryFrameCounter++ % 10) === 0) {
+          uiTris.textContent = renderer.info.render.triangles;
+          uiDraws.textContent = renderer.info.render.calls;
+          uiOmega.textContent = `${speedMultiplier.toFixed(2)}x`;
+        }
+      };
+
+      const startLoop = () => {
+        if (rafId === null && isVisibleInViewport && isTabActive) {
+          lastTimestamp = performance.now();
+          rafId = requestAnimationFrame(tick);
+        }
+      };
+
+      const stopLoop = () => {
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      };
+
+      // Manejo de Resize responsive sin thrashing
+      const handleResize = () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w === 0 || h === 0) return;
+
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        renderer.setPixelRatio(dpr);
+        renderer.setSize(w, h, false);
+        uiDpr.textContent = dpr.toFixed(2);
+      };
+
+      const resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(container);
+
+      // Desconexión automática de rAF cuando el Hero sale del viewport
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        isVisibleInViewport = entries[0]?.isIntersecting ?? true;
+        if (isVisibleInViewport) startLoop();
+        else stopLoop();
+      }, { threshold: 0.01 });
+      intersectionObserver.observe(container);
+
+      // Pausa limpia en cambio de pestaña
+      const onVisibilityChange = () => {
+        isTabActive = !document.hidden;
+        if (isTabActive) startLoop();
+        else stopLoop();
+      };
+      document.addEventListener('visibilitychange', onVisibilityChange);
+
+      // Función de destrucción determinista para SPAs o descarga de página
+      const disposeHeroScene = () => {
+        stopLoop();
+        resizeObserver.disconnect();
+        intersectionObserver.disconnect();
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+        window.removeEventListener('pointermove', onPointerMove);
+        canvas.removeEventListener('pointerdown', onPointerDown);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        disposableGeometries.forEach((geo) => geo.dispose());
+        disposableMaterials.forEach((mat) => mat.dispose());
+        renderer.renderLists.dispose();
+        renderer.dispose();
+      };
+
+      window.disposeHeroScene = disposeHeroScene;
+      window.addEventListener('pagehide', disposeHeroScene, { once: true });
+
+      // Arranque inicial
+      startLoop();
+    })();
+  </script>
+</body>
+</html>
