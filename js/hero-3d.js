@@ -36,7 +36,7 @@ import * as THREE from 'three';
 
   const cappedDPR = Math.min(window.devicePixelRatio || 1, 2);
   renderer.setPixelRatio(cappedDPR);
-  renderer.setSize(heroEl.clientWidth, heroEl.clientHeight, false);
+  renderer.setSize(heroEl.clientWidth, heroEl.clientHeight, true);
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
@@ -578,7 +578,7 @@ import * as THREE from 'three';
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
-    renderer.setSize(w, h, false);
+    renderer.setSize(w, h, true);
     updateReactorPosition();
   };
 

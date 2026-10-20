@@ -1443,20 +1443,24 @@ footer {
 
 /* ---------- Hero canvas background ---------- */
 .hero { position: relative; overflow: hidden; }
-.hero-canvas {
+.hero-canvas,
+.hero-shader-canvas,
+.hero-3d-canvas {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.hero-canvas {
   z-index: 0;
   opacity: 0.5;
 }
 .hero-shader-canvas {
-  position: absolute;
-  inset: 0;
   z-index: -1;
 }
 .hero-3d-canvas {
-  position: absolute;
-  inset: 0;
   z-index: 0;
   pointer-events: none;
 }

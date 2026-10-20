@@ -10,7 +10,11 @@
 }
 .proj-hero-shader-canvas {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
   z-index: -1;
 }
 .proj-hero::after {

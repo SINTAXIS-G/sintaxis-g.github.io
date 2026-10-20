@@ -146,7 +146,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     powerPreference: 'high-performance'
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(viewport.clientWidth, viewport.clientHeight, false);
+  renderer.setSize(viewport.clientWidth, viewport.clientHeight, true);
   renderer.setClearColor(0x060911, 0.95);
 
   const scene = new THREE.Scene();
@@ -932,7 +932,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
-    renderer.setSize(w, h, false);
+    renderer.setSize(w, h, true);
     packetsUniforms.uDpr.value = dpr;
   };
 

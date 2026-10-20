@@ -418,8 +418,11 @@ if (heroCanvas) {
   };
 
   function resize() {
+    if (!heroCanvas.parentElement) return;
     heroCanvas.width = heroCanvas.parentElement.offsetWidth;
     heroCanvas.height = heroCanvas.parentElement.offsetHeight;
+    heroCanvas.style.width = '100%';
+    heroCanvas.style.height = '100%';
   }
 
   function initNodes() {
@@ -749,10 +752,14 @@ if (heroCanvas) {
   const startTime = performance.now();
 
   function resizeShaderCanvas() {
-    const rect = shaderCanvas.parentElement.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // tope de DPR: nitidez suficiente sin costo de retina completa
-    shaderCanvas.width = rect.width * dpr;
-    shaderCanvas.height = rect.height * dpr;
+    const parent = shaderCanvas.parentElement;
+    if (!parent) return;
+    const rect = parent.getBoundingClientRect();
+    const dpr = Math.max(0.5, Math.min(window.devicePixelRatio || 1, 1.5));
+    shaderCanvas.width = Math.round(rect.width * dpr);
+    shaderCanvas.height = Math.round(rect.height * dpr);
+    shaderCanvas.style.width = '100%';
+    shaderCanvas.style.height = '100%';
     gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
     mouseX = shaderCanvas.width / 2;
     mouseY = shaderCanvas.height / 2;
