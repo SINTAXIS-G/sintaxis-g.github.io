@@ -1,0 +1,587 @@
+/* ==========================================================================
+   EXARKON // TEMA CIBERNÉTICO SOBERANO
+   Identidad visual: Hexagonal HUD, Cyber-Military Sci-Fi, Deep Void & Neon Cyan.
+   Compatibilidad: sintaxis-g.github.io (Variables, Blueprint, Modo Búnker)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --ex-cyan: #00f0ff;
+  --ex-cyan-glow: rgba(0, 240, 255, 0.4);
+  --ex-cyan-dim: rgba(0, 240, 255, 0.12);
+  --ex-amber: #ffb800;
+  --ex-amber-glow: rgba(255, 184, 0, 0.4);
+  --ex-crimson: #ff2a5f;
+  --ex-emerald: #00ff88;
+  --ex-sol-negro: #7928ca;
+  --ex-obsidian: #080c14;
+  --ex-surface-subtle: rgba(18, 25, 38, 0.7);
+  --font-hud: 'Orbitron', var(--font-sans);
+  --font-hud-mono: 'Share Tech Mono', var(--font-mono);
+}
+
+/* Redefinición suave para la atmósfera de Exarkon */
+body.page-exarkon {
+  --accent: var(--ex-cyan);
+  --accent-dim: #0099aa;
+  background-color: #0b0e17;
+  color: #cfd8dc;
+}
+
+/* Scanlines sutiles militares en fondo */
+.ex-scanlines {
+  position: relative;
+}
+.ex-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 10;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Canvas de fondo Hero */
+#exarkon-hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ex-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ribbons y Badges Militares */
+.ex-hud-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(8, 12, 20, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-left: 4px solid var(--ex-cyan);
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0 2rem 0;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.ex-hud-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ex-hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ex-cyan);
+  box-shadow: 0 0 8px var(--ex-cyan);
+  animation: ex-pulse 2s infinite ease-in-out;
+}
+.ex-hud-dot.amber {
+  background: var(--ex-amber);
+  box-shadow: 0 0 8px var(--ex-amber);
+}
+.ex-hud-dot.emerald {
+  background: var(--ex-emerald);
+  box-shadow: 0 0 8px var(--ex-emerald);
+}
+
+@keyframes ex-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Título con acento cyber */
+.ex-title-glitch {
+  font-family: var(--font-hud);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+/* Grid de métricas en Hero */
+.ex-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.ex-metric-box {
+  background: rgba(14, 20, 32, 0.75);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 4px;
+  padding: 1rem 0.85rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.ex-metric-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ex-cyan), transparent);
+}
+
+.ex-metric-box:hover {
+  border-color: var(--ex-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 240, 255, 0.15);
+}
+
+.ex-metric-box strong {
+  display: block;
+  font-family: var(--font-hud);
+  font-size: 1.6rem;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.ex-metric-box span {
+  display: block;
+  font-family: var(--font-hud-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.35rem;
+}
+
+/* Inspector Interactivo de las 10 Capas Hexagonales */
+.ex-layers-container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  background: rgba(10, 15, 24, 0.6);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .ex-layers-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ex-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ex-layer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: rgba(16, 24, 38, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+}
+
+.ex-layer-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  color: #fff;
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+.ex-layer-btn.is-active {
+  background: rgba(0, 240, 255, 0.18);
+  color: #fff;
+  border-color: var(--ex-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  font-weight: bold;
+}
+
+.ex-layer-btn .layer-code {
+  color: var(--ex-cyan);
+  font-family: var(--font-hud);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.ex-layer-btn .layer-status-pill {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(0, 255, 136, 0.15);
+  color: var(--ex-emerald);
+}
+
+.ex-layer-detail-card {
+  background: rgba(12, 18, 28, 0.95);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  padding: 1.5rem;
+  border-radius: 4px;
+  position: relative;
+}
+
+.ex-layer-detail-card::before {
+  content: 'LAYER // COGNITIVE_NODE';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.85rem;
+  font-family: var(--font-hud-mono);
+  font-size: 0.65rem;
+  color: rgba(0, 240, 255, 0.4);
+}
+
+.ex-layer-detail-title {
+  font-family: var(--font-hud);
+  font-size: 1.35rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.ex-layer-tagline {
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  color: var(--ex-cyan);
+  margin-bottom: 1.25rem;
+}
+
+.ex-layer-code-view {
+  background: #05080f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid var(--ex-cyan);
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: var(--font-hud-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #b0bec5;
+  overflow-x: auto;
+  border-radius: 2px;
+}
+
+/* Simulador Interactivo V.E.R.A. */
+.ex-vera-simulator {
+  background: rgba(10, 16, 26, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.ex-vera-cmd-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ex-vera-cmd-btn {
+  background: rgba(18, 26, 40, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-hud-mono);
+  font-size: 0.82rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.ex-vera-cmd-btn:hover {
+  border-color: var(--ex-cyan);
+  color: #fff;
+}
+
+.ex-vera-cmd-btn.is-active {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--ex-cyan);
+  color: #fff;
+  font-weight: bold;
+}
+
+.ex-vera-pipeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.ex-vera-step {
+  background: rgba(14, 20, 32, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.ex-vera-step.step-pass {
+  border-color: var(--ex-emerald);
+  background: rgba(0, 255, 136, 0.08);
+}
+
+.ex-vera-step.step-block {
+  border-color: var(--ex-crimson);
+  background: rgba(255, 42, 95, 0.15);
+  box-shadow: 0 0 10px rgba(255, 42, 95, 0.3);
+}
+
+.ex-vera-step-num {
+  font-family: var(--font-hud);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  display: block;
+}
+
+.ex-vera-step-name {
+  font-family: var(--font-hud-mono);
+  font-size: 0.78rem;
+  color: #fff;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.ex-vera-step-status {
+  margin-top: 0.5rem;
+  font-family: var(--font-hud-mono);
+  font-size: 0.72rem;
+  font-weight: bold;
+}
+
+.ex-vera-step.step-pass .ex-vera-step-status {
+  color: var(--ex-emerald);
+}
+
+.ex-vera-step.step-block .ex-vera-step-status {
+  color: var(--ex-crimson);
+}
+
+.ex-vera-result-box {
+  background: #060910;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* Simulador Térmico y Sol Negro */
+.ex-thermo-box {
+  background: rgba(12, 18, 28, 0.9);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.ex-thermo-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.ex-thermo-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 8px;
+  background: linear-gradient(90deg, #00f0ff 0%, #00ff88 40%, #ffb800 70%, #ff2a5f 85%, #7928ca 100%);
+  border-radius: 4px;
+  outline: none;
+}
+
+.ex-thermo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #080c14;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.ex-thermo-temp-display {
+  font-family: var(--font-hud);
+  font-size: 2rem;
+  font-weight: 800;
+  min-width: 100px;
+  text-align: right;
+  color: #ffffff;
+}
+
+.ex-thermo-state-badge {
+  display: inline-block;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 3px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+/* Cuadrilla de Agentes Bento Grid */
+.ex-agents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.ex-agent-card {
+  background: rgba(13, 19, 30, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 4px;
+  padding: 1.25rem;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.ex-agent-card:hover {
+  border-color: var(--ex-cyan);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 240, 255, 0.12);
+  background: rgba(16, 24, 38, 0.9);
+}
+
+.ex-agent-tag {
+  font-family: var(--font-hud-mono);
+  font-size: 0.7rem;
+  color: var(--ex-cyan);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ex-agent-title {
+  font-family: var(--font-hud);
+  font-size: 1.15rem;
+  color: #fff;
+  margin: 0.4rem 0 0.6rem 0;
+}
+
+.ex-agent-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.ex-agent-meta {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-hud-mono);
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-dim);
+}
+
+/* Dead Man's Switch Ticker */
+.ex-dms-card {
+  background: rgba(14, 20, 32, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-left: 4px solid var(--ex-amber);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.ex-dms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ex-dms-clock {
+  font-family: var(--font-hud);
+  font-size: 2.2rem;
+  color: var(--ex-amber);
+  text-shadow: 0 0 12px var(--ex-amber-glow);
+}
+
+.ex-btn-pulse {
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid var(--ex-cyan);
+  color: #fff;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ex-btn-pulse:hover {
+  background: var(--ex-cyan);
+  color: #080c14;
+  box-shadow: 0 0 15px var(--ex-cyan);
+}
+
+/* Tabla Comparativa Implacable */
+.ex-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 0.92rem;
+}
+
+.ex-compare-table th {
+  background: rgba(14, 20, 32, 0.95);
+  font-family: var(--font-hud-mono);
+  color: var(--ex-cyan);
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+.ex-compare-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+}
+
+.ex-compare-table tr:hover td {
+  background: rgba(0, 240, 255, 0.04);
+}
+
+.ex-compare-table td.col-cloud {
+  color: #94a3b8;
+}
+
+.ex-compare-table td.col-exarkon {
+  color: #ffffff;
+  font-weight: 500;
+  border-left: 1px solid rgba(0, 240, 255, 0.15);
+  border-right: 1px solid rgba(0, 240, 255, 0.15);
+  background: rgba(0, 240, 255, 0.02);
+}

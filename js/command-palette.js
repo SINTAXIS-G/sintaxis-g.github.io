@@ -9,6 +9,9 @@
     // ---------- Páginas ----------
     { title: 'Inicio', subtitle: 'sintaxisg.com', url: '/index.html', group: 'Páginas' },
     { title: 'ARCHANGEL — página completa', subtitle: 'Arquitectura, capacidades, planes', url: '/projects/archangel.html', group: 'Páginas' },
+    { title: 'ARCHANGEL Ω — Blueprint Cuántico (Reactor 2.5D)', subtitle: 'Inspector interactivo de los 8 cuadrantes, telemetría y KaTeX', url: '/projects/archangel-blueprint.html', group: 'Páginas' },
+    { title: 'ARCHANGEL Ω — Banco de Calibración de Radar 3D', subtitle: 'Simulador táctico, z-sorting, retículo de adquisición y cinemática', url: '/projects/archangel-radar-test.html', group: 'Páginas' },
+    { title: 'EXARKON — página completa', subtitle: 'Sistema operativo cognitivo, protocolo V.E.R.A. y hardware watchdog', url: '/projects/exarkon.html', group: 'Páginas' },
     { title: 'Artículos técnicos', subtitle: 'Bitácora de desarrollo de ARCHANGEL', url: '/projects/archangel-articulos.html', group: 'Páginas' },
     { title: 'KAIROS — página completa', subtitle: 'App de asistencia en emergencias', url: '/projects/kairos.html', group: 'Páginas' },
 
@@ -25,6 +28,8 @@
     { title: 'Contacto directo', subtitle: 'Telegram, GitHub, email y canales seguros', url: '/index.html#contacto', group: 'Contacto' },
 
     // ---------- ARCHANGEL ----------
+    { title: 'Banco de Calibración de Radar 3D', subtitle: 'Ajuste de física, bloom, z-sorting y órbita táctica', url: '/projects/archangel-radar-test.html', group: 'ARCHANGEL' },
+    { title: 'Blueprint Cuántico & Reactor 2.5D', subtitle: 'Simulador visual interactivo CERN de los 8 sectores', url: '/projects/archangel-blueprint.html', group: 'ARCHANGEL' },
     { title: '¿Qué es ARCHANGEL?', url: '/projects/archangel.html#resumen', group: 'ARCHANGEL' },
     { title: 'Capacidades verificadas', url: '/projects/archangel.html#capacidades-verificadas', group: 'ARCHANGEL' },
     { title: 'En acción (video)', url: '/projects/archangel.html#video', group: 'ARCHANGEL' },
@@ -53,6 +58,18 @@
     { title: 'Glosario', url: '/projects/archangel.html#glosario', group: 'ARCHANGEL' },
     { title: 'Quickstart', url: '/projects/archangel.html#quickstart', group: 'ARCHANGEL' },
     { title: 'Demo interactiva', url: '/projects/archangel.html#demo', group: 'ARCHANGEL' },
+
+    // ---------- EXARKON ----------
+    { title: '¿Qué es EXARKON? (Soberanía)', url: '/projects/exarkon.html#resumen', group: 'EXARKON' },
+    { title: 'Arquitectura Decacapa (x00 a x09)', url: '/projects/exarkon.html#arquitectura', group: 'EXARKON' },
+    { title: 'Protocolo V.E.R.A. (Sandbox Zero-Trust)', url: '/projects/exarkon.html#vera', group: 'EXARKON' },
+    { title: 'Hardware Eye & Protocolo Sol Negro', url: '/projects/exarkon.html#hardware', group: 'EXARKON' },
+    { title: 'Cuadrilla de Agentes Autónomos', url: '/projects/exarkon.html#agentes', group: 'EXARKON' },
+    { title: 'Dead Man\'s Switch (Cordón Umbilical)', url: '/projects/exarkon.html#dms', group: 'EXARKON' },
+    { title: 'La Bóveda Hexagonal (HEX_BOVEDA)', url: '/projects/exarkon.html#boveda', group: 'EXARKON' },
+    { title: 'Comparativa: Nube vs. EXARKON', url: '/projects/exarkon.html#comparativa', group: 'EXARKON' },
+    { title: 'Métricas de Código (32,476 líneas)', url: '/projects/exarkon.html#metricas', group: 'EXARKON' },
+    { title: 'Preguntas Frecuentes & FAQ', url: '/projects/exarkon.html#faq', group: 'EXARKON' },
 
     // ---------- KAIROS ----------
     { title: 'Capturas de pantalla', url: '/projects/kairos.html#capturas', group: 'KAIROS' },

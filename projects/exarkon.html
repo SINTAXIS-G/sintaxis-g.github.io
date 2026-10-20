@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXARKON: Sistema Operativo Cognitivo y Nervioso Central | SINTAXIS G</title>
+<meta name="description" content="EXARKON es un entorno de IA soberano ejecutado 100% en local. Razón sobre proceso, conciencia sobre código, sandbox de 7 capas, protocolo V.E.R.A. y hardware watchdog de silicio.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxisg.com/projects/exarkon.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="EXARKON // Sistema Nervioso Central Soberano | SINTAXIS G">
+<meta property="og:description" content="Entorno de IA soberano 100% local: sandbox de 7 capas, protocolo V.E.R.A., hardware watchdog y Dead Man's Switch. «Razón sobre Proceso. Conciencia sobre Código.»">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/exarkon_logo_full.png">
+<meta property="og:url" content="https://sintaxisg.com/projects/exarkon.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="EXARKON: Sistema Operativo Cognitivo y Nervioso Central | SINTAXIS G">
+<meta name="twitter:description" content="IA soberana offline-first. Arquitectura hexagonal de 10 capas, protocolo V.E.R.A. y protección de silicio.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/exarkon_logo_full.png">
+
+<meta name="theme-color" content="#0b0e17">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+<!-- Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<!-- Estilos Compartidos y Tema Exarkon -->
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/blueprint.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/exarkon-theme.css">
+
+<!-- Metadatos Estructurados Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://sintaxisg.com/projects/exarkon.html#software",
+      "name": "EXARKON",
+      "description": "Entorno de IA soberano ejecutado íntegramente en local. «Razón sobre Proceso. Conciencia sobre Código.» Todo código generado por IA corre primero en un sandbox de 7 capas con protocolo V.E.R.A. y hardware watchdog.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, Windows (Local-First Offline)",
+      "url": "https://sintaxisg.com/projects/exarkon.html",
+      "image": "https://sintaxisg.com/assets/img/exarkon_logo_full.png",
+      "inLanguage": "es-MX",
+      "creator": { "@id": "https://sintaxisg.com/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "SINTAXIS G", "item": "https://sintaxisg.com/" },
+        { "@type": "ListItem", "position": 2, "name": "EXARKON", "item": "https://sintaxisg.com/projects/exarkon.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-exarkon ex-scanlines">
+
+<div class="scroll-progress"></div>
+
+<!-- NAVEGACIÓN -->
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../index.html"><img src="../assets/img/logo-sintaxis-g-v2.webp" alt="" aria-hidden="true" style="height:2rem;width:2rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="804" height="813">← SINTAXIS G</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
+          <a href="#resumen">1. ¿Qué es EXARKON?</a>
+          <a href="#arquitectura">2. Arquitectura Decacapa</a>
+          <a href="#vera">3. Protocolo V.E.R.A.</a>
+          <a href="#hardware">4. Soberanía de Silicio & Sol Negro</a>
+          <a href="#agentes">5. Cuadrilla de Agentes</a>
+          <a href="#dms">6. El Cordón Umbilical (DMS)</a>
+          <a href="#boveda">7. Bóveda & Snapshots</a>
+          <a href="#comparativa">8. Nube vs. EXARKON</a>
+          <a href="#metricas">9. Auditoría & Líneas</a>
+          <a href="#faq">10. Preguntas Frecuentes</a>
+        </nav>
+      </div>
+      <button class="mode-btn" id="dev-toggle">modo dev</button>
+      <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="proj-hero" style="min-height: 82vh; display: flex; align-items: center; position: relative;">
+  <canvas id="exarkon-hero-canvas" aria-hidden="true"></canvas>
+
+  <div class="wrap ex-hero-content" style="width: 100%;">
+    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+      <img src="../assets/img/exarkon_logo_hex.png" alt="EXARKON Hex Logo" style="height: 4.8rem; width: auto; filter: drop-shadow(0 0 16px rgba(0,240,255,0.45));" width="256" height="256">
+      <div>
+        <p class="eyebrow" style="margin: 0; color: var(--ex-cyan); font-family: var(--font-hud-mono); letter-spacing: 0.12em;">SYS-01 // COGNITIVE NERVOUS SYSTEM // ZERO-CLOUD</p>
+        <h1 class="ex-title-glitch" style="margin: 0.2rem 0; font-size: clamp(2.8rem, 6.5vw, 5rem); line-height: 1;">EXARKON</h1>
+      </div>
+    </div>
+
+    <p class="proj-kicker" style="font-family: var(--font-hud-mono); color: var(--ex-cyan); font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;">
+      SISTEMA OPERATIVO COGNITIVO Y NÚCLEO AUTÓNOMO DE INTELIGENCIA LOCAL
+    </p>
+
+    <p class="tagline" style="color: #b0bec5; font-size: 1.2rem; max-width: 44rem; line-height: 1.6; margin-top: 1rem;">
+      Un búnker de computación cognitiva offline-first. Un sistema nervioso que observa, razona, sintetiza voz y auto-repara código sobre silicio modesto sin filtrar un solo byte a la nube corporativa.
+    </p>
+
+    <p class="lema-maestro" style="color: #ffffff; font-family: var(--font-hud); font-size: 1.35rem; font-style: normal; margin-top: 1.25rem; letter-spacing: 0.04em;">
+      «Razón sobre Proceso. Conciencia sobre Código.»
+    </p>
+
+    <!-- LIVE TELEMETRY HUD RIBBON -->
+    <div class="ex-hud-banner">
+      <div class="ex-hud-status-item">
+        <span class="ex-hud-dot emerald"></span>
+        <span>CORE: <strong>ONLINE [SYS_OK]</strong></span>
+      </div>
+      <div class="ex-hud-status-item">
+        <span>BUS: <strong id="hud-evt-rate" style="color:var(--ex-cyan);">48.2 EVT/S</strong></span>
+      </div>
+      <div class="ex-hud-status-item">
+        <span>LOOP: <strong id="hud-loop-latency" style="color:var(--ex-cyan);">12ms</strong></span>
+      </div>
+      <div class="ex-hud-status-item">
+        <span>VRAM SOBERANA: <strong style="color:#fff;">2,420 / 3,800 MB</strong></span>
+      </div>
+      <div class="ex-hud-status-item">
+        <span class="ex-hud-dot amber"></span>
+        <span>CORDÓN UMBILICAL: <strong style="color:var(--ex-amber);">300s DMS ACTIVO</strong></span>
+      </div>
+      <div class="ex-hud-status-item">
+        <span>AST HEALER: <strong style="color:var(--ex-emerald);">STANDBY</strong></span>
+      </div>
+    </div>
+
+    <!-- METRICS GRID -->
+    <div class="ex-metric-grid">
+      <div class="ex-metric-box">
+        <strong>10</strong>
+        <span>Capas Hexagonales</span>
+      </div>
+      <div class="ex-metric-box">
+        <strong>32,476</strong>
+        <span>Líneas Python Puro</span>
+      </div>
+      <div class="ex-metric-box">
+        <strong>205 / 205</strong>
+        <span>Pruebas Superadas</span>
+      </div>
+      <div class="ex-metric-box">
+        <strong>6</strong>
+        <span>Agentes Autónomos</span>
+      </div>
+      <div class="ex-metric-box">
+        <strong>0 KB</strong>
+        <span>Dependencia de Nube</span>
+      </div>
+      <div class="ex-metric-box">
+        <strong>&lt; 100 ms</strong>
+        <span>Rollback Snapshot</span>
+      </div>
+    </div>
+
+    <p class="bp-caption">SISTEMA: <b>EXARKON // NERVIO CENTRAL</b> · REV v2026.10</p>
+  </div>
+</header>
+
+<!-- SECCIÓN 1: ¿QUÉ ES EXARKON? -->
+<section class="proj-block" id="resumen">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">01 // LA DECLARACIÓN DE SOBERANÍA</p>
+    <h2>¿Qué pasa cuando decides no alquilar tu inteligencia?</h2>
+    <p class="lede" style="color:#b0bec5;">
+      La mayoría de los sistemas contemporáneos son marionetas atadas a una API en la nube: envían tus pensamientos, código y secretos a servidores ajenos, rezando porque los términos de servicio no cambien y la conexión no colapse. <strong>EXARKON</strong> fue forjado bajo la doctrina contraria.
+    </p>
+
+    <div class="shots-grid" style="margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">PRINCIPIO // 01</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Aislamiento Radical (Zero Trust)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Ninguna IA tiene acceso directo a tu disco, a subprocess ni a tu red. Todo modelo —sea un LLM local o una sugerencia externa— se trata como un agente potencialmente alucinatorio o adverso. Todo pasa por el filtro inmutable de V.E.R.A.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">PRINCIPIO // 02</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Preservación Física del Silicio</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Correr IA en local suele estrangular los equipos modestos. EXARKON monitoriza la VRAM y la temperatura en milisegundos. Si el silicio alcanza los 90°C, el <strong>Protocolo Sol Negro</strong> congela el cálculo antes de degradar el hardware.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">PRINCIPIO // 03</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Autonomía Reparadora (AST Surgery)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Si un archivo de código rompe su sintaxis o falla una prueba, el agente <strong>AST Healer</strong> desmonta el árbol sintáctico abstracto, genera mutaciones quirúrgicas deterministas y valida el arreglo contra la suite de pruebas antes de sellar el commit.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2: ARQUITECTURA DECACAPA HEXAGONAL -->
+<section class="proj-block" id="arquitectura" style="background: rgba(8, 12, 20, 0.7);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">02 // ESTRUCTURA FÍSICA Y COGNITIVA</p>
+    <h2>La Arquitectura Decacapa Hexagonal</h2>
+    <p class="lede" style="color:#b0bec5;">
+      Diez estratos estrictamente desacoplados (`x00` a `x09`). Ninguna capa superior puede violar las leyes de una capa inferior. Explora cada estrato interactivo para inspeccionar sus responsabilidades, invariantes y código verificado.
+    </p>
+
+    <!-- INTERACTIVE 10-LAYER INSPECTOR -->
+    <div class="ex-layers-container" id="ex-layers-inspector">
+      <div class="ex-layers-list">
+        <button class="ex-layer-btn is-active" data-layer="x00"><span class="layer-code">x00</span> CORE // EventBus &amp; Guardian <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x01"><span class="layer-code">x01</span> HOST // Hardware Eye &amp; VRAM <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x02"><span class="layer-code">x02</span> FORTRESS // Protocolo V.E.R.A. <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x03"><span class="layer-code">x03</span> ORACLE // RAG &amp; Vector Store <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x04"><span class="layer-code">x04</span> VAULT // Bóveda &amp; Snapshots <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x05"><span class="layer-code">x05</span> AGENTS // Cuadrilla Autónoma <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x06"><span class="layer-code">x06</span> HUD // Telemetría Ciber-Militar <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x07"><span class="layer-code">x07</span> LOGS // Audit Trail Inmutable <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x08"><span class="layer-code">x08</span> TESTS // Suite 205 Regresiones <span class="layer-status-pill">OK</span></button>
+        <button class="ex-layer-btn" data-layer="x09"><span class="layer-code">x09</span> DOCS // Génesis &amp; Criterio <span class="layer-status-pill">OK</span></button>
+      </div>
+
+      <div class="ex-layer-detail-card">
+        <!-- Renderizado dinámico vía exarkon-fx.js -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: PROTOCOLO V.E.R.A. -->
+<section class="proj-block" id="vera">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">03 // DEFENSA EN PROFUNDIDAD</p>
+    <h2>Protocolo V.E.R.A.: Validar · Ejecutar · Revertir · Auditar</h2>
+    <p class="lede" style="color:#b0bec5;">
+      En EXARKON, la IA es un consejero brillante pero no confiable por defecto. Todo comando atraviesa seis compuertas criptográficas, sintácticas y humanas. Si una sola falla, el comando es repelido y registrado en la auditoría inmutable.
+    </p>
+
+    <!-- SIMULADOR VERA -->
+    <div class="ex-vera-simulator" id="ex-vera-simulator">
+      <div style="margin-bottom:1rem; font-family:var(--font-hud-mono); font-size:0.85rem; color:var(--ex-cyan);">
+        SELECCIONA UN COMANDO DE EJEMPLO PARA TESTEAR LAS 6 COMPUERTAS:
+      </div>
+      <div class="ex-vera-cmd-selector">
+        <button class="ex-vera-cmd-btn is-active" data-scenario="curation">1. Curaduría de Dataset (Válido)</button>
+        <button class="ex-vera-cmd-btn" data-scenario="ast_patch">2. Cirugía AST Quirúrgica (Válido)</button>
+        <button class="ex-vera-cmd-btn" data-scenario="injection_attempt">3. Intento de Jailbreak / Shell (Ataque)</button>
+      </div>
+
+      <div class="ex-vera-pipeline">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <div class="ex-vera-result-box">
+        <!-- Resultado del gate -->
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-emerald);">GATE 01 - 03</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:1rem; margin:0.4rem 0;">Criptografía &amp; Origen</h4>
+        <p style="font-size:0.86rem; color:var(--text-dim); line-height:1.5;">
+          Comparación en tiempo constante con <code>secrets.compare_digest()</code>, token bucket de 20 req/min para prevenir ataques de denegación de servicio interna y validación de firma de origen.
+        </p>
+      </div>
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-amber);">GATE 04 - 05</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:1rem; margin:0.4rem 0;">Mínimo Privilegio &amp; AST</h4>
+        <p style="font-size:0.86rem; color:var(--text-dim); line-height:1.5;">
+          Solo 18 acciones preautorizadas. La IA jamás puede solicitar «ejecutar_script». Escaneo sintáctico del payload serializado para neutralizar cualquier intento de evasión de subprocesos.
+        </p>
+      </div>
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">GATE 06</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:1rem; margin:0.4rem 0;">Confirmación &amp; Snapshot</h4>
+        <p style="font-size:0.86rem; color:var(--text-dim); line-height:1.5;">
+          El operador humano tiene la última palabra. Antes de que el comando toque el disco, el sistema crea un snapshot atómico. Si el resultado es inesperado, se revierte con un solo toque.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 4: SOBERANÍA DE SILICIO & SOL NEGRO -->
+<section class="proj-block" id="hardware" style="background: rgba(8, 12, 20, 0.7);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">04 // EYE OF HARDWARE</p>
+    <h2>Soberanía de Silicio &amp; El Protocolo Sol Negro</h2>
+    <p class="lede" style="color:#b0bec5;">
+      Cualquiera puede correr IA con un rack de ocho A100 alquiladas a Microsoft. La verdadera maestría de ingeniería consiste en ejecutar un sistema cognitivo completo en hardware terrenal (GPU de 4GB) sin ahogar la memoria ni degradar el silicio.
+    </p>
+
+    <!-- SIMULADOR TÉRMICO -->
+    <div class="ex-thermo-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <span style="font-family:var(--font-hud-mono); font-size:0.8rem; color:var(--ex-amber); letter-spacing:0.05em;">SIMULADOR DEL WATCHDOG TÉRMICO:</span>
+          <h3 style="font-family:var(--font-hud); color:#fff; font-size:1.25rem; margin:0.25rem 0;">Protección Activa de Silicio</h3>
+        </div>
+        <div id="ex-thermal-badge" class="ex-thermo-state-badge" style="background:rgba(0,240,255,0.15); color:var(--ex-cyan);">
+          ESTADO: NOMINAL // SILICIO FRESCO
+        </div>
+      </div>
+
+      <div class="ex-thermo-slider-row">
+        <span style="font-family:var(--font-hud-mono); font-size:0.85rem; color:var(--ex-cyan);">40°C</span>
+        <input type="range" min="40" max="95" value="54" class="ex-thermo-slider" id="ex-temp-slider" aria-label="Simulador de temperatura GPU">
+        <span style="font-family:var(--font-hud-mono); font-size:0.85rem; color:var(--ex-crimson);">95°C</span>
+        <div class="ex-thermo-temp-display" id="ex-temp-val">54°C</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin-top:1.25rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08);">
+        <div>
+          <span style="font-family:var(--font-hud-mono); font-size:0.75rem; color:var(--text-dim); text-transform:uppercase;">Asignación de VRAM:</span>
+          <div id="ex-vram-gauge" style="font-family:var(--font-hud); font-size:1.1rem; color:var(--ex-cyan); margin-top:0.25rem;">
+            2,420 / 3,800 MB (Nominal)
+          </div>
+        </div>
+        <div>
+          <span style="font-family:var(--font-hud-mono); font-size:0.75rem; color:var(--text-dim); text-transform:uppercase;">Comportamiento del EventBus:</span>
+          <div id="ex-thermal-desc" style="font-size:0.85rem; color:#b0bec5; margin-top:0.25rem; line-height:1.5;">
+            Todas las inferencias locales corren a frecuencia máxima. Embeddings confinados a CPU.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUNTOS CLAVE DE HARDWARE -->
+    <div style="margin-top:2rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.25rem;">
+      <div class="bp-box bp-frame">
+        <strong style="color:var(--ex-cyan); font-family:var(--font-hud-mono); font-size:0.85rem;">EL TECHO DURO DE 3,800 MB</strong>
+        <p style="font-size:0.88rem; color:var(--text-dim); margin-top:0.5rem; line-height:1.6;">
+          Una tarjeta de 4GB tiene 4,096 MB físicos, pero el controlador de pantalla de NVIDIA exige al menos 296 MB de reserva. Exarkon impone por validador de configuración un techo estricto en 3,800 MB. Cero excepciones de <em>Out of Memory</em> en tiempo de ejecución.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <strong style="color:var(--ex-amber); font-family:var(--font-hud-mono); font-size:0.85rem;">CPU-ONLY EMBEDDINGS</strong>
+        <p style="font-size:0.88rem; color:var(--text-dim); margin-top:0.5rem; line-height:1.6;">
+          Calcular embeddings en GPU compite con la inferencia del modelo generativo. En EXARKON, la configuración <code>CPU_EMBEDDINGS="always"</code> es un validador indestructible que ignora variables de entorno para blindar toda la VRAM para Ollama.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <strong style="color:var(--ex-sol-negro); font-family:var(--font-hud-mono); font-size:0.85rem;">PROTOCOLO SOL NEGRO</strong>
+        <p style="font-size:0.88rem; color:var(--text-dim); margin-top:0.5rem; line-height:1.6;">
+          A los 83°C se suspenden tareas de indexación en background. A los 90°C, se activa Sol Negro: se cancelan inmediatamente las inferencias pesadas, se descargan tensores y se preserva el estado en disco hasta que el ventilador devuelve la GPU a &lt;75°C.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 5: CUADRILLA DE AGENTES AUTÓNOMOS -->
+<section class="proj-block" id="agentes">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">05 // ENJAMBRE ESPECIALIZADO</p>
+    <h2>La Cuadrilla de Micro-Agentes Autónomos</h2>
+    <p class="lede" style="color:#b0bec5;">
+      En lugar de un modelo gigante que alucina intentando hacerlo todo, EXARKON despliega micro-agentes asíncronos especializados, coordinados a través del EventBus.
+    </p>
+
+    <div class="ex-agents-grid">
+      <!-- SABUESO -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-01 // RECON &amp; EXTRACTION</span>
+        <h3 class="ex-agent-title">Sabueso Hunter</h3>
+        <p class="ex-agent-desc">
+          Explorador web headless construido sobre Chromium sigiloso. Diseñado con <code>--disable-gpu</code> para no consumir un solo megabyte de VRAM durante la navegación. Extrae artículos y documentación directamente a la Bóveda de Ingesta.
+        </p>
+        <div class="ex-agent-meta">
+          <span>MOTOR: Playwright Stealth</span>
+          <span>CONSUMO VRAM: 0 MB</span>
+        </div>
+      </article>
+
+      <!-- SENTINEL -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-02 // INTEGRITY &amp; DEFENSE</span>
+        <h3 class="ex-agent-title">Sentinel</h3>
+        <p class="ex-agent-desc">
+          Guardián de integridad del sistema. Calcula árboles de hashes criptográficos sobre los archivos de código en tiempo real, detectando modificaciones no autorizadas, carreras de estado en el EventBus y anomalías de latencia.
+        </p>
+        <div class="ex-agent-meta">
+          <span>ALCANCE: Watchdog Global</span>
+          <span>LATENCIA: &lt; 5 ms</span>
+        </div>
+      </article>
+
+      <!-- AST HEALER -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-03 // CODE SURGERY</span>
+        <h3 class="ex-agent-title">AST Healer &amp; Refactor</h3>
+        <p class="ex-agent-desc">
+          Cirujano sintáctico. Cuando un script falla o produce una excepción, AST Healer desmonta el código en nodos AST de Python, aplica mutaciones quirúrgicas, ejecuta la suite de tests en memoria y cura el archivo si la prueba pasa.
+        </p>
+        <div class="ex-agent-meta">
+          <span>TÉCNICA: AST Node Mutation</span>
+          <span>VERIFICACIÓN: Pytest Testbed</span>
+        </div>
+      </article>
+
+      <!-- ORACLE -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-04 // ASSOCIATIVE MEMORY</span>
+        <h3 class="ex-agent-title">The Oracle &amp; Archivist</h3>
+        <p class="ex-agent-desc">
+          Motor RAG local alimentado por ChromaDB con distancia coseno y destilación de conocimiento. Deduplica vectores semánticos y sintetiza conceptos clave para que los modelos razonen con memoria histórica persistente.
+        </p>
+        <div class="ex-agent-meta">
+          <span>BASE: ChromaDB HNSW</span>
+          <span>EMBEDDINGS: CPU Cosine</span>
+        </div>
+      </article>
+
+      <!-- VOICE BRIDGE -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-05 // NEURAL SYNTHESIS</span>
+        <h3 class="ex-agent-title">Voice Bridge (Piper ONNX)</h3>
+        <p class="ex-agent-desc">
+          Síntesis de voz neural local de latencia ultrabaja. Genera audio en español mexicano mediante modelos ONNX compactos sin enviar una sola muestra de voz a servidores externos ni depender de conexión a internet.
+        </p>
+        <div class="ex-agent-meta">
+          <span>MODELO: es_MX-ald-medium</span>
+          <span>TIEMPO: &lt; 200 ms TTFA</span>
+        </div>
+      </article>
+
+      <!-- TELEGRAM COMLINK -->
+      <article class="ex-agent-card">
+        <span class="ex-agent-tag">AG-06 // REMOTE RADIO</span>
+        <h3 class="ex-agent-title">Telegram ComLink</h3>
+        <p class="ex-agent-desc">
+          Canal de telemetría remota de una sola vía. Construye URLs efímeras en runtime sin almacenar credenciales en logs, transmitiendo alertas de estado, reportes de curación y notificaciones críticas del Dead Man's Switch.
+        </p>
+        <div class="ex-agent-meta">
+          <span>CANAL: HTTPS Async TLS</span>
+          <span>SANITIZACIÓN: HTML Escaped</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 6: DEAD MAN'S SWITCH (CORDÓN UMBILICAL) -->
+<section class="proj-block" id="dms" style="background: rgba(8, 12, 20, 0.7);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">06 // SUPERVIVENCIA Y CORTE DE EMERGENCIA</p>
+    <h2>El Cordón Umbilical: Dead Man's Switch</h2>
+    <p class="lede" style="color:#b0bec5;">
+      ¿Qué ocurre si un sistema con agentes autónomos pierde el contacto con su operador humano? En lugar de seguir ejecutando cálculos o acumulando estados inconsistentes, entra en juego el <strong>Cordón Umbilical</strong>.
+    </p>
+
+    <!-- DMS WIDGET INTERACTIVO -->
+    <div class="ex-dms-card">
+      <div class="ex-dms-header">
+        <div>
+          <span style="font-family:var(--font-hud-mono); font-size:0.75rem; color:var(--ex-amber); text-transform:uppercase;">TEMPORIZADOR DE SEGURIDAD // DMS_SEC = 300</span>
+          <div class="ex-dms-clock" id="ex-dms-countdown">T - 05:00s</div>
+        </div>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <button class="ex-btn-pulse" id="ex-dms-ping-btn">EMITIR LATIDO (PING OPERADOR)</button>
+          <button class="ex-btn-pulse" id="ex-dms-kill-btn" style="border-color:var(--ex-crimson); color:var(--ex-crimson);">SIMULAR CORTE DE ENLACE</button>
+        </div>
+      </div>
+
+      <div id="ex-dms-status-msg" style="margin-top:1.25rem; font-family:var(--font-hud-mono); font-size:0.85rem; line-height:1.5;">
+        <span style="color:var(--ex-emerald);">✓ LATIDO RECIBIDO: Temporizador en 300s. Enlace con Operador Humano Activo y Saludable.</span>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+      <div class="bp-box">
+        <strong style="color:#fff; font-family:var(--font-hud); font-size:0.95rem;">1. Ventana de 300 Segundos</strong>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.4rem; line-height:1.5;">
+          El operador humano o el nodo de control emite latidos periódicos. Mientras el canal responda, los agentes pueden continuar sus ciclos de tarea.
+        </p>
+      </div>
+      <div class="bp-box">
+        <strong style="color:var(--ex-amber); font-family:var(--font-hud); font-size:0.95rem;">2. Congelación de Bóveda</strong>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.4rem; line-height:1.5;">
+          Si el temporizador expira sin señal, EXARKON congela inmediatamente todas las tareas en vuelo y genera un snapshot de seguridad en <code>x04_vault</code>.
+        </p>
+      </div>
+      <div class="bp-box">
+        <strong style="color:var(--ex-cyan); font-family:var(--font-hud); font-size:0.95rem;">3. Hibernación Cero-Riesgo</strong>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.4rem; line-height:1.5;">
+          Las conexiones de red se cortan, los procesos de Ollama se ponen en reposo y el sistema queda a la espera de reactivación manual autenticada.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 7: BÓVEDA & SNAPSHOTS -->
+<section class="proj-block" id="boveda">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">07 // INTEGRIDAD PERSISTENTE</p>
+    <h2>La Bóveda Hexagonal (HEX_BOVEDA) &amp; Snapshots Atómicos</h2>
+    <p class="lede" style="color:#b0bec5;">
+      El principio maestro de EXARKON es <strong>«Asumir la brecha y asumir la alucinación»</strong>. La robustez no consiste en fingir que la IA nunca cometerá un error, sino en garantizar que ningún error sea irreversible.
+    </p>
+
+    <div class="shots-grid" style="margin-top:2rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">BOVEDA // INGESTA</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:0.95rem; margin:0.3rem 0;">Cámara de Entrada</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); line-height:1.5;">
+          Documentos, transcripciones y código extraídos por Sabueso entran en un estado de solo lectura hasta ser validados.
+        </p>
+      </div>
+
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-amber);">BOVEDA // CUARENTENA</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:0.95rem; margin:0.3rem 0;">Aislamiento Preventivo</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); line-height:1.5;">
+          Cualquier dataset o respuesta de IA que active una señal de sospecha se confina en cuarentena con acceso de red nulo.
+        </p>
+      </div>
+
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-emerald);">BOVEDA // CURADURIA</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:0.95rem; margin:0.3rem 0;">Conocimiento Verificado</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); line-height:1.5;">
+          Información filtrada y lista para indexación en ChromaDB. Solo datos que pasaron las 6 compuertas de V.E.R.A.
+        </p>
+      </div>
+
+      <div class="bp-box">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">BOVEDA // SNAPSHOTS</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:0.95rem; margin:0.3rem 0;">Rollback en &lt;100ms</h4>
+        <p style="font-size:0.85rem; color:var(--text-dim); line-height:1.5;">
+          Fotografías diferenciales completas antes de cualquier mutación de código. Reversión atómica instantánea.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 8: NUBE VS EXARKON -->
+<section class="proj-block" id="comparativa" style="background: rgba(8, 12, 20, 0.7);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">08 // LA REALIDAD TÉCNICA</p>
+    <h2>Comparativa Implacable: Nube Corporativa vs. EXARKON Soberano</h2>
+    <p class="lede" style="color:#b0bec5;">
+      La comodidad de un endpoint comercial oculta un costo estructural inmenso en soberanía, privacidad y predictibilidad.
+    </p>
+
+    <div style="overflow-x:auto;">
+      <table class="ex-compare-table">
+        <thead>
+          <tr>
+            <th style="width:25%;">DIMENSIÓN</th>
+            <th style="width:37.5%;" class="col-cloud">MODELO NUBE COMERCIAL (APIs)</th>
+            <th style="width:37.5%;" class="col-exarkon">EXARKON SOVERANO (LOCAL)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Privacidad &amp; Telemetría</strong></td>
+            <td class="col-cloud">Tus prompts y código viajan a centros de datos externos. Sujetos a retención y reentrenamiento.</td>
+            <td class="col-exarkon"><strong>Cero fugas (0 bytes).</strong> Todo cálculo, embedding y síntesis corre sobre tu propia máquina.</td>
+          </tr>
+          <tr>
+            <td><strong>Dependencia de Conexión</strong></td>
+            <td class="col-cloud">Si se cae tu proveedor de internet o la API tiene corte de servicio, tu trabajo se detiene por completo.</td>
+            <td class="col-exarkon"><strong>Offline-First.</strong> Funciona en un avión, en un búnker de concreto o en una isla desierta.</td>
+          </tr>
+          <tr>
+            <td><strong>Control de Hardware</strong></td>
+            <td class="col-cloud">Caja negra. No sabes qué acelerador ejecuta tu código ni qué latencia esperar.</td>
+            <td class="col-exarkon"><strong>Eye of Hardware.</strong> Monitorización térmica en milisegundos, techo de VRAM a 3,800MB y Sol Negro.</td>
+          </tr>
+          <tr>
+            <td><strong>Seguridad de Ejecución</strong></td>
+            <td class="col-cloud">Plugins con permisos ambiguos que ejecutan peticiones en tu entorno sin auditoría inmutable.</td>
+            <td class="col-exarkon"><strong>Protocolo V.E.R.A.</strong> Sandbox de 6 compuertas, whitelist de 18 acciones y confirmación humana previa.</td>
+          </tr>
+          <tr>
+            <td><strong>Reversibilidad de Acciones</strong></td>
+            <td class="col-cloud">Inexistente. Si la IA sobreescribe un archivo o altera un estado, debes depender de tus propios backups.</td>
+            <td class="col-exarkon"><strong>Snapshots Atómicos.</strong> Cada acción destructiva guarda una réplica previa con rollback en &lt;100 ms.</td>
+          </tr>
+          <tr>
+            <td><strong>Costos Recurrentes</strong></td>
+            <td class="col-cloud">Pago por millón de tokens, suscripciones mensuales acumulativas e incertidumbre de facturación.</td>
+            <td class="col-exarkon"><strong>Cero costo por token.</strong> El costo marginal de razonar, indexar o sintetizar voz es cero pesos.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 9: AUDITORÍA & MÉTRICAS -->
+<section class="proj-block" id="metricas">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">09 // VERIFICACIÓN EMPÍRICA</p>
+    <h2>Auditoría de Código &amp; Métricas Reales</h2>
+    <p class="lede" style="color:#b0bec5;">
+      En Sintaxis G no mostramos maquetas conceptuales de Figma. Cada afirmación en esta página está respaldada por código Python ejecutable en disco y verificado por suites de pruebas automatizadas.
+    </p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem; margin-top:2rem;">
+      <div class="terminal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="terminal-line is-shown"><span class="prompt">$</span> pytest /home/gabo/Sintaxis_G/EXARKON_SYS/x08_tests</div>
+          <div class="terminal-line is-shown" style="color:#b0bec5;">============================= test session starts ==============================</div>
+          <div class="terminal-line is-shown" style="color:#b0bec5;">platform linux -- Python 3.14.0a3, pytest-9.0.2</div>
+          <div class="terminal-line is-shown" style="color:#b0bec5;">rootdir: /home/gabo/Sintaxis_G/EXARKON_SYS</div>
+          <div class="terminal-line is-shown" style="color:var(--ex-cyan);">collected 205 items</div>
+          <div class="terminal-line is-shown">test_eventbus.py .................................... <span class="ok">[100%]</span></div>
+          <div class="terminal-line is-shown">test_gpu_profiler.py ................................ <span class="ok">[100%]</span></div>
+          <div class="terminal-line is-shown">test_vera_security.py ............................... <span class="ok">[100%]</span></div>
+          <div class="terminal-line is-shown">test_ast_healer.py .................................. <span class="ok">[100%]</span></div>
+          <div class="terminal-line is-shown">test_snapshot_manager.py ............................ <span class="ok">[100%]</span></div>
+          <div class="terminal-line is-shown" style="color:var(--ex-emerald); font-weight:bold; margin-top:0.5rem;">
+            ==== 205 passed in 26.97s ====
+          </div>
+        </div>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--ex-cyan);">DESGLOSE // LÍNEAS DE CÓDIGO</span>
+        <h4 style="color:#fff; font-family:var(--font-hud); font-size:1.05rem; margin:0.4rem 0;">32,476 Líneas de Ingeniería Real</h4>
+        <ul style="margin:1rem 0; font-family:var(--font-hud-mono); font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+          <li><code>x00_core/</code> : 3,412 líneas (EventBus, Logger, Boot)</li>
+          <li><code>x01_host/</code> : 2,180 líneas (GPU Profiler, Watchdog)</li>
+          <li><code>x02_fortress/</code> : 4,120 líneas (V.E.R.A. Server &amp; Sandbox)</li>
+          <li><code>x03_oracle/</code> : 3,890 líneas (RAG, Vector Store, Distiller)</li>
+          <li><code>x04_vault/</code> : 3,654 líneas (Snapshots, Bóveda)</li>
+          <li><code>x05_agents/</code> : 8,430 líneas (AST Healer, Sabueso, Sentinel)</li>
+          <li><code>x06_hud/</code> : 2,840 líneas (WebSockets, D3.js)</li>
+          <li><code>x08_tests/</code> : 3,950 líneas (205 tests de regresión)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 10: FAQ -->
+<section class="proj-block" id="faq" style="background: rgba(8, 12, 20, 0.7);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--ex-cyan); font-family:var(--font-hud-mono);">10 // CRITERIO Y RAZONAMIENTO</p>
+    <h2>Preguntas Frecuentes &amp; Manifiesto de Diseño</h2>
+    <p class="lede" style="color:#b0bec5;">
+      Detalles que definen por qué EXARKON está construido de esta forma y no de otra.
+    </p>
+
+    <div style="margin-top:2rem; display:flex; flex-direction:column; gap:1.25rem;">
+      <div class="bp-box bp-frame">
+        <h3 style="font-family:var(--font-hud); font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">
+          ¿Por qué Python para el núcleo y no todo en Rust o C++?
+        </h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Porque EXARKON es un orquestador cognitivo de alto nivel que manipula directamente el árbol sintáctico abstracto (AST) de Python, modelos ONNX y tensores con <code>asyncio</code> de cero bloqueos. El cálculo numérico masivo de bajo nivel y análisis de millones de nodos ya está delegado a <strong>ARCHANGEL</strong> (que sí cuenta con 32,898 líneas en Rust nativo). La combinación de ambos mundos entrega la velocidad de Rust donde importa y la maleabilidad dinámica de Python en la orquestación.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <h3 style="font-family:var(--font-hud); font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">
+          ¿Puede EXARKON ejecutar código arbitrario sin que el humano lo note?
+        </h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          <strong>No. Es una línea roja no negociable (Regla 3 de Seguridad).</strong> Las IAs en EXARKON solo tienen acceso a 18 acciones tipadas y acotadas en la whitelist. No existe ninguna acción de «ejecutar_shell» ni «eval». Además, el interruptor <code>require_confirmation</code> exige autorización explícita del operador para cualquier cambio en disco.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <h3 style="font-family:var(--font-hud); font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">
+          ¿Qué modelos locales utiliza EXARKON para razonar?
+        </h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Utiliza modelos cuantizados ejecutados a través de Ollama (como <code>phi3:mini</code>, <code>qwen2.5-coder:3b</code> o <code>mistral-nemo</code>), adaptando dinámicamente las capas descargadas a la GPU según el perfil térmico del momento, mientras que los embeddings corren en CPU y la voz se sintetiza con Piper TTS en formato ONNX.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CIERRE Y NAVEGACIÓN DEL ECOSISTEMA -->
+<footer class="proj-block proj-block-closing" style="padding: 4rem 0; border-top: 1px solid rgba(0, 240, 255, 0.2); background: #060910;">
+  <div class="wrap" style="text-align: center;">
+    <img src="../assets/img/exarkon_logo_hex.png" alt="EXARKON Logo" style="height: 3.5rem; margin-bottom: 1.25rem; opacity: 0.85;">
+    <h2 style="font-family: var(--font-hud); font-size: 1.8rem; color: #fff; margin-bottom: 0.5rem;">Soberanía sobre Conveniencia.</h2>
+    <p style="color: var(--text-dim); max-width: 32rem; margin: 0 auto 2rem auto; font-size: 0.95rem; line-height: 1.6;">
+      EXARKON forma parte del ecosistema de ingeniería independiente <strong>SINTAXIS G</strong>, diseñado y construido por Gabo.
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="../index.html" class="mode-btn" style="text-decoration: none; padding: 0.6rem 1.25rem;">← Portada Principal</a>
+      <a href="archangel.html" class="mode-btn" style="text-decoration: none; padding: 0.6rem 1.25rem; border-color: var(--ex-cyan); color: #fff;">Explorar ARCHANGEL Ω →</a>
+      <a href="kairos.html" class="mode-btn" style="text-decoration: none; padding: 0.6rem 1.25rem;">Explorar KAIROS →</a>
+    </div>
+
+    <p style="margin-top: 3rem; font-family: var(--font-hud-mono); font-size: 0.75rem; color: var(--text-dim);">
+      EXARKON_SYS v3.0 // SINTAXIS G © 2026 // NINGÚN DATO ENVIADO A LA NUBE
+    </p>
+  </div>
+</footer>
+
+<!-- SCRIPTS COMPARTIDOS Y ESPECÍFICOS -->
+<script src="../js/main.js"></script>
+<script src="../js/command-palette.js"></script>
+<script src="../js/blueprint-fx.js"></script>
+<script src="../js/exarkon-fx.js"></script>
+</body>
+</html>

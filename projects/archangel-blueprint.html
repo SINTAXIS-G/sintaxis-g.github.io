@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCHANGEL Ω — Blueprint Cuántico e Inspector Arquitectónico | SINTAXIS G</title>
+  <meta name="description" content="Portal interactivo de arquitectura técnica para ARCHANGEL Ω: reactor 2.5D en tiempo real, 8 cuadrantes cibernéticos, telemetría cuántica e inspector de fórmulas matemáticas.">
+  
+  <meta name="author" content="Gabo">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sintaxisg.com/projects/archangel-blueprint.html">
+  
+  <!-- Open Graph / Social Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ARCHANGEL Ω — Blueprint Cuántico & Reactor 2.5D | SINTAXIS G">
+  <meta property="og:description" content="Inspección interactiva de los 8 sectores arquitectónicos, formalismo matemático KaTeX y simulación física de software.">
+  <meta property="og:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+  <meta property="og:url" content="https://sintaxisg.com/projects/archangel-blueprint.html">
+  <meta property="og:site_name" content="SINTAXIS G">
+  <meta property="og:locale" content="es_MX">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@SINTAXIS_G">
+  <meta name="twitter:title" content="ARCHANGEL Ω — Blueprint Cuántico | SINTAXIS G">
+  <meta name="twitter:description" content="Simulación 2.5D e inspector de física teórica aplicada al análisis estático autónomo.">
+  <meta name="twitter:image" content="https://sintaxisg.com/assets/img/og-archangel.jpg">
+  
+  <meta name="theme-color" content="#05070c">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-archangel-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-archangel.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for High-Precision Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <!-- Mermaid.js for Monolithic Vector Flowchart -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Site Styles -->
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/archangel-blueprint.css?v=2.2">
+</head>
+
+<body class="blueprint-body">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MÓDULO 1: HUD SUPERIOR Y TELEMETRÍA EN VIVO (CERN Blueprints)
+       ══════════════════════════════════════════════════════════════ -->
+  <header class="blueprint-header">
+    <div class="brand-section">
+      <a href="../index.html" class="btn-tactical" title="Volver al índice general">
+        <span>←</span>
+        <span>SINTAXIS G</span>
+      </a>
+      <span class="brand-badge">BLUEPRINT // v2026.10</span>
+      <h1 class="brand-title">
+        ARCHANGEL <span class="omega">Ω</span>
+      </h1>
+    </div>
+
+    <!-- Telemetría Dinámica Reactiva -->
+    <div class="telemetry-strip" aria-label="Telemetría en tiempo real del motor">
+      <div class="telem-item" title="Reloj Lógico de Lamport (Orden causal distribuido)">
+        <span class="pulse-led"></span>
+        <span class="label">LAMPORT:</span>
+        <span class="value cyan" id="telemLamport">100,000</span>
+      </div>
+
+      <div class="telem-item" title="Densidad de Entropía Diferencial de Shannon">
+        <span class="label">ΔS ENTROPÍA:</span>
+        <span class="value amber" id="telemEntropy">3.412 bits</span>
+      </div>
+
+      <div class="telem-item" title="Software Stability Index (Índice de Estabilidad Sistémica)">
+        <span class="label">SSI INDEX:</span>
+        <span class="value emerald" id="telemSSI">94.8 / 100</span>
+      </div>
+
+      <div class="telem-item" title="Frecuencia angular de resonancia del reactor">
+        <span class="label">FREQ:</span>
+        <span class="value violet" id="telemFreq">60.0 Hz</span>
+      </div>
+    </div>
+
+    <!-- Enlaces Tácticos de Navegación -->
+    <div class="nav-actions">
+      <a href="archangel-radar-test.html" class="btn-tactical" style="background:rgba(255,170,0,0.15); border-color:var(--amber-plasma); color:#ffaa00;" title="Abrir banco de pruebas y calibración 3D del nodo de radar">
+        <span>🎯</span>
+        <span>Calibrar Radar 3D</span>
+      </a>
+      <a href="#diagrama-completo" class="btn-tactical" style="background:rgba(0,240,255,0.18); border-color:var(--cyan-laser); color:#fff;" title="Ir al diagrama integral completo de 10 capas y 78 analizadores">
+        <span>🗺️</span>
+        <span>Diagrama Completo</span>
+      </a>
+      <a href="archangel.html" class="btn-tactical" title="Ir a la documentación detallada">
+        <span>📖</span>
+        <span>Documentación</span>
+      </a>
+      <a href="archangel-articulos.html" class="btn-tactical" title="Bitácora de investigación y artículos">
+        <span>📝</span>
+        <span>Bitácora</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MÓDULO 3: SELECTOR TÁCTICO DE LOS 8 CUADRANTES
+       ══════════════════════════════════════════════════════════════ -->
+  <nav class="sector-nav-strip" aria-label="Navegación por sectores arquitectónicos">
+    <button class="sector-tab active" data-sector="physics">
+      <span class="tab-idx">01</span>
+      <span>Física Esotérica &amp; Cuántica</span>
+    </button>
+    <button class="sector-tab" data-sector="cybernetics">
+      <span class="tab-idx">02</span>
+      <span>Leyes Sistémicas &amp; Cibernética</span>
+    </button>
+    <button class="sector-tab" data-sector="semantics">
+      <span class="tab-idx">03</span>
+      <span>Semántica, Costuras &amp; Refactor</span>
+    </button>
+    <button class="sector-tab" data-sector="rust">
+      <span class="tab-idx">04</span>
+      <span>Motor Nativo Rust Zero-GIL</span>
+    </button>
+    <button class="sector-tab" data-sector="graphrag">
+      <span class="tab-idx">05</span>
+      <span>GraphRAG &amp; Memoria Merkle</span>
+    </button>
+    <button class="sector-tab" data-sector="colosseum">
+      <span class="tab-idx">06</span>
+      <span>Coliseo Cognitivo Multi-Agente</span>
+    </button>
+    <button class="sector-tab" data-sector="sociotechnical">
+      <span class="tab-idx">07</span>
+      <span>Sensor Sociotécnico &amp; Conway</span>
+    </button>
+    <button class="sector-tab" data-sector="bayesian">
+      <span class="tab-idx">08</span>
+      <span>Correlador Bayesiano V3</span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       ESCENARIO PRINCIPAL: REACTOR CENTRAL + INSPECTOR CIENTÍFICO
+       ══════════════════════════════════════════════════════════════ -->
+  <main class="blueprint-stage">
+
+    <!-- ─────────────────────────────────────────────────────────
+         MÓDULO 2: CANVAS INTERACTIVO 2.5D DEL REACTOR CENTRAL
+         ───────────────────────────────────────────────────────── -->
+    <section class="canvas-viewport" id="canvasViewport" aria-label="Simulador interactivo del reactor central">
+      <canvas id="reactorCanvas"></canvas>
+
+      <!-- Retícula HUD y Controles Integrados -->
+      <div class="canvas-hud-overlay">
+        <div class="hud-top-left">
+          <span class="reticle-title">⚡ ARCHANGEL Ω // REACTOR SIMULATOR</span>
+          <span>ESTRUCTURA: DAG BIFÁSICO EN COORDENADAS PROYECTIVAS</span>
+          <span>CAMPOS TENSORIALES: $D_1 - D_5$ (ESCALARES DE RIESGO UNIFICADO)</span>
+          <span style="color:#00ff88; margin-top:0.3rem;">● ESTADO: COHERENCIA CUÁNTICA NOMINAL</span>
+        </div>
+
+        <div class="hud-bottom-bar">
+          <!-- Leyenda de colores interactiva -->
+          <div class="hud-legend">
+            <div class="legend-chip">
+              <span class="legend-dot" style="background:#00f0ff; box-shadow:0 0 8px #00f0ff;"></span>
+              <span>Núcleo DAG</span>
+            </div>
+            <div class="legend-chip">
+              <span class="legend-dot" style="background:#ffaa00; box-shadow:0 0 8px #ffaa00;"></span>
+              <span>Anillos Tensores $D_1-D_5$</span>
+            </div>
+            <div class="legend-chip">
+              <span class="legend-dot" style="background:#b845ff; box-shadow:0 0 8px #b845ff;"></span>
+              <span>8 Sectores Satélite</span>
+            </div>
+            <div class="legend-chip">
+              <span class="legend-dot" style="background:#00ff88; box-shadow:0 0 8px #00ff88;"></span>
+              <span>Flujo de Partículas</span>
+            </div>
+          </div>
+
+          <!-- Controles de Navegación y Cámara -->
+          <div class="canvas-controls">
+            <button class="ctrl-btn" id="btnPauseSim" title="Pausar o reanudar rotación del reactor">
+              ⏸ Pausar
+            </button>
+            <button class="ctrl-btn" id="btnToggleTrails" title="Alternar estelas de partículas orbitales">
+              ✨ Estelas
+            </button>
+            <button class="ctrl-btn" id="btnResetCamera" title="Restablecer ángulo visual">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MÓDULO 4: INSPECTOR CIENTÍFICO & FORMULADOR KATEX
+         ───────────────────────────────────────────────────────── -->
+    <aside class="inspector-pane" id="inspectorPane" aria-label="Inspector científico y fórmulas del sector">
+      
+      <div class="inspector-header">
+        <span class="inspector-sector-badge" id="inspectorSectorBadge">SECTOR 01 // QUANTUM &amp; ASTROPHYSICS</span>
+        <h2 class="inspector-title" id="inspectorTitle">Física Esotérica &amp; Mecánica Cuántica</h2>
+        <p class="inspector-subtitle" id="inspectorSubtitle">
+          Mapeo del código como campo termodinámico, singularidades gravitacionales y plegamiento molecular.
+        </p>
+      </div>
+
+      <!-- Resumen Métrico Rápido -->
+      <div class="metrics-grid" id="inspectorMetricsGrid">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <!-- Tarjetas de Subsistemas con Fórmulas KaTeX -->
+      <div id="inspectorSubsystems" style="display:flex; flex-direction:column; gap:1rem;">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════
+           MÓDULO 5: GALERÍA DE RENDERS 8K (STATUS: PENDIENTE)
+           ══════════════════════════════════════════════════════════ -->
+      <div class="renders-teaser" id="module5Teaser">
+        <span class="renders-teaser-badge">MÓDULO 05 // GALERÍA DE RENDERS 8K [EN CALIBRACIÓN]</span>
+        <p>
+          Las reconstrucciones visuales cinemáticas (Blueprint CERN, Titán Biocibernético y Ciudadela Isométrica) están siendo calibradas con iluminación volumétrica y detalles fotogramétricos para su integración definitiva.
+        </p>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       EL DIAGRAMA INTEGRAL COMPLETO: MAPA HOLÍSTICO ARQUITECTÓNICO
+       (De 0 a 78 Analizadores, Rust Zero-GIL, Memoria Merkle y ANS)
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="master-blueprint-section" id="diagrama-completo">
+    <div class="master-blueprint-container">
+      
+      <div class="master-header">
+        <span class="atlas-badge">ATLAS MAESTRO DE INGENIERÍA // ARCHANGEL Ω</span>
+        <h2>El Diagrama Completo del Sistema</h2>
+        <p>
+          Arquitectura integral del motor sin reducciones: desde el sustrato nativo en Rust con cerrojos Zero-GIL y parsers de bytecode EVM/WASM, pasando por el despachador DAG en 2 olas y los 78 analizadores especializados, hasta el Coliseo de debate cognitivo, la memoria semántica Merkle y la telemetría sociotécnica.
+        </p>
+      </div>
+
+      <!-- Pipeline de Flujo Macro del Sistema -->
+      <div class="macro-pipeline-strip" aria-label="Flujo de datos end-to-end">
+        <div class="macro-step active">
+          <span class="step-idx">PASO 01</span>
+          <span class="step-name">Ingesta &amp; MCKP</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 02</span>
+          <span class="step-name">Rust Zero-GIL</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 03</span>
+          <span class="step-name">DAG Ola 0 (76 A.)</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 04</span>
+          <span class="step-name">DAG Ola 1 (2 A.)</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 05</span>
+          <span class="step-name">Tensor $\mathcal{S}$ &amp; ANS</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 06</span>
+          <span class="step-name">Correlador Bayes.</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 07</span>
+          <span class="step-name">GraphRAG Merkle</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 08</span>
+          <span class="step-name">Coliseo Multi-Ag.</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 09</span>
+          <span class="step-name">Git &amp; Conway</span>
+        </div>
+        <span class="macro-arrow">➔</span>
+        <div class="macro-step">
+          <span class="step-idx">PASO 10</span>
+          <span class="step-name">MCP &amp; CI/CD SARIF</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════
+           EL LIENZO VECTORIAL MONOLÍTICO: DIAGRAMA VISUAL UNIFICADO
+           (Representación gráfica continua interactiva con Pan-Zoom)
+           ══════════════════════════════════════════════════════════ -->
+      <div class="visual-diagram-card" id="lienzoVisualIntegral">
+        <div class="visual-diagram-toolbar">
+          <div class="toolbar-primary-group">
+            <span class="toolbar-title">
+              <span>⚡ ESQUEMA VECTORIAL INTEGRAL</span>
+              <span class="toolbar-subtitle">// SISTEMA MONOLÍTICO COMPLETO (ARRASTRA · CLIC EN NODOS · FIT AUTOMÁTICO)</span>
+            </span>
+            <div class="diagram-search-box">
+              <input type="text" id="diagramSearchInput" placeholder="🔍 Buscar nodo (Andersen, SQA, Wöhler, EVM...)" autocomplete="off" />
+              <button id="diagramSearchClear" title="Limpiar búsqueda" style="display:none;">✕</button>
+            </div>
+          </div>
+
+          <div class="visual-diagram-actions">
+            <!-- Simulador de Incidentes en Vivo -->
+            <div class="incident-sim-box">
+              <span class="sim-badge">⚡ SIMULAR:</span>
+              <select id="simIncidentSelect" class="sim-select" title="Seleccionar escenario de estrés">
+                <option value="">Selecciona vector de fallo...</option>
+                <option value="reentrancy">💥 Ataque Reentrancy SWC-107 (Rust EVM)</option>
+                <option value="god_object">🧬 God Object Hipertrófico (4,200 LOC)</option>
+                <option value="race_shm">⚡ Condición de Carrera en /dev/shm</option>
+                <option value="hallucination">🌀 Alucinación LLM en Síntesis de Parche</option>
+              </select>
+              <button class="ctrl-btn sim-trigger-btn" id="btnRunIncident" title="Ejecutar simulación en vivo">▶ Inyectar</button>
+            </div>
+
+            <button class="ctrl-btn highlight" id="btnMermaidFit" title="Ajustar y centrar diagrama a pantalla">🎯 Ajustar</button>
+            <button class="ctrl-btn" id="btnMermaidZoomIn" title="Acercar diagrama">🔍 +</button>
+            <button class="ctrl-btn" id="btnMermaidZoomOut" title="Alejar diagrama">🔍 -</button>
+            <button class="ctrl-btn" id="btnMermaidZoomReset" title="Restablecer zoom">↺ Reset</button>
+            <button class="ctrl-btn" id="btnMermaidFullscreen" title="Alternar modo pantalla completa">⛶ Pantalla Completa</button>
+          </div>
+        </div>
+
+        <div class="visual-diagram-viewport" id="diagramViewport">
+          <div class="visual-diagram-pan-stage" id="diagramStage">
+            <pre class="mermaid" id="masterMermaid">
+flowchart TD
+    classDef inputStyle fill:#0c1a2e,stroke:#00f0ff,stroke-width:1.5px,color:#fff;
+    classDef rustStyle fill:#081f18,stroke:#00ff88,stroke-width:1.5px,color:#fff;
+    classDef dagStyle fill:#211805,stroke:#ffaa00,stroke-width:1.5px,color:#fff;
+    classDef waveStyle fill:#0a1220,stroke:#3ddad7,stroke-width:1px,color:#cde;
+    classDef tensorStyle fill:#1d0a28,stroke:#b845ff,stroke-width:1.5px,color:#fff;
+    classDef bayesStyle fill:#261805,stroke:#ffc83b,stroke-width:1.5px,color:#fff;
+    classDef memStyle fill:#06181f,stroke:#00e5ff,stroke-width:1.5px,color:#fff;
+    classDef colosseumStyle fill:#240810,stroke:#ff3366,stroke-width:1.5px,color:#fff;
+    classDef clientStyle fill:#0b1424,stroke:#60a5fa,stroke-width:1.5px,color:#fff;
+
+    subgraph C00 ["00. SUSTRATO NATIVO RUST ZERO-GIL (31,666 LOC)"]
+        direction LR
+        RS_CORE["archangel_rs Core"]:::rustStyle
+        RS_EVM["evm.rs: SWC-107/115/104"]:::rustStyle
+        RS_WASM["wasm.rs: CosmWasm Storage"]:::rustStyle
+        RS_PTS["race_pts.rs: Andersen Points-To"]:::rustStyle
+        RS_DEAD["deadlock_cfg.rs: O(V+E)"]:::rustStyle
+        RS_SHM["POSIX Slabs /dev/shm IPC"]:::rustStyle
+        RS_CORE --> RS_EVM & RS_WASM & RS_PTS & RS_DEAD --> RS_SHM
+    end
+
+    subgraph C01 ["01. INGESTIÓN POLÍGLOTA & UNIVERSAL IR"]
+        direction LR
+        IN_SRC["Archivos Fuente"]:::inputStyle
+        IN_INC["Inception Parser: SQL/Regex/GraphQL"]:::inputStyle
+        IN_LANG["Kernel 15 Lenguajes"]:::inputStyle
+        IN_MCKP["Optimizador MCKP (Knapsack)"]:::inputStyle
+        IN_SLICE["Surgical Slicer PDG"]:::inputStyle
+        IN_SRC --> IN_INC & IN_LANG --> IN_MCKP --> IN_SLICE
+    end
+
+    C00 -->|Substrato Binario| C01
+
+    subgraph C02 ["02. ORQUESTADOR DAG BIFÁSICO & AFR"]
+        direction LR
+        DAG_ENG["dag_engine.py: Olas Topológicas"]:::dagStyle
+        AFR["flight_recorder.py: Auditoría SHA-256"]:::dagStyle
+        CB["health.py: Circuit Breakers & Budgets"]:::dagStyle
+        COOP["cooperative.py: Cancel Tokens"]:::dagStyle
+        DAG_ENG --> AFR & CB & COOP
+    end
+
+    C01 -->|AST & IR Unificado| C02
+
+    subgraph C03 ["03. OLA 0: 76 ANALIZADORES PARALELOS (6 FAMILIAS)"]
+        direction TB
+        subgraph F_ROW1 ["Física, Reglas & Semántica"]
+            direction LR
+            F_PHYS["Física Esotérica (16 A.)
+• holographic_black_hole (AdS/CFT Maldacena)
+• quantum_annealer (Ising QUBO P=8)
+• synthetic_lorentz_filter (Demonio Maxwell)
+• dark_matter & flow_breakage (Heisenberg)
+• griffith_calibration (Fractura Cox)"]:::waveStyle
+            F_RULE["Reglas Sistémicas (12 A.)
+• rule_panarchy_adaptive_cycle (r-K-Ω-α)
+• rule_ashby_requisite_variety (Variedad 4D)
+• rule_shannon_channel_capacity (C=B·log2)
+• rule_prigogine_dissipative (DLQ Shedding)
+• rule_cap_theorem & bulkhead_isolation"]:::waveStyle
+            F_SEM["Semántica & Refactor (14 A.)
+• seam_discovery (6 Costuras Feathers)
+• code_folding_chaperone (14 ATP GroEL)
+• refactoring_classes (LCOM4) & extract
+• purity (0 Kelvin) & dead_stores (Rutherford)"]:::waveStyle
+        end
+        subgraph F_ROW2 ["Topología, Métricas & IR"]
+            direction LR
+            F_TOP["Topología & Taint (14 A.)
+• secret_engine (Entropía Charset + Bigramas)
+• taint_learning & temporal_taint
+• api_surface & api_contract (Drift)
+• di_ast_analyzer & state_machine"]:::waveStyle
+            F_MET["Sensor Sociotécnico (10 A.)
+• fatigue_detector (Curva Wöhler Pánico)
+• bus_factor (Post-Roast Crítico)
+• churn_velocity & author_fragmentation"]:::waveStyle
+            F_IR["IR & Grafos Globales (10 A.)
+• cfg_builder & pdg_generator
+• callgraph_synthesis
+• slice_extractor SSA & ssa_form"]:::waveStyle
+        end
+        F_ROW1 --> F_ROW2
+    end
+
+    C02 -->|Despacho Multiproceso Ola 0| C03
+
+    subgraph C04 ["04. OLA 1: ANALIZADORES DE SEGUNDO ORDEN"]
+        direction LR
+        SHM_BUF["POSIX Shm Ring Buffer (Señales Acumuladas)"]:::dagStyle
+        W1_CONWAY["conway_analyzer: Brecha Sociotécnica"]:::dagStyle
+        W1_FLOWS["dangerous_flows: Taint Cruzado Inter-Procedimental"]:::dagStyle
+        SHM_BUF --> W1_CONWAY & W1_FLOWS
+    end
+
+    C03 --> SHM_BUF
+
+    subgraph C05 ["05. TENSOR DE ESTRÉS S & SISTEMA NERVIOSO (ANS)"]
+        direction LR
+        TENSOR["StressTensor: 7D x 13 Escalares"]:::tensorStyle
+        SSI["Software Stability Index SSI = 100·(1-Φ)"]:::tensorStyle
+        ANS_FAST["ANS Simpático (< 50ms)"]:::tensorStyle
+        ANS_COLD["ANS Parasimpático (Cicatrización)"]:::tensorStyle
+        CLONALG["CLONALG Inmune + MCTS MDP"]:::tensorStyle
+        TENSOR --> SSI & ANS_FAST & ANS_COLD --> CLONALG
+    end
+
+    C04 --> C05
+
+    subgraph C06 ["06. CORRELADOR BAYESIANO V3 & SÍNTESIS"]
+        direction LR
+        BELLMAN["Retículo Booleano: Bellman DP"]:::bayesStyle
+        SHAPLEY["Valores Shapley & Bouma NPMI"]:::bayesStyle
+        COLLAPSE["collapse.py: Supresión Ruido -80%"]:::bayesStyle
+        RACE["concurrency_evidence: 3 Peldaños"]:::bayesStyle
+        FIX_SYNTH["fix_synthesis: Síntesis Remediación"]:::bayesStyle
+        BELLMAN & SHAPLEY --> COLLAPSE --> RACE --> FIX_SYNTH
+    end
+
+    C05 --> C06
+
+    subgraph C07 ["07. GRAPHRAG & MEMORIA MERKLE"]
+        direction LR
+        KG["knowledge_graph.py: SQLite WAL 3404 LOC"]:::memStyle
+        MERKLE["hashing.py: Árboles Merkle α-equiv"]:::memStyle
+        NODE2VEC["topology.py: Node2Vec SGNS NumPy"]:::memStyle
+        LEIDEN["community.py: Comunidades Leiden"]:::memStyle
+        STEINER["explainability.py: Árbol Steiner"]:::memStyle
+        KG --- MERKLE & NODE2VEC & LEIDEN & STEINER
+    end
+
+    C06 --> C07
+
+    subgraph C08 ["08. COLISEO COGNITIVO & FORENSE MULTI-AGENTE"]
+        direction LR
+        TRIAD["Tríada: Purista vs Hacker vs Sintetizador"]:::colosseumStyle
+        SWARM["Enjambre 4 Auditores (Ashby/Lorentz)"]:::colosseumStyle
+        ORB["El Orbe: Streaming Ghost /ollama"]:::colosseumStyle
+        TIME["Máquina Tiempo: Commits AST"]:::colosseumStyle
+        AUTOPSY["El Forense: PromptDNA & Causal"]:::colosseumStyle
+        TRIAD --- SWARM & ORB & TIME & AUTOPSY
+    end
+
+    C07 --> C08
+
+    subgraph C09 ["09. CAPA DE SERVICIO API, PROTOCOLO MCP & CI/CD"]
+        direction LR
+        FASTAPI["FastAPI: Servidor Asíncrono WebSockets & SSE"]:::clientStyle
+        MCP["mcp_server: Servidor JSON-RPC Claude/Cursor/Gemini"]:::clientStyle
+        CLIENTS["Clientes: archangel-v7 React Cockpit · VSCode LSP · GitHub Action SARIF"]:::clientStyle
+        FASTAPI & MCP --> CLIENTS
+    end
+
+    C08 --> C09
+            </pre>
+          </div>
+
+          <!-- HUD Inspector Drawer Lateral (Se abre al hacer clic en cualquier nodo) -->
+          <aside class="diagram-hud-drawer" id="diagramHudDrawer" aria-hidden="true">
+            <div class="hud-drawer-header">
+              <div class="hud-drawer-title-group">
+                <span class="hud-chip" id="hudLayerChip">CAPA 00</span>
+                <h4 class="hud-title" id="hudNodeTitle">archangel_rs Core</h4>
+              </div>
+              <button class="hud-close-btn" id="btnHudClose" title="Cerrar panel (Esc)">✕</button>
+            </div>
+            <div class="hud-drawer-body" id="hudDrawerBody">
+              <!-- Rellenado dinámicamente con metadata, fórmulas KaTeX y telemetría -->
+            </div>
+          </aside>
+
+          <!-- Mini-Mapa Táctico Holográfico (Navegación Radar de la Altura de 3,900px) -->
+          <div class="diagram-minimap-container" id="diagramMinimap" title="Mini-mapa táctico (Haz clic para desplazarte)">
+            <div class="minimap-header">RADAR VISUAL</div>
+            <canvas id="minimapCanvas" width="130" height="220"></canvas>
+            <div class="minimap-viewport-box" id="minimapVpBox"></div>
+          </div>
+
+          <!-- Ticker de Telemetría del Simulador en Vivo -->
+          <div class="diagram-sim-ticker" id="diagramSimTicker">
+            <div class="ticker-status-indicator">
+              <span class="ticker-led"></span>
+              <span class="ticker-label">TELEMETRÍA:</span>
+            </div>
+            <div class="ticker-message" id="simTickerText">SISTEMA NOMINAL // 76 ANALIZADORES EN LÍNEA // HAZ CLIC EN CUALQUIER NODO PARA INSPECCIÓN FORENSE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Filtro de Capas -->
+      <div class="blueprint-filter-bar">
+        <button class="filter-btn active" data-filter="all">● Todas las Capas (10/10)</button>
+        <button class="filter-btn" data-filter="layer-0">Capa 00: Rust Zero-GIL</button>
+        <button class="filter-btn" data-filter="layer-1">Capa 01: Ingesta &amp; IR</button>
+        <button class="filter-btn" data-filter="layer-2">Capa 02: Orquestador DAG &amp; AFR</button>
+        <button class="filter-btn" data-filter="layer-3">Capa 03: 78 Analizadores</button>
+        <button class="filter-btn" data-filter="layer-4">Capa 04: Tensor $\mathcal{S}$ &amp; ANS</button>
+        <button class="filter-btn" data-filter="layer-5">Capa 05: Correlador Bayesiano</button>
+        <button class="filter-btn" data-filter="layer-6">Capa 06: GraphRAG &amp; Merkle</button>
+        <button class="filter-btn" data-filter="layer-7">Capa 07: Coliseo Cognitivo</button>
+        <button class="filter-btn" data-filter="layer-8">Capa 08: Sensor Sociotécnico</button>
+        <button class="filter-btn" data-filter="layer-9">Capa 09: Interfaces &amp; MCP</button>
+      </div>
+
+      <!-- Cuadrícula de las 10 Capas del Diagrama Maestro -->
+      <div class="layers-schematic-grid" id="layersSchematicGrid">
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 00: NÚCLEO NATIVO RUST ZERO-GIL & MÁQUINAS VIRTUALES
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-0">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip emerald">CAPA 00 // NATIVO RUST</span>
+              <h3 class="layer-title-text">Sustrato Nativo Zero-GIL &amp; Motores Virtuales</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">LÍNEAS RUST: <strong>31,666 LOC</strong></span>
+              <span class="layer-badge-item">LATENCIA: <strong>&lt; 8.2ms</strong></span>
+              <span class="layer-badge-item">MEMORIA: <strong>POSIX Slabs Zero-Copy</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Capa de hardware y aceleración nativa compilada sin recolector de basura ni contención del Global Interpreter Lock (GIL). Ejecuta análisis de alias de memoria, inspección de bytecode de contratos inteligentes y detección de bloqueos mutuos mediante grafos de adquisición de cerrojos.
+            </p>
+            <div class="modules-subgrid">
+              
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel_rs::evm</span>
+                  <span class="module-brick-role">EVM SWC VERIFIER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Desensamblador y simulador de pila abstracta para bytecode EVM. Detecta vulnerabilidades críticas SWC-107 (Reentrancy), SWC-115 (tx.origin) y SWC-104 (unchecked calls) sin solvers SMT pesados.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel_rs/src/evm.rs</span>
+                  <span class="formula-pill">$\mathcal{O}(N)$ Pila Abstracta</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel_rs::wasm</span>
+                  <span class="module-brick-role">COSMWASM AUDITOR</span>
+                </div>
+                <p class="module-brick-desc">
+                  Parser de binarios WebAssembly. Verifica barreras de acceso a storage y llamadas directas en tablas de despacho de elementos en contratos CosmWasm de ecosistemas Cosmos.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel_rs/src/wasm.rs</span>
+                  <span class="formula-pill">Wasm Table Elements</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel_rs::race_pts</span>
+                  <span class="module-brick-role">ANDERSEN POINTS-TO</span>
+                </div>
+                <p class="module-brick-desc">
+                  Análisis de puntos-a field-sensitive de 1 objeto implementado en Rust puro. Reconstruye el grafo de adquisición de cerrojos y halla ciclos de interbloqueo (*deadlocks*) en tiempo lineal.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel_rs/src/race_pts.rs</span>
+                  <span class="formula-pill">Andersen Field-Sens.</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">shm::slab_allocator</span>
+                  <span class="module-brick-role">POSIX ZERO-COPY IPC</span>
+                </div>
+                <p class="module-brick-desc">
+                  Buffers anulares mapeados en memoria compartida (<code style="color:#00ff88;">/dev/shm</code>). Transfiere millones de nodos AST e índices topológicos entre el motor Rust y el daemon Python sin serialización JSON.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel_rs/src/summary.rs</span>
+                  <span class="formula-pill">Zero-Copy Transfer</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 01: INGESTA POLÍGLOTA, IR UNIVERSAL & MCKP KNAPSACK
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-1">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip cyan">CAPA 01 // PARSING &amp; IR</span>
+              <h3 class="layer-title-text">Ingesta Políglota, Inception Parser &amp; Optimización MCKP</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">LENGUAJES: <strong>15 Políglotas</strong></span>
+              <span class="layer-badge-item">CONTRACCIÓN: <strong>Backward PDG Slicing</strong></span>
+              <span class="layer-badge-item">PRESUPUESTO: <strong>MCKP Dynamic Prog.</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Normaliza heterogeneidad de sintaxis mediante un Árbol de Sintaxis Intermedio (IR Universal). Resuelve el empaquetado óptimo de contexto para no saturar las ventanas de inferencia de modelos locales.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">inception_parser.py</span>
+                  <span class="module-brick-role">MULTI-LANG EMBEDDED</span>
+                </div>
+                <p class="module-brick-desc">
+                  Detecta y analiza sintaxis anidada dentro de literales de cadena: consultas SQL dentro de repositorios Python, expresiones regulares complejas en TypeScript, fragmentos GraphQL en Rust y plantillas HTML/CSS en JS.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/ir/inception_parser.py</span>
+                  <span class="formula-pill">Nested Grammar AST</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">mckp_solver.py</span>
+                  <span class="module-brick-role">KNAPSACK OPTIMIZER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Resuelve el Problema de la Mochila de Elección Múltiple (MCKP) mediante programación dinámica. Maximiza la densidad de información arquitectónica empacada respetando el presupuesto exacto de tokens del LLM local.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/ir/mckp_solver.py</span>
+                  <span class="formula-pill">$\max \sum v_{ij} x_{ij} \text{ s.t. } \sum w_{ij} x_{ij} \le W$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">surgical_slicer.py</span>
+                  <span class="module-brick-role">PDG BACKWARD SLICE</span>
+                </div>
+                <p class="module-brick-desc">
+                  Calcula el slice hacia atrás sobre el Grafo de Dependencia de Programas (PDG). Extrae únicamente las declaraciones que afectan la variable o defecto bajo análisis, suprimiendo el 90% de código irrelevante.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/ir/surgical_slicer.py</span>
+                  <span class="formula-pill">$\text{Slice}(v, n) \subseteq \text{PDG}$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">lang_parser_ultimate.py</span>
+                  <span class="module-brick-role">POLYGLOT KERNEL</span>
+                </div>
+                <p class="module-brick-desc">
+                  Extracción estructural uniforme para 15 lenguajes: mapeo de interfaces, firmas de tipos, jerarquías de herencia y grafos de llamadas normalizados.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/parsers/lang_parser_ultimate.py</span>
+                  <span class="formula-pill">15 Polyglot Grammars</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 02: ORQUESTADOR DAG BIFÁSICO & AFR
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-2">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip amber">CAPA 02 // ORQUESTADOR</span>
+              <h3 class="layer-title-text">Motor DAG Bifásico, Archangel Flight Recorder (AFR) &amp; Circuit Breakers</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">ESTRUCTURA: <strong>2 Olas de Ejecución</strong></span>
+              <span class="layer-badge-item">OLA 0: <strong>76 Analizadores Paralelos</strong></span>
+              <span class="layer-badge-item">OLA 1: <strong>2 Analizadores Dependientes</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Planifica la ejecución en paralelo de los 78 analizadores basándose en dependencias declarativas en tiempo de compilación. Aísla fallos de módulos inestables y garantiza la reproducibilidad determinista de cada corrida mediante auditoría criptográfica.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">dag_engine.py</span>
+                  <span class="module-brick-role">WAVE DISPATCHER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Ordenamiento topológico de grafos de dependencias. <strong>Ola 0</strong> corre 76 analizadores en paralelo explotando todos los núcleos CPU. Al sincronizar, <strong>Ola 1</strong> ejecuta <code style="color:#ffaa00;">conway</code> y <code style="color:#ffaa00;">dangerous_flows</code> que consumen los resultados acumulados.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/registry/dag_engine.py</span>
+                  <span class="formula-pill">Topological Waves DAG</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">flight_recorder.py</span>
+                  <span class="module-brick-role">AFR CRYPTO AUDIT</span>
+                </div>
+                <p class="module-brick-desc">
+                  Caja negra de ejecución. Captura cada evento, micro-latencia, snapshot de AST y señal emitida. Aplica hashes SHA-256 en cadena para auditoría forense y repetición determinista.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/registry/flight_recorder.py</span>
+                  <span class="formula-pill">SHA-256 Audit Trail</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">health.py</span>
+                  <span class="module-brick-role">CIRCUIT BREAKER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Patrón interruptor con presupuestos de fallo decrecientes. Si un analizador entra en bucle infinito o genera excepciones reiteradas, se aísla sin comprometer el pipeline global.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/registry/health.py</span>
+                  <span class="formula-pill">Failure Budget Threshold</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">cooperative.py</span>
+                  <span class="module-brick-role">ASYNC CANCEL TOKENS</span>
+                </div>
+                <p class="module-brick-desc">
+                  Multitarea cooperativa con tokens de cancelación propagados a través del EventBus. Permite abortar análisis obsoletos en milisegundos cuando el desarrollador guarda una nueva modificación.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/registry/cooperative.py</span>
+                  <span class="formula-pill">Cooperative Preemption</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 03: LOS 78 ANALIZADORES ESPECIALIZADOS
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-3">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip violet">CAPA 03 // ANALIZADORES</span>
+              <h3 class="layer-title-text">Constelación de los 78 Analizadores Especializados (6 Familias)</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">TOTAL REGISTRADOS: <strong>78 Analizadores</strong></span>
+              <span class="layer-badge-item">FAMILIAS: <strong>6 Ejes Teóricos</strong></span>
+              <span class="layer-badge-item">COBERTURA: <strong>Física, AST, Semántica, Redes</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Cada analizador es un sensor autónomo que modela una ley natural o principio formal. Se dividen en 6 familias que evalúan desde la entropía termodinámica hasta contratos implícitos y filtraciones de secretos en tiempo real.
+            </p>
+
+            <!-- Directorio Completo de Familias y Analizadores -->
+            <div class="analyzers-families-grid">
+
+              <!-- Familia 1: Física (16) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#00f0ff;">1. Física Esotérica &amp; Termodinámica</span>
+                  <span style="font-size:0.7rem; color:#789;">16 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip" title="Maldacena AdS/CFT Bekenstein-Hawking bound">holographic_black_hole</span>
+                  <span class="analyzer-chip" title="Ising QUBO Trotter-Suzuki P=8">quantum_annealer</span>
+                  <span class="analyzer-chip" title="Filtro de 8 leyes físicas y túnel cuántico">synthetic_lorentz_filter</span>
+                  <span class="analyzer-chip" title="Atracción gravitatoria de código no referenciado">dark_matter</span>
+                  <span class="analyzer-chip" title="Índice de Deuda de Heisenberg dx*dp >= hbar/2">flow_breakage</span>
+                  <span class="analyzer-chip" title="Fractura de Griffith con calibración Cox">griffith_calibration</span>
+                  <span class="analyzer-chip" title="Peligros de asincronía y corrutinas">async_hazards</span>
+                  <span class="analyzer-chip" title="Riesgo de recursión desbordante">recursion_risk</span>
+                  <span class="analyzer-chip" title="Fugas de alcance léxico">scope_leaks</span>
+                  <span class="analyzer-chip" title="Fugas de descriptores y sockets">resource_leaks</span>
+                  <span class="analyzer-chip" title="Ligaduras de llamadas y self bind">callbind</span>
+                  <span class="analyzer-chip" title="Resolutor de dependencias cruzadas">cross_module_resolver</span>
+                  <span class="analyzer-chip" title="Complejidad ciclomática McCabe">cyclomatic_complexity</span>
+                  <span class="analyzer-chip" title="Peso cognitivo de control">cognitive_weight</span>
+                  <span class="analyzer-chip" title="Entropía léxica de Halstead">halstead_entropy</span>
+                  <span class="analyzer-chip" title="Índice de mantenibilidad normalizado">maintainability_index</span>
+                </div>
+              </div>
+
+              <!-- Familia 2: Reglas Sistémicas & Cibernética (12) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#ffaa00;">2. Reglas Sistémicas &amp; Cibernética</span>
+                  <span style="font-size:0.7rem; color:#789;">12 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip" title="Ciclo r-K-Omega-alpha de Holling y contagio SIR">rule_panarchy_adaptive_cycle</span>
+                  <span class="analyzer-chip" title="Ley de Variedad Requisita de Ashby V=(S,B,T,Sem)">rule_ashby_requisite_variety</span>
+                  <span class="analyzer-chip" title="Teorema Shannon-Hartley C=B*log2(1+S/N)">rule_shannon_channel_capacity</span>
+                  <span class="analyzer-chip" title="Estructuras disipativas fuera de equilibrio de Prigogine">rule_prigogine_dissipative_structures</span>
+                  <span class="analyzer-chip" title="Clasificador AST Teorema CAP (CP vs AP)">rule_cap_theorem</span>
+                  <span class="analyzer-chip" title="Percolación de Molloy-Reed y tabiques bulkhead">rule_bulkhead_isolation</span>
+                  <span class="analyzer-chip" title="Ley de Hyrum de contratos observables">rule_hyrum_contracts</span>
+                  <span class="analyzer-chip" title="Las 8 Falacias de Peter Deutsch">rule_network_fallacies</span>
+                  <span class="analyzer-chip" title="Principio de Robustez de Postel">rule_postel_robustness</span>
+                  <span class="analyzer-chip" title="Cancelación catastrófica y número de condición">rule_numerical_stability</span>
+                  <span class="analyzer-chip" title="Abstracciones con fugas de Spolsky">rule_leaky_abstractions</span>
+                  <span class="analyzer-chip" title="Violación de duplicación DRY">rule_dry_violation</span>
+                </div>
+              </div>
+
+              <!-- Familia 3: Semántica & Refactorización (14) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#00ff88;">3. Semántica &amp; Refactorización</span>
+                  <span style="font-size:0.7rem; color:#789;">14 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip" title="Detección de 6 costuras de Michael Feathers">seam_discovery</span>
+                  <span class="analyzer-chip" title="Chaperón Anfinsen GroEL/GroES 14 ATP">code_folding_chaperone</span>
+                  <span class="analyzer-chip" title="Bisección espectral LCOM4 de God Objects">refactoring_classes</span>
+                  <span class="analyzer-chip" title="Análisis live-in / live-out para extracción">refactoring_extract</span>
+                  <span class="analyzer-chip" title="Ranking con función de activación sigmoide tau">refactoring_rank</span>
+                  <span class="analyzer-chip" title="Motor central de orquestación de parches">refactoring_engine</span>
+                  <span class="analyzer-chip" title="Escaneo léxico de oportunidades de refactor">refactoring_scanner</span>
+                  <span class="analyzer-chip" title="Métricas acopladas a transformaciones">refactoring_metrics</span>
+                  <span class="analyzer-chip" title="Modelo de grafo de refactorización">refactoring_model</span>
+                  <span class="analyzer-chip" title="Pureza funcional a 0 Kelvin (Delta S = 0)">purity</span>
+                  <span class="analyzer-chip" title="Decaimiento radioactivo de Rutherford N=N0*e^(-lt)">dead_stores</span>
+                  <span class="analyzer-chip" title="Invariantes de bucles y pre/post-condiciones">invariants</span>
+                  <span class="analyzer-chip" title="Reconocimiento de intención semántica en AST">intent_recognition</span>
+                  <span class="analyzer-chip" title="Diferenciador semántico no superficial">semantic_diff</span>
+                </div>
+              </div>
+
+              <!-- Familia 4: Topología & Taint Analysis (14) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#b845ff;">4. Topología &amp; Taint Analysis</span>
+                  <span style="font-size:0.7rem; color:#789;">14 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip" title="Entropía de Shannon ponderada por charset">secret_engine::entropy</span>
+                  <span class="analyzer-chip" title="Transición de bigramas para falsos positivos">secret_engine::bigram</span>
+                  <span class="analyzer-chip" title="Ciclo de vida Git de credenciales expuestas">secret_engine::lifecycle</span>
+                  <span class="analyzer-chip" title="Detectores específicos de proveedores (AWS/GCP/SSH)">secret_engine::detector</span>
+                  <span class="analyzer-chip" title="Taint analysis con aprendizaje de fuentes">taint_learning</span>
+                  <span class="analyzer-chip" title="Propagación temporal de manchas de datos">taint_temporal</span>
+                  <span class="analyzer-chip" title="Símbolos tainted y sanitizadores">taint_symbols</span>
+                  <span class="analyzer-chip" title="Superficie expuesta de API">api_surface</span>
+                  <span class="analyzer-chip" title="Deriva de contrato de interfaces">api_contract</span>
+                  <span class="analyzer-chip" title="Inyección de dependencias en AST">di_ast_analyzer</span>
+                  <span class="analyzer-chip" title="Escaneo regex complementario de DI">di_regex_scanner</span>
+                  <span class="analyzer-chip" title="Máquinas de estados finitos y transiciones ilegales">state_machine</span>
+                  <span class="analyzer-chip" title="Dependencias circulares complejas">circular_deps</span>
+                  <span class="analyzer-chip" title="Registro dinámico de módulos">dynamic_registration</span>
+                </div>
+              </div>
+
+              <!-- Familia 5: Métricas & Sociotécnico (12) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#ff3366;">5. Sensor Sociotécnico &amp; Git</span>
+                  <span style="font-size:0.7rem; color:#789;">12 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip wave1" title="OLA 1: Brecha de Conway entre software y humanos">conway_analyzer [Ola 1]</span>
+                  <span class="analyzer-chip" title="Fatiga de material Wöhler por pánico de commits">fatigue_detector</span>
+                  <span class="analyzer-chip" title="Cálculo post-roast de redundancia crítica">bus_factor</span>
+                  <span class="analyzer-chip" title="Huella estilística y pureza idiomática">idiomatic_purity</span>
+                  <span class="analyzer-chip" title="Router predictivo de actividad Git">git_activity</span>
+                  <span class="analyzer-chip" title="Velocidad y volatilidad de churn">churn_velocity</span>
+                  <span class="analyzer-chip" title="Fragmentación de autoría por archivo">author_fragmentation</span>
+                  <span class="analyzer-chip" title="Propiedad territorial de código">code_ownership</span>
+                  <span class="analyzer-chip" title="Ráfagas anómalas de commits en sprint">commit_bursts</span>
+                  <span class="analyzer-chip" title="Antigüedad y degradación de PRs">pr_staleness</span>
+                  <span class="analyzer-chip" title="Cobertura real de revisiones cruzadas">review_coverage</span>
+                  <span class="analyzer-chip" title="Latencia humana de aprobación">review_latency</span>
+                </div>
+              </div>
+
+              <!-- Familia 6: IR & Flujos Peligrosos (10) -->
+              <div class="family-box">
+                <div class="family-title">
+                  <span style="color:#3ddad7;">6. IR Universal &amp; Flujos Globales</span>
+                  <span style="font-size:0.7rem; color:#789;">10 MÓDULOS</span>
+                </div>
+                <div class="analyzer-chips-wrap">
+                  <span class="analyzer-chip wave1" title="OLA 1: Flujos inter-procedimentales tainted">dangerous_flows [Ola 1]</span>
+                  <span class="analyzer-chip" title="Constructor de grafos de flujo de control (CFG)">cfg_builder</span>
+                  <span class="analyzer-chip" title="Generador de grafo de dependencia de programas (PDG)">pdg_generator</span>
+                  <span class="analyzer-chip" title="Síntesis de grafo de llamadas inter-módulo">callgraph_synthesis</span>
+                  <span class="analyzer-chip" title="Extractor de slices ejecutables mínimos">slice_extractor</span>
+                  <span class="analyzer-chip" title="Forma estática de asignación única (SSA)">ssa_form</span>
+                  <span class="analyzer-chip" title="Conjuntos de alias de punteros">alias_sets</span>
+                  <span class="analyzer-chip" title="Árbol de dominancia y posdominancia">dominance_tree</span>
+                  <span class="analyzer-chip" title="Índice compartido y cache de AST">ast_index</span>
+                  <span class="analyzer-chip" title="Tabla de símbolos canonicalizada">symbol_table</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 04: TENSOR DE ESTRÉS DINÁMICO & SISTEMA NERVIOSO (ANS)
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-4">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip cyan">CAPA 04 // TENSOR &amp; ANS</span>
+              <h3 class="layer-title-text">Tensor de Estrés Dinámico $\mathcal{S}$ &amp; Sistema Nervioso Autónomo</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">DIMENSIONES: <strong>$\mathcal{S} \in \mathbb{R}^{7 \times 13}$</strong></span>
+              <span class="layer-badge-item">HOMEOSTASIS: <strong>Controlador PID</strong></span>
+              <span class="layer-badge-item">INMUNOLOGÍA: <strong>Algoritmo CLONALG</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Fusiona las señales de los 78 analizadores en un tensor dinámico de 7 dimensiones de riesgo. Gobierna la respuesta rápida de defensa (ANS Simpático) y la autorreparación silenciosa en frío (ANS Parasimpático) mediante búsqueda en árbol Monte Carlo (MCTS).
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">unified_risk.py</span>
+                  <span class="module-brick-role">STRESS TENSOR $\mathcal{S}$</span>
+                </div>
+                <p class="module-brick-desc">
+                  Mapea 7 dimensiones ortogonales: Volumen, Acoplamiento, Riesgo Dinámico, Puntos Únicos de Falla (SPOF), Carga Cognitiva, Deuda Sociotécnica y Resiliencia. Colapsa en el Software Stability Index ($\text{SSI}$).
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/engine/unified_risk.py</span>
+                  <span class="formula-pill">$\text{SSI} = 100(1 - \Phi_{\text{total}})$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">ans_sympathetic.py</span>
+                  <span class="module-brick-role">FAST DEFENSE REFLEX</span>
+                </div>
+                <p class="module-brick-desc">
+                  Monitoreo de alta frecuencia. Si un commit dispara el exponente de Lyapunov o genera una ruptura de canal de Shannon, activa alertas inmediatas y bloquea la promoción en el pipeline de CI.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/actions/autonomic_nervous_system/</span>
+                  <span class="formula-pill">Latencia &lt; 50ms</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">ans_parasympathetic.py</span>
+                  <span class="module-brick-role">COLD HEALING &amp; CLONALG</span>
+                </div>
+                <p class="module-brick-desc">
+                  Cicatrización en frío fuera de horario de producción. Aplica selección clonal (CLONALG) para generar mutaciones de parche candidatas, evalúa su afinidad biológica y ejecuta refactors en worktrees aislados.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/actions/autonomic_nervous_system/_mcts_planner.py</span>
+                  <span class="formula-pill">MCTS + Bellman MDP</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">persistent_topology.py</span>
+                  <span class="module-brick-role">TDA HOMOLOGY</span>
+                </div>
+                <p class="module-brick-desc">
+                  Análisis Topológico de Datos (TDA) aplicado al grafo de llamadas. Calcula números de Betti ($\beta_0, \beta_1$) para detectar cavidades arquitectónicas y túneles de acoplamiento ocultos.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/actions/autonomic_nervous_system/_persistent_topology.py</span>
+                  <span class="formula-pill">Betti Numbers $\beta_k$</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 05: CORRELADOR BAYESIANO V3 & SÍNTESIS
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-5">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip amber">CAPA 05 // CORRELADOR</span>
+              <h3 class="layer-title-text">Correlador Bayesiano V3 &amp; Colapso de Señales Redundantes</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">RESOLUCIÓN: <strong>Retículo $\{0,1\}^k$ Exacto</strong></span>
+              <span class="layer-badge-item">ATRIBUCIÓN: <strong>Valores Shapley</strong></span>
+              <span class="layer-badge-item">SUPRESIÓN DE RUIDO: <strong>-80% Falsos Positivos</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Transforma una lista desarticulada de advertencias en un diagnóstico arquitectónico unificado. Aplica correlación no lineal de Pearson y Bouma para colapsar alertas repetidas en causas raíz accionables.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">confidence.py</span>
+                  <span class="module-brick-role">EXACT BELLMAN DP</span>
+                </div>
+                <p class="module-brick-desc">
+                  Calcula la verosimilitud posterior sobre el retículo booleano de señales $\{0,1\}^k$. Asigna valores de Shapley a cada analizador para determinar qué sensor aporta evidencia irreemplazable.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/correlator/confidence.py</span>
+                  <span class="formula-pill">$\phi_i(v) = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|!(|N|-|S|-1)!}{|N|!} [v(S \cup \{i\}) - v(S)]$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">collapse.py</span>
+                  <span class="module-brick-role">SIGNAL CLUSTERER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Agrupa decenas de warnings provenientes de un mismo flujo o estructura en un único incidente cohesivo. Previene la fatiga de alertas colapsando señales con alta información mutua (NPMI).
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/correlator/collapse.py</span>
+                  <span class="formula-pill">$\text{NPMI}(x, y) = \frac{\ln \frac{P(x,y)}{P(x)P(y)}}{-\ln P(x,y)}$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">concurrency_evidence.py</span>
+                  <span class="module-brick-role">RACE LADDER VERIFIER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Escalera de verificación de 3 pasos: Estado Compartido $\to$ Acceso Multi-Actor $\to$ Ausencia de Barrera de Sincronización. Filtra advertencias de concurrencia que operan sobre memoria inmutable o thread-local.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/correlator/concurrency_evidence.py</span>
+                  <span class="formula-pill">3-Tier Race Guard</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">asset_role.py</span>
+                  <span class="module-brick-role">SEVERITY DAMPENER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Clasifica el rol del archivo (producción, tests, mocks, scripts de migración). Atenúa la severidad máxima a <code style="color:#ffaa00;">REFACTOR</code> en suites de prueba para nunca generar falsas emergencias.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/correlator/asset_role.py</span>
+                  <span class="formula-pill">Role Dynamic Discounting</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 06: MEMORIA MERKLE, GRAPHRAG & KNOWLEDGE GRAPH
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-6">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip emerald">CAPA 06 // GRAPHRAG</span>
+              <h3 class="layer-title-text">Memoria Semántica Merkle, GraphRAG &amp; Detección Comunitaria Leiden</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">BASE DE DATOS: <strong>SQLite WAL Multi-Reader (3,404 LOC)</strong></span>
+              <span class="layer-badge-item">EMBEDDINGS: <strong>NumPy Node2Vec SGNS</strong></span>
+              <span class="layer-badge-item">COMUNIDADES: <strong>Leiden &amp; Louvain</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Base de conocimiento hiperconectada que indexa relaciones léxicas, topológicas y semánticas. Utiliza árboles Merkle semánticos invariantes a renombrados y detección jerárquica de comunidades para navegación contextual sin pérdidas.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">knowledge_graph.py</span>
+                  <span class="module-brick-role">GRAPH STORAGE WAL</span>
+                </div>
+                <p class="module-brick-desc">
+                  Motor de grafos nativo sobre SQLite WAL. Ofrece DSL fluido tipo Gremlin (<code style="color:#00ff88;">g.V().has().outE()</code>), cálculo de caminos mínimos, corte mínimo de Edmonds-Karp y propagación probabilística Noisy-OR.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/memory/knowledge_graph.py</span>
+                  <span class="formula-pill">3,404 LOC // WAL Multi-Reader</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">hashing.py</span>
+                  <span class="module-brick-role">SEMANTIC MERKLE TREE</span>
+                </div>
+                <p class="module-brick-desc">
+                  Árboles Merkle Semánticos con normalización de identificadores ($\alpha$-equivalencia $v_0, v_1, \dots$). Genera hashes idénticos ante cambios de formato, comentarios o renombrado cosmético de variables.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/memory/hashing.py</span>
+                  <span class="formula-pill">$\alpha\text{-equivalent Merkle Hash}$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">topology.py</span>
+                  <span class="module-brick-role">NUMPY NODE2VEC</span>
+                </div>
+                <p class="module-brick-desc">
+                  Cálculo de embeddings topológicos mediante paseos aleatorios de segundo orden y Skip-Gram con Muestreo Negativo (SGNS), programado exclusivamente con NumPy sin requerir PyTorch ni DGL.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/memory/graph_rag/topology.py</span>
+                  <span class="formula-pill">Node2Vec SGNS $\mathcal{O}(V \log V)$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">community.py</span>
+                  <span class="module-brick-role">LEIDEN MACRO-CHUNKS</span>
+                </div>
+                <p class="module-brick-desc">
+                  Segmentación del repositorio en clusters arquitectónicos de alta modularidad. Genera resúmenes macroscópicos del sistema que alimentan la recuperación híbrida BM25 + Dense vector search.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/memory/graph_rag/community.py</span>
+                  <span class="formula-pill">Leiden Modularity Optimization</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 07: COLISEO COGNITIVO MULTI-AGENTE & ORBE
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-7">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip violet">CAPA 07 // COLISEO</span>
+              <h3 class="layer-title-text">Coliseo Cognitivo Multi-Agente, El Orbe &amp; Memoria Genética</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">DEBATE: <strong>Tríada Dialéctica (3 Roles)</strong></span>
+              <span class="layer-badge-item">ENJAMBRE: <strong>4 Auditores Físicos</strong></span>
+              <span class="layer-badge-item">STREAMING: <strong>SSE /ollama/ghost en vivo</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Ecosistema de agentes especializados que debaten las propuestas de refactorización y los riesgos detectados. Un enjambre de auditores físicos somete cada hipótesis a escrutinio estricto para impedir alucinaciones y sesgos.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">chat_debate.py</span>
+                  <span class="module-brick-role">EL COLISEO DIALÉCTICO</span>
+                </div>
+                <p class="module-brick-desc">
+                  Tríada adversarial: el <strong>Purista</strong> defiende invariantes formales, el <strong>Hacker</strong> busca atajos pragmáticos y vectores de ruptura, y el <strong>Sintetizador</strong> media el consenso respaldado por los auditores Ashby, Chandrasekhar y Lorentz.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/engine/chat_debate.py</span>
+                  <span class="formula-pill">Dialectic Multi-Agent Triad</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">chat_ghost_mode.py</span>
+                  <span class="module-brick-role">EL ORBE REACTIVO</span>
+                </div>
+                <p class="module-brick-desc">
+                  Canal de Server-Sent Events (SSE) asíncrono y thread-safe hacia el modelo local Ollama. Proyecta las deliberaciones internas de los agentes en tiempo real sin bloquear la interfaz del usuario.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/engine/chat_ghost_mode.py</span>
+                  <span class="formula-pill">SSE Threadsafe Streaming</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">chat_shadow_replay.py</span>
+                  <span class="module-brick-role">EL ESCÉPTICO</span>
+                </div>
+                <p class="module-brick-desc">
+                  Auditor de sesgo de supervivencia. Simula escenarios contrafactuales: "¿Qué habría pasado si este refactor se aplicaba hace 6 meses?" para validar la solidez temporal de la propuesta.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/engine/chat_shadow_replay.py</span>
+                  <span class="formula-pill">Counterfactual Simulation</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">chat_genetic_memory.py</span>
+                  <span class="module-brick-role">MEMORIA GENÉTICA</span>
+                </div>
+                <p class="module-brick-desc">
+                  Generador de anticuerpos en PromptDNA. Almacena las correcciones y lecciones aprendidas de auditorías previas para inyectarlas automáticamente en las ventanas de contexto de futuras sesiones.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/engine/chat_genetic_memory.py</span>
+                  <span class="formula-pill">PromptDNA Antibody Injection</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 08: SENSOR SOCIOTÉCNICO & FORENSE GIT
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-8">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip crimson">CAPA 08 // SOCIOTÉCNICO</span>
+              <h3 class="layer-title-text">Sensor Sociotécnico, Curva de Ebbinghaus &amp; Ley de Conway</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">TELEMETRÍA: <strong>1,938 LOC Git Forensics</strong></span>
+              <span class="layer-badge-item">CONWAY GAP: <strong>Fricción Estructura vs Equipos</strong></span>
+              <span class="layer-badge-item">FATIGA: <strong>Curva S-N de Wöhler</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Trata el historial de control de versiones como un sensor sismológico. Mide el decaimiento de conocimiento de los desarrolladores con el tiempo y detecta fracturas organizacionales antes de que se manifiesten como fallos en producción.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">git_utils.py</span>
+                  <span class="module-brick-role">EBBINGHAUS DECAY</span>
+                </div>
+                <p class="module-brick-desc">
+                  Modela la retención del conocimiento sobre un archivo según la ley de decaimiento radiactivo de Ebbinghaus con vida media de 12 meses. Identifica módulos huérfanos cuyo autor original ha perdido familiaridad.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/utils/git_utils.py</span>
+                  <span class="formula-pill">$K(t) = e^{-\lambda t} \quad (T_{1/2} = 12 \text{ meses})$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">conway_analyzer.py</span>
+                  <span class="module-brick-role">CONWAY GAP ANALYZER</span>
+                </div>
+                <p class="module-brick-desc">
+                  Cruza el grafo de llamadas del software con la red de comunicación de los equipos humanos. Detecta la "Brecha de Conway": módulos altamente acoplados desarrollados por equipos sin interacción directa.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/metrics/conway_analyzer.py</span>
+                  <span class="formula-pill">$\text{Gap} = \frac{1}{1 + \text{social\_weight}}$</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">fatigue_detector.py</span>
+                  <span class="module-brick-role">WÖHLER S-N FATIGUE</span>
+                </div>
+                <p class="module-brick-desc">
+                  Aplica la curva S-N de fatiga de materiales de Wöhler. Registra ráfagas de pánico ($\ge 5$ commits en 3 días, commits de madrugada) que incrementan la probabilidad exponencial de inyección de defectos CWE-710.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/analyzers/metrics/fatigue_detector.py</span>
+                  <span class="formula-pill">Wöhler Stress Cycles</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">bus_trace.py</span>
+                  <span class="module-brick-role">LAMPORT LOGICAL CLOCK</span>
+                </div>
+                <p class="module-brick-desc">
+                  Asigna marcas temporales lógicas de Lamport a cada evento del EventBus. Garantiza orden causal estricto para la propagación de metadatos de análisis distribuido sin sincronización centralizada.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/utils/trace_context.py</span>
+                  <span class="formula-pill">$C(e) &lt; C(e') \implies e \to e'$</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ───────────────────────────────────────────────────────
+             CAPA 09: INTERFACES, SERVING & CI/CD ACTIONS
+             ─────────────────────────────────────────────────────── -->
+        <article class="schematic-layer-block" data-layer="layer-9">
+          <div class="layer-header-bar">
+            <div class="layer-tag-group">
+              <span class="layer-id-chip cyan">CAPA 09 // SERVING &amp; MCP</span>
+              <h3 class="layer-title-text">Capa de Servicio API, Protocolo MCP, Extensión VSCode &amp; CI/CD</h3>
+            </div>
+            <div class="layer-meta-badges">
+              <span class="layer-badge-item">SERVER: <strong>FastAPI Asíncrono</strong></span>
+              <span class="layer-badge-item">PROTOCOL: <strong>Model Context Protocol (MCP)</strong></span>
+              <span class="layer-badge-item">CI/CD: <strong>GitHub Action SARIF</strong></span>
+            </div>
+          </div>
+          <div class="layer-body-content">
+            <p class="layer-lead-desc">
+              Puntos de contacto e interacción para humanos y agentes de inteligencia artificial. Expone herramientas estandarizadas mediante el protocolo MCP para Claude Desktop, Cursor y Gemini, mientras automatiza auditorías en pipelines de integración continua.
+            </p>
+            <div class="modules-subgrid">
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">mcp_server.py</span>
+                  <span class="module-brick-role">MODEL CONTEXT PROTOCOL</span>
+                </div>
+                <p class="module-brick-desc">
+                  Servidor JSON-RPC compatible con el estándar MCP. Expone las capacidades de ARCHANGEL (consulta de grafo, diagnóstico de tensor, rebanado de código) como herramientas directas a LLMs de desarrollo.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">core/api/mcp/</span>
+                  <span class="formula-pill">MCP JSON-RPC Tools</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel-v7</span>
+                  <span class="module-brick-role">REACT CYBER COCKPIT</span>
+                </div>
+                <p class="module-brick-desc">
+                  Interfaz web de usuario en React y Vite. Renderiza el panel de telemetría de latencia en milisegundos, visualizadores 3D de topología y radares de tensión estructural en tiempo real.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel-v7/src/</span>
+                  <span class="formula-pill">WebSocket Live Streaming</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel-vscode</span>
+                  <span class="module-brick-role">LSP IDE EXTENSION</span>
+                </div>
+                <p class="module-brick-desc">
+                  Extensión oficial para Visual Studio Code. Conecta con el daemon local para ofrecer diagnósticos sobre el código (*inline squiggles*), explicaciones de fracturas y comandos de refactorización en un clic.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel-vscode/src/</span>
+                  <span class="formula-pill">LSP Diagnostic Provider</span>
+                </div>
+              </div>
+
+              <div class="module-brick">
+                <div class="module-brick-header">
+                  <span class="module-brick-name">archangel-action</span>
+                  <span class="module-brick-role">GITHUB CI/CD GATEWAY</span>
+                </div>
+                <p class="module-brick-desc">
+                  Acción de GitHub que corre en cada Pull Request. Exporta hallazgos en formato SARIF estándar, bloquea fusiones que degraden el SSI por debajo del umbral de tolerancia y comenta planes de remediación automáticos.
+                </p>
+                <div class="module-brick-meta">
+                  <span class="file-pill">archangel-action/action.yml</span>
+                  <span class="formula-pill">SARIF Export &amp; PR Blocking</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECCIÓN CIENTÍFICA: FORMULACIÓN MATEMÁTICA Y FUNDAMENTOS
+       ══════════════════════════════════════════════════════════════ -->
+  <section class="proj-block" style="background:#030508; border-top:1px solid var(--border-glow); padding: 3rem 1.5rem;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <p class="section-label" style="font-family:var(--font-mono); color:var(--cyan-laser); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;">
+        SÍNTESIS CIENTÍFICA // ANÁLISIS NO-RUIDOSO
+      </p>
+      <h2 style="font-size:2rem; color:#fff; margin:0.4rem 0 1rem 0; font-family:var(--font-sans);">
+        ¿Por qué modelar el software como un sistema físico y cibernético?
+      </h2>
+      <p style="color:#9ab0c4; font-size:1.05rem; line-height:1.65; max-width:850px; margin-bottom:2rem;">
+        Las herramientas tradicionales de análisis estático acumulan reglas heurísticas inconexas que producen miles de falsos positivos y fatiga de alertas. ARCHANGEL Ω aborda la arquitectura como una variedad riemanniana y una red disipativa donde el código obedece leyes universales de transporte, capacidad de canal y mecánica de fracturas.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem;">
+        
+        <div style="background:rgba(12, 18, 30, 0.7); border:1px solid rgba(0, 240, 255, 0.2); border-radius:8px; padding:1.5rem;">
+          <h3 style="font-family:var(--font-mono); color:var(--cyan-laser); font-size:1.1rem; margin:0 0 0.6rem 0;">
+            1. Orquestación DAG en 2 Olas
+          </h3>
+          <p style="font-size:0.88rem; color:#b0c2d4; line-height:1.5; margin-bottom:0.8rem;">
+            78 analizadores autónomos desacoplados mediante un grafo acíclico dirigido. <strong>Ola 0</strong> procesa 76 analizadores en paralelo explotando todos los cores disponibles con cero contención. <strong>Ola 1</strong> sintetiza las dependencias sociotécnicas (Conway) y flujos peligrosos inter-procedimentales.
+          </p>
+          <div style="background:rgba(0,0,0,0.5); padding:0.6rem; border-radius:4px; font-family:var(--font-mono); font-size:0.78rem; color:#ffaa00;">
+            Wave 0 (76 A.) ➔ Shm Ring Buffer ➔ Wave 1 (2 A.) ➔ Correlator
+          </div>
+        </div>
+
+        <div style="background:rgba(12, 18, 30, 0.7); border:1px solid rgba(184, 69, 255, 0.2); border-radius:8px; padding:1.5rem;">
+          <h3 style="font-family:var(--font-mono); color:var(--violet-quantum); font-size:1.1rem; margin:0 0 0.6rem 0;">
+            2. Tensor de Estrés Unificado ($\mathcal{S}$)
+          </h3>
+          <p style="font-size:0.88rem; color:#b0c2d4; line-height:1.5; margin-bottom:0.8rem;">
+            7 dimensiones dinámicas ($\text{volumen}, \text{acoplamiento}, \text{dinámica}, \text{puntos de falla}, \text{esfuerzo cogn.}, \text{deuda soc.}, \text{resiliencia}$) evaluadas mediante 13 escalares de diagnósticos, colapsadas en un único Software Stability Index (SSI).
+          </p>
+          <div style="background:rgba(0,0,0,0.5); padding:0.6rem; border-radius:4px; font-family:var(--font-mono); font-size:0.78rem; color:#00ff88;">
+            $$\text{SSI} = 100 \times (1 - \Phi_{\text{total}}) \quad \in [0, 100]$$
+          </div>
+        </div>
+
+        <div style="background:rgba(12, 18, 30, 0.7); border:1px solid rgba(0, 255, 136, 0.2); border-radius:8px; padding:1.5rem;">
+          <h3 style="font-family:var(--font-mono); color:var(--emerald-bio); font-size:1.1rem; margin:0 0 0.6rem 0;">
+            3. Rendimiento Nativo Rust Zero-GIL
+          </h3>
+          <p style="font-size:0.88rem; color:#b0c2d4; line-height:1.5; margin-bottom:0.8rem;">
+            31,666 líneas de código nativo en Rust (<code style="color:var(--emerald-bio);">archangel_rs</code>) que ejecutan análisis de alias points-to de Andersen, detección de deadlocks en tiempo lineal, verificación de bytecode EVM e inspección de WebAssembly (CosmWasm).
+          </p>
+          <div style="background:rgba(0,0,0,0.5); padding:0.6rem; border-radius:4px; font-family:var(--font-mono); font-size:0.78rem; color:#00f0ff;">
+            Andersen Pts-To: $O(N^3)$ ➔ Rust Cache-Locality &lt; 8ms
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       PIE DE PÁGINA INSTITUCIONAL SINTAXIS G
+       ══════════════════════════════════════════════════════════════ -->
+  <footer style="background:#020306; border-top:1px solid rgba(255,255,255,0.06); padding:2rem 1.5rem; text-align:center; font-family:var(--font-mono); font-size:0.78rem; color:#5c6f84;">
+    <div style="max-width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:0.8rem; align-items:center;">
+      <div>
+        <a href="../index.html" style="color:#d8e4f0; text-decoration:none; margin:0 0.6rem;">SINTAXIS G</a> ·
+        <a href="archangel.html" style="color:var(--cyan-laser); text-decoration:none; margin:0 0.6rem;">ARCHANGEL Ω Docs</a> ·
+        <a href="archangel-articulos.html" style="color:#d8e4f0; text-decoration:none; margin:0 0.6rem;">Bitácora &amp; Papers</a> ·
+        <a href="https://www.linkedin.com/company/sintaxis-g/" target="_blank" rel="noopener" style="color:#d8e4f0; text-decoration:none; margin:0 0.6rem;">LinkedIn</a>
+      </div>
+      <p style="margin:0; opacity:0.7;">
+        © 2026 SINTAXIS G. Todos los derechos reservados. Arquitectura conceptual y modelos matemáticos de simulación cibernética.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Motor de Radar 3D y Lógica General -->
+  <script src="../js/archangel-radar-engine.js?v=2.2"></script>
+  <script src="../js/archangel-blueprint-core.js?v=2.2"></script>
+
+</body>
+</html>

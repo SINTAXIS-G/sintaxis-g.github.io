@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCHANGEL Ω — Banco de Calibración de Radar Cuántico 3D | SINTAXIS G</title>
+  <meta name="description" content="Banco de pruebas y calibración táctica del nodo de radar 3D holográfico con z-sorting, retículo de adquisición y física cuántica de software.">
+  
+  <meta name="theme-color" content="#03050a">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-archangel-32.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/archangel-radar.css">
+</head>
+
+<body class="radar-test-body">
+
+  <div class="radar-master-layout">
+
+    <!-- ─────────────────────────────────────────────────────────
+         LIENZO DEL NODO DE RADAR 3D
+         ───────────────────────────────────────────────────────── -->
+    <main class="radar-viewport-container" id="radarViewport">
+      <canvas id="radarMainCanvas"></canvas>
+
+      <!-- Capa de Información Táctica HUD -->
+      <div class="radar-hud-layer">
+        
+        <div class="hud-top-left">
+          <div class="sys-name">
+            <span>⚡ ARCHANGEL Ω // 3D QUANTUM RADAR</span>
+            <span style="font-size:0.65rem; background:rgba(0,240,255,0.15); border:1px solid rgba(0,240,255,0.4); padding:0.1rem 0.4rem; border-radius:3px;">
+              CLON CALIBRACIÓN v3.0
+            </span>
+          </div>
+          <div>ÓRBITA: 5 ANILLOS TENSORES $D_1 - D_5$ // 8 SECTORES ARQUITECTÓNICOS</div>
+          <div>CÁMARA: <span id="hudCameraCoords">PITCH 0.45rad · YAW -0.25rad · ZOOM 1.0x</span></div>
+          <div class="sys-status">● COHERENCIA NOMINAL // PERSPECTIVA CÓNICA CON Z-SORTING</div>
+        </div>
+
+        <div class="hud-bottom-bar">
+          <!-- Leyenda de colores -->
+          <div class="hud-legend-strip">
+            <div class="hud-chip">
+              <span class="hud-dot" style="background:#00f0ff; box-shadow:0 0 6px #00f0ff;"></span>
+              <span>Singularidad DAG</span>
+            </div>
+            <div class="hud-chip">
+              <span class="hud-dot" style="background:#ffaa00; box-shadow:0 0 6px #ffaa00;"></span>
+              <span>Anillos Tensores</span>
+            </div>
+            <div class="hud-chip">
+              <span class="hud-dot" style="background:#b845ff; box-shadow:0 0 6px #b845ff;"></span>
+              <span>Nodos Satélite</span>
+            </div>
+            <div class="hud-chip">
+              <span class="hud-dot" style="background:#00ff88; box-shadow:0 0 6px #00ff88;"></span>
+              <span>Drop Stems 3D</span>
+            </div>
+          </div>
+
+          <!-- Controles de Navegación Rápida -->
+          <div class="hud-controls-row">
+            <button class="hud-btn" id="btnToggleAutoOrbit" title="Alternar auto-rotación de órbita">
+              🔄 Auto-Órbita: ON
+            </button>
+            <button class="hud-btn" id="btnToggleStems" title="Alternar líneas de caída de profundidad 3D">
+              📏 Drop Stems: ON
+            </button>
+            <button class="hud-btn" id="btnResetView" title="Restablecer ángulo visual">
+              ↺ Reset Cámara
+            </button>
+            <a href="archangel-blueprint.html" class="hud-btn" style="text-decoration:none; color:var(--radar-cyan);">
+              ← Blueprint General
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ─────────────────────────────────────────────────────────
+         DOCK LATERAL DE CALIBRACIÓN Y TELEMETRÍA
+         ───────────────────────────────────────────────────────── -->
+    <aside class="radar-sidebar-dock">
+      
+      <div class="dock-header">
+        <h2>🛠️ Calibrador de Radar</h2>
+        <p>Ajuste táctico en tiempo real de cinemática, volumetría, iluminación y profundidad espacial.</p>
+      </div>
+
+      <!-- Ficha del Objetivo Fijado (Target Locked) -->
+      <div class="target-telemetry-box" id="targetBox">
+        <span class="target-badge" id="targetBadge">TARGET // SEC-01</span>
+        <h3 class="target-title" id="targetTitle">Física Esotérica &amp; Cuántica</h3>
+        <p class="target-desc" id="targetDesc">
+          AdS/CFT Maldacena, SQA Ising P=8, Chaperón GroEL/GroES 14 ATP, Demonio de Maxwell.
+        </p>
+
+        <div class="metrics-mini-grid" id="targetMetricsGrid">
+          <div class="metric-cell">
+            <div class="lbl">SPOF RISK</div>
+            <div class="val" style="color:var(--radar-emerald);">0.02</div>
+          </div>
+          <div class="metric-cell">
+            <div class="lbl">ENTROPÍA ΔS</div>
+            <div class="val" style="color:var(--radar-amber);">3.41 bits</div>
+          </div>
+          <div class="metric-cell">
+            <div class="lbl">SSI INDEX</div>
+            <div class="val" style="color:var(--radar-cyan);">96.2%</div>
+          </div>
+          <div class="metric-cell">
+            <div class="lbl">LEYES FÍSICAS</div>
+            <div class="val" style="color:var(--radar-violet);">8 Leyes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles de Calibración Fina -->
+      <div class="calibration-controls-group">
+        
+        <div class="calib-slider-box">
+          <div class="calib-slider-header">
+            <span>VELOCIDAD DE BARRIDO RADAR</span>
+            <span class="val-display" id="valSweep">0.025</span>
+          </div>
+          <input type="range" class="calib-range" id="sliderSweep" min="0.005" max="0.08" step="0.005" value="0.025">
+        </div>
+
+        <div class="calib-slider-box">
+          <div class="calib-slider-header">
+            <span>VELOCIDAD ORBITAL / SIMULACIÓN</span>
+            <span class="val-display" id="valSim">1.0x</span>
+          </div>
+          <input type="range" class="calib-range" id="sliderSim" min="0.1" max="3.0" step="0.1" value="1.0">
+        </div>
+
+        <div class="calib-slider-box">
+          <div class="calib-slider-header">
+            <span>ESCALA DE ZOOM ÓPTICO</span>
+            <span class="val-display" id="valZoom">1.0x</span>
+          </div>
+          <input type="range" class="calib-range" id="sliderZoom" min="0.4" max="2.2" step="0.05" value="1.0">
+        </div>
+
+        <div class="calib-slider-box">
+          <div class="calib-slider-header">
+            <span>INTENSIDAD DE BRILLO / BLOOM</span>
+            <span class="val-display" id="valGlow">1.0x</span>
+          </div>
+          <input type="range" class="calib-range" id="sliderGlow" min="0.2" max="2.5" step="0.1" value="1.0">
+        </div>
+
+        <div class="calib-slider-box">
+          <div class="calib-slider-header">
+            <span>DENSIDAD DE CUANTOS (PARTÍCULAS)</span>
+            <span class="val-display" id="valParticles">160</span>
+          </div>
+          <input type="range" class="calib-range" id="sliderParticles" min="30" max="350" step="10" value="160">
+        </div>
+
+      </div>
+
+      <!-- Guía de Manejo Táctico -->
+      <div style="background:rgba(0,0,0,0.5); border:1px dashed rgba(255,255,255,0.1); border-radius:6px; padding:0.85rem; font-family:var(--font-mono); font-size:0.7rem; color:#8fa5ba; line-height:1.5;">
+        <strong style="color:#fff; display:block; margin-bottom:0.3rem;">🕹️ CONTROLES INTERACTIVOS:</strong>
+        <div>• <strong>Click Izquierdo + Arrastrar:</strong> Órbita 3D</div>
+        <div>• <strong>Click Derecho + Arrastrar:</strong> Paneo libre</div>
+        <div>• <strong>Rueda del Ratón:</strong> Zoom continuo</div>
+        <div>• <strong>Click en Nodo:</strong> Fijar objetivo + Pulso acústico</div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Motor de Radar 3D -->
+  <script src="../js/archangel-radar-engine.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('radarMainCanvas');
+      
+      // Inicializar el radar con callback de selección
+      const radar = new ArchangelRadar(canvas, {
+        initialSector: 'physics',
+        onSelect: (sector) => {
+          updateTargetCard(sector);
+        }
+      });
+
+      // Elementos de Telemetría
+      const targetBadge = document.getElementById('targetBadge');
+      const targetTitle = document.getElementById('targetTitle');
+      const targetDesc = document.getElementById('targetDesc');
+      const targetMetricsGrid = document.getElementById('targetMetricsGrid');
+      const hudCoords = document.getElementById('hudCameraCoords');
+
+      function updateTargetCard(sector) {
+        targetBadge.textContent = `TARGET // ${sector.code}`;
+        targetBadge.style.color = sector.color;
+        targetBadge.style.borderColor = sector.color;
+        targetTitle.textContent = sector.name;
+        targetDesc.textContent = sector.desc;
+
+        targetMetricsGrid.innerHTML = Object.entries(sector.metrics).map(([k, v]) => `
+          <div class="metric-cell">
+            <div class="lbl">${k.toUpperCase()}</div>
+            <div class="val" style="color:${sector.color};">${v}</div>
+          </div>
+        `).join('');
+      }
+
+      // Actualizar coordenadas HUD continuamente
+      setInterval(() => {
+        const pitch = radar.camera.rotX.toFixed(2);
+        const yaw = radar.camera.rotY.toFixed(2);
+        const zoom = radar.camera.zoom.toFixed(2);
+        hudCoords.textContent = `PITCH ${pitch}rad · YAW ${yaw}rad · ZOOM ${zoom}x`;
+      }, 100);
+
+      // Vincular Sliders de Calibración
+      const sliderSweep = document.getElementById('sliderSweep');
+      const valSweep = document.getElementById('valSweep');
+      sliderSweep.addEventListener('input', (e) => {
+        radar.calib.sweepSpeed = parseFloat(e.target.value);
+        valSweep.textContent = e.target.value;
+      });
+
+      const sliderSim = document.getElementById('sliderSim');
+      const valSim = document.getElementById('valSim');
+      sliderSim.addEventListener('input', (e) => {
+        radar.calib.simSpeed = parseFloat(e.target.value);
+        valSim.textContent = `${e.target.value}x`;
+      });
+
+      const sliderZoom = document.getElementById('sliderZoom');
+      const valZoom = document.getElementById('valZoom');
+      sliderZoom.addEventListener('input', (e) => {
+        radar.camera.targetZoom = parseFloat(e.target.value);
+        valZoom.textContent = `${e.target.value}x`;
+      });
+
+      const sliderGlow = document.getElementById('sliderGlow');
+      const valGlow = document.getElementById('valGlow');
+      sliderGlow.addEventListener('input', (e) => {
+        radar.calib.glowIntensity = parseFloat(e.target.value);
+        valGlow.textContent = `${e.target.value}x`;
+      });
+
+      const sliderParticles = document.getElementById('sliderParticles');
+      const valParticles = document.getElementById('valParticles');
+      sliderParticles.addEventListener('input', (e) => {
+        radar.calib.particleCount = parseInt(e.target.value);
+        valParticles.textContent = e.target.value;
+        radar.initParticles();
+      });
+
+      // Botones de acción
+      const btnAutoOrbit = document.getElementById('btnToggleAutoOrbit');
+      btnAutoOrbit.addEventListener('click', () => {
+        radar.calib.autoOrbit = !radar.calib.autoOrbit;
+        btnAutoOrbit.textContent = `🔄 Auto-Órbita: ${radar.calib.autoOrbit ? 'ON' : 'OFF'}`;
+        btnAutoOrbit.classList.toggle('active', radar.calib.autoOrbit);
+      });
+
+      const btnStems = document.getElementById('btnToggleStems');
+      btnStems.addEventListener('click', () => {
+        radar.calib.showStems = !radar.calib.showStems;
+        btnStems.textContent = `📏 Drop Stems: ${radar.calib.showStems ? 'ON' : 'OFF'}`;
+        btnStems.classList.toggle('active', radar.calib.showStems);
+      });
+
+      const btnReset = document.getElementById('btnResetView');
+      btnReset.addEventListener('click', () => {
+        radar.camera.targetRotX = 0.45;
+        radar.camera.targetRotY = -0.25;
+        radar.camera.panX = 0;
+        radar.camera.panY = 0;
+        radar.camera.targetZoom = 1.0;
+        sliderZoom.value = 1.0;
+        valZoom.textContent = '1.0x';
+      });
+    });
+  </script>
+
+</body>
+</html>
