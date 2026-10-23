@@ -119,6 +119,39 @@
     padding: 2.5rem 1.25rem 2.5rem;
   }
 
+  .title-badge-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(197, 155, 75, 0.12);
+    border: 1px solid rgba(197, 155, 75, 0.35);
+    color: #8c6828;
+    font-size: clamp(0.78rem, 2.7vw, 0.92rem);
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: 0.02em;
+    margin: 0 auto 0.6rem;
+    opacity: 0;
+    box-shadow: 0 2px 8px rgba(197, 155, 75, 0.1);
+  }
+  body.revealed .title-badge-pill{
+    animation: rise 0.7s var(--ease) 0.02s forwards;
+  }
+  .badge-dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px var(--gold);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot{
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
   .eyebrow{
     font-family: 'Caveat', cursive;
     font-size: clamp(1.3rem, 3vw, 1.7rem);
@@ -339,6 +372,105 @@
     transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
   }
   .divider.is-visible{ opacity: 0.7; transform: translateY(0); }
+
+  /* ---------- recetario interactivo de la dra. gabi ---------- */
+  .rx-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.2rem 0 2.4rem;
+  }
+  .rx-pill-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 24px;
+    background: #FAF5EC;
+    border: 1.5px solid var(--sage-deep);
+    color: var(--sage-deep);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(0.92rem, 3.2vw, 1.05rem);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(79, 111, 82, 0.12);
+    transition: all 0.3s var(--ease);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rx-pill-btn:hover, .rx-pill-btn:active{
+    background: var(--paper-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(79, 111, 82, 0.2);
+  }
+  .rx-pill-btn.open .rx-pill-arrow{
+    transform: rotate(180deg);
+  }
+  .rx-pill-arrow{
+    transition: transform 0.3s var(--ease);
+    font-size: 0.85rem;
+  }
+  .rx-panel{
+    width: 100%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.65s var(--ease), opacity 0.45s var(--ease), margin-top 0.35s ease;
+  }
+  .rx-panel.open{
+    max-height: 1200px;
+    opacity: 1;
+    margin-top: 1.2rem;
+  }
+  .rx-paper-card{
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    padding: 8px;
+    box-shadow: 0 10px 30px rgba(58, 51, 43, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rx-img-box{
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #FAF8F5;
+    border: 1px solid #ECE3D4;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .rx-sheet-img{
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 1700 / 1100;
+  }
+  .rx-toolbar{
+    display: flex;
+    justify-content: center;
+    padding: 4px 0 6px;
+  }
+  .rx-btn-dl{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: var(--paper-deep);
+    color: var(--ink-soft);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    transition: all 0.2s ease;
+  }
+  .rx-btn-dl:hover, .rx-btn-dl:active{
+    background: var(--paper);
+    color: var(--sage-deep);
+    border-color: var(--sage-deep);
+  }
 
   /* ---------- firma ---------- */
   .signature{
@@ -799,6 +931,10 @@
 
 <main>
   <section class="hero">
+    <div class="title-badge-pill" aria-label="Celebración doble">
+      <span class="badge-dot"></span>
+      <span>22 Oct: Título Oficial ESM-IPN 🎓 &bull; 23 Oct: Día de la Médica 🩺</span>
+    </div>
     <p class="eyebrow">Hoy celebramos a una persona increíble</p>
     <h1>Detrás de la bata</h1>
     <p class="subtitle">Para Gabi, en el Día de la Médica.</p>
@@ -851,6 +987,27 @@
     y tú, siguiéndome el juego, me diste un diagnóstico serio;<br>
     aunque no exista receta para lo que siento,<br>
     firmo gustoso el tratamiento con tal de seguir siendo tu enfermo.</p>
+
+    <div class="rx-block">
+      <button class="rx-pill-btn" id="rxToggleBtn" type="button" aria-expanded="false">
+        <span class="rx-pill-icon">📋</span>
+        <span class="rx-pill-text">Ver receta médica de la Dra. Gabi</span>
+        <span class="rx-pill-arrow">↓</span>
+      </button>
+
+      <div class="rx-panel" id="rxPanel">
+        <div class="rx-paper-card">
+          <div class="rx-img-box">
+            <img src="../assets/recetario_gabi_filled.png" alt="Receta médica oficial de la Dra. Gabriela González Roque para Gabo" class="rx-sheet-img" id="rxSheetImg" />
+          </div>
+          <div class="rx-toolbar">
+            <a href="../assets/recetario_dra_gabriela.pdf" download="Recetario_Oficial_Dra_Gabriela_Gonzalez.pdf" class="rx-btn-dl">
+              <span>📥 Descargar tu recetario en PDF (con tu cédula 15958843)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <p class="stanza">Me gusta tu manera de mirar hacia las cosas,<br>
     esa curiosidad que te invita a aprender;<br>
@@ -914,7 +1071,7 @@
 </main>
 
 <footer>
-  🩺 Feliz Día de la Médica 🤍
+  🩺 Feliz Día de la Médica • ¡Felicidades por tu Título, Dra. Gabi! 🎓
   <span class="credit">sintaxisg.com</span>
 </footer>
 
@@ -1133,6 +1290,32 @@
     setTimeout(function(){
       if (span.parentNode) span.parentNode.removeChild(span);
     }, 950);
+  }
+
+  // Interacción Recetario Oficial de la Dra. Gabi
+  var rxBtn = document.getElementById('rxToggleBtn');
+  var rxPanel = document.getElementById('rxPanel');
+  if (rxBtn && rxPanel){
+    rxBtn.addEventListener('click', function(){
+      var isOpen = rxPanel.classList.toggle('open');
+      rxBtn.classList.toggle('open', isOpen);
+      rxBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (navigator.vibrate){
+        try { navigator.vibrate(isOpen ? [20, 50, 25] : 18); } catch(e){}
+      }
+      if (isOpen){
+        var rect = rxBtn.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        for (var k = 0; k < 6; k++){
+          (function(idx){
+            setTimeout(function(){
+              spawnTouchParticle(cx + (Math.random() * 80 - 40), cy + (Math.random() * 30 - 15), ['🎓', '✨', '🩺', '♥', '✨', '🎓'][idx % 6]);
+            }, idx * 90);
+          })(k);
+        }
+      }
+    });
   }
 
   document.addEventListener('pointerdown', function(e){
