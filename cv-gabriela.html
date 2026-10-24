@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CV — Dra. Gabriela González Roque</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page-container {
+    padding: 0.45in 0.5in 0.4in 0.5in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 11in;
+    box-sizing: border-box;
+  }
+
+  /* Header Superior */
+  .header {
+    border-bottom: 2px solid #0f3d64;
+    padding-bottom: 9px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-left {
+    flex: 1;
+  }
+
+  .header h1 {
+    font-size: 19pt;
+    font-weight: 700;
+    color: #0b2545;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .header .title-badge {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #1d6396;
+    letter-spacing: 0.02em;
+    margin-bottom: 5px;
+  }
+
+  .cedulas-line {
+    font-size: 8pt;
+    color: #334155;
+    margin-bottom: 5px;
+  }
+
+  .cedulas-line strong {
+    color: #0b2545;
+    font-weight: 700;
+  }
+
+  .cedulas-sep {
+    color: #94a3b8;
+    margin: 0 5px;
+  }
+
+  .contact-bar {
+    display: flex;
+    gap: 12px;
+    font-size: 7.8pt;
+    color: #4b5563;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .contact-item svg {
+    width: 11px;
+    height: 11px;
+    fill: #1d6396;
+  }
+
+  .header-photo-box {
+    width: 78px;
+    height: 94px;
+    border-radius: 3px;
+    border: 1px solid #94a3b8;
+    overflow: hidden;
+    background: #f8fafc;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-placeholder {
+    font-size: 6.8pt;
+    text-align: center;
+    color: #64748b;
+    font-weight: 500;
+    padding: 4px;
+    line-height: 1.2;
+  }
+
+  /* Grid Principal: 2 Columnas Asimétricas */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 64% 34%;
+    gap: 16px;
+    flex: 1;
+  }
+
+  .col-left, .col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Títulos de Sección */
+  .section-title {
+    font-size: 8.8pt;
+    font-weight: 700;
+    color: #0b2545;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1.2px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 11px;
+    background: #1d6396;
+    border-radius: 1px;
+  }
+
+  /* Perfil */
+  .perfil-text {
+    font-size: 8pt;
+    color: #334155;
+    text-align: justify;
+    line-height: 1.35;
+  }
+
+  /* Bloques de Experiencia */
+  .entry {
+    margin-bottom: 6px;
+  }
+
+  .entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1px;
+  }
+
+  .entry-role {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .entry-dates {
+    font-size: 7.2pt;
+    font-weight: 600;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  .entry-place {
+    font-size: 7.8pt;
+    font-weight: 600;
+    color: #1d6396;
+    margin-bottom: 2px;
+  }
+
+  .entry-ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .entry-ul li {
+    position: relative;
+    padding-left: 10px;
+    margin-bottom: 2px;
+    font-size: 7.8pt;
+    color: #334155;
+    line-height: 1.3;
+  }
+
+  .entry-ul li::before {
+    content: '▪';
+    position: absolute;
+    left: 0;
+    color: #1d6396;
+    font-size: 7pt;
+  }
+
+  /* Columna Derecha: Tarjetas / Listas */
+  .edu-item {
+    margin-bottom: 5px;
+  }
+
+  .edu-degree {
+    font-size: 8.2pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .edu-school {
+    font-size: 7.6pt;
+    color: #1d6396;
+    font-weight: 500;
+  }
+
+  .edu-detail {
+    font-size: 7.2pt;
+    color: #64748b;
+  }
+
+  /* Cursos */
+  .course-item {
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .course-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .course-name {
+    font-size: 7.6pt;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.25;
+  }
+
+  .course-meta {
+    font-size: 7pt;
+    color: #0284c7;
+    font-weight: 500;
+  }
+
+  .course-hrs {
+    font-size: 6.8pt;
+    color: #15803d;
+    font-weight: 600;
+    margin-left: 3px;
+  }
+
+  /* Destrezas Clínicas en Lista Sobria */
+  .skills-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .skills-list li {
+    font-size: 7.2pt;
+    color: #334155;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    position: relative;
+    padding-left: 9px;
+  }
+
+  .skills-list li::before {
+    content: '▪';
+    position: absolute;
+    left: 0;
+    color: #1d6396;
+    font-size: 6.5pt;
+  }
+
+  .skills-list li strong {
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  /* Footer Sutil */
+  .footer-note {
+    text-align: center;
+    font-size: 6.8pt;
+    color: #94a3b8;
+    padding-top: 5px;
+    border-top: 1px solid #e2e8f0;
+    letter-spacing: 0.03em;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-container">
+
+  <!-- ENCABEZADO -->
+  <header class="header">
+    <div class="header-left">
+      <h1>DRA. GABRIELA GONZÁLEZ ROQUE</h1>
+      <div class="title-badge">Médico Cirujano y Partero</div>
+      
+      <div class="cedulas-line">
+        <strong>Céd. Profesional Medicina:</strong> 15958843 <span class="cedulas-sep">&bull;</span> <strong>Céd. Profesional Enfermería:</strong> 13310317
+      </div>
+
+      <div class="contact-bar">
+        <span class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          Gustavo A. Madero, CDMX
+        </span>
+        <span class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          55 4219 6839
+        </span>
+        <span class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          gabrielagonzalezr00@gmail.com
+        </span>
+      </div>
+    </div>
+
+    <!-- Contenedor para la fotografía clínica -->
+    <div class="header-photo-box">
+      <img src="gabi_busto.jpg" alt="Dra. Gabriela González Roque">
+    </div>
+  </header>
+
+  <!-- CUERPO PRINCIPAL (2 COLUMNAS) -->
+  <div class="main-layout">
+
+    <!-- COLUMNA IZQUIERDA (64%): Experiencia y Práctica Clínica -->
+    <div class="col-left">
+
+      <!-- PERFIL -->
+      <section>
+        <div class="section-title">Perfil Profesional</div>
+        <p class="perfil-text">
+          Médico Cirujano y Partero por la Escuela Superior de Medicina (IPN) con formación previa como Técnico en Enfermería (CECyT 6). Cédulas profesionales activas para el ejercicio clínico y la prescripción médica legal. Experiencia en consulta de primer nivel, medicina preventiva, rotaciones hospitalarias de segundo nivel en el ISSSTE y triaje en Urgencias. Destreza sobresaliente en procedimientos clínicos menores e invasivos, manejo de vías, farmacoterapia y apego estricto a la NOM-004-SSA3 del Expediente Clínico.
+        </p>
+      </section>
+
+      <!-- EXPERIENCIA CLÍNICA Y HOSPITALARIA -->
+      <section>
+        <div class="section-title">Experiencia Clínica & Asistencial</div>
+
+        <!-- Empleo Actual: Farmacias Benavides -->
+        <div class="entry">
+          <div class="entry-head">
+            <span class="entry-role">Dispensación y Farmacovigilancia</span>
+            <span class="entry-dates">03/2026 – Presente</span>
+          </div>
+          <div class="entry-place">Farmacias Benavides &bull; Sucursal Darwin, Miguel Hidalgo, CDMX</div>
+          <ul class="entry-ul">
+            <li>Validación y dispensación de recetas médicas de antibióticos y fármacos controlados con estricto apego a la normatividad sanitaria COFEPRIS (SICAD).</li>
+            <li>Orientación clínica a pacientes sobre posología, contraindicaciones, farmacovigilancia y apego al tratamiento terapéutico.</li>
+            <li>Capacitación técnica e inducción a personal de nuevo ingreso en manejo de cuadro básico y normatividad de recetas médicas.</li>
+          </ul>
+        </div>
+
+        <!-- Servicio Social: CDIF Lázaro Cárdenas -->
+        <div class="entry">
+          <div class="entry-head">
+            <span class="entry-role">Servicio Social en Medicina</span>
+            <span class="entry-dates">02/2025 – 01/2026</span>
+          </div>
+          <div class="entry-place">CDIF Lázaro Cárdenas &bull; Gustavo A. Madero, CDMX</div>
+          <ul class="entry-ul">
+            <li>Consulta médica externa de primer nivel a un promedio de <strong>20 pacientes diarios</strong>: diagnóstico, tratamiento y control de enfermedades crónico-degenerativas (Diabetes Mellitus, HTA) e infecciosas agudas; expedición de certificados médicos.</li>
+            <li>Coordinación de referencia oportuna de pacientes a segundo y tercer nivel hospitalario.</li>
+            <li>Impartición de pláticas de salud preventiva a niños y adultos mayores; participación activa en jornadas de vacunación y control de enfermedades infectocontagiosas.</li>
+          </ul>
+        </div>
+
+        <!-- Internado Médico: ISSSTE Fernando Quiroz -->
+        <div class="entry">
+          <div class="entry-head">
+            <span class="entry-role">Internado Médico de Pregrado (MIP)</span>
+            <span class="entry-dates">01/2024 – 12/2024</span>
+          </div>
+          <div class="entry-place">Hospital General "Dr. Fernando Quiroz Gutiérrez" &bull; ISSSTE</div>
+          <ul class="entry-ul">
+            <li>Rotaciones hospitalarias de segundo nivel: Urgencias, Medicina Interna, Cirugía General, Ginecología y Obstetricia, Pediatría y Medicina Familiar.</li>
+            <li>Destreza quirúrgica ambulatoria: <strong>realización de vasectomía sin bisturí, colocación y retiro de implantes subdérmicos</strong>, sutura de heridas en piel y curaciones quirúrgicas.</li>
+            <li>Triaje y abordaje de urgencias médicas; activación de Código Ictus, estabilización de pacientes e interpretación de ECG de 12 derivaciones, gasometrías y estudios de laboratorio e imagen.</li>
+            <li>Elaboración de notas médicas y actualización del Expediente Clínico conforme a normatividad institucional y NOM-004-SSA3.</li>
+          </ul>
+        </div>
+
+        <!-- Cuidados Clínicos y Enfermería Previa -->
+        <div class="entry">
+          <div class="entry-head">
+            <span class="entry-role">Práctica de Enfermería & Farmacéutica Previa</span>
+            <span class="entry-dates">2018 – 2023</span>
+          </div>
+          <div class="entry-place">Enfermería Privada a Domicilio (2018-2022) &bull; Farmacia México (2022-2023)</div>
+          <ul class="entry-ul">
+            <li><strong>Atención integral y enfermería (2018-2022):</strong> Monitoreo diario de constantes vitales, administración de fármacos por vía oral/parenteral, curación de heridas quirúrgicas y manejo de catéteres y sondas en pacientes geriátricos.</li>
+            <li><strong>Farmacia México (2022-2023):</strong> Verificación de prescripciones médicas, control de inventario y dispensación.</li>
+          </ul>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- COLUMNA DERECHA (34%): Educación, Cursos y Destrezas -->
+    <div class="col-right">
+
+      <!-- FORMACIÓN ACADÉMICA -->
+      <section>
+        <div class="section-title">Formación Académica</div>
+
+        <div class="edu-item">
+          <div class="edu-degree">Médico Cirujano y Partero</div>
+          <div class="edu-school">Escuela Superior de Medicina (ESM)</div>
+          <div class="edu-detail">Instituto Politécnico Nacional &bull; Promedio: 8.69</div>
+          <div class="edu-detail">2019 – 2024</div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-degree">Técnico en Enfermería</div>
+          <div class="edu-school">CECyT No. 6 "Miguel Othón de Mendizábal"</div>
+          <div class="edu-detail">Instituto Politécnico Nacional &bull; 2015 – 2018</div>
+        </div>
+      </section>
+
+      <!-- EDUCACIÓN MÉDICA CONTINUA -->
+      <section>
+        <div class="section-title">Educación Médica Continua</div>
+
+        <div class="course-item">
+          <div class="course-name">Manejo y Dispensación de Medicamentos (SICAD)</div>
+          <div class="course-meta">COFEPRIS &bull; Regulación Sanitaria (2026)</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Semana del Ictus: Fases de Atención</div>
+          <div class="course-meta">SMME / Iniciativa Angels (2025) &bull; 5 hrs curriculares</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Manejo Clínico del Dengue</div>
+          <div class="course-meta">Organización Panamericana de la Salud (2025)</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Respuesta a Brotes de Sarampión/Rubéola</div>
+          <div class="course-meta">Organización Panamericana de la Salud (2025)</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">2ª Jornada de Medicina Familiar</div>
+          <div class="course-meta">CMF Marina Nacional, ISSSTE (2024) &bull; 10 hrs curriculares</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Manejo Eficaz de la Rinitis Alérgica en Otoño-Invierno</div>
+          <div class="course-meta">Soc. Latinoamericana de Alergia, Asma e Inmunología (2025)</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">El ABC de la Ecocardiografía</div>
+          <div class="course-meta">Facultad de Medicina, UNAM (2022)</div>
+        </div>
+
+        <div class="course-item">
+          <div class="course-name">Entrenamiento en Soporte Vital</div>
+          <div class="course-meta" style="color:#64748b;">Formación en BLS y ACLS (Cardiovascular Avanzado)</div>
+        </div>
+      </section>
+
+      <!-- DESTREZAS CLÍNICAS -->
+      <section>
+        <div class="section-title">Destrezas & Procedimientos</div>
+        <ul class="skills-list">
+          <li><strong>Procedimientos Quirúrgicos Menores:</strong> Vasectomía sin bisturí, colocación y retiro de implantes subdérmicos, sutura de heridas y curación quirúrgica.</li>
+          <li><strong>Vías y Sondaje:</strong> Venopunción, cateterismo vesical (Foley), sonda nasogástrica (Levin) y canalización de vías periféricas.</li>
+          <li><strong>Diagnóstico Clínico:</strong> Toma e interpretación de electrocardiograma (ECG), gasometría arterial, biometrías hemáticas y químicas sanguíneas.</li>
+          <li><strong>Normatividad Sanitaria:</strong> NOM-004-SSA3 (Expediente Clínico), SICAD (COFEPRIS), Triaje de Urgencias y Farmacovigilancia activa.</li>
+        </ul>
+      </section>
+
+    </div>
+
+  </div>
+
+  <!-- NOTA PIE DE PÁGINA -->
+  <footer class="footer-note">
+    Documentación probatoria, constancias y cédulas profesionales disponibles para cotejo inmediato.
+  </footer>
+
+</div>
+
+</body>
+</html>
