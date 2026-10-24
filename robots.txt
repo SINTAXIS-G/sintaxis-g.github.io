@@ -49,6 +49,15 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-NotebookLM
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
 # ─────────────────────────────────────────────
 # Bots de entrenamiento de modelos base — bloqueados
 # (no afecta indexación de búsqueda normal ni a los bots de arriba)
@@ -57,9 +66,6 @@ User-agent: GPTBot
 Disallow: /
 
 User-agent: CCBot
-Disallow: /
-
-User-agent: Google-Extended
 Disallow: /
 
 User-agent: anthropic-ai
