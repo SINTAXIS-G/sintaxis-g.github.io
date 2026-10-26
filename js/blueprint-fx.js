@@ -1053,7 +1053,7 @@ window.runMetaAudit = function () {
 // (nodos + conexiones), a baja opacidad y en reposo, sin duplicar el
 // grafo real de dependency-graph.js. Corre en cualquier .bp-nodes-canvas
 // de la página: Contacto ("Sígueme el rastro"), el catálogo de
-// analizadores de ARCHANGEL (acá los nodos SON el contenido: 77
+// analizadores de ARCHANGEL (acá los nodos SON el contenido: 78
 // analizadores conectados) y el veredicto final antes del footer.
 // Cada canvas tiene su propio estado — no son instancias compartidas.
 // ============================================================
@@ -1467,7 +1467,7 @@ document.querySelectorAll('.rust-race').forEach((race) => {
   const PHRASES = [
     'Software tratado como un sistema físico.',
     'Entropía, fractura y propagación de riesgo — aplicadas al código.',
-    '77 analizadores. Un solo veredicto por archivo.',
+    '78 analizadores. Un solo veredicto por archivo.',
     'La honestidad es un requisito de ingeniería, no una virtud.',
     'Cada simplificación, documentada junto al caso que no cubre.',
     'Construyo herramientas con una razón real para existir.',

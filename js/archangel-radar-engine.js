@@ -94,8 +94,8 @@ class ArchangelRadar {
         orbitR: 220,
         heightY: 55,
         mass: 99,
-        desc: '31,666 LOC en archangel_rs, EVM SWC-107/115/104, CosmWasm, Andersen Points-To.',
-        metrics: { spof: '0.00', latency: '4.8ms', ssi: '99.4%', loc: '31,666' }
+        desc: '35,654 LOC en archangel_rs, TSX/React Taint, EVM SWC-107/115/104, CosmWasm, Andersen Points-To.',
+        metrics: { spof: '0.00', latency: '4.8ms', ssi: '99.4%', loc: '35,654' }
       },
       graphrag: {
         id: 'graphrag',

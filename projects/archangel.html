@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARCHANGEL Ω: análisis estático de código | SINTAXIS G</title>
-<meta name="description" content="ARCHANGEL Ω es un motor de análisis estático de código con 77 analizadores, taint analysis y predicción de fallos. Servicio por API con acceso licenciado.">
+<meta name="description" content="ARCHANGEL Ω es un motor de análisis estático de código con 78 analizadores, taint analysis y predicción de fallos. Servicio por API con acceso licenciado.">
 
 <meta name="author" content="Gabo">
 <meta name="robots" content="index, follow">
@@ -107,7 +107,7 @@
         <span class="arch-led"></span>
         <span>SISTEMA: <b>ARCHANGEL Ω</b></span>
         <span style="color:var(--line);">//</span>
-        <span>77 ANALIZADORES VIGILANTES</span>
+        <span>78 ANALIZADORES VIGILANTES</span>
         <span style="color:var(--line);">//</span>
         <span>LATENCIA: <b>12.4ms</b></span>
       </div>
@@ -139,11 +139,11 @@
   <div class="wrap">
     <p class="section-label">¿Qué es ARCHANGEL?</p>
     <h2>Un producto de análisis de código, no un script</h2>
-    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 77 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
+    <p class="lede">ARCHANGEL es una plataforma de análisis estático que corre 78 analizadores especializados sobre tu código y cruza sus señales con un correlator bayesiano — en vez de una lista plana de warnings, te da un veredicto único por archivo (CLEAN → WATCH → REFACTOR → CRITICAL → EMERGENCY) y, cuando quieres ir más lejos, propone y aplica sus propios refactors en ramas de Git aisladas.</p>
 
     <div class="featured-stats" style="margin-bottom: var(--space-lg);">
-      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b style="view-transition-name: vt-archangel-stat-77;">77</b><span>analizadores orquestados vía DAG</span></div>
-      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b>1</b><span>lenguaje con análisis profundo (Python) + 14 con soporte estructural</span></div>
+      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b style="view-transition-name: vt-archangel-stat-78;">78</b><span>analizadores orquestados vía DAG</span></div>
+      <div class="stat"><i class="stat-led" aria-hidden="true"></i><b>Python, TS/JS &amp; Web3</b><span>con análisis profundo nativo + 14 con soporte estructural</span></div>
       <div class="stat"><i class="stat-led" aria-hidden="true"></i><b>100%</b><span>local el LLM de chat/reparación (Ollama) — tu código no sale a APIs externas</span></div>
     </div>
 
@@ -204,7 +204,7 @@
         <p>Cada análisis corre en un proceso hijo aislado (multiprocessing spawn) con verificación de integridad por checksum antes de aceptar cualquier resultado.</p>
       </div>
       <div class="pillar">
-        <div class="name">77 analizadores con circuit breaker propio</div>
+        <div class="name">78 analizadores con circuit breaker propio</div>
         <p>Cada analizador tiene su propio circuit breaker y monitor de salud — uno que falla repetidamente se aísla solo, sin tumbar el resto del pipeline.</p>
       </div>
       <div class="pillar">
@@ -410,7 +410,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span></div>
       <div class="terminal-body">
         <div class="terminal-line"><span class="prompt">$</span> archangel scan ./core</div>
-        <div class="terminal-line">→ 77 sub-analizadores orquestados vía DAG...</div>
+        <div class="terminal-line">→ 78 sub-analizadores orquestados vía DAG...</div>
         <div class="terminal-line"><span class="ok">✓</span> topología, entropía, halstead — OK</div>
         <div class="terminal-line"><span class="warn">⚠</span> blast_radius: 3 puntos de articulación críticos</div>
         <div class="terminal-line"><span class="crit">✗</span> taint_analysis: SQL Injection en auth/login.py:9 [CRÍTICA]</div>
@@ -461,7 +461,7 @@
   <div class="wrap">
     <p class="section-label">Health Score &amp; Anti-Patrones</p>
     <h2>Tu arquitectura, resumida en una letra</h2>
-    <p class="lede">300.000 líneas de análisis no sirven de nada si nadie las lee. El Health Score Engine las comprime en un solo número con letra — como un reporte de crédito, pero para tu código — y el Smell Detector le pone nombre a cada síntoma.</p>
+    <p class="lede">430.000 líneas de análisis no sirven de nada si nadie las lee. El Health Score Engine las comprime en un solo número con letra — como un reporte de crédito, pero para tu código — y el Smell Detector le pone nombre a cada síntoma.</p>
 
     <div class="proj-split">
       <div class="proj-split-text">
@@ -720,12 +720,12 @@
     <p class="section-label">Arquitectura técnica</p>
     <h2>Cómo está construido</h2>
     <div class="proj-split-text">
-      <p>Backend en FastAPI con orquestación DAG de 77 analizadores registrados, corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action, ambos clientes de la API, para integrarse al flujo de CI sin distribuir el motor. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
+      <p>Backend en FastAPI con orquestación DAG de 78 analizadores registrados, corriendo por "olas": cada analizador declara sus dependencias, y el motor ejecuta en paralelo los que no dependen entre sí, esperando a la ola anterior solo cuando hace falta. Frontend en React/Vite. Extensión de VSCode y GitHub Action, ambos clientes de la API, para integrarse al flujo de CI sin distribuir el motor. El daemon corre sobre Python/asyncio con watchdog para vigilancia del filesystem, NetworkX para análisis de grafos y GitPython para gestionar ramas y worktrees aislados.</p>
     </div>
 
     <div class="note-box">
       <div class="name">Honestidad sobre "multi-lenguaje"</div>
-      <p>El análisis profundo — el DAG completo de 77 analizadores, el correlator bayesiano, taint analysis cross-file — corre sobre Python, con <code class="hl">ast.parse()</code> real de CPython; las rutas más costosas tienen además una implementación en Rust (ver <a href="#rust" style="color:var(--accent);">Rust donde importa</a>). Para otros 14 lenguajes (JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell) hay soporte estructural real pero más simple: parsers basados en patrones que extraen funciones, clases, imports y complejidad aproximada, más detección de antipatrones de seguridad y conteo de deuda técnica (TODO/FIXME/HACK). No es "multi-lenguaje" en el sentido de análisis profundo parejo en todos — es Python en profundidad, y una capa estructural honesta para el resto.</p>
+      <p>El análisis profundo cuenta con dos motores de primer nivel: para <strong>Python</strong>, el DAG completo de 78 analizadores, correlator bayesiano y taint analysis cross-file con <code class="hl">ast.parse()</code> de CPython y Z3; para <strong>TypeScript, JavaScript y TSX / React</strong>, un motor nativo completo en Rust (<code class="hl">archangel_rs::jstaint</code>) con gramática Tree-sitter, CFG, PDG backward slice, sensibilidad de campo $k=4$, React JSX <code class="hl">dangerouslySetInnerHTML</code>, accesos dinámicos <code class="hl">obj[key]</code>, resúmenes cross-file inter-procedimentales y 25 sumideros de <code class="hl">EXPRESS_NODE_MODEL</code> autogenerados en Rust (SQLi, CMDi, SSRF, Path Traversal, Open Redirect, Code Injection). Además, incluye verificación formal de bytecode <strong>EVM</strong> (SWC-101 a 124) y módulos <strong>CosmWasm</strong> sin emulación en Python. Para los 14 lenguajes adicionales (Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL, Shell), opera una capa estructural honesta: extracción de símbolos, métricas ciclomáticas, antipatrones de seguridad y conteo de deuda técnica.</p>
     </div>
 
     <!-- Banner al Blueprint Cuántico e Inspector 2.5D -->
@@ -758,7 +758,7 @@
         <span><i style="background:#A78BFA"></i>semantics</span>
         <span><i style="background:#60A5FA"></i>rules</span>
       </div>
-      <p class="depgraph-disclaimer">Recorte curado a mano de ~20 módulos reales del repositorio (de 300.000+ líneas) para que se entienda de un vistazo — no es una corrida en vivo del grafo de imports completo, y el tamaño de cada nodo es una estimación relativa, no una métrica exacta de líneas.</p>
+      <p class="depgraph-disclaimer">Recorte curado a mano de ~20 módulos reales del repositorio (de 430.000+ líneas) para que se entienda de un vistazo — no es una corrida en vivo del grafo de imports completo, y el tamaño de cada nodo es una estimación relativa, no una métrica exacta de líneas.</p>
     </div>
   </div>
 </section>
@@ -766,14 +766,15 @@
 <section class="proj-block" id="rust">
   <div class="wrap">
     <p class="section-label">Rendimiento &amp; Motor Nativo</p>
-    <h2>31.666 líneas de Rust: Compilación, Concurrencia y Multi-VM</h2>
-    <p class="lede">No es un simple wrapper para acelerar cuatro scripts: es un crate nativo (<code class="hl">archangel_rs</code>, PyO3) de 31 archivos donde corren las máquinas de verificación formal más pesadas de ARCHANGEL — desde análisis de bytecode en EVM y CosmWasm, hasta grafos de dependencia de programas (PDG) y solvers de concurrencia en 64 bits sin tocar el GIL de Python.</p>
+    <h2>35.654 líneas de Rust: Compilación, Concurrencia y Multi-VM</h2>
+    <p class="lede">No es un simple wrapper para acelerar cuatro scripts: es un crate nativo (<code class="hl">archangel_rs</code>, PyO3) de 32 archivos donde corren las máquinas de verificación formal más pesadas de ARCHANGEL — desde análisis de bytecode en EVM y CosmWasm, taint analysis inter-procedimental para TypeScript/React/Node, hasta grafos de dependencia de programas (PDG) y solvers de concurrencia en 64 bits sin tocar el GIL de Python.</p>
 
     <div class="status-row">
       <span class="badge badge-stable">RUST 2024 EDITION</span>
-      <span class="badge badge-stable">PARIDAD 12.919 ARCHIVOS: 0 DIVERGENCIAS</span>
+      <span class="badge badge-stable">310 TESTS NATIVOS: 0 FALLOS</span>
       <span class="badge badge-new">MULTI-VM: EVM + WASM</span>
       <span class="badge badge-new">PDG FERRANTE-OTTENSTEIN</span>
+      <span class="badge badge-new">TAINT TSX / REACT / NODE</span>
     </div>
 
     <div class="rust-race" id="rust-race">
@@ -815,14 +816,14 @@
           <span class="badge badge-new" style="font-size:0.68rem;">MOTOR NATIVO INTERNO</span>
           <p class="rust-matrix-title">Matrix Inspector de archangel_rs — Los 5 subsistemas revelados</p>
         </div>
-        <div class="rust-matrix-badge-loc">31.666 LÍNEAS DE RUST NATIVO</div>
+        <div class="rust-matrix-badge-loc">35.654 LÍNEAS DE RUST NATIVO</div>
       </div>
       <div class="rust-tabs-bar">
         <button class="rust-tab-btn is-active" data-rtab="evm">1. Multi-VM: EVM &amp; CosmWasm (6.270 LOC)</button>
         <button class="rust-tab-btn" data-rtab="pdg">2. Program Dependence Graph (2.459 LOC)</button>
         <button class="rust-tab-btn" data-rtab="race">3. Concurrencia &amp; Bitsets 64-bit (4.257 LOC)</button>
         <button class="rust-tab-btn" data-rtab="fourier">4. Fourier-Motzkin vs Z3 (766 LOC)</button>
-        <button class="rust-tab-btn" data-rtab="treesitter">5. Tree-sitter JS/TS DOM XSS (2.294 LOC)</button>
+        <button class="rust-tab-btn" data-rtab="treesitter">5. Tree-sitter TSX / React / Node Taint (4.111 LOC)</button>
       </div>
       <div class="rust-matrix-content" id="rust-matrix-content">
         <!-- Renderizado dinámicamente por archangel-fx.js -->
@@ -830,7 +831,7 @@
     </div>
 
     <div class="pillars">
-      <div class="pillar"><div class="name">Qué está en Rust (El mapa real)</div><p>No son 4 scripts: son 31.666 líneas que cubren el motor de taint cross-module (W-1), fuga de secretos (W-3), análisis de bytecode EVM (SWC-107/104/106/115), decodificador de binarios Wasm CosmWasm, grafos de dependencia PDG con Ferrante-Ottenstein, núcleos de concurrencia bitset y parsing Tree-sitter en JS/TS.</p></div>
+      <div class="pillar"><div class="name">Qué está en Rust (El mapa real)</div><p>No son 4 scripts: son 35.654 líneas que cubren el motor de taint cross-module (W-1), fuga de secretos (W-3), análisis de bytecode EVM (SWC-107/104/106/115), decodificador de binarios Wasm CosmWasm, grafos de dependencia PDG con Ferrante-Ottenstein, núcleos de concurrencia bitset y motor de taint Tree-sitter en JS/TS/TSX con Express Node model.</p></div>
       <div class="pillar"><div class="name">Tres fases para paralelismo real</div><p><strong style="color:var(--text)">Fase 1 (GIL on):</strong> Convierte el AST de Python a structs Rust puros sin envolver en <code class="hl">Rc</code> para respetar <code class="hl">py.detach()</code>. <strong style="color:var(--text)">Fase 2 (GIL off):</strong> El análisis completo (CFG, fixpoint monótono, Fourier-Motzkin) corre en Rust nativo sin competir por el lock del intérprete. <strong style="color:var(--text)">Fase 3 (GIL on):</strong> Mapeo directo a diccionarios de Python.</p></div>
       <div class="pillar"><div class="name">Paridad por construcción: Bailout</div><p>Rust no aproxima: si topa con una restricción que no puede decidir formalmente idéntica a Z3 (como aritmética no lineal en la poda de caminos), dispara <code class="hl">feasibility::bail()</code> y le devuelve el archivo al motor Python con Z3. Cero degradación heurística: o es matemáticamente exacto, o cae al solver completo.</p></div>
       <div class="pillar"><div class="name">Paridad medida contra 12.919 archivos</div><p>Diferencial exhaustivo contra el motor Python sobre 12.919 archivos reales de 10 proyectos masivos (pandas, airflow, sqlalchemy, yt-dlp, matplotlib, aiohttp, black, flask, urllib3, pyyaml) más corpus adversarial: cero divergencias reales y cero diferencias en los textos que ve el usuario.</p></div>
@@ -850,7 +851,7 @@
   <div class="wrap">
     <p class="section-label">Catálogo de analizadores</p>
     <h2>Ejemplos reales, no nombres de carpeta</h2>
-    <p class="lede">77 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una. Cada ficha incluye también el límite conocido de ese analizador, porque saber lo que no cubre es parte de saber lo que cubre.</p>
+    <p class="lede">78 analizadores es solo un número hasta que ves qué detectan de verdad. Filtra por categoría para ver ejemplos concretos de qué encuentra cada una. Cada ficha incluye también el límite conocido de ese analizador, porque saber lo que no cubre es parte de saber lo que cubre.</p>
 
     <div class="analyzer-filters">
       <button class="analyzer-chip is-active" data-cat="all">Todas</button>
@@ -1104,7 +1105,7 @@
   <div class="wrap">
     <p class="section-label">Empaquetado óptimo de contexto</p>
     <h2>Qué archivos le enseñas a la IA, y en qué estado</h2>
-    <p class="lede">La ventana de contexto de un LLM es finita. Con un repo de 300.000 líneas, la pregunta no es "¿cabe todo?" — nunca cabe. La pregunta real es: dado un presupuesto de tokens, ¿qué combinación de archivos, y en qué nivel de detalle cada uno, maximiza lo que la IA entiende del sistema?</p>
+    <p class="lede">La ventana de contexto de un LLM es finita. Con un repo de 430.000 líneas, la pregunta no es "¿cabe todo?" — nunca cabe. La pregunta real es: dado un presupuesto de tokens, ¿qué combinación de archivos, y en qué nivel de detalle cada uno, maximiza lo que la IA entiende del sistema?</p>
 
     <div class="proj-split">
       <figure class="proj-split-figure img-skeleton">
@@ -1497,7 +1498,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-3"><span>¿Qué lenguajes soporta?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-3" role="region"><p>Análisis profundo (correlación bayesiana, físicas de código, taint cross-file) para Python. Soporte estructural — funciones, imports, seguridad básica, deuda técnica — para 14 lenguajes más: JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell.</p></div>
+        <div class="faq-a" id="faq-a-3" role="region"><p>Análisis profundo para <strong>Python</strong> (DAG de 78 analizadores, correlación bayesiana, físicas de código y Z3 SMT), <strong>TypeScript / JavaScript / TSX (React) / Node</strong> (motor nativo en Rust con Tree-sitter, CFG, PDG backward slicing, sensibilidad de campo $k=4$, React JSX y Express Node model) y contratos inteligentes <strong>EVM / CosmWasm</strong> (desensamblado y verificación formal de bytecode). Soporte estructural adicional para 14 lenguajes más: Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-4"><span>¿Es gratis?</span><span class="faq-icon">+</span></button>
@@ -1505,7 +1506,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-5"><span>¿El análisis principal usa IA?</span><span class="faq-icon">+</span></button>
-        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (77 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
+        <div class="faq-a" id="faq-a-5" role="region"><p>No: el motor de análisis (78 analizadores + correlator bayesiano) es 100% determinístico, no depende de un LLM para decidir qué es o no es un bug. La IA (Ollama local) es una capa opcional encima, para chat, explicación y reparación asistida.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" aria-controls="faq-a-6"><span>¿Es de código abierto?</span><span class="faq-icon">+</span></button>
@@ -1528,7 +1529,7 @@
       "@id": "https://sintaxisg.com/projects/archangel.html#software",
       "name": "ARCHANGEL Ω",
       "alternateName": "ARCHANGEL",
-      "description": "Motor de análisis estático de código con 77 analizadores y un correlator bayesiano: taint analysis, predicción de fallos y física del software. Se consume como servicio por API con acceso licenciado.",
+      "description": "Motor de análisis estático de código con 78 analizadores y un correlator bayesiano: taint analysis, predicción de fallos y física del software. Se consume como servicio por API con acceso licenciado.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Cross-platform",
       "isAccessibleForFree": false,
@@ -1560,7 +1561,7 @@
     {
       "@type": "Question",
       "name": "¿Qué lenguajes soporta ARCHANGEL?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Análisis profundo (correlación bayesiana, físicas de código, taint cross-file) para Python. Soporte estructural para 14 lenguajes más: JS/TS, Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Análisis profundo para Python, TypeScript/TSX/React/Node (motor nativo Rust con Tree-sitter, CFG, PDG backward slice y Express model) y contratos EVM/CosmWasm. Soporte estructural para 14 lenguajes más: Go, Rust, Java, C/C#, Ruby, PHP, Swift, Scala, Dart, Lua, SQL y Shell." }
     },
     {
       "@type": "Question",
@@ -1570,7 +1571,7 @@
     {
       "@type": "Question",
       "name": "¿El análisis principal de ARCHANGEL usa inteligencia artificial?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (77 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No: el motor de análisis (78 analizadores más un correlator bayesiano) es 100% determinístico. La IA, corriendo localmente vía Ollama, es una capa opcional para chat, explicación y reparación asistida." }
     },
     {
       "@type": "Question",

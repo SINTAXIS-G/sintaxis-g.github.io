@@ -1124,7 +1124,7 @@ def process_payload(data):
   })();
 
   // ============================================================
-  // 15. RUST NATIVE 31,666 LOC MATRIX INSPECTOR
+  // 15. RUST NATIVE 35,654 LOC MATRIX INSPECTOR
   // ============================================================
   (function initRustMatrix() {
     const wrap = document.getElementById('rust-matrix-wrap');
@@ -1259,23 +1259,23 @@ def process_payload(data):
 `
       },
       treesitter: {
-        title: 'DOM XSS Taint en JS/TS con Tree-sitter (`jstaint.rs` + `jsast.rs`)',
-        loc: '2.294 LOC',
+        title: 'Taint TSX/React/Node con Tree-sitter (`jstaint.rs` + `jsast.rs` + `jstables_gen.rs`)',
+        loc: '4.111 LOC',
         metrics: [
-          { label: 'Líneas Totales', val: '2.294 LOC' },
-          { label: 'Parser', val: 'Tree-sitter Nativo' },
-          { label: 'Entorno', val: 'Cero Dependencia Node' }
+          { label: 'Líneas Totales', val: '4.111 LOC' },
+          { label: 'Parser', val: 'Tree-sitter TSX / JS / TS' },
+          { label: 'Sensibilidad', val: 'Campos k=4 + JSX + Express' }
         ],
         desc: `
-<p>Análisis estático de flujo de taint para JavaScript y TypeScript directamente sobre el AST de Tree-sitter en Rust nativo:</p>
+<p>Análisis estático de flujo de taint inter-procedimental para TypeScript, TSX, React y Node.js directamente sobre el AST de Tree-sitter en Rust nativo:</p>
 <ul style="margin:0; padding-left:1.1rem; line-height:1.5;">
-  <li><strong>Fuentes DOM:</strong> Rastreo exhaustivo de entradas no confiables del navegador (<code>location.search</code>, <code>document.cookie</code>, <code>window.name</code>, <code>postMessage</code>).</li>
-  <li><strong>Sumideros Críticos:</strong> Detección de inyección de código y DOM XSS en sumideros como <code>element.innerHTML</code>, <code>eval()</code>, <code>document.write()</code> y <code>setTimeout(string)</code>.</li>
-  <li><strong>Provenance de Líneas:</strong> Reporte del camino completo de flujo de datos (<code>flow_lines</code>) sin requerir runtime de Node.js.</li>
+  <li><strong>React &amp; JSX:</strong> Detección de XSS en atributos JSX como <code>dangerouslySetInnerHTML</code> y propagación en accesos indexados <code>obj[key]</code> con sensibilidad de campo k=4.</li>
+  <li><strong>Express &amp; Backend Node:</strong> 25 sumideros y 8 fuentes autogeneradas desde Python hacia Rust (SQLi, CMDi, SSRF, Path Traversal, Open Redirect, Code Injection).</li>
+  <li><strong>Cross-file &amp; Provenance:</strong> Resúmenes inter-módulo de funciones (<code>JsForeignCache</code>) y backward slice completo en el PDG (Ferrante-Ottenstein) sin runtime de Node.js.</li>
 </ul>
 `,
         code: `
-<span class="rc-cmt">// archangel_rs/src/jstaint.rs (1.125 líneas)</span>
+<span class="rc-cmt">// archangel_rs/src/jstaint.rs + jsast.rs + jstables_gen.rs (4.111 líneas)</span>
 <span class="rc-kw">pub fn</span> <span class="rc-fn">analyze_js_taint</span>(source: &amp;<span class="rc-type">str</span>, lang: &amp;<span class="rc-type">str</span>) -&gt; <span class="rc-type">Result</span>&lt;<span class="rc-type">Vec</span>&lt;<span class="rc-type">Finding</span>&gt;, <span class="rc-type">String</span>&gt; {
     <span class="rc-kw">let mut</span> parser = tree_sitter::<span class="rc-type">Parser</span>::<span class="rc-fn">new</span>();
     parser.<span class="rc-fn">set_language</span>(&amp;<span class="rc-fn">get_tree_sitter_lang</span>(lang))?;

@@ -34,9 +34,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       desc: 'Motor de análisis estático que trata el software como un sistema físico: entropía de Shannon, mecánica de fractura de Griffith, número de Reynolds y estructuras disipativas de Prigogine aplicadas al código.',
       metrics: [
         { label: 'ENTROPY_BUDGET', val: '0.042 J/K' },
-        { label: 'ANALYZERS_DAG', val: '77 MOTORES' },
-        { label: 'CORRELATOR_FILES', val: '26 ARCHIVOS' },
-        { label: 'INTERFACES_BUS', val: '4 CLIENTES' }
+        { label: 'ANALYZERS_DAG', val: '78 MOTORES' },
+        { label: 'CORRELATOR_FILES', val: '36 ARCHIVOS' },
+        { label: 'INTERFACES_BUS', val: '6 CLIENTES' }
       ]
     },
     {

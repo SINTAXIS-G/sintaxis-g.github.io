@@ -365,11 +365,12 @@ flowchart TD
     classDef colosseumStyle fill:#240810,stroke:#ff3366,stroke-width:1.5px,color:#fff;
     classDef clientStyle fill:#0b1424,stroke:#60a5fa,stroke-width:1.5px,color:#fff;
 
-    subgraph C00 ["00. SUSTRATO NATIVO RUST ZERO-GIL (31,666 LOC)"]
+    subgraph C00 ["00. SUSTRATO NATIVO RUST ZERO-GIL (35,654 LOC)"]
         direction LR
         RS_CORE["archangel_rs Core"]:::rustStyle
         RS_EVM["evm.rs: SWC-107/115/104"]:::rustStyle
         RS_WASM["wasm.rs: CosmWasm Storage"]:::rustStyle
+        RS_JS["jstaint.rs: TSX/React/Node Taint"]:::rustStyle
         RS_PTS["race_pts.rs: Andersen Points-To"]:::rustStyle
         RS_DEAD["deadlock_cfg.rs: O(V+E)"]:::rustStyle
         RS_SHM["POSIX Slabs /dev/shm IPC"]:::rustStyle
@@ -572,7 +573,7 @@ flowchart TD
               <h3 class="layer-title-text">Sustrato Nativo Zero-GIL &amp; Motores Virtuales</h3>
             </div>
             <div class="layer-meta-badges">
-              <span class="layer-badge-item">LÍNEAS RUST: <strong>31,666 LOC</strong></span>
+              <span class="layer-badge-item">LÍNEAS RUST: <strong>35,654 LOC</strong></span>
               <span class="layer-badge-item">LATENCIA: <strong>&lt; 8.2ms</strong></span>
               <span class="layer-badge-item">MEMORIA: <strong>POSIX Slabs Zero-Copy</strong></span>
             </div>
@@ -1507,7 +1508,7 @@ flowchart TD
             3. Rendimiento Nativo Rust Zero-GIL
           </h3>
           <p style="font-size:0.88rem; color:#b0c2d4; line-height:1.5; margin-bottom:0.8rem;">
-            31,666 líneas de código nativo en Rust (<code style="color:var(--emerald-bio);">archangel_rs</code>) que ejecutan análisis de alias points-to de Andersen, detección de deadlocks en tiempo lineal, verificación de bytecode EVM e inspección de WebAssembly (CosmWasm).
+            35,654 líneas de código nativo en Rust (<code style="color:var(--emerald-bio);">archangel_rs</code>) que ejecutan análisis de alias points-to de Andersen, detección de deadlocks en tiempo lineal, taint analysis inter-procedimental para TypeScript/React/Node, verificación de bytecode EVM e inspección de WebAssembly (CosmWasm).
           </p>
           <div style="background:rgba(0,0,0,0.5); padding:0.6rem; border-radius:4px; font-family:var(--font-mono); font-size:0.78rem; color:#00f0ff;">
             Andersen Pts-To: $O(N^3)$ ➔ Rust Cache-Locality &lt; 8ms

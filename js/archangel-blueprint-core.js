@@ -151,7 +151,7 @@
       subtitle: 'Análisis de bytecode EVM/WASM sin ejecución simbólica pesada y resolución de punteros Andersen.',
       color: '#ff3366',
       metrics: [
-        { lbl: 'Código Rust', val: '31,666 LOC Zero-GIL' },
+        { lbl: 'Código Rust', val: '35,654 LOC Zero-GIL' },
         { lbl: 'EVM Bytecode', val: 'SWC-107, 115, 104' },
         { lbl: 'CosmWasm WASM', val: 'Decodificador Secciones' },
         { lbl: 'Points-To Pts', val: 'Andersen 1-Obj Context' }
@@ -2018,14 +2018,14 @@
     "radarSector": "cybernetics"
   },
   "C00": {
-    "name": "CAPA 00: Sustrato Nativo Rust Zero-GIL (31,666 LOC)",
+    "name": "CAPA 00: Sustrato Nativo Rust Zero-GIL (35,654 LOC)",
     "layer": "CAPA 00 // NATIVO RUST ZERO-GIL",
     "file": "archangel_rs/src/",
     "algo": "Runtime Nativo Multi-VM & Memoria Compartida POSIX",
-    "formula": "T_{\\text{exec}} \\le 1.2\\text{ms} \\quad \\text{con } \\text{GIL} = \\emptyset, \\quad \\text{LOC} = 31,666",
-    "desc": "Cimiento monolítico en Rust compilado con AVX2/LTO. Contiene los motores nativos evm.rs, wasm.rs, race_pts.rs (puntos-a de Andersen) y deadlock_cfg.rs (Tarjan O(V+E)), comunicados con el orquestador Python vía POSIX /dev/shm.",
+    "formula": "T_{\\text{exec}} \\le 1.2\\text{ms} \\quad \\text{con } \\text{GIL} = \\emptyset, \\quad \\text{LOC} = 35,654",
+    "desc": "Cimiento monolítico en Rust compilado con AVX2/LTO. Contiene los motores nativos evm.rs, wasm.rs, jstaint.rs (TSX/React/Node taint k=4), race_pts.rs (puntos-a de Andersen) y deadlock_cfg.rs (Tarjan O(V+E)), comunicados con el orquestador Python vía POSIX /dev/shm.",
     "metrics": {
-      "Código Nativo": "31,666 LOC",
+      "Código Nativo": "35,654 LOC",
       "Latencia": "< 2ms",
       "Overhead": "Zero-GIL",
       "Garantía": "Memory Safety Criptográfico"
