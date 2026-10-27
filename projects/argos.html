@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.R.G.O.S. // Sistema Omnisciente de Cartografía Arquitectónica | SINTAXIS G</title>
+<meta name="description" content="A.R.G.O.S. (Architecture Repository Global Oversight System) es un motor de análisis estático puro en Python stdlib: 29 micro-módulos, 907 pruebas en 1.1s, complejidad cognitiva de SonarQube, DAG de routers y 0 dependencias.">
+
+<meta name="author" content="Gabo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://sintaxisg.com/projects/argos.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="A.R.G.O.S. // Cartografía Arquitectónica y Telemetría Estática | SINTAXIS G">
+<meta property="og:description" content="Motor de supervisión de repositorios en stdlib puro: 29 micro-módulos, 907 tests en 1.1s, complejidad cognitiva de Campbell y 0 dependencias externas.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/argos-logo.jpg">
+<meta property="og:url" content="https://sintaxisg.com/projects/argos.html">
+<meta property="og:site_name" content="SINTAXIS G">
+<meta property="og:locale" content="es_MX">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SINTAXIS_G">
+<meta name="twitter:title" content="A.R.G.O.S.: Cartografía Arquitectónica de Alta Velocidad | SINTAXIS G">
+<meta name="twitter:description" content="Cien ojos sobre el código. Cero dependencias en el camino. 907 pruebas en 1.1 segundos.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/argos-logo.jpg">
+
+<meta name="theme-color" content="#060911">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+
+<!-- Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<!-- Estilos -->
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/blueprint.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/project.css">
+<link rel="stylesheet" href="../css/argos-theme.css">
+
+<!-- Metadatos Estructurados Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://sintaxisg.com/projects/argos.html#software",
+      "name": "A.R.G.O.S.",
+      "alternateName": "Architecture Repository Global Oversight System",
+      "description": "Motor de cartografía arquitectónica, complejidad cognitiva, contratos OpenAPI y telemetría de repositorios en Python standard library puro con cero dependencias externas.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows (Python 3.11+ / Rust)",
+      "url": "https://sintaxisg.com/projects/argos.html",
+      "image": "https://sintaxisg.com/assets/img/argos-logo.jpg",
+      "softwareVersion": "5.0 Titanium Edition",
+      "inLanguage": "es-MX",
+      "creator": { "@id": "https://sintaxisg.com/#organization" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "SINTAXIS G", "item": "https://sintaxisg.com/" },
+        { "@type": "ListItem", "position": 2, "name": "A.R.G.O.S.", "item": "https://sintaxisg.com/projects/argos.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-argos argos-scanlines">
+
+<div class="scroll-progress"></div>
+
+<!-- NAVEGACIÓN -->
+<nav class="nav proj-nav">
+  <div class="wrap">
+    <a class="proj-back" href="../index.html"><img src="../assets/img/logo-sintaxis-g-v2.webp" alt="" aria-hidden="true" style="height:2rem;width:2rem;border-radius:50%;vertical-align:middle;margin-right:0.5rem;" width="804" height="813">← SINTAXIS G</a>
+    <div class="mode-toggles">
+      <button class="cmdk-trigger" type="button" aria-label="Buscar en el sitio"><span>Buscar</span><kbd>Ctrl K</kbd></button>
+      <div class="toc-wrap">
+        <button class="mode-btn" id="toc-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="toc-menu">índice ▾</button>
+        <nav class="toc-menu" id="toc-menu" aria-label="Índice de la página">
+          <a href="#tesis">1. El Ojo Omnipresente</a>
+          <a href="#capas">2. Las 9 Capas Arquitectónicas</a>
+          <a href="#pilares">3. Cuatro Motores de Élite</a>
+          <a href="#terminal">4. Telemetría en Vivo</a>
+          <a href="#comparativa">5. ARGOS vs. La Industria</a>
+          <a href="#forja">6. La Forja en Cifras</a>
+        </nav>
+      </div>
+      <button class="mode-btn" id="dev-toggle">modo dev</button>
+      <button class="mode-btn" id="bunker-toggle">modo búnker</button>
+      <button type="button" class="mode-btn" id="focus-toggle">modo lectura</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="proj-hero" style="min-height: 84vh; display: flex; align-items: center; position: relative;">
+  <canvas id="argos-hero-canvas" aria-hidden="true"></canvas>
+
+  <div class="wrap argos-hero-content" style="width: 100%;">
+    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+      <img src="../assets/img/argos-logo.jpg" alt="A.R.G.O.S. Emblem" style="height: 5.5rem; width: 5.5rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--argos-amber); box-shadow: 0 0 24px var(--argos-amber-glow);" width="512" height="512">
+      <div>
+        <p class="eyebrow" style="margin: 0; color: var(--argos-amber); font-family: var(--font-hud-mono); letter-spacing: 0.14em;">SYS-04 // ARCHITECTURAL OVERSIGHT &amp; STATIC INTELLIGENCE // STDLIB-PURE</p>
+        <h1 class="argos-title-glitch" style="margin: 0.2rem 0; font-size: clamp(2.6rem, 6vw, 4.8rem); line-height: 1;">A.R.G.O.S.</h1>
+      </div>
+    </div>
+
+    <p class="proj-kicker" style="font-family: var(--font-hud-mono); color: var(--argos-cyan); font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;">
+      ARCHITECTURE REPOSITORY GLOBAL OVERSIGHT SYSTEM // TITANIUM v5.0
+    </p>
+
+    <p class="tagline" style="color: #cbd5e1; font-size: 1.25rem; max-width: 48rem; line-height: 1.6; margin-top: 1rem;">
+      Un motor de cartografía arquitectónica, cálculo de complejidad cognitiva y telemetría de grafos de ultra-alta velocidad. Escanea repositorios masivos en caliente sin instalar un solo paquete externo.
+    </p>
+
+    <p class="lema-maestro" style="color: #ffffff; font-family: var(--font-hud); font-size: 1.35rem; font-style: normal; margin-top: 1.25rem; letter-spacing: 0.04em;">
+      «Cien ojos sobre el código. Cero dependencias en el camino.»
+    </p>
+
+    <!-- LIVE TELEMETRY HUD RIBBON -->
+    <div class="argos-hud-banner">
+      <div class="argos-hud-status-item">
+        <span class="argos-hud-dot emerald"></span>
+        <span>CORE: <strong>ONLINE [TITANIUM v5.0]</strong></span>
+      </div>
+      <div class="argos-hud-status-item">
+        <span class="argos-hud-dot amber"></span>
+        <span>SUITE: <strong style="color:var(--argos-emerald);">1,173 / 1,173 PASSED (1.65s)</strong></span>
+      </div>
+      <div class="argos-hud-status-item">
+        <span>ARCHIVOS EN VIVO: <strong style="color:var(--argos-cyan);">1,063 AUDITADOS</strong></span>
+      </div>
+      <div class="argos-hud-status-item">
+        <span>TIPADO ESTRICTO: <strong style="color:var(--argos-emerald);">0 ERRORS [PYRIGHT]</strong></span>
+      </div>
+      <div class="argos-hud-status-item">
+        <span>DEPENDENCIAS EXTERNAS: <strong style="color:#ffffff;">0 KB (100% STDLIB)</strong></span>
+      </div>
+    </div>
+
+    <!-- METRICS GRID -->
+    <div class="argos-metric-grid">
+      <div class="argos-metric-box">
+        <strong>1,173</strong>
+        <span>Tests Superados</span>
+      </div>
+      <div class="argos-metric-box">
+        <strong>1.65 s</strong>
+        <span>Tiempo de Suite</span>
+      </div>
+      <div class="argos-metric-box">
+        <strong>0 KB</strong>
+        <span>Deps Externas</span>
+      </div>
+      <div class="argos-metric-box">
+        <strong>29</strong>
+        <span>Micro-Módulos</span>
+      </div>
+      <div class="argos-metric-box">
+        <strong>1,063</strong>
+        <span>Archivos en Caliente</span>
+      </div>
+      <div class="argos-metric-box">
+        <strong>18,250</strong>
+        <span>Líneas Forjadas</span>
+      </div>
+    </div>
+
+    <!-- CTA OBSERVATORIO LIVE -->
+    <div style="margin-top: 1.75rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+      <a href="argos-live.html" class="btn" style="background: var(--argos-amber); color: #000; font-family: var(--font-hud-mono); font-weight: 700; text-transform: uppercase; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; box-shadow: 0 0 20px var(--argos-amber-glow); display: inline-flex; align-items: center; gap: 0.6rem; letter-spacing: 0.05em; transition: transform 0.2s, box-shadow 0.2s;">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#000; animation: pulseDot 1.5s infinite;"></span>
+        Lanzar Observatorio en Vivo (Radar) ↗
+      </a>
+      <span style="color: var(--argos-cyan); font-family: var(--font-hud-mono); font-size: 0.78rem;">
+        ⚡ Modo Daemon Simulado &bull; Filtro Ego-Céntrico &bull; FFI Rust-Python
+      </span>
+    </div>
+
+    <p class="bp-caption" style="margin-top: 1.5rem;">SUBSISTEMA: <b>A.R.G.O.S. // OBSERVADOR ARQUITECTÓNICO</b> · REV v5.0 PLATINUM</p>
+  </div>
+</header>
+
+<!-- SECCIÓN 1: LA DECLARACIÓN ARQUITECTÓNICA -->
+<section class="proj-block" id="tesis">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">01 // LA TESIS DEL OBSERVADOR OMNIPRESENTE</p>
+    <h2>¿Por qué forjar un motor de análisis estático desde cero?</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      En el desarrollo contemporáneo, la respuesta estándar ante cualquier problema arquitectónico es instalar un paquete de 200 MB con docenas de dependencias transitivas. Cuando auditas bases de código críticas, <strong>no puedes permitir que tus herramientas de inspección tengan más superficie de ataque y fragilidad que el código que auditan</strong>.
+    </p>
+
+    <div class="shots-grid" style="margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-amber);">DOCTRINA // 01</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Pureza de Compilador (Zero Dependencies)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          A.R.G.O.S. opera exclusivamente sobre el árbol sintáctico abstracto (`ast`), expresiones regulares pre-compiladas y algoritmos de teoría de grafos implementados sobre la biblioteca estándar de Python. Sin `networkx`, sin `radon`, sin `pyyaml`. Cero cadenas de suministro ajenas.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-cyan);">DOCTRINA // 02</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Velocidad Determinista (1.13s Execution)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Un analizador que tarda 15 minutos en correr es ignorado por los ingenieros. Los <strong>907 tests de A.R.G.O.S. ejecutan en poco más de un segundo</strong>. Su auditoría completa sobre repositorios de más de 1,000 archivos concluye en menos de 30 segundos, permitiendo verificación instantánea en pipelines locales y CI.
+        </p>
+      </div>
+
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-emerald);">DOCTRINA // 03</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Visión Integral (Python + Rust FFI)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Los proyectos modernos de alto rendimiento ya no son monolitos en un solo lenguaje. A.R.G.O.S. audita la topología híbrida de Python vinculada con módulos nativos de Rust mediante PyO3, rastreando llamadas nativas y puntos de entrada sin GIL.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2: LAS 9 CAPAS ARQUITECTÓNICAS -->
+<section class="proj-block" id="capas" style="background: rgba(6, 9, 17, 0.75);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">02 // ESTRUCTURA MATEMÁTICA Y TOPOLÓGICA</p>
+    <h2>Las 9 Capas de A.R.G.O.S. (29 Micro-Módulos)</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      Organizado bajo una jerarquía modular con <strong>Boundary Guards</strong> infranqueables: ninguna capa superior puede violar las leyes ni importar de forma circular a una capa inferior.
+    </p>
+
+    <!-- INTERACTIVE 9-LAYER INSPECTOR -->
+    <div class="argos-layers-container" id="argos-layers-inspector">
+      <div class="argos-layers-list">
+        <button class="argos-layer-btn is-active" data-layer="c01"><span class="layer-code">C01</span> FUNDACIÓN // Ontología &amp; Models <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c02"><span class="layer-code">C02</span> CORE // FS, Git &amp; Símbolos <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c03"><span class="layer-code">C03</span> EXTRACTORES PYTHON // AST &amp; Routes <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c04"><span class="layer-code">C04</span> EXTRACTORES RUST // Crates &amp; PyO3 <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c05"><span class="layer-code">C05</span> SEGURIDAD // Redaction &amp; Secretos <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c06"><span class="layer-code">C06</span> GRAFO // DAG, MRO &amp; Reachability <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c07"><span class="layer-code">C07</span> MOTOR // Pipeline &amp; File Analyzer <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c08"><span class="layer-code">C08</span> FORMATTERS // Cytoscape &amp; Markdown <span class="layer-status-pill">OK</span></button>
+        <button class="argos-layer-btn" data-layer="c09"><span class="layer-code">C09</span> CLI // Orquestación y CI/CD <span class="layer-status-pill">OK</span></button>
+      </div>
+
+      <div class="argos-layer-detail-card" id="argos-layer-display">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid rgba(245,158,11,0.2); padding-bottom:0.75rem;">
+          <h3 id="layer-title" style="font-family:var(--font-hud); color:#fff; margin:0; font-size:1.3rem;">CAPA 01: FUNDACIÓN Y ONTOLOGÍA TIPADA</h3>
+          <span id="layer-badge" style="font-family:var(--font-hud-mono); font-size:0.75rem; color:var(--argos-amber); border:1px solid var(--argos-amber); padding:0.2rem 0.6rem; border-radius:3px;">MÓDULOS: config.py, models.py</span>
+        </div>
+        <p id="layer-desc" style="line-height:1.7; color:#cbd5e1; font-size:0.95rem;">
+          Define los contratos inmutables, tipos de datos canónicos y restricciones de runtime del sistema mediante dataclasses con <code>slots=True</code>. Ningún extractor puede inventar estructuras ad-hoc: toda información descubierta sobre funciones, clases, rutas y métricas se tipa en esta capa con verificación estricta en Pyright.
+        </p>
+        <div style="margin-top:1.25rem;">
+          <h4 style="font-family:var(--font-hud-mono); color:var(--argos-cyan); font-size:0.85rem; text-transform:uppercase; margin-bottom:0.5rem;">Responsabilidades Clave:</h4>
+          <ul id="layer-points" style="line-height:1.7; font-size:0.9rem; color:#94a3b8; padding-left:1.25rem;">
+            <li>Tipado estricto con 0 errores en Pyright para <code>InfoDefinicion</code>, <code>InfoRuta</code>, <code>InfoClase</code> y <code>InfoFileMetrics</code>.</li>
+            <li>Inmutabilidad estructural mediante slots que reducen el consumo de memoria en un 60% en repositorios masivos.</li>
+            <li>Método nativo <code>to_skeleton(nivel="contract")</code> para exportar contratos semánticos sin lecturas de disco adicionales.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: LOS 4 MOTORES DE ÉLITE -->
+<section class="proj-block" id="pilares">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">03 // INTELIGENCIA ESTÁTICA PROFUNDA</p>
+    <h2>Cuatro Motores de Clase Mundial</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      A.R.G.O.S. reemplaza las heurísticas superficiales con implementaciones matemáticas rigurosas construidas directamente sobre el AST.
+    </p>
+
+    <div class="shots-grid" style="margin-top:2.5rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      
+      <!-- PILAR 1 -->
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-amber);">MOTOR // 01</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Complejidad Cognitiva Real (SonarQube / Campbell)</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Implementa formalmente las reglas <strong>B1 (rupturas de flujo)</strong> y <strong>B2 (penalización acumulativa por anidamiento)</strong> del estándar de G. Ann Campbell. Trata los <code>elif</code> con incremento plano sin duplicar penalizaciones, excluye context managers <code>with</code> que no bifurcan flujo, detecta recursión directa y calcula el Índice de Mantenibilidad (MI) basado en Halstead.
+        </p>
+      </div>
+
+      <!-- PILAR 2 -->
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-cyan);">MOTOR // 02</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Topological Router DAG &amp; OpenAPI 3.1</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Construye un grafo dirigido acíclico de routers (FastAPI, Flask, Django, Starlette, Litestar) y los resuelve en <strong>orden topológico estricto</strong> para unir prefijos anidados multi-nivel. Detecta vulnerabilidades BOLA/IDOR analizando parámetros dinámicos, extrae dependencias de seguridad RBAC y exporta esquemas OpenAPI 3.1 parciales sin instanciar la aplicación.
+        </p>
+      </div>
+
+      <!-- PILAR 3 -->
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-emerald);">MOTOR // 03</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Cartografía AST de Entorno &amp; Manifiestos</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Supera los regex ciegos: rastrea <code>os.environ[...]</code>, <code>os.getenv</code>, y clases derivadas de <code>pydantic-settings</code> (detectando <code>Field(validation_alias=...)</code>, <code>AliasChoices</code> y defaults literales). Audita manifiestos <code>pyproject.toml</code> y <code>requirements.txt</code> alertando sobre dependencias no pineadas y directivas inseguras de contenedores (<code>USER root</code>, <code>:latest</code>).
+        </p>
+      </div>
+
+      <!-- PILAR 4 -->
+      <div class="bp-box bp-frame">
+        <span class="bp-box-id" style="color:var(--argos-amber);">MOTOR // 04</span>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Minería de Reglas de Negocio &amp; Ghost Tests</h3>
+        <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
+          Convierte identificadores de pruebas en especificaciones de negocio legibles mediante decodificación BDD y camelCase. Audita la calidad de las suites detectando <strong>Ghost Tests</strong> (pruebas vacías o sin aserciones que generan falsa cobertura), distinguiéndolos de omisiones intencionales (<code>@pytest.mark.skip</code>, <code>xfail</code>), y alertando sobre anti-patrones como <code>SETUP_EXCESIVO</code> o <code>DEMASIADOS_MOCKS</code>.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 4: TERMINAL EN VIVO (GOLDEN MASTER) -->
+<section class="proj-block" id="terminal" style="background: rgba(4, 7, 13, 0.9);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">04 // VERIFICACIÓN EN CALIENTE</p>
+    <h2>Golden Master: 1,063 Archivos Auditados en Vivo</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      El motor se somete de forma continua a pruebas de paridad sobre el repositorio completo de Archangel (más de 430,000 líneas políglotas en Python y Rust).
+    </p>
+
+    <div class="argos-terminal-frame">
+      <div class="argos-terminal-header">
+        <div class="argos-terminal-dots">
+          <span style="background:#ef4444;"></span>
+          <span style="background:#f59e0b;"></span>
+          <span style="background:#10b981;"></span>
+        </div>
+        <span>bash // argos-audit-session // 1,063 files</span>
+        <span>STATUS: 0 ERRORS</span>
+      </div>
+      <div class="argos-terminal-body">
+        <div><span class="cmd-prompt">gabo@archangel:~$</span> <span class="cmd-text">python3 -m argos.cli --dir ./archangel/ --out ./audit_map.md --no-pause</span></div>
+        <div class="cmd-out-dim">📂 Analizando repositorio: /home/gabo/Sintaxis_G/archangel</div>
+        <div class="cmd-out-accent">🔍 1,063 archivos encontrados, extrayendo mapa arquitectónico...</div>
+        <div class="cmd-out-dim">🧪 Cruzando con telemetría de cobertura y git porcelain v2...</div>
+        <div style="margin: 0.5rem 0;">
+          <span class="cmd-out-ok">✅  MAPA GENERADO EXITOSAMENTE: audit_map.md</span><br>
+          <span class="cmd-out-dim">   →</span> 1,063 archivos analizados, 102 rutas HTTP/WS, 1,965 clases detectadas<br>
+          <span class="cmd-out-dim">   →</span> 🦀 34 archivos Rust analizados, 1,883 ítems nativos (fn/struct/enum/impl)<br>
+          <span class="cmd-out-dim">   →</span> 78 analizadores registrados en catálogo, 69 conectados en runtime<br>
+          <span class="cmd-out-dim">   →</span> Alcanzabilidad: 1,473 raíces de ejecución, 594 funciones aisladas<br>
+          <span class="cmd-out-dim">   →</span> 🕸️  Grafo interactivo Cytoscape generado: 958 nodos, 2,601 edges, 21 ciclos
+        </div>
+        <div><span class="cmd-prompt">gabo@archangel:~$</span> <span class="cmd-text">pytest tests/test_argos/ -q</span></div>
+        <div class="cmd-out-ok">........................................................................ [100%]</div>
+        <div class="cmd-out-ok">907 passed in 1.13s ⚡ [0 errors, 0 warnings]</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 5: COMPARATIVA TÉCNICA -->
+<section class="proj-block" id="comparativa">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">05 // BENCHMARK ARQUITECTÓNICO</p>
+    <h2>A.R.G.O.S. frente a las Herramientas Tradicionales</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      ¿Cómo se compara un motor en stdlib puro frente a las suites corporativas y linters tradicionales?
+    </p>
+
+    <div style="overflow-x:auto;">
+      <table class="argos-benchmark-table">
+        <thead>
+          <tr>
+            <th>Capacidad / Métrica</th>
+            <th>A.R.G.O.S. v5.0</th>
+            <th>SonarQube</th>
+            <th>Radon / Flake8</th>
+            <th>Semgrep CLI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dependencias Externas</strong></td>
+            <td class="winner-cell">0 KB (Stdlib pura)</td>
+            <td>JVM + Base de datos</td>
+            <td>Librerías pip de terceros</td>
+            <td>Binario OCaml / Python</td>
+          </tr>
+          <tr>
+            <td><strong>Tiempo de Suite (900+ tests)</strong></td>
+            <td class="winner-cell">1.13 segundos</td>
+            <td>Varios minutos</td>
+            <td>Variable (segundos)</td>
+            <td>Variable</td>
+          </tr>
+          <tr>
+            <td><strong>Complejidad Cognitiva Campbell</strong></td>
+            <td class="winner-cell">Nativa AST (B1/B2)</td>
+            <td>Nativa</td>
+            <td>No (Solo Ciclomática plana)</td>
+            <td>Reglas externas</td>
+          </tr>
+          <tr>
+            <td><strong>Topología de Routers &amp; DAG</strong></td>
+            <td class="winner-cell">Orden topológico multi-framework</td>
+            <td>No resuelve prefijos AST</td>
+            <td>No soportado</td>
+            <td>Reglas de taint</td>
+          </tr>
+          <tr>
+            <td><strong>Inspección Híbrida Rust-PyO3</strong></td>
+            <td class="winner-cell">Nativa FFI</td>
+            <td>Por separado</td>
+            <td>No soportado</td>
+            <td>Por separado</td>
+          </tr>
+          <tr>
+            <td><strong>Sobrecarga en Memoria</strong></td>
+            <td class="winner-cell">Ultra-baja (slots=True)</td>
+            <td>Alta (&gt; 2 GB RAM)</td>
+            <td>Moderada</td>
+            <td>Moderada</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 6: LA FORJA EN CIFRAS -->
+<section class="proj-block" id="forja" style="background: rgba(13, 19, 33, 0.65);">
+  <div class="wrap">
+    <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">06 // INGENIERÍA DE ALTO RENDIMIENTO</p>
+    <h2>La Forja de A.R.G.O.S.: 16,951 Líneas en 12 Horas</h2>
+    <p class="lede" style="color:#cbd5e1;">
+      Desarrollado bajo una metodología de pair-programming de frontera: diseño estricto de interfaces, compilador con cero advertencias de tipo y batería de tests inmediata.
+    </p>
+
+    <div class="shots-grid" style="margin-top:2rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+      <div class="bp-box bp-frame">
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-amber);">+11,225</strong>
+        <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas de Producción Pura</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">Cero stubs, contratos cerrados, tipado al 100% verificado en Pyright.</p>
+      </div>
+      <div class="bp-box bp-frame">
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-emerald);">+5,726</strong>
+        <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas de Tests Unitarios</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">17 suites nuevas que blindan cada caso de borde sin dependencias mockeadas.</p>
+      </div>
+      <div class="bp-box bp-frame">
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-cyan);">1,412</strong>
+        <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas por Hora Verificadas</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">Velocidad continua manteniendo paridad absoluta sobre 1,063 archivos en vivo.</p>
+      </div>
+    </div>
+
+    <!-- RETORNO AL ECOSISTEMA -->
+    <div style="margin-top:3.5rem; text-align:center;">
+      <p style="font-family:var(--font-hud-mono); color:#94a3b8; font-size:0.9rem; margin-bottom:1rem;">PARTE INTEGRAL DEL ECOSISTEMA SINTAXIS G</p>
+      <div style="display:inline-flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+        <a class="featured-link" href="../index.html#ecosistema" style="border-color:var(--argos-amber); color:var(--argos-amber); background:rgba(245,158,11,0.08);">← Volver al Ecosistema</a>
+        <a class="featured-link" href="archangel.html" style="border-color:var(--argos-cyan); color:var(--argos-cyan); background:rgba(0,240,255,0.08);">Explorar ARCHANGEL (Nave Nodriza) →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <p class="footer-lema">No instalo sistemas. Forjo arquitecturas.</p>
+    <p class="footer-copy">© 2026 SINTAXIS G · A.R.G.O.S. // Titanium Core v5.0</p>
+  </div>
+</footer>
+
+<!-- SCRIPT INSPECTOR INTERACTIVO DE CAPAS & HERO CANVAS -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Datos interactivos de las 9 capas
+  const capasData = {
+    c01: {
+      titulo: 'CAPA 01: FUNDACIÓN Y ONTOLOGÍA TIPADA',
+      badge: 'MÓDULOS: config.py, models.py',
+      desc: 'Define los contratos inmutables, tipos de datos canónicos y restricciones de runtime del sistema mediante dataclasses con slots=True. Ningún extractor puede inventar estructuras ad-hoc: toda información descubierta sobre funciones, clases, rutas y métricas se tipa en esta capa con verificación estricta en Pyright.',
+      puntos: [
+        'Tipado estricto con 0 errores en Pyright para InfoDefinicion, InfoRuta, InfoClase y InfoFileMetrics.',
+        'Inmutabilidad estructural mediante slots que reducen el consumo de memoria en un 60% en repositorios masivos.',
+        'Método nativo to_skeleton(nivel="contract") para exportar contratos semánticos sin lecturas de disco adicionales.'
+      ]
+    },
+    c02: {
+      titulo: 'CAPA 02: SISTEMA DE ARCHIVOS, GIT Y SÍMBOLOS',
+      badge: 'MÓDULOS: fs.py, git.py, git_diagnostics.py, symbols.py',
+      desc: 'Gestiona la interacción con el sistema operativo y el sistema de control de versiones de forma determinista y sin invocar comandos de shell inseguros. Parsea directamente git porcelain v2 y extrae la tabla completa de símbolos accesibles.',
+      puntos: [
+        'Parsing nativo de Git Porcelain v2 para medir churn, autoría y cadencia de commits sin subprocesos lentos.',
+        'Extracción de símbolos globales e importados con soporte completo para PEP 695 type parameters.',
+        'Aislamiento de rutas POSIX y resolución canónica de nombres de archivo entre plataformas.'
+      ]
+    },
+    c03: {
+      titulo: 'CAPA 03: EXTRACTORES DE PYTHON Y RUTAS',
+      badge: 'MÓDULOS: skeleton.py, definitions.py, routes.py, complexity.py, config_files.py',
+      desc: 'El motor de análisis sintáctico más profundo de la plataforma. Recorre árboles AST extrayendo esqueletos con marcas de procedencia JIT, calcula complejidad cognitiva de Campbell y resuelve el DAG topológico de endpoints HTTP/WS.',
+      puntos: [
+        'Topological Router Graph: resolución de rutas padre-hijo multi-nivel en FastAPI, Flask, Django y Litestar.',
+        'Complejidad Cognitiva formal (SonarQube): reglas B1/B2 con cálculo por función, clase y archivo.',
+        'Minería de reglas de negocio en tests unitarios y auditoría de Ghost Tests (tests vacíos sin aserciones).'
+      ]
+    },
+    c04: {
+      titulo: 'CAPA 04: EXTRACTORES DE RUST Y PUENTE FFI',
+      badge: 'MÓDULOS: tokenizer.rs, skeleton.rs, crates.rs, pyo3.rs',
+      desc: 'Proporciona visión híbrida en repositorios políglotas. Permite a ARGOS auditar crates de Rust, mapear macros y firmas nativas, y rastrear los puentes FFI de PyO3 que comunican Python con Rust con Zero-GIL.',
+      puntos: [
+        'Tokenizer especializado en Rust capaz de aislar raw strings, macros y lifetimes sin romper parsing.',
+        'Mapeo de bindings PyO3: #[pymodule], #[pyclass] y #[pyfunction] vinculados a sus llamadores en Python.',
+        'Resolución de módulos en árboles de Cargo.toml, mod.rs y lib.rs.'
+      ]
+    },
+    c05: {
+      titulo: 'CAPA 05: SEGURIDAD Y REDACCIÓN QUIRÚRGICA',
+      badge: 'MÓDULOS: secret_patterns.py, redaction.py',
+      desc: 'Garantiza la confidencialidad de los repositorios auditados. Detecta credenciales con análisis de entropía y patrones regex, y sanea árboles de código antes de enviarlos a modelos de lenguaje o generar reportes exportables.',
+      puntos: [
+        'Catálogo de patrones de entropía para tokens de nube (AWS, GitHub, Stripe), connection strings y claves privadas.',
+        'Redacción quirúrgica a nivel de AST que oculta valores sensibles sin invalidar la estructura sintáctica del código.',
+        'Prevención de filtraciones en cadenas de texto triple-comilladas y variables de entorno.'
+      ]
+    },
+    c06: {
+      titulo: 'CAPA 06: GRAFO ARQUITECTÓNICO & REACHABILITY',
+      badge: 'MÓDULOS: mro.py, dynamic_dispatch.py, call_visitor.py, reachability.py, orphans.py',
+      desc: 'Transforma una lista plana de archivos en un grafo vivo de relaciones. Calcula la linealización C3 para herencia múltiple, mapea qué función llama a cuál y detecta código muerto mediante alcanzabilidad desde raíces.',
+      puntos: [
+        'Construcción de Call Graph intra e inter-módulo sin dependencias de frameworks externos.',
+        'Cálculo de alcanzabilidad desde entrypoints de CLI, workers de Celery y endpoints HTTP.',
+        'Clasificación estricta de funciones muertas reales distinguiendo fixtures y código exclusivo de tests.'
+      ]
+    },
+    c07: {
+      titulo: 'CAPA 07: MOTOR DE PIPELINE & FILE ANALYZER',
+      badge: 'MÓDULOS: file_analyzer.py, project_pipeline.py',
+      desc: 'El orquestador que coordina todas las fases de análisis sobre miles de archivos concurrentemente. Aplica filtros de exclusión (.gitignore), calcula métricas acumuladas y sintetiza la radiografía del repositorio.',
+      puntos: [
+        'Procesamiento en memoria ultra-rápido optimizado para repositorios de más de 100,000 líneas.',
+        'Detección automática de entrypoints de setup.py, pyproject.toml y frameworks web.',
+        'Manejo robusto de errores que aisla archivos corruptos sin detener el escaneo global.'
+      ]
+    },
+    c08: {
+      titulo: 'CAPA 08: FORMATEADORES & CYTOSCAPE 3D',
+      badge: 'MÓDULOS: cytoscape.py, markdown_sections.py, markdown_renderer.py',
+      desc: 'Convierte el modelo de datos interno en artefactos visuales y de texto de alta densidad. Genera especificaciones en Markdown de nivel ejecutivo y exporta grafos JSON interactivos listos para renderizarse en Cytoscape.js.',
+      puntos: [
+        'Generación de grafos interactivos con detección de ciclos de dependencias entre módulos.',
+        'Reportes de auditoría en Markdown organizados por severidad, seguridad y deuda técnica.',
+        'Visualización de dependencias y clusters de arquitectura.'
+      ]
+    },
+    c09: {
+      titulo: 'CAPA 09: CLI Y PUNTO DE ENTRADA',
+      badge: 'MÓDULOS: cli.py, __main__.py',
+      desc: 'La interfaz unificada para ingenieros y pipelines de CI/CD. Soporta flags para análisis de archivos modificados (--only-changed), límites de tamaño configurables y exportación automática de artefactos.',
+      puntos: [
+        'Ejecución directa como módulo CLI: python -m argos.cli --dir .',
+        'Integración sin fricción en GitHub Actions y scripts locales de pre-commit.',
+        'Salidas duales: reporte Markdown de auditoría + JSON interactivo para visualización web.'
+      ]
+    }
+  };
+
+  const buttons = document.querySelectorAll('.argos-layer-btn');
+  const titleEl = document.getElementById('layer-title');
+  const badgeEl = document.getElementById('layer-badge');
+  const descEl = document.getElementById('layer-desc');
+  const pointsEl = document.getElementById('layer-points');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      const data = capasData[btn.dataset.layer];
+      if (data && titleEl && badgeEl && descEl && pointsEl) {
+        titleEl.textContent = data.titulo;
+        badgeEl.textContent = data.badge;
+        descEl.textContent = data.desc;
+        pointsEl.innerHTML = data.puntos.map(p => `<li>${p}</li>`).join('');
+      }
+    });
+  });
+
+  // 2. Canvas decorativo de partículas y ondas concéntricas
+  const canvas = document.getElementById('argos-hero-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = canvas.parentElement.offsetHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = canvas.parentElement.offsetHeight;
+    });
+
+    let angle = 0;
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+
+      const centerX = width > 800 ? width * 0.78 : width * 0.5;
+      const centerY = height * 0.5;
+      angle += 0.004;
+
+      // Anillos concéntricos del DAG de Argos
+      const rings = [100, 160, 220, 280, 340];
+      rings.forEach((r, idx) => {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+        ctx.strokeStyle = idx % 2 === 0 ? 'rgba(245, 158, 11, 0.12)' : 'rgba(0, 240, 255, 0.08)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 12]);
+        ctx.stroke();
+      });
+
+      // Rayos de escaneo
+      ctx.setLineDash([]);
+      for (let i = 0; i < 6; i++) {
+        const rad = angle + (i * Math.PI / 3);
+        const x = centerX + Math.cos(rad) * 360;
+        const y = centerY + Math.sin(rad) * 360;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.04)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(render);
+    }
+    render();
+  }
+});
+</script>
+</body>
+</html>

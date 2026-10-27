@@ -1,0 +1,300 @@
+/* ==========================================================================
+   A.R.G.O.S. // TEMA CARTOGRÁFICO DE VIGILANCIA ARQUITECTÓNICA
+   Identidad visual: Panoptes Eye, Concentric DAG Rings, Amber Reactor & Cyan Telemetry.
+   Compatibilidad: sintaxis-g.github.io (Variables, Blueprint, Modo Búnker)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --argos-amber: #f59e0b;
+  --argos-amber-glow: rgba(245, 158, 11, 0.45);
+  --argos-amber-dim: rgba(245, 158, 11, 0.12);
+  --argos-cyan: #00f0ff;
+  --argos-cyan-glow: rgba(0, 240, 255, 0.4);
+  --argos-cyan-dim: rgba(0, 240, 255, 0.12);
+  --argos-emerald: #10b981;
+  --argos-emerald-glow: rgba(16, 185, 129, 0.4);
+  --argos-crimson: #ef4444;
+  --argos-obsidian: #060911;
+  --argos-surface: rgba(13, 19, 33, 0.75);
+  --argos-surface-card: rgba(18, 26, 44, 0.85);
+  --argos-border: rgba(245, 158, 11, 0.28);
+  --font-hud: 'Orbitron', var(--font-sans);
+  --font-hud-mono: 'Share Tech Mono', var(--font-mono);
+}
+
+body.page-argos {
+  --accent: var(--argos-amber);
+  --accent-dim: #d97706;
+  background-color: var(--argos-obsidian);
+  color: #cfd8dc;
+}
+
+/* Scanlines sutiles de telemetría */
+.argos-scanlines {
+  position: relative;
+}
+.argos-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+              linear-gradient(90deg, rgba(245, 158, 11, 0.02), rgba(0, 240, 255, 0.02), rgba(245, 158, 11, 0.02));
+  z-index: 10;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Hero Canvas */
+#argos-hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.argos-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Título estilizado con halo */
+.argos-title-glitch {
+  font-family: var(--font-hud);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-shadow: 0 0 24px rgba(245, 158, 11, 0.55), 0 0 4px #fff;
+}
+
+/* Ribbons y HUD Banners */
+.argos-hud-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--argos-surface);
+  border: 1px solid var(--argos-border);
+  border-radius: 4px;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-top: 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 12px var(--argos-amber-dim);
+}
+
+.argos-hud-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.argos-hud-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.argos-hud-dot.amber {
+  background: var(--argos-amber);
+  box-shadow: 0 0 8px var(--argos-amber-glow);
+}
+.argos-hud-dot.emerald {
+  background: var(--argos-emerald);
+  box-shadow: 0 0 8px var(--argos-emerald-glow);
+}
+.argos-hud-dot.cyan {
+  background: var(--argos-cyan);
+  box-shadow: 0 0 8px var(--argos-cyan-glow);
+}
+
+/* Métricas Grid Hero */
+.argos-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.argos-metric-box {
+  background: var(--argos-surface-card);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 1rem 0.85rem;
+  border-radius: 4px;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.argos-metric-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--argos-amber);
+  box-shadow: 0 4px 16px var(--argos-amber-glow);
+}
+.argos-metric-box strong {
+  display: block;
+  font-family: var(--font-hud);
+  font-size: 1.55rem;
+  color: #ffffff;
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+.argos-metric-box span {
+  display: block;
+  font-family: var(--font-hud-mono);
+  font-size: 0.75rem;
+  color: var(--argos-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.35rem;
+}
+
+/* Inspector de Capas */
+.argos-layers-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 860px) {
+  .argos-layers-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.argos-layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.argos-layer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  font-family: var(--font-hud-mono);
+  font-size: 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+.argos-layer-btn:hover {
+  border-color: var(--argos-amber);
+  color: #ffffff;
+  background: rgba(245, 158, 11, 0.08);
+}
+.argos-layer-btn.is-active {
+  border-color: var(--argos-amber);
+  color: #ffffff;
+  background: rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 12px var(--argos-amber-glow);
+}
+.argos-layer-btn .layer-code {
+  font-weight: 700;
+  color: var(--argos-amber);
+  margin-right: 0.5rem;
+}
+.argos-layer-btn .layer-status-pill {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--argos-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.argos-layer-detail-card {
+  background: var(--argos-surface-card);
+  border: 1px solid var(--argos-border);
+  padding: 1.75rem;
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Terminal Simulada */
+.argos-terminal-frame {
+  background: #030712;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  margin: 2rem 0;
+}
+.argos-terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: #0b1120;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  font-family: var(--font-hud-mono);
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+.argos-terminal-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+.argos-terminal-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.argos-terminal-body {
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  overflow-x: auto;
+}
+.argos-terminal-body .cmd-prompt { color: var(--argos-amber); font-weight: 700; }
+.argos-terminal-body .cmd-text { color: #f8fafc; }
+.argos-terminal-body .cmd-out-accent { color: var(--argos-cyan); }
+.argos-terminal-body .cmd-out-ok { color: var(--argos-emerald); font-weight: 700; }
+.argos-terminal-body .cmd-out-warn { color: var(--argos-amber); }
+.argos-terminal-body .cmd-out-dim { color: #64748b; }
+
+/* Tabla comparativa */
+.argos-benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--font-hud-mono);
+  font-size: 0.88rem;
+}
+.argos-benchmark-table th {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--argos-amber);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--argos-border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.argos-benchmark-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+}
+.argos-benchmark-table tr:hover td {
+  background: rgba(245, 158, 11, 0.05);
+}
+.argos-benchmark-table .winner-cell {
+  color: var(--argos-emerald);
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.08);
+}

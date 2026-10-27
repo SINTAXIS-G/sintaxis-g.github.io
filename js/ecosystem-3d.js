@@ -90,17 +90,17 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     {
       index: 4,
       id: '[SYS-04]',
-      domId: 'sys-atlas',
-      name: 'ATLAS',
-      badge: 'Diagnóstico: Perfilador Stdlib',
-      theme: 'cyan',
+      domId: 'sys-argos',
+      name: 'A.R.G.O.S.',
+      badge: 'Cartografía: Telemetría Estática',
+      theme: 'amber',
       pos: new THREE.Vector3(2.05, -1.60, 1.70),
-      desc: 'Motor de descubrimiento y perfilado holístico de repositorios en stdlib puro sin dependencias. Audita ADN de código, modularidad y huellas de 23 frameworks antes de ARCHANGEL.',
+      desc: 'Motor omnisciente de cartografía arquitectónica, complejidad cognitiva SonarQube, DAG de routers y telemetría de repositorios en stdlib puro con 0 dependencias.',
       metrics: [
-        { label: 'DEPENDENCIES', val: '0 (Stdlib)' },
-        { label: 'FRAMEWORKS', val: '23 HUELLAS' },
-        { label: 'TEST_ASSERTS', val: '57 EN VERDE' },
-        { label: 'EXPLORABILITY', val: '8 DIMS' }
+        { label: 'DEPENDENCIES', val: '0 KB (Stdlib)' },
+        { label: 'TESTS_PASSING', val: '907 EN VERDE' },
+        { label: 'EXEC_TIME', val: '1.13 SECONDS' },
+        { label: 'ARCHITECTURE', val: '29 MÓDULOS' }
       ]
     },
     {

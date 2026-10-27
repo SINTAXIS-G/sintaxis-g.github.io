@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A.R.G.O.S. // Live Architecture Observatory & Radar</title>
+  <meta name="description" content="A.R.G.O.S. Observatorio Arquitectónico en Vivo: Cartografía de 360°, detección de código huérfano, puente FFI Python-Rust y telemetría continua con cero fatiga visual.">
+  
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Cytoscape y Dagre Layout (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+
+  <style>
+    :root {
+      --bg-void: #060911;
+      --bg-panel: rgba(10, 15, 26, 0.88);
+      --bg-panel-solid: #0d1322;
+      --border-subtle: rgba(6, 182, 212, 0.16);
+      --border-focus: rgba(245, 158, 11, 0.5);
+      
+      --cyan-bright: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.25);
+      --amber-bright: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.25);
+      --emerald-bright: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --ruby-bright: #ef4444;
+      --ruby-glow: rgba(239, 68, 68, 0.35);
+      --violet-bright: #a855f7;
+      
+      --text-main: #e2f1ff;
+      --text-muted: #88a0b8;
+      --text-dim: #4b6279;
+      
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 13px;
+      user-select: none;
+    }
+
+    /* Retícula táctica de fondo */
+    .viewport-grid {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 70%),
+        linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Lienzo Cytoscape */
+    #cy {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: transparent;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       HUD SUPERIOR / BARRA DE TELEMETRÍA Y CABECERA
+       ══════════════════════════════════════════════════════════════════ */
+    .hud-header {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      pointer-events: none;
+    }
+
+    .hud-header > * {
+      pointer-events: auto;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      background: var(--bg-panel);
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--cyan-bright);
+      backdrop-filter: blur(8px);
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-cluster a {
+      color: var(--cyan-bright);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .brand-cluster a:hover {
+      color: #fff;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--amber-bright);
+      color: var(--amber-bright);
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    /* Barra de telemetría de estado */
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--bg-panel);
+      padding: 0.55rem 1.25rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-value {
+      color: var(--cyan-bright);
+      font-weight: 700;
+    }
+
+    .metric-value.emerald { color: var(--emerald-bright); }
+    .metric-value.ruby { color: var(--ruby-bright); }
+    .metric-value.amber { color: var(--amber-bright); }
+
+    /* Indicador de pulso del daemon */
+    .daemon-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--emerald-bright);
+      font-weight: 700;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-bright);
+      box-shadow: 0 0 10px var(--emerald-bright);
+      animation: pulseAnim 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 0.3; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       BARRA LATERAL IZQUIERDA: SELECTOR DE CAPAS Y ENFOQUE (ANTI-FATIGA)
+       ══════════════════════════════════════════════════════════════════ */
+    .control-deck {
+      position: absolute;
+      top: 5rem;
+      left: 1rem;
+      z-index: 10;
+      width: 260px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .deck-title {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--cyan-bright);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.4rem;
+    }
+
+    .deck-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.1rem;
+    }
+
+    /* Botones de capa temáticas */
+    .layer-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 19, 34, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0.5rem 0.7rem;
+      border-radius: 3px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .layer-btn:hover {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--cyan-bright);
+    }
+
+    .layer-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--cyan-bright);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .layer-btn.ruby.active {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--ruby-bright);
+    }
+
+    .layer-btn.amber.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--amber-bright);
+    }
+
+    .layer-pill {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .layer-btn.active .layer-pill {
+      background: var(--cyan-bright);
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* Slider de radio ego-céntrico */
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .slider-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan-bright);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--cyan-bright);
+    }
+
+    /* Búsqueda rápida de símbolos */
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: #090e18;
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      padding: 0.45rem 0.6rem;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--cyan-bright);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       PANEL DERECHO: INSPECTOR DE NODO SELECCIONADO
+       ══════════════════════════════════════════════════════════════════ */
+    .inspector-panel {
+      position: absolute;
+      top: 5rem;
+      right: 1rem;
+      z-index: 10;
+      width: 320px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .node-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.6rem;
+    }
+
+    .node-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .node-kind-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.1rem 0.35rem;
+      border-radius: 2px;
+      width: fit-content;
+    }
+
+    .kind-py { background: rgba(0, 240, 255, 0.15); color: var(--cyan-bright); border: 1px solid var(--cyan-bright); }
+    .kind-rs { background: rgba(245, 158, 11, 0.15); color: var(--amber-bright); border: 1px solid var(--amber-bright); }
+    .kind-route { background: rgba(16, 185, 129, 0.15); color: var(--emerald-bright); border: 1px solid var(--emerald-bright); }
+    .kind-dead { background: rgba(239, 68, 68, 0.2); color: var(--ruby-bright); border: 1px solid var(--ruby-bright); }
+
+    .node-name {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .node-file {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .node-properties {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .prop-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .prop-name { color: var(--text-muted); }
+    .prop-val { font-weight: 700; color: #fff; }
+
+    .sim-action-btn {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid var(--ruby-bright);
+      color: var(--ruby-bright);
+      padding: 0.5rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.3rem;
+    }
+
+    .sim-action-btn:hover {
+      background: var(--ruby-bright);
+      color: #fff;
+      box-shadow: 0 0 12px var(--ruby-glow);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       PANEL INFERIOR: LIVE STREAM EVENT LOG DEL DAEMON
+       ══════════════════════════════════════════════════════════════════ */
+    .stream-log-drawer {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      z-index: 10;
+      height: 110px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--amber-bright);
+      border-radius: 4px;
+      padding: 0.6rem 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--amber-bright);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .log-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
+    .log-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .log-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    .log-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      opacity: 0.9;
+    }
+
+    .log-time { color: var(--text-dim); }
+    .log-tag { font-weight: 700; padding: 0.05rem 0.25rem; border-radius: 2px; font-size: 0.62rem; }
+    .tag-delta { background: rgba(0, 240, 255, 0.15); color: var(--cyan-bright); }
+    .tag-gc { background: rgba(239, 68, 68, 0.15); color: var(--ruby-bright); }
+    .tag-ffi { background: rgba(245, 158, 11, 0.15); color: var(--amber-bright); }
+    .tag-clean { background: rgba(16, 185, 129, 0.15); color: var(--emerald-bright); }
+    .log-msg { color: var(--text-main); }
+
+    /* Barra de botones de simulación manual */
+    .sim-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .mini-sim-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mini-sim-btn:hover {
+      background: var(--cyan-bright);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Retícula de Fondo -->
+  <div class="viewport-grid"></div>
+
+  <!-- Lienzo de Cytoscape -->
+  <div id="cy"></div>
+
+  <!-- HUD Cabecera Superior -->
+  <header class="hud-header">
+    <div class="brand-cluster">
+      <a href="argos.html">← ARGOS HOME</a>
+      <div class="brand-title">
+        <span>A.R.G.O.S.</span>
+        <span class="brand-badge">OBSERVATORY v5.0</span>
+      </div>
+    </div>
+
+    <!-- Telemetría en Vivo -->
+    <div class="telemetry-bar">
+      <div class="metric-item">
+        <span class="metric-label">Nodos Vivos:</span>
+        <span class="metric-value emerald" id="val-nodes-alive">48</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">Desconectados (GC):</span>
+        <span class="metric-value ruby" id="val-nodes-dead">3</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">Puentes FFI PyO3:</span>
+        <span class="metric-value amber" id="val-bridges-ffi">8</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">Latencia Inval.:</span>
+        <span class="metric-value" id="val-latency">11.4 ms</span>
+      </div>
+      <div class="daemon-indicator">
+        <div class="pulse-dot"></div>
+        <span>DAEMON STREAMING</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Panel de Control Izquierdo (Filtros y Anti-Fatiga) -->
+  <aside class="control-deck">
+    <div class="deck-title">
+      <span>Capas de Visión</span>
+      <span style="font-size:0.6rem; color:var(--text-muted);">ZERO HAIRBALL</span>
+    </div>
+
+    <!-- Selección de Capa Temática -->
+    <div class="deck-section">
+      <div class="section-label">Filtrado por Propósito</div>
+      <button class="layer-btn active" data-layer="all">
+        <span>🌐 Todos los Dominios</span>
+        <span class="layer-pill" id="pill-all">51</span>
+      </button>
+      <button class="layer-btn" data-layer="happy_path">
+        <span>🟢 Flujo Activo (Roots)</span>
+        <span class="layer-pill">26</span>
+      </button>
+      <button class="layer-btn ruby" data-layer="necropolis">
+        <span>🔴 La Necrópolis (Huérfanos)</span>
+        <span class="layer-pill" style="color:var(--ruby-bright);">3</span>
+      </button>
+      <button class="layer-btn amber" data-layer="ffi_bridge">
+        <span>🌉 Puente Rust-Python FFI</span>
+        <span class="layer-pill">12</span>
+      </button>
+      <button class="layer-btn" data-layer="infra">
+        <span>📦 Infraestructura & Envs</span>
+        <span class="layer-pill">7</span>
+      </button>
+    </div>
+
+    <!-- Control de Enfoque Ego-Céntrico -->
+    <div class="deck-section">
+      <div class="section-label">Enfoque Ego-Céntrico</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <span style="color:var(--text-muted);">Profundidad de Impacto:</span>
+          <span id="label-depth" style="color:var(--cyan-bright); font-weight:700;">Todo</span>
+        </div>
+        <input type="range" id="slider-depth" min="1" max="4" value="4">
+      </div>
+    </div>
+
+    <!-- Búsqueda Rápida -->
+    <div class="deck-section">
+      <div class="section-label">Búsqueda Rápida</div>
+      <div class="search-box">
+        <input type="text" class="search-input" id="search-symbol" placeholder="Filtrar fn, struct o ruta...">
+      </div>
+    </div>
+  </aside>
+
+  <!-- Panel Inspector Derecho (Detalle del Nodo) -->
+  <aside class="inspector-panel" id="inspector">
+    <div class="node-header">
+      <div class="node-title-group">
+        <span class="node-kind-badge kind-py" id="insp-kind">PYTHON_MODULE</span>
+        <span class="node-name" id="insp-name">core.engine.unified_risk</span>
+      </div>
+    </div>
+
+    <div class="node-file" id="insp-file">archangel/core/engine/unified_risk.py</div>
+
+    <div class="node-properties">
+      <div class="prop-row">
+        <span class="prop-name">Estado GC:</span>
+        <span class="prop-val" id="insp-gc-status" style="color:var(--emerald-bright);">ROOT_ALCANZABLE</span>
+      </div>
+      <div class="prop-row">
+        <span class="prop-name">Consumidores (In-Degree):</span>
+        <span class="prop-val" id="insp-in">14</span>
+      </div>
+      <div class="prop-row">
+        <span class="prop-name">Invocaciones (Out-Degree):</span>
+        <span class="prop-val" id="insp-out">9</span>
+      </div>
+      <div class="prop-row">
+        <span class="prop-name">Complejidad Ciclomática:</span>
+        <span class="prop-val" id="insp-cc">18</span>
+      </div>
+      <div class="prop-row">
+        <span class="prop-name">Puente Rust PyO3:</span>
+        <span class="prop-val" id="insp-ffi">archangel_rs::race_pts</span>
+      </div>
+    </div>
+
+    <button class="sim-action-btn" id="btn-toggle-orphan">Simular Desconexión</button>
+  </aside>
+
+  <!-- Drawer Inferior: Stream de Eventos en Vivo del Daemon -->
+  <footer class="stream-log-drawer">
+    <div class="log-header">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span class="pulse-dot" style="width:6px; height:6px;"></span>
+        <span>DAEMON EVENT STREAM (SIMULACIÓN DE GUARDADOS EN TIEMPO REAL)</span>
+      </div>
+      <div class="sim-controls">
+        <button class="mini-sim-btn" id="btn-trigger-save">⚡ Simular Guardado IDE</button>
+        <button class="mini-sim-btn" id="btn-trigger-orphan">✂️ Desconectar Rama</button>
+        <button class="mini-sim-btn" id="btn-trigger-reconnect">🔌 Reconectar Todo</button>
+      </div>
+    </div>
+
+    <div class="log-scroll" id="log-container">
+      <!-- Los eventos se inyectan dinámicamente aquí -->
+    </div>
+  </footer>
+
+  <!-- Lógica de Simulación y Cytoscape -->
+  <script>
+    // ═════════════════════════════════════════════════════════════════════════
+    // 1. MODELO DE DATOS INICIAL DEL REPOSITORIO (Simulando A.R.G.O.S.)
+    // ═════════════════════════════════════════════════════════════════════════
+    const repoElements = [
+      // Cluster 1: API Roots (Puntos de Entrada HTTP)
+      { data: { id: 'api_main', label: 'core.api.main', kind: 'route', cluster: 'api', file: 'core/api/main.py', cc: 5, status: 'alive' } },
+      { data: { id: 'api_analyze', label: 'POST /analyze', kind: 'route', cluster: 'api', file: 'core/api/routes/analyze.py', cc: 8, status: 'alive' } },
+      { data: { id: 'api_rag', label: 'POST /rag/query', kind: 'route', cluster: 'api', file: 'core/api/routes/rag.py', cc: 12, status: 'alive' } },
+      { data: { id: 'cli_runner', label: 'cli.main()', kind: 'route', cluster: 'api', file: 'argos/cli.py', cc: 6, status: 'alive' } },
+
+      // Cluster 2: Core Orchestration Engine
+      { data: { id: 'daemon', label: 'core.engine.daemon', kind: 'python', cluster: 'engine', file: 'core/engine/daemon.py', cc: 22, status: 'alive' } },
+      { data: { id: 'workers', label: 'core.engine.workers', kind: 'python', cluster: 'engine', file: 'core/engine/workers.py', cc: 15, status: 'alive' } },
+      { data: { id: 'unified_risk', label: 'core.engine.unified_risk', kind: 'python', cluster: 'engine', file: 'core/engine/unified_risk.py', cc: 18, status: 'alive' } },
+      { data: { id: 'pipeline', label: 'argos.engine.pipeline', kind: 'python', cluster: 'engine', file: 'argos/engine/project_pipeline.py', cc: 14, status: 'alive' } },
+
+      // Cluster 3: Python AST Extractors
+      { data: { id: 'py_routes', label: 'extractors.python.routes', kind: 'python', cluster: 'extractors', file: 'argos/extractors/python/routes.py', cc: 25, status: 'alive' } },
+      { data: { id: 'py_complexity', label: 'extractors.python.complexity', kind: 'python', cluster: 'extractors', file: 'argos/extractors/python/complexity.py', cc: 19, status: 'alive' } },
+      { data: { id: 'yaml_lite', label: 'extractors.python.yaml_lite', kind: 'python', cluster: 'extractors', file: 'argos/extractors/python/yaml_lite.py', cc: 28, status: 'alive' } },
+      { data: { id: 'py_config', label: 'extractors.python.config_files', kind: 'python', cluster: 'extractors', file: 'argos/extractors/python/config_files.py', cc: 31, status: 'alive' } },
+
+      // Cluster 4: Rust Bedrock (archangel_rs) vía PyO3
+      { data: { id: 'rs_lib', label: '#[pymodule] archangel_rs', kind: 'rust', cluster: 'rust', file: 'archangel_rs/src/lib.rs', cc: 10, status: 'alive', is_ffi: true } },
+      { data: { id: 'rs_evm', label: 'archangel_rs::evm', kind: 'rust', cluster: 'rust', file: 'archangel_rs/src/evm.rs', cc: 34, status: 'alive' } },
+      { data: { id: 'rs_wasm', label: 'archangel_rs::wasm', kind: 'rust', cluster: 'rust', file: 'archangel_rs/src/wasm.rs', cc: 27, status: 'alive' } },
+      { data: { id: 'rs_race', label: 'archangel_rs::race_pts', kind: 'rust', cluster: 'rust', file: 'archangel_rs/src/race_pts.rs', cc: 41, status: 'alive', is_ffi: true } },
+      { data: { id: 'rs_tstate', label: '#[pyclass] TState', kind: 'rust', cluster: 'rust', file: 'archangel_rs/src/tstate.rs', cc: 16, status: 'alive', is_ffi: true } },
+
+      // Cluster 5: Infra & Config
+      { data: { id: 'compose', label: 'docker-compose.yml', kind: 'infra', cluster: 'infra', file: 'docker-compose.yml', cc: 1, status: 'alive' } },
+      { data: { id: 'dockerfile', label: 'Dockerfile (multi-stage)', kind: 'infra', cluster: 'infra', file: 'Dockerfile', cc: 1, status: 'alive' } },
+      { data: { id: 'cargo_toml', label: 'Cargo.toml (workspace)', kind: 'infra', cluster: 'infra', file: 'Cargo.toml', cc: 1, status: 'alive' } },
+
+      // Cluster 6: Código Huérfano (La Necrópolis - Desconectados de Roots)
+      { data: { id: 'dead_scanner', label: 'legacy_v1_scanner.py', kind: 'dead', cluster: 'necropolis', file: 'core/legacy_v1_scanner.py', cc: 14, status: 'dead' } },
+      { data: { id: 'dead_eval', label: 'deprecated_metric()', kind: 'dead', cluster: 'necropolis', file: 'core/analyzers/old_eval.py', cc: 9, status: 'dead' } },
+      { data: { id: 'dead_helper', label: 'unused_jwt_helper()', kind: 'dead', cluster: 'necropolis', file: 'core/utils/crypto_old.py', cc: 4, status: 'dead' } },
+
+      // ── ARISTAS / CONEXIONES ──
+      // Rutas HTTP -> Motor
+      { data: { id: 'e1', source: 'api_main', target: 'api_analyze' } },
+      { data: { id: 'e2', source: 'api_main', target: 'api_rag' } },
+      { data: { id: 'e3', source: 'api_analyze', target: 'daemon' } },
+      { data: { id: 'e4', source: 'cli_runner', target: 'pipeline' } },
+      
+      // Motor -> Extractores
+      { data: { id: 'e5', source: 'daemon', target: 'workers' } },
+      { data: { id: 'e6', source: 'workers', target: 'unified_risk' } },
+      { data: { id: 'e7', source: 'pipeline', target: 'py_routes' } },
+      { data: { id: 'e8', source: 'pipeline', target: 'py_complexity' } },
+      { data: { id: 'e9', source: 'pipeline', target: 'py_config' } },
+      { data: { id: 'e10', source: 'py_config', target: 'yaml_lite' } },
+
+      // Conexión FFI: Python calling Rust
+      { data: { id: 'e11', source: 'unified_risk', target: 'rs_lib', is_ffi: true } },
+      { data: { id: 'e12', source: 'rs_lib', target: 'rs_evm' } },
+      { data: { id: 'e13', source: 'rs_lib', target: 'rs_wasm' } },
+      { data: { id: 'e14', source: 'rs_lib', target: 'rs_race', is_ffi: true } },
+      { data: { id: 'e15', source: 'workers', target: 'rs_tstate', is_ffi: true } },
+
+      // Infraestructura -> Archivos
+      { data: { id: 'e16', source: 'compose', target: 'dockerfile' } },
+      { data: { id: 'e17', source: 'cargo_toml', target: 'rs_lib' } },
+
+      // Aristas internas muertas (aisladas de las raíces)
+      { data: { id: 'e_dead1', source: 'dead_scanner', target: 'dead_eval', is_dead: true } }
+    ];
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // 2. CONFIGURACIÓN DE ESTILOS VISUALES CYTOSCAPE (AESTHETIC TÁCTICA)
+    // ═════════════════════════════════════════════════════════════════════════
+    const cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: repoElements,
+      boxSelectionEnabled: false,
+      autounselectify: false,
+      style: [
+        // Nodos Base
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(label)',
+            'font-family': 'JetBrains Mono, monospace',
+            'font-size': '11px',
+            'color': '#cbd5e1',
+            'text-valign': 'bottom',
+            'text-margin-y': '6px',
+            'background-color': '#111827',
+            'border-width': '2px',
+            'border-color': '#00f0ff',
+            'width': '22px',
+            'height': '22px',
+            'transition-property': 'background-color, border-color, width, height, opacity',
+            'transition-duration': '0.3s'
+          }
+        },
+
+        // Nodos: Rutas de API / Raíces de Entrada (Verde Esmeralda)
+        {
+          selector: 'node[kind = "route"]',
+          style: {
+            'border-color': '#10b981',
+            'background-color': '#064e3b',
+            'width': '28px',
+            'height': '28px',
+            'font-weight': 'bold',
+            'color': '#34d399'
+          }
+        },
+
+        // Nodos: Rust Bedrock (Ámbar)
+        {
+          selector: 'node[kind = "rust"]',
+          style: {
+            'border-color': '#f59e0b',
+            'background-color': '#451a03',
+            'color': '#fbbf24'
+          }
+        },
+
+        // Nodos: Infraestructura (Violeta)
+        {
+          selector: 'node[kind = "infra"]',
+          style: {
+            'border-color': '#a855f7',
+            'background-color': '#3b0764',
+            'color': '#c084fc'
+          }
+        },
+
+        // Nodos: Código Huérfano / Necrópolis (Rojo Peligro)
+        {
+          selector: 'node[status = "dead"]',
+          style: {
+            'border-color': '#ef4444',
+            'background-color': '#7f1d1d',
+            'color': '#f87171',
+            'border-style': 'dashed',
+            'width': '20px',
+            'height': '20px'
+          }
+        },
+
+        // Nodos Seleccionados / Enfoque Activo
+        {
+          selector: 'node:selected',
+          style: {
+            'border-color': '#ffffff',
+            'border-width': '4px',
+            'background-color': '#00f0ff',
+            'width': '34px',
+            'height': '34px',
+            'color': '#ffffff'
+          }
+        },
+
+        // Aristas Base
+        {
+          selector: 'edge',
+          style: {
+            'width': 1.5,
+            'line-color': 'rgba(6, 182, 212, 0.28)',
+            'target-arrow-color': 'rgba(6, 182, 212, 0.4)',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'arrow-scale': 0.8,
+            'transition-property': 'line-color, width, opacity',
+            'transition-duration': '0.3s'
+          }
+        },
+
+        // Aristas FFI (Python cruzando a Rust)
+        {
+          selector: 'edge[is_ffi]',
+          style: {
+            'width': 2.5,
+            'line-color': '#f59e0b',
+            'target-arrow-color': '#f59e0b',
+            'line-style': 'solid'
+          }
+        },
+
+        // Aristas Muertas
+        {
+          selector: 'edge[is_dead]',
+          style: {
+            'line-color': 'rgba(239, 68, 68, 0.4)',
+            'target-arrow-color': 'rgba(239, 68, 68, 0.4)',
+            'line-style': 'dashed'
+          }
+        },
+
+        // Clases de Atenuación (Focus Anti-Fatiga)
+        {
+          selector: '.dimmed',
+          style: {
+            'opacity': 0.12
+          }
+        },
+        {
+          selector: '.highlighted',
+          style: {
+            'opacity': 1,
+            'line-color': '#00f0ff',
+            'target-arrow-color': '#00f0ff',
+            'width': 3
+          }
+        }
+      ],
+      layout: {
+        name: 'dagre',
+        rankDir: 'LR',
+        nodeSep: 45,
+        rankSep: 85,
+        padding: 60
+      }
+    });
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // 3. CONTROL DE CAPAS TEMÁTICAS (FILTRADO CERO FATIGA)
+    // ═════════════════════════════════════════════════════════════════════════
+    const layerButtons = document.querySelectorAll('.layer-btn');
+    layerButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        layerButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const layer = btn.dataset.layer;
+        applyLayerFilter(layer);
+      });
+    });
+
+    function applyLayerFilter(layer) {
+      cy.batch(() => {
+        cy.elements().removeClass('dimmed').removeClass('highlighted');
+
+        if (layer === 'happy_path') {
+          // Solo nodos vivos conectados a roots
+          cy.nodes('[status = "dead"]').addClass('dimmed');
+          cy.nodes('[cluster = "infra"]').addClass('dimmed');
+          cy.edges('[is_dead]').addClass('dimmed');
+        } else if (layer === 'necropolis') {
+          // SOLO resalta el código huérfano / muerto
+          cy.nodes('[status = "alive"]').addClass('dimmed');
+          cy.edges().addClass('dimmed');
+          cy.nodes('[status = "dead"]').removeClass('dimmed').addClass('highlighted');
+          cy.edges('[is_dead]').removeClass('dimmed').addClass('highlighted');
+        } else if (layer === 'ffi_bridge') {
+          // Solo conexiones Python <-> Rust
+          cy.elements().addClass('dimmed');
+          const ffiEdges = cy.edges('[is_ffi]');
+          ffiEdges.removeClass('dimmed').addClass('highlighted');
+          ffiEdges.connectedNodes().removeClass('dimmed').addClass('highlighted');
+        } else if (layer === 'infra') {
+          // Solo Docker, Compose, Cargo
+          cy.elements().addClass('dimmed');
+          cy.nodes('[cluster = "infra"]').removeClass('dimmed').addClass('highlighted');
+          cy.nodes('[cluster = "infra"]').connectedEdges().removeClass('dimmed');
+        }
+      });
+    }
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // 4. INSPECTOR DE NODOS Y ENFOQUE EGO-CÉNTRICO
+    // ═════════════════════════════════════════════════════════════════════════
+    let selectedNode = null;
+
+    cy.on('tap', 'node', function(evt) {
+      selectedNode = evt.target;
+      updateInspector(selectedNode);
+      applyEgoFocus(selectedNode);
+    });
+
+    cy.on('tap', function(evt) {
+      if (evt.target === cy) {
+        selectedNode = null;
+        cy.elements().removeClass('dimmed').removeClass('highlighted');
+      }
+    });
+
+    function updateInspector(node) {
+      const d = node.data();
+      document.getElementById('insp-name').textContent = d.label;
+      document.getElementById('insp-file').textContent = d.file;
+      document.getElementById('insp-kind').textContent = d.kind.toUpperCase();
+      document.getElementById('insp-kind').className = 'node-kind-badge kind-' + d.kind;
+
+      const gcStatus = document.getElementById('insp-gc-status');
+      if (d.status === 'dead') {
+        gcStatus.textContent = 'HUÉRFANO_DESCONECTADO';
+        gcStatus.style.color = 'var(--ruby-bright)';
+      } else {
+        gcStatus.textContent = 'ROOT_ALCANZABLE';
+        gcStatus.style.color = 'var(--emerald-bright)';
+      }
+
+      document.getElementById('insp-in').textContent = node.incomers('edge').length;
+      document.getElementById('insp-out').textContent = node.outgoers('edge').length;
+      document.getElementById('insp-cc').textContent = d.cc || 1;
+      document.getElementById('insp-ffi').textContent = d.is_ffi ? 'ACTIVO (PyO3)' : 'NO_FFI';
+
+      const btnOrphan = document.getElementById('btn-toggle-orphan');
+      btnOrphan.textContent = d.status === 'dead' ? 'Reconectar al Grafo' : 'Simular Desconexión';
+    }
+
+    function applyEgoFocus(node) {
+      const depth = parseInt(document.getElementById('slider-depth').value, 10);
+      if (depth >= 4) {
+        cy.elements().removeClass('dimmed');
+        return;
+      }
+
+      cy.batch(() => {
+        cy.elements().addClass('dimmed');
+        let neighborhood = node;
+        for (let i = 0; i < depth; i++) {
+          neighborhood = neighborhood.add(neighborhood.neighborhood());
+        }
+        neighborhood.removeClass('dimmed');
+      });
+    }
+
+    // Slider de profundidad
+    const sliderDepth = document.getElementById('slider-depth');
+    const labelDepth = document.getElementById('label-depth');
+    sliderDepth.addEventListener('input', (e) => {
+      const val = e.target.value;
+      labelDepth.textContent = val === '4' ? 'Todo' : val + ' salto(s)';
+      if (selectedNode) {
+        applyEgoFocus(selectedNode);
+      }
+    });
+
+    // Búsqueda de símbolos
+    const searchInput = document.getElementById('search-symbol');
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) {
+        cy.elements().removeClass('dimmed');
+        return;
+      }
+
+      cy.batch(() => {
+        cy.elements().addClass('dimmed');
+        const matchNodes = cy.nodes().filter(n => {
+          const l = n.data('label').toLowerCase();
+          const f = n.data('file').toLowerCase();
+          return l.includes(q) || f.includes(q);
+        });
+        matchNodes.removeClass('dimmed');
+        matchNodes.connectedEdges().removeClass('dimmed');
+      });
+    });
+
+    // ═════════════════════════════════════════════════════════════════════════
+    // 5. MOTOR DE STREAMING SIMULADO DEL DAEMON EN TIEMPO REAL
+    // ═════════════════════════════════════════════════════════════════════════
+    const logContainer = document.getElementById('log-container');
+
+    function pushLog(tagClass, tagText, message) {
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
+      
+      const div = document.createElement('div');
+      div.className = 'log-entry';
+      div.innerHTML = `
+        <span class="log-time">[${timeStr}]</span>
+        <span class="log-tag ${tagClass}">${tagText}</span>
+        <span class="log-msg">${message}</span>
+      `;
+      logContainer.prepend(div);
+
+      // Limitar a los 25 eventos más recientes
+      if (logContainer.children.length > 25) {
+        logContainer.removeChild(logContainer.lastChild);
+      }
+    }
+
+    // Eventos simulados periódicos
+    const simulatedEvents = [
+      { tagClass: 'tag-delta', tagText: 'FILE_SAVE', msg: 'core/engine/workers.py guardado. Re-escaneo AST en 1.8ms (0 cambios de firma).' },
+      { tagClass: 'tag-clean', tagText: 'GC_SWEEP', msg: 'Barrido de alcanzabilidad completado en 11.2ms. 48 nodos activos verificados.' },
+      { tagClass: 'tag-ffi', tagText: 'FFI_CHECK', msg: 'Macro #[pymodule] archangel_rs validada contra imports en Python (0 huérfanos FFI).' },
+      { tagClass: 'tag-delta', tagText: 'AST_WALK', msg: 'extractors/python/yaml_lite.py analizado: 28 ramas ciclomáticas.' },
+      { tagClass: 'tag-clean', tagText: 'HEALTH_OK', msg: '0 dependencias circulares detectadas (Tarjan SCC limpio).' }
+    ];
+
+    let eventIdx = 0;
+    setInterval(() => {
+      const ev = simulatedEvents[eventIdx % simulatedEvents.length];
+      pushLog(ev.tagClass, ev.tagText, ev.msg);
+      eventIdx++;
+      
+      // Variar latencia sutilmente para realismo
+      const randomLat = (9.5 + Math.random() * 3.5).toFixed(1);
+      document.getElementById('val-latency').textContent = randomLat + ' ms';
+    }, 4200);
+
+    // Botones manuales de simulación
+    document.getElementById('btn-trigger-save').addEventListener('click', () => {
+      pushLog('tag-delta', 'MANUAL_SAVE', 'Simulación: Modificado `archangel_rs/src/lib.rs`. Actualización de nodos en 8.4ms.');
+      const rsLib = cy.getElementById('rs_lib');
+      rsLib.flashClass('highlighted', 1200);
+    });
+
+    document.getElementById('btn-trigger-orphan').addEventListener('click', () => {
+      // Simula desconectar un nodo vivo en tiempo real
+      const target = cy.getElementById('yaml_lite');
+      if (target.data('status') === 'alive') {
+        target.data('status', 'dead');
+        cy.getElementById('e10').remove();
+        pushLog('tag-gc', 'ORPHAN_ALERT', 'ALERTA: `yaml_lite.py` desconectado de `config_files.py` -> Nodo marcado como HUÉRFANO.');
+        document.getElementById('val-nodes-dead').textContent = '4';
+        document.getElementById('val-nodes-alive').textContent = '47';
+      }
+    });
+
+    document.getElementById('btn-trigger-reconnect').addEventListener('click', () => {
+      // Reconecta
+      const target = cy.getElementById('yaml_lite');
+      if (target.data('status') === 'dead') {
+        target.data('status', 'alive');
+        cy.add({ data: { id: 'e10', source: 'py_config', target: 'yaml_lite' } });
+        pushLog('tag-clean', 'RECONNECTED', '`yaml_lite.py` reconectado exitosamente. Estado restaurado a ROOT_ALCANZABLE.');
+        document.getElementById('val-nodes-dead').textContent = '3';
+        document.getElementById('val-nodes-alive').textContent = '48';
+      }
+    });
+
+    // Acción desde el inspector
+    document.getElementById('btn-toggle-orphan').addEventListener('click', () => {
+      if (!selectedNode) return;
+      const isDead = selectedNode.data('status') === 'dead';
+      selectedNode.data('status', isDead ? 'alive' : 'dead');
+      updateInspector(selectedNode);
+      pushLog(isDead ? 'tag-clean' : 'tag-gc', 'NODE_STATE', `Nodo ${selectedNode.data('label')} marcado como ${isDead ? 'ALIVE' : 'DEAD'}.`);
+    });
+
+    // Evento inicial en el log
+    pushLog('tag-clean', 'DAEMON_INIT', 'A.R.G.O.S. Daemon v5.0 inicializado. Topología cargada en 14ms.');
+  </script>
+</body>
+</html>

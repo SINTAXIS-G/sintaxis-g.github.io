@@ -13,6 +13,7 @@
     { title: 'ARCHANGEL Ω — Banco de Calibración de Radar 3D', subtitle: 'Simulador táctico, z-sorting, retículo de adquisición y cinemática', url: '/projects/archangel-radar-test.html', group: 'Páginas' },
     { title: 'EXARKON — página completa', subtitle: 'Sistema operativo cognitivo, protocolo V.E.R.A. y hardware watchdog', url: '/projects/exarkon.html', group: 'Páginas' },
     { title: 'Artículos técnicos', subtitle: 'Bitácora de desarrollo de ARCHANGEL', url: '/projects/archangel-articulos.html', group: 'Páginas' },
+    { title: 'A.R.G.O.S. — página completa', subtitle: 'Cartografía arquitectónica y telemetría estática pura', url: '/projects/argos.html', group: 'Páginas' },
     { title: 'KAIROS — página completa', subtitle: 'App de asistencia en emergencias', url: '/projects/kairos.html', group: 'Páginas' },
 
     // ---------- Ecosistema Sintaxis G ----------
@@ -20,7 +21,7 @@
     { title: 'SYS-02: EIDOLON', subtitle: 'Simulación cognitiva de entidades & memoria persistente', url: '/index.html#sys-eidolon', group: 'Ecosistema' },
     { title: 'Laboratorio: Curva de Ebbinghaus', subtitle: 'Osciloscopio interactivo R(t) = e^(-t/S)', url: '/index.html#memoria', group: 'Ecosistema' },
     { title: 'SYS-03: A.R.K.', subtitle: 'Navegador de privacidad estricta & congelación de RAM', url: '/index.html#sys-ark', group: 'Ecosistema' },
-    { title: 'SYS-04: ATLAS', subtitle: 'Perfilado holístico de repositorios en stdlib puro', url: '/index.html#sys-atlas', group: 'Ecosistema' },
+    { title: 'SYS-04: A.R.G.O.S.', subtitle: 'Cartografía arquitectónica y telemetría estática en stdlib puro', url: '/projects/argos.html', group: 'Ecosistema' },
     { title: 'SYS-05: KAIROS (Sistema)', subtitle: 'Asistencia en emergencias con Dead Man\'s Switch offline', url: '/index.html#sys-kairos', group: 'Ecosistema' },
     { title: 'SYS-06: Cazador de Enlaces', subtitle: 'Agente táctico para detección de inconsistencias cruzadas', url: '/index.html#sys-cazador', group: 'Ecosistema' },
     { title: 'Ecosistema (Visión general)', subtitle: 'Bento Grid de sistemas técnicos integrados', url: '/index.html#ecosistema', group: 'Ecosistema' },
