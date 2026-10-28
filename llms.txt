@@ -8,7 +8,7 @@
 - [KAIROS](https://sintaxisg.com/projects/kairos.html): app de asistencia en emergencias hecha en Flutter, sin backend ni cuentas de usuario, con un Dead Man's Switch que avisa a la red de confianza del usuario si deja de responder.
   - [Política de privacidad de KAIROS](https://sintaxisg.com/projects/kairos-privacidad.html): qué datos guarda la app, cómo se protegen y qué servicios externos ven algo al conectarse.
 - EXARKON: entorno de IA soberano ejecutado íntegramente en local — "Razón sobre Proceso. Conciencia sobre Código." Todo código generado por IA corre primero en un sandbox de 7 capas con puntaje de peligrosidad antes de confiar en el resultado.
-- [A.R.G.O.S.](https://sintaxisg.com/projects/argos.html): motor omnisciente de cartografía arquitectónica y telemetría de repositorios en stdlib puro de Python, sin dependencias externas — 29 micro-módulos en 9 capas, 907 tests en 1.1s, complejidad cognitiva formal de SonarQube (Campbell B1/B2), DAG de routers y cero dependencias externas. Cartografía y audita el código antes de que ARCHANGEL lo intervenga.
+- [A.R.G.O.S.](https://sintaxisg.com/projects/argos.html): motor omnisciente de cartografía arquitectónica y telemetría de repositorios en stdlib puro de Python, sin dependencias externas — 49 micro-módulos en 9 capas, 1,714 tests en 3.46s, 53,762 líneas forjadas, complejidad cognitiva formal de SonarQube (Campbell B1/B2), DAG de routers, linealización C3 y recolector de ciclos Tarjan SCC. «Cien ojos sobre el abismo. Ni un solo parpadeo.»
 - EIDOLON: motor de simulación cognitiva para entidades sintéticas persistentes, 100% local, con memoria decreciente tipo curva de Ebbinghaus e inercia emocional real.
 
 ## Más contexto

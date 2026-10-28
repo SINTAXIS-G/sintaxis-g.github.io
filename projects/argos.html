@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A.R.G.O.S. // Sistema Omnisciente de Cartografía Arquitectónica | SINTAXIS G</title>
-<meta name="description" content="A.R.G.O.S. (Architecture Repository Global Oversight System) es un motor de análisis estático puro en Python stdlib: 29 micro-módulos, 907 pruebas en 1.1s, complejidad cognitiva de SonarQube, DAG de routers y 0 dependencias.">
+<meta name="description" content="A.R.G.O.S. (Architecture Repository Global Oversight System) es un motor de análisis estático puro en Python stdlib: 49 micro-módulos, 1,714 pruebas en 3.46s, complejidad cognitiva de SonarQube, DAG de routers y 0 dependencias.">
 
 <meta name="author" content="Gabo">
 <meta name="robots" content="index, follow">
@@ -13,8 +13,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="A.R.G.O.S. // Cartografía Arquitectónica y Telemetría Estática | SINTAXIS G">
-<meta property="og:description" content="Motor de supervisión de repositorios en stdlib puro: 29 micro-módulos, 907 tests en 1.1s, complejidad cognitiva de Campbell y 0 dependencias externas.">
-<meta property="og:image" content="https://sintaxisg.com/assets/img/argos-logo.jpg">
+<meta property="og:description" content="Motor de supervisión de repositorios en stdlib puro: 49 micro-módulos, 1,714 tests en 3.46s, complejidad cognitiva de Campbell y 0 dependencias externas.">
+<meta property="og:image" content="https://sintaxisg.com/assets/img/argos_master_emblem.jpg">
 <meta property="og:url" content="https://sintaxisg.com/projects/argos.html">
 <meta property="og:site_name" content="SINTAXIS G">
 <meta property="og:locale" content="es_MX">
@@ -23,8 +23,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@SINTAXIS_G">
 <meta name="twitter:title" content="A.R.G.O.S.: Cartografía Arquitectónica de Alta Velocidad | SINTAXIS G">
-<meta name="twitter:description" content="Cien ojos sobre el código. Cero dependencias en el camino. 907 pruebas en 1.1 segundos.">
-<meta name="twitter:image" content="https://sintaxisg.com/assets/img/argos-logo.jpg">
+<meta name="twitter:description" content="Cien ojos sobre el abismo. Ni un solo parpadeo. 1,714 pruebas en 3.46 segundos. 0 dependencias.">
+<meta name="twitter:image" content="https://sintaxisg.com/assets/img/argos_master_emblem.jpg">
 
 <meta name="theme-color" content="#060911">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
@@ -58,7 +58,7 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Linux, macOS, Windows (Python 3.11+ / Rust)",
       "url": "https://sintaxisg.com/projects/argos.html",
-      "image": "https://sintaxisg.com/assets/img/argos-logo.jpg",
+      "image": "https://sintaxisg.com/assets/img/argos_master_emblem.jpg",
       "softwareVersion": "5.0 Titanium Edition",
       "inLanguage": "es-MX",
       "creator": { "@id": "https://sintaxisg.com/#organization" }
@@ -103,91 +103,142 @@
 </nav>
 
 <!-- HERO -->
-<header class="proj-hero" style="min-height: 84vh; display: flex; align-items: center; position: relative;">
+<header class="proj-hero" style="min-height: 86vh; display: flex; align-items: center; position: relative; padding: 5rem 0 3.5rem;">
   <canvas id="argos-hero-canvas" aria-hidden="true"></canvas>
 
   <div class="wrap argos-hero-content" style="width: 100%;">
-    <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-      <img src="../assets/img/argos-logo.jpg" alt="A.R.G.O.S. Emblem" style="height: 5.5rem; width: 5.5rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--argos-amber); box-shadow: 0 0 24px var(--argos-amber-glow);" width="512" height="512">
-      <div>
-        <p class="eyebrow" style="margin: 0; color: var(--argos-amber); font-family: var(--font-hud-mono); letter-spacing: 0.14em;">SYS-04 // ARCHITECTURAL OVERSIGHT &amp; STATIC INTELLIGENCE // STDLIB-PURE</p>
-        <h1 class="argos-title-glitch" style="margin: 0.2rem 0; font-size: clamp(2.6rem, 6vw, 4.8rem); line-height: 1;">A.R.G.O.S.</h1>
+    <div class="argos-hero-grid">
+      
+      <!-- COLUMNA IZQUIERDA: IDENTIDAD, LEMAS, HUD & MÉTRICAS -->
+      <div class="argos-hero-left">
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <img src="../assets/img/argos_master_emblem.jpg" alt="A.R.G.O.S. Master Emblem" class="argos-hero-avatar" width="512" height="512">
+          <div>
+            <p class="eyebrow" style="margin: 0; color: var(--argos-amber); font-family: var(--font-hud-mono); letter-spacing: 0.14em;">SYS-04 // ARCHITECTURAL OVERSIGHT &amp; STATIC INTELLIGENCE // STDLIB-PURE</p>
+            <h1 class="argos-title-glitch" style="margin: 0.2rem 0; font-size: clamp(2.6rem, 5.5vw, 4.6rem); line-height: 1;">A.R.G.O.S.</h1>
+          </div>
+        </div>
+
+        <p class="proj-kicker" style="font-family: var(--font-hud-mono); color: var(--argos-cyan); font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;">
+          ARCHITECTURE REPOSITORY GLOBAL OVERSIGHT SYSTEM // TITANIUM v5.0
+        </p>
+
+        <p class="tagline" style="color: #cbd5e1; font-size: 1.15rem; max-width: 44rem; line-height: 1.6; margin-top: 0.85rem;">
+          Un motor de cartografía arquitectónica, cálculo formal de complejidad cognitiva y telemetría de grafos de ultra-alta velocidad en memoria RAM. Escanea repositorios masivos en caliente sin instalar un solo paquete externo.
+        </p>
+
+        <!-- LEMAS OFICIALES SINTAXIS G -->
+        <div class="argos-lemas-block" style="margin-top: 1.15rem; padding: 0.75rem 1.1rem; border-left: 3px solid var(--argos-amber); background: rgba(245, 158, 11, 0.05); border-radius: 0 4px 4px 0;">
+          <p class="lema-maestro" style="color: #ffffff; font-family: var(--font-hud); font-size: 1.25rem; margin: 0; letter-spacing: 0.03em;">
+            «Cien ojos sobre el abismo. Ni un solo parpadeo.»
+          </p>
+          <p class="lema-sub" style="color: var(--argos-amber); font-family: var(--font-hud-mono); font-size: 0.82rem; margin: 0.35rem 0 0; letter-spacing: 0.05em; text-transform: uppercase;">
+            «Cien miradas vigilan lo que una sola mano forja.» &bull; «Ni un byte en la sombra. Ni una fractura impune.»
+          </p>
+        </div>
+
+        <!-- LIVE TELEMETRY HUD RIBBON -->
+        <div class="argos-hud-banner">
+          <div class="argos-hud-status-item">
+            <span class="argos-hud-dot emerald"></span>
+            <span>CORE: <strong>ONLINE [TITANIUM v5.0]</strong></span>
+          </div>
+          <div class="argos-hud-status-item">
+            <span class="argos-hud-dot amber"></span>
+            <span>SUITE: <strong style="color:var(--argos-emerald);">1,714 / 1,714 PASSED (3.46s)</strong></span>
+          </div>
+          <div class="argos-hud-status-item">
+            <span>ARCHIVOS EN VIVO: <strong style="color:var(--argos-cyan);">1,063 AUDITADOS</strong></span>
+          </div>
+          <div class="argos-hud-status-item">
+            <span>TIPADO ESTRICTO: <strong style="color:var(--argos-emerald);">0 ERRORS [PYRIGHT]</strong></span>
+          </div>
+          <div class="argos-hud-status-item">
+            <span>DEPENDENCIAS EXTERNAS: <strong style="color:#ffffff;">0 KB (100% STDLIB)</strong></span>
+          </div>
+        </div>
+
+        <!-- METRICS GRID -->
+        <div class="argos-metric-grid">
+          <div class="argos-metric-box">
+            <strong>1,714</strong>
+            <span>Tests Superados</span>
+          </div>
+          <div class="argos-metric-box">
+            <strong>3.46 s</strong>
+            <span>Tiempo de Suite</span>
+          </div>
+          <div class="argos-metric-box">
+            <strong>0 KB</strong>
+            <span>Deps Externas</span>
+          </div>
+          <div class="argos-metric-box">
+            <strong>49</strong>
+            <span>Micro-Módulos</span>
+          </div>
+          <div class="argos-metric-box">
+            <strong>53,762</strong>
+            <span>Líneas Forjadas</span>
+          </div>
+          <div class="argos-metric-box">
+            <strong>1,063</strong>
+            <span>Archivos en Caliente</span>
+          </div>
+        </div>
+
+        <!-- CTA OBSERVATORIO LIVE -->
+        <div style="margin-top: 1.75rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <a href="argos-live.html" class="btn" style="background: var(--argos-amber); color: #000; font-family: var(--font-hud-mono); font-weight: 700; text-transform: uppercase; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; box-shadow: 0 0 20px var(--argos-amber-glow); display: inline-flex; align-items: center; gap: 0.6rem; letter-spacing: 0.05em; transition: transform 0.2s, box-shadow 0.2s;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#000; animation: pulseDot 1.5s infinite;"></span>
+            Lanzar Observatorio en Vivo (Radar) ↗
+          </a>
+          <span style="color: var(--argos-cyan); font-family: var(--font-hud-mono); font-size: 0.78rem;">
+            ⚡ Modo Daemon Simulado &bull; Filtro Ego-Céntrico &bull; FFI Rust-Python
+          </span>
+        </div>
+
+        <p class="bp-caption" style="margin-top: 1.5rem;">SUBSISTEMA: <b>A.R.G.O.S. // OBSERVADOR ARQUITECTÓNICO</b> · REV v5.0 TITANIUM</p>
       </div>
+
+      <!-- COLUMNA DERECHA: VIEWPORT HOLOGRÁFICO CON VIDEO OFICIAL ANIMADO -->
+      <div class="argos-hero-right">
+        <div class="argos-video-chassis">
+          <div class="argos-video-header">
+            <div class="argos-video-badge">
+              <span class="argos-hud-dot amber"></span>
+              <span>A.R.G.O.S. // EYE OF THE FORGE</span>
+            </div>
+            <div class="argos-video-freq">
+              <span class="argos-pulse-wave"></span>
+              <span>VIGILANCIA PANÓPTICA 360°</span>
+            </div>
+          </div>
+          <div class="argos-video-screen">
+            <video class="argos-video-player" autoplay loop muted playsinline poster="../assets/img/argos_master_emblem.jpg" aria-label="A.R.G.O.S. Emblema Animado Oficial">
+              <source src="../assets/video/argos_animated_emblem.mp4" type="video/mp4">
+              Tu navegador no soporta reproducción de video HTML5.
+            </video>
+            <div class="argos-video-reticle" aria-hidden="true">
+              <div class="reticle-corner top-left"></div>
+              <div class="reticle-corner top-right"></div>
+              <div class="reticle-corner bottom-left"></div>
+              <div class="reticle-corner bottom-right"></div>
+              <div class="reticle-center-cross"></div>
+            </div>
+          </div>
+          <div class="argos-video-footer">
+            <div class="argos-video-status">
+              <span class="argos-hud-dot emerald"></span>
+              <span>ORDEN: TOPOLÓGICO C3 &bull; 100 OJOS &bull; 0 FRACTURAS</span>
+            </div>
+            <a href="../assets/img/argos_master_emblem.jpg" target="_blank" rel="noopener" class="argos-video-link">
+              VER EMBLEMA 8K ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-    <p class="proj-kicker" style="font-family: var(--font-hud-mono); color: var(--argos-cyan); font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;">
-      ARCHITECTURE REPOSITORY GLOBAL OVERSIGHT SYSTEM // TITANIUM v5.0
-    </p>
-
-    <p class="tagline" style="color: #cbd5e1; font-size: 1.25rem; max-width: 48rem; line-height: 1.6; margin-top: 1rem;">
-      Un motor de cartografía arquitectónica, cálculo de complejidad cognitiva y telemetría de grafos de ultra-alta velocidad. Escanea repositorios masivos en caliente sin instalar un solo paquete externo.
-    </p>
-
-    <p class="lema-maestro" style="color: #ffffff; font-family: var(--font-hud); font-size: 1.35rem; font-style: normal; margin-top: 1.25rem; letter-spacing: 0.04em;">
-      «Cien ojos sobre el código. Cero dependencias en el camino.»
-    </p>
-
-    <!-- LIVE TELEMETRY HUD RIBBON -->
-    <div class="argos-hud-banner">
-      <div class="argos-hud-status-item">
-        <span class="argos-hud-dot emerald"></span>
-        <span>CORE: <strong>ONLINE [TITANIUM v5.0]</strong></span>
-      </div>
-      <div class="argos-hud-status-item">
-        <span class="argos-hud-dot amber"></span>
-        <span>SUITE: <strong style="color:var(--argos-emerald);">1,173 / 1,173 PASSED (1.65s)</strong></span>
-      </div>
-      <div class="argos-hud-status-item">
-        <span>ARCHIVOS EN VIVO: <strong style="color:var(--argos-cyan);">1,063 AUDITADOS</strong></span>
-      </div>
-      <div class="argos-hud-status-item">
-        <span>TIPADO ESTRICTO: <strong style="color:var(--argos-emerald);">0 ERRORS [PYRIGHT]</strong></span>
-      </div>
-      <div class="argos-hud-status-item">
-        <span>DEPENDENCIAS EXTERNAS: <strong style="color:#ffffff;">0 KB (100% STDLIB)</strong></span>
-      </div>
-    </div>
-
-    <!-- METRICS GRID -->
-    <div class="argos-metric-grid">
-      <div class="argos-metric-box">
-        <strong>1,173</strong>
-        <span>Tests Superados</span>
-      </div>
-      <div class="argos-metric-box">
-        <strong>1.65 s</strong>
-        <span>Tiempo de Suite</span>
-      </div>
-      <div class="argos-metric-box">
-        <strong>0 KB</strong>
-        <span>Deps Externas</span>
-      </div>
-      <div class="argos-metric-box">
-        <strong>29</strong>
-        <span>Micro-Módulos</span>
-      </div>
-      <div class="argos-metric-box">
-        <strong>1,063</strong>
-        <span>Archivos en Caliente</span>
-      </div>
-      <div class="argos-metric-box">
-        <strong>18,250</strong>
-        <span>Líneas Forjadas</span>
-      </div>
-    </div>
-
-    <!-- CTA OBSERVATORIO LIVE -->
-    <div style="margin-top: 1.75rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-      <a href="argos-live.html" class="btn" style="background: var(--argos-amber); color: #000; font-family: var(--font-hud-mono); font-weight: 700; text-transform: uppercase; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; box-shadow: 0 0 20px var(--argos-amber-glow); display: inline-flex; align-items: center; gap: 0.6rem; letter-spacing: 0.05em; transition: transform 0.2s, box-shadow 0.2s;">
-        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#000; animation: pulseDot 1.5s infinite;"></span>
-        Lanzar Observatorio en Vivo (Radar) ↗
-      </a>
-      <span style="color: var(--argos-cyan); font-family: var(--font-hud-mono); font-size: 0.78rem;">
-        ⚡ Modo Daemon Simulado &bull; Filtro Ego-Céntrico &bull; FFI Rust-Python
-      </span>
-    </div>
-
-    <p class="bp-caption" style="margin-top: 1.5rem;">SUBSISTEMA: <b>A.R.G.O.S. // OBSERVADOR ARQUITECTÓNICO</b> · REV v5.0 PLATINUM</p>
   </div>
 </header>
 
@@ -211,9 +262,9 @@
 
       <div class="bp-box bp-frame">
         <span class="bp-box-id" style="color:var(--argos-cyan);">DOCTRINA // 02</span>
-        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Velocidad Determinista (1.13s Execution)</h3>
+        <h3 style="font-family:var(--font-hud); font-size:1.15rem; color:#fff; margin:0.5rem 0;">Velocidad Determinista (3.46s Suite)</h3>
         <p style="font-size:0.92rem; color:var(--text-dim); line-height:1.6;">
-          Un analizador que tarda 15 minutos en correr es ignorado por los ingenieros. Los <strong>907 tests de A.R.G.O.S. ejecutan en poco más de un segundo</strong>. Su auditoría completa sobre repositorios de más de 1,000 archivos concluye en menos de 30 segundos, permitiendo verificación instantánea en pipelines locales y CI.
+          Un analizador que tarda 15 minutos en correr es ignorado por los ingenieros. Los <strong>1,714 tests de A.R.G.O.S. ejecutan en apenas 3.46 segundos</strong>. Su auditoría completa sobre repositorios de más de 1,000 archivos concluye en menos de 30 segundos en memoria RAM, permitiendo verificación instantánea en pipelines locales y CI.
         </p>
       </div>
 
@@ -232,7 +283,7 @@
 <section class="proj-block" id="capas" style="background: rgba(6, 9, 17, 0.75);">
   <div class="wrap">
     <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">02 // ESTRUCTURA MATEMÁTICA Y TOPOLÓGICA</p>
-    <h2>Las 9 Capas de A.R.G.O.S. (29 Micro-Módulos)</h2>
+    <h2>Las 9 Capas de A.R.G.O.S. (49 Micro-Módulos)</h2>
     <p class="lede" style="color:#cbd5e1;">
       Organizado bajo una jerarquía modular con <strong>Boundary Guards</strong> infranqueables: ninguna capa superior puede violar las leyes ni importar de forma circular a una capa inferior.
     </p>
@@ -357,7 +408,7 @@
         </div>
         <div><span class="cmd-prompt">gabo@archangel:~$</span> <span class="cmd-text">pytest tests/test_argos/ -q</span></div>
         <div class="cmd-out-ok">........................................................................ [100%]</div>
-        <div class="cmd-out-ok">907 passed in 1.13s ⚡ [0 errors, 0 warnings]</div>
+        <div class="cmd-out-ok">1714 passed in 3.46s ⚡ [0 errors, 0 warnings]</div>
       </div>
     </div>
   </div>
@@ -392,8 +443,8 @@
             <td>Binario OCaml / Python</td>
           </tr>
           <tr>
-            <td><strong>Tiempo de Suite (900+ tests)</strong></td>
-            <td class="winner-cell">1.13 segundos</td>
+            <td><strong>Tiempo de Suite (1,700+ tests)</strong></td>
+            <td class="winner-cell">3.46 segundos</td>
             <td>Varios minutos</td>
             <td>Variable (segundos)</td>
             <td>Variable</td>
@@ -436,26 +487,26 @@
 <section class="proj-block" id="forja" style="background: rgba(13, 19, 33, 0.65);">
   <div class="wrap">
     <p class="section-label" style="color:var(--argos-amber); font-family:var(--font-hud-mono);">06 // INGENIERÍA DE ALTO RENDIMIENTO</p>
-    <h2>La Forja de A.R.G.O.S.: 16,951 Líneas en 12 Horas</h2>
+    <h2>La Forja de A.R.G.O.S.: 53,762 Líneas en 49 Micro-Módulos</h2>
     <p class="lede" style="color:#cbd5e1;">
       Desarrollado bajo una metodología de pair-programming de frontera: diseño estricto de interfaces, compilador con cero advertencias de tipo y batería de tests inmediata.
     </p>
 
     <div class="shots-grid" style="margin-top:2rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
       <div class="bp-box bp-frame">
-        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-amber);">+11,225</strong>
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-amber);">+37,690</strong>
         <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas de Producción Pura</p>
-        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">Cero stubs, contratos cerrados, tipado al 100% verificado en Pyright.</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">49 micro-módulos en 9 capas, contratos cerrados, tipado al 100% verificado en Pyright.</p>
       </div>
       <div class="bp-box bp-frame">
-        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-emerald);">+5,726</strong>
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-emerald);">+16,072</strong>
         <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas de Tests Unitarios</p>
-        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">17 suites nuevas que blindan cada caso de borde sin dependencias mockeadas.</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">44 suites blindando 1,714 pruebas exhaustivas sin dependencias mockeadas.</p>
       </div>
       <div class="bp-box bp-frame">
-        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-cyan);">1,412</strong>
-        <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Líneas por Hora Verificadas</p>
-        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">Velocidad continua manteniendo paridad absoluta sobre 1,063 archivos en vivo.</p>
+        <strong style="font-family:var(--font-hud); font-size:2rem; color:var(--argos-cyan);">1,714</strong>
+        <p style="font-family:var(--font-hud-mono); font-size:0.85rem; color:#94a3b8; margin-top:0.35rem; text-transform:uppercase;">Tests Verificados (3.46s)</p>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-top:0.5rem;">100% verde en tiempo récord manteniendo paridad absoluta sobre 1,063 archivos en vivo.</p>
       </div>
     </div>
 
@@ -535,12 +586,12 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     c06: {
       titulo: 'CAPA 06: GRAFO ARQUITECTÓNICO & REACHABILITY',
-      badge: 'MÓDULOS: mro.py, dynamic_dispatch.py, call_visitor.py, reachability.py, orphans.py',
-      desc: 'Transforma una lista plana de archivos en un grafo vivo de relaciones. Calcula la linealización C3 para herencia múltiple, mapea qué función llama a cuál y detecta código muerto mediante alcanzabilidad desde raíces.',
+      badge: 'MÓDULOS: mro.py, resolver.py, call_visitor.py, deferred.py, pubsub.py, reachability.py, orphans.py',
+      desc: 'Transforma una lista plana de archivos en un grafo vivo de relaciones. Calcula la linealización C3 para herencia múltiple, mapea el flujo de llamadas intra e inter-módulo, recolecta ciclos zombis con Tarjan SCC y detecta código muerto y modelos huérfanos.',
       puntos: [
-        'Construcción de Call Graph intra e inter-módulo sin dependencias de frameworks externos.',
-        'Cálculo de alcanzabilidad desde entrypoints de CLI, workers de Celery y endpoints HTTP.',
-        'Clasificación estricta de funciones muertas reales distinguiendo fixtures y código exclusivo de tests.'
+        'Linealización C3 idéntica al MRO de CPython para herencia múltiple y resolución estricta de super().',
+        'Tarjan SCC para ciclos huérfanos interconectados y recolector Mark-and-Sweep de grafos en memoria.',
+        'Detección de Schema Drift (ORM vs Pydantic) y auditoría forense de bases de datos SQLite (.coverage).'
       ]
     },
     c07: {
